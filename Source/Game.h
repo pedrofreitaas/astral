@@ -13,10 +13,11 @@
 #include "AudioSystem.h"
 #include "Math.h"
 
+
 class Game
 {
 public:
-    static const int LEVEL_WIDTH = 215;
+    static const int LEVEL_WIDTH = 60;
     static const int LEVEL_HEIGHT = 15;
     static const int TILE_SIZE = 32;
     static const int SPAWN_DISTANCE = 700;
@@ -163,4 +164,7 @@ private:
     SDL_Texture *mBackgroundTexture;
     Vector2 mBackgroundSize;
     Vector2 mBackgroundPosition;
+
+    int ***mFirstLevelLayers;
+    int ***mSecondLevelLayers;
 };

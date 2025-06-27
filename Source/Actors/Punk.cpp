@@ -17,7 +17,7 @@ Punk::Punk(Game* game, const float forwardSpeed, const float jumpSpeed)
         , mJumpSpeed(jumpSpeed)
         , mPoleSlideTimer(0.0f)
 {
-    mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f);
+    mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f, false);
     mColliderComponent = new AABBColliderComponent(this, 14, 20, 18, 28,
                                                    ColliderLayer::Player);
 
@@ -45,16 +45,20 @@ void Punk::OnProcessInput(const uint8_t* state)
         mIsRunning = true;
     }
 
-    if (state[SDL_SCANCODE_A])
+    else if (state[SDL_SCANCODE_A])
     {
         mRigidBodyComponent->ApplyForce(Vector2::UnitX * -mForwardSpeed);
         mRotation = Math::Pi;
         mIsRunning = true;
     }
 
-    if (!state[SDL_SCANCODE_D] && !state[SDL_SCANCODE_A])
-    {
-        mIsRunning = false;
+    else if (state[SDL_SCANCODE_W]) {
+        mRigidBodyComponent->ApplyForce(Vector2(0.0f, -mForwardSpeed));
+        mIsRunning = true;
+    }
+    else if (state[SDL_SCANCODE_S]) {
+        mRigidBodyComponent->ApplyForce(Vector2(0.0f, mForwardSpeed));
+        mIsRunning = true;
     }
 }
 
@@ -63,14 +67,14 @@ void Punk::OnHandleKeyPress(const int key, const bool isPressed)
     if(mGame->GetGamePlayState() != Game::GamePlayState::Playing) return;
 
     // Jump
-    if (key == SDLK_SPACE && isPressed && mIsOnGround)
-    {
-        mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, mJumpSpeed));
-        mIsOnGround = false;
-
-        // Play jump sound
-        mGame->GetAudio()->PlaySound("Jump.wav");
-    }
+    // if (key == SDLK_SPACE && isPressed && mIsOnGround)
+    // {
+    //     mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, mJumpSpeed));
+    //     mIsOnGround = false;
+    //
+    //     // Play jump sound
+    //     mGame->GetAudio()->PlaySound("Jump.wav");
+    // }
 }
 
 void Punk::OnUpdate(float deltaTime)

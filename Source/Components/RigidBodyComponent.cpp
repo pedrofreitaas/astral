@@ -37,7 +37,7 @@ void RigidBodyComponent::Update(float deltaTime)
 
     // Apply friction
     if(mApplyFriction && Math::Abs(mVelocity.x) > 0.05f) {
-        ApplyForce(Vector2::UnitX * -mFrictionCoefficient * mVelocity.x);
+        ApplyForce( Vector2(-mFrictionCoefficient * mVelocity.x, 0.0f) );
     }
 
     // Euler Integration
