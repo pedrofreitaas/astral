@@ -18,18 +18,17 @@ Mario::Mario(Game* game, const float forwardSpeed, const float jumpSpeed)
         , mPoleSlideTimer(0.0f)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f);
-    mColliderComponent = new AABBColliderComponent(this, 0, 0, Game::TILE_SIZE - 4.0f,Game::TILE_SIZE,
+    mColliderComponent = new AABBColliderComponent(this, 14, 20, 18, 28,
                                                    ColliderLayer::Player);
 
     mDrawComponent = new DrawAnimatedComponent(this,
-                                              "../Assets/Sprites/Mario/Mario.png",
-                                              "../Assets/Sprites/Mario/Mario.json");
+                                              "../Assets/Sprites/Punk/texture.png",
+                                              "../Assets/Sprites/Punk/texture.json");
 
-    mDrawComponent->AddAnimation("Dead", {0});
-    mDrawComponent->AddAnimation("idle", {1});
-    mDrawComponent->AddAnimation("jump", {2});
-    mDrawComponent->AddAnimation("run", {3, 4, 5});
-    mDrawComponent->AddAnimation("win", {7});
+    mDrawComponent->AddAnimation("dying", {13,14,15,16,17,18});
+    mDrawComponent->AddAnimation("idle", {0,1,2,3});
+    mDrawComponent->AddAnimation("run", {4,5,6,7,8,9});
+    mDrawComponent->AddAnimation("jump", {10,11,12,13});
 
     mDrawComponent->SetAnimation("idle");
     mDrawComponent->SetAnimFPS(10.0f);
