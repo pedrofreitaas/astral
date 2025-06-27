@@ -5,7 +5,7 @@
 // Released under the BSD License
 // See LICENSE in root directory for full details.
 // ----------------------------------------------------------------
-
+//comentario
 #include "Actor.h"
 #include "../Game.h"
 #include "../Components/Component.h"
