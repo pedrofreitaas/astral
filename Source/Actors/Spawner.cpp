@@ -4,7 +4,7 @@
 
 #include "Spawner.h"
 #include "../Game.h"
-#include "Mario.h"
+#include "Punk.h"
 #include "Goomba.h"
 
 Spawner::Spawner(Game* game, float spawnDistance)
@@ -16,7 +16,7 @@ Spawner::Spawner(Game* game, float spawnDistance)
 
 void Spawner::OnUpdate(float deltaTime)
 {
-    if (abs(GetGame()->GetMario()->GetPosition().x - GetPosition().x) < mSpawnDistance)
+    if (abs(GetGame()->GetPunk()->GetPosition().x - GetPosition().x) < mSpawnDistance)
     {
         auto goomba = new Goomba(GetGame());
         goomba->SetPosition(GetPosition());

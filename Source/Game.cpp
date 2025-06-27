@@ -20,7 +20,7 @@
 #include "HUD.h"
 #include "SpatialHashing.h"
 #include "Actors/Actor.h"
-#include "Actors/Mario.h"
+#include "Actors/Punk.h"
 #include "Actors/Block.h"
 #include "Actors/Spawner.h"
 #include "UIElements/UIScreen.h"
@@ -36,7 +36,7 @@ Game::Game(int windowWidth, int windowHeight)
         ,mIsRunning(true)
         ,mWindowWidth(windowWidth)
         ,mWindowHeight(windowHeight)
-        ,mMario(nullptr)
+        ,mPunk(nullptr)
         ,mHUD(nullptr)
         ,mBackgroundColor(0, 0, 0)
         ,mModColor(255, 255, 255)
@@ -63,7 +63,7 @@ bool Game::Initialize()
         return false;
     }
 
-    mWindow = SDL_CreateWindow("TP4: Super Mario Bros", 0, 0, mWindowWidth, mWindowHeight, 0);
+    mWindow = SDL_CreateWindow("ETER", 0, 0, mWindowWidth, mWindowHeight, 0);
     if (!mWindow)
     {
         SDL_Log("Failed to create window: %s", SDL_GetError());
@@ -242,9 +242,9 @@ void Game::LoadMainMenu()
         mainMenu->AddImage("../Assets/Sprites/Blocks/BlockA.png", blockPos, Vector2(TILE_SIZE, TILE_SIZE));
     }
 
-    // Draw Mario
-    Vector2 marioPos = Vector2(4 * TILE_SIZE, (LEVEL_HEIGHT - 3) * TILE_SIZE);
-    mainMenu->AddImage("../Assets/Sprites/Mario/Idle.png", marioPos, Vector2(TILE_SIZE, TILE_SIZE));
+    // Draw Punk
+    Vector2 punkPos = Vector2(4 * TILE_SIZE, (LEVEL_HEIGHT - 3) * TILE_SIZE);
+    mainMenu->AddImage("../Assets/Sprites/Punk/Idle.png", punkPos, Vector2(TILE_SIZE, TILE_SIZE));
 
     // Add title
     const Vector2 titleSize = Vector2(178.0f, 88.0f) * 2.0f;
@@ -298,10 +298,10 @@ void Game::BuildLevel(int** levelData, int width, int height)
         {
             int tile = levelData[y][x];
 
-            if(tile == 16) // Mario
+            if(tile == 16) // Punk
             {
-                mMario = new Mario(this);
-                mMario->SetPosition(Vector2(x * TILE_SIZE, y * TILE_SIZE));
+                mPunk = new Punk(this);
+                mPunk->SetPosition(Vector2(x * TILE_SIZE, y * TILE_SIZE));
             }
             else if(tile == 10) // Spawner
             {
@@ -415,19 +415,19 @@ void Game::ProcessInputActors()
 
         const Uint8* state = SDL_GetKeyboardState(nullptr);
 
-        bool isMarioOnCamera = false;
+        bool isPunkoOnCamera = false;
         for (auto actor: actorsOnCamera)
         {
             actor->ProcessInput(state);
 
-            if (actor == mMario) {
-                isMarioOnCamera = true;
+            if (actor == mPunk) {
+                isPunkoOnCamera = true;
             }
         }
 
-        // If Mario is not on camera, process input for him
-        if (!isMarioOnCamera && mMario) {
-            mMario->ProcessInput(state);
+        // If Punk is not on camera, process input for him
+        if (!isPunkoOnCamera && mPunk) {
+            mPunk->ProcessInput(state);
         }
     }
 }
@@ -441,18 +441,18 @@ void Game::HandleKeyPressActors(const int key, const bool isPressed)
                 mSpatialHashing->QueryOnCamera(mCameraPos,mWindowWidth,mWindowHeight);
 
         // Handle key press for actors
-        bool isMarioOnCamera = false;
+        bool isPunkoOnCamera = false;
         for (auto actor: actorsOnCamera) {
             actor->HandleKeyPress(key, isPressed);
 
-            if (actor == mMario) {
-                isMarioOnCamera = true;
+            if (actor == mPunk) {
+                isPunkoOnCamera = true;
             }
         }
 
-        // If Mario is not on camera, handle key press for him
-        if (!isMarioOnCamera && mMario) {
-            mMario->HandleKeyPress(key, isPressed);
+        // If Punk is not on camera, handle key press for him
+        if (!isPunkoOnCamera && mPunk) {
+            mPunk->HandleKeyPress(key, isPressed);
         }
     }
 
@@ -565,18 +565,18 @@ void Game::UpdateLevelTime(float deltaTime)
         }
         else
         {
-            // Kill Mario if time limit is reached
+            // Kill Punk if time limit is reached
             mHUD->SetTime(mGameTimeLimit);
-            mMario->Kill();
+            mPunk->Kill();
         }
     }
 }
 
 void Game::UpdateCamera()
 {
-    if (!mMario) return;
+    if (!mPunk) return;
 
-    float horizontalCameraPos = mMario->GetPosition().x - (mWindowWidth / 2.0f);
+    float horizontalCameraPos = mPunk->GetPosition().x - (mWindowWidth / 2.0f);
 
     if (horizontalCameraPos > mCameraPos.x)
     {
@@ -594,18 +594,18 @@ void Game::UpdateActors(float deltaTime)
     std::vector<Actor*> actorsOnCamera =
         mSpatialHashing->QueryOnCamera(mCameraPos,mWindowWidth,mWindowHeight);
 
-    bool isMarioOnCamera = false;
+    bool isPunkOnCamera = false;
     for (auto actor : actorsOnCamera)
     {
         actor->Update(deltaTime);
-        if (actor == mMario) {
-            isMarioOnCamera = true;
+        if (actor == mPunk) {
+            isPunkOnCamera = true;
         }
     }
 
-    // If Mario is not on camera, update him (player should always be updated)
-    if (!isMarioOnCamera && mMario) {
-         mMario->Update(deltaTime);
+    // If Punk is not on camera, update him (player should always be updated)
+    if (!isPunkOnCamera && mPunk) {
+         mPunk->Update(deltaTime);
     }
 
     for (auto actor : actorsOnCamera)
@@ -613,8 +613,8 @@ void Game::UpdateActors(float deltaTime)
         if (actor->GetState() == ActorState::Destroy)
         {
             delete actor;
-            if (actor == mMario) {
-                mMario = nullptr;
+            if (actor == mPunk) {
+                mPunk = nullptr;
             }
         }
     }

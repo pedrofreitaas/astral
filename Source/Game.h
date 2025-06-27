@@ -96,7 +96,7 @@ public:
     void TogglePause();
 
     // Game-specific
-    const class Mario* GetMario() { return mMario; }
+    const class Punk* GetPunk() { return mPunk; }
 
     void SetGamePlayState(GamePlayState state) { mGamePlayState = state; }
     GamePlayState GetGamePlayState() const { return mGamePlayState; }
@@ -153,7 +153,7 @@ private:
     Vector2 mCameraPos;
 
     // Game-specific
-    class Mario *mMario;
+    class Punk *mPunk;
     class HUD *mHUD;
     SoundHandle mMusicHandle;
 
