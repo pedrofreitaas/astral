@@ -23,6 +23,7 @@
 #include "Actors/Punk.h"
 #include "Actors/Block.h"
 #include "Actors/Spawner.h"
+#include "Actors/Enemy.h"
 #include "UIElements/UIScreen.h"
 #include "Components/DrawComponents/DrawComponent.h"
 #include "Components/DrawComponents/DrawSpriteComponent.h"
@@ -277,6 +278,10 @@ void Game::LoadLevel(const std::string& levelName, const int levelWidth, const i
     BuildLevel(mLevelData, levelWidth, levelHeight);
     mPunk = new Punk(this, 1000.0f, -1000.0f);
     mPunk->SetPosition(Vector2(100.0f, 100.0f));
+
+    mEnemy = new Enemy(this, mPunk);
+    mEnemy->SetPosition(Vector2(500.0f, 300.0f));
+    mEnemy->Start();
 }
 
 void Game::BuildLevel(int** levelData, int width, int height)

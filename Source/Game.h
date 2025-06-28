@@ -157,6 +157,7 @@ private:
 
     // Game-specific
     class Punk *mPunk;
+    class Enemy *mEnemy;
     class HUD *mHUD;
     SoundHandle mMusicHandle;
 

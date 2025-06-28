@@ -68,6 +68,15 @@ add_executable(${PROJECT_NAME}
         Source/UIElements/UIImage.h
         Source/SpatialHashing.cpp
         Source/SpatialHashing.h
+        Source/Actors/FSM/State.h
+        Source/Actors/FSM/Patrol.cpp
+        Source/Actors/FSM/Patrol.h
+        Source/Actors/Enemy.cpp
+        Source/Actors/Enemy.h
+        Source/Actors/FSM/Chase.cpp
+        Source/Actors/FSM/Chase.h
+        Source/Actors/FSM/Attack.cpp
+        Source/Actors/FSM/Attack.h
 )
 
 #target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf SDL2_mixer::SDL2_mixer)
