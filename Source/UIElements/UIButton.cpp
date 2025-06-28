@@ -32,7 +32,7 @@ void UIButton::Draw(SDL_Renderer *renderer, const Vector2 &screenPos)
     // Draw filled rect as button background
     if (mHighlighted)
     {
-        SDL_SetRenderDrawColor(renderer, 200, 100, 0, 255);
+        SDL_SetRenderDrawColor(renderer, 38, 41, 73, 255);
         SDL_RenderFillRect(renderer, &titleQuad);
     }
 

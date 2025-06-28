@@ -164,7 +164,7 @@ void Game::ChangeScene()
     if (mNextScene == GameScene::MainMenu)
     {
         // Set background color
-        mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
+        mBackgroundColor.Set(24.0f, 22.0f, 30.0f);
 
         // Set background color
         //SetBackgroundImage("../Assets/Sprites/Background.png", Vector2(TILE_SIZE,0), Vector2(6784,448));
@@ -181,12 +181,12 @@ void Game::ChangeScene()
         //mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
 
         // Create HUD
-        mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
+        //mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
 
         // Reset HUD
-        mGameTimeLimit = 400;
-        mHUD->SetTime(mGameTimeLimit);
-        mHUD->SetLevelName("1-1");
+        // mGameTimeLimit = 400;
+        // mHUD->SetTime(mGameTimeLimit);
+        // mHUD->SetLevelName("1-1");
 
         //  Set background color
         // SetBackgroundImage("../Assets/Sprites/Background.png", Vector2(TILE_SIZE,0), Vector2(6784,448));
@@ -216,12 +216,12 @@ void Game::ChangeScene()
         //mModColor.Set(0.0f, 255.0f, 200.0f);
 
         // Create HUD
-        mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
+        //mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
 
         // Reset HUD
-        mGameTimeLimit = 400;
-        mHUD->SetTime(mGameTimeLimit);
-        mHUD->SetLevelName("1-2");
+       // mGameTimeLimit = 400;
+        //mHUD->SetTime(mGameTimeLimit);
+        //mHUD->SetLevelName("1-2");
 
         // Initialize actors
         LoadLevel("../Assets/Levels/map1/layer0.csv", FIRST_LEVEL_WIDTH, FIRST_LEVEL_HEIGHT);
@@ -248,20 +248,20 @@ void Game::LoadMainMenu()
     //mainMenu->AddImage("../Assets/Sprites/Punk/Idle.png", punkPos, Vector2(TILE_SIZE, TILE_SIZE));
 
     // Add title
-    const Vector2 titleSize = Vector2(178.0f, 88.0f) * 2.0f;
+    const Vector2 titleSize = Vector2(178.0f, 110.0f) * 2.0f;
     const Vector2 titlePos = Vector2(mWindowWidth/2.0f - titleSize.x/2.0f, 50.0f);
-    mainMenu->AddImage("../Assets/Sprites/Logo.png", titlePos, titleSize);
+    mainMenu->AddImage("../Assets/Sprites/eter.png", titlePos, titleSize);
 
     // Add menu buttons
     const Vector2 buttonSize = Vector2(200.0f, 40.0f);
     const Vector2 button1Pos = Vector2(mWindowWidth/2.0f - buttonSize.x/2.0f, titlePos.y + titleSize.y + 30.0f);
     const Vector2 button2Pos = Vector2(mWindowWidth/2.0f - buttonSize.x/2.0f, button1Pos.y + buttonSize.y + 5.0f);
 
-    mainMenu->AddButton("1 Player", button1Pos, buttonSize, [this]() {
+    mainMenu->AddButton("Play", button1Pos, buttonSize, [this]() {
         SetGameScene(GameScene::Level1);
     });
 
-    mainMenu->AddButton("2 Players", button2Pos, buttonSize, nullptr);
+    mainMenu->AddButton("Quit", button2Pos, buttonSize, [this]{Quit();});
 }
 
 void Game::LoadLevel(const std::string& levelName, const int levelWidth, const int levelHeight)
@@ -548,7 +548,7 @@ void Game::UpdateGame()
     if(mGameScene != GameScene::MainMenu && mGamePlayState == GamePlayState::Playing)
     {
         // Reinsert level time
-        UpdateLevelTime(deltaTime);
+       // UpdateLevelTime(deltaTime);
     }
 
     UpdateSceneManager(deltaTime);
