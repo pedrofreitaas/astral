@@ -15,7 +15,8 @@ enum class ColliderLayer
     Player,
     Enemy,
     Blocks,
-    Pole
+    Pole,
+    Bricks
 };
 
 class AABBColliderComponent : public Component
@@ -43,6 +44,10 @@ public:
     Vector2 GetMin() const;
     Vector2 GetMax() const;
     Vector2 GetCenter() const;
+    int GetWidth() const { return mWidth; }
+    int GetHeight() const { return mHeight; }
+    Vector2 GetOffset() const { return mOffset; }
+    void SetOffset(const Vector2& offset) { mOffset = offset; }
     ColliderLayer GetLayer() const { return mLayer; }
 
 private:

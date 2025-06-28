@@ -36,28 +36,31 @@ Punk::Punk(Game* game, const float forwardSpeed, const float jumpSpeed)
 
 void Punk::OnProcessInput(const uint8_t* state)
 {
-    if(mGame->GetGamePlayState() != Game::GamePlayState::Playing) return;
+    //if(mGame->GetGamePlayState() != Game::GamePlayState::Playing) return;
+    if (mIsDying) return;
+
+    mIsRunning = false;
 
     if (state[SDL_SCANCODE_D])
     {
-        mRigidBodyComponent->ApplyForce(Vector2::UnitX * mForwardSpeed);
+        mRigidBodyComponent->ApplyForce(Vector2(mForwardSpeed, 0.0f));
         mRotation = 0.0f;
         mIsRunning = true;
     }
 
     else if (state[SDL_SCANCODE_A])
     {
-        mRigidBodyComponent->ApplyForce(Vector2::UnitX * -mForwardSpeed);
+        mRigidBodyComponent->ApplyForce(Vector2(-mForwardSpeed, 0.0f));
         mRotation = Math::Pi;
         mIsRunning = true;
     }
 
     else if (state[SDL_SCANCODE_W]) {
-        mRigidBodyComponent->ApplyForce(Vector2(0.0f, -mForwardSpeed));
+            mRigidBodyComponent->ApplyForce(Vector2(0.0f, -mForwardSpeed));
         mIsRunning = true;
     }
     else if (state[SDL_SCANCODE_S]) {
-        mRigidBodyComponent->ApplyForce(Vector2(0.0f, mForwardSpeed));
+            mRigidBodyComponent->ApplyForce(Vector2(0.0f, mForwardSpeed));
         mIsRunning = true;
     }
 }
@@ -77,77 +80,108 @@ void Punk::OnHandleKeyPress(const int key, const bool isPressed)
     // }
 }
 
+
+void Punk::MaintainInbound() {
+    Vector2 cameraPos = GetGame()->GetCameraPos();
+    Vector2 getUpperLeftBorder = mColliderComponent->GetMin();
+    Vector2 getBottomRightBorder = mColliderComponent->GetMax();
+    Vector2 offset = mColliderComponent->GetOffset();
+    int mWidth = mColliderComponent->GetWidth();
+    int mHeight = mColliderComponent->GetHeight();
+    int maxXBoundary = cameraPos.x + GetGame()->GetWindowWidth();
+    int maxYBoundary = cameraPos.y + GetGame()->GetWindowHeight();
+
+    if (getUpperLeftBorder.x < 0) {
+        SetPosition(Vector2(-offset.x, GetPosition().y));
+    }
+    else if (getBottomRightBorder.x > maxXBoundary) {
+        SetPosition(Vector2(maxXBoundary-mWidth-offset.x, GetPosition().y));
+    }
+
+    if (getUpperLeftBorder.y < 0) {
+        SetPosition(Vector2(GetPosition().x, -offset.y));
+    }
+    else if (getBottomRightBorder.y > maxYBoundary) {
+        SetPosition(Vector2(GetPosition().x, maxYBoundary-mHeight-offset.y));
+    }
+}
+
 void Punk::OnUpdate(float deltaTime)
 {
     // Check if Punk is off the ground
-    if (mRigidBodyComponent && mRigidBodyComponent->GetVelocity().y != 0) {
-        mIsOnGround = false;
-    }
+    // if (mRigidBodyComponent && mRigidBodyComponent->GetVelocity().y != 0) {
+    //     mIsOnGround = false;
+    // }
+    //
+    // // Limit Punk's position to the camera view
+    // mPosition.x = Math::Max(mPosition.x, mGame->GetCameraPos().x);
+    //
+    // // Kill Punk if he falls below the screen
+    // if (mGame->GetGamePlayState() == Game::GamePlayState::Playing && mPosition.y > mGame->GetWindowHeight())
+    // {
+    //     Kill();
+    // }
 
-    // Limit Punk's position to the camera view
-    mPosition.x = Math::Max(mPosition.x, mGame->GetCameraPos().x);
-
-    // Kill Punk if he falls below the screen
-    if (mGame->GetGamePlayState() == Game::GamePlayState::Playing && mPosition.y > mGame->GetWindowHeight())
-    {
-        Kill();
-    }
-
-    if (mIsOnPole)
-    {
-        // If Punk is on the pole, update the pole slide timer
-        mPoleSlideTimer -= deltaTime;
-        if (mPoleSlideTimer <= 0.0f)
-        {
-            mRigidBodyComponent->SetApplyGravity(true);
-            mRigidBodyComponent->SetApplyFriction(false);
-            mRigidBodyComponent->SetVelocity(Vector2::UnitX * 100.0f);
-            mGame->SetGamePlayState(Game::GamePlayState::Leaving);
-
-            // Play win sound
-            mGame->GetAudio()->PlaySound("StageClear.wav");
-            mIsOnPole = false;
-            mIsRunning = true;
-        }
-    }
+    // if (mIsOnPole)
+    // {
+    //     // If Punk is on the pole, update the pole slide timer
+    //     mPoleSlideTimer -= deltaTime;
+    //     if (mPoleSlideTimer <= 0.0f)
+    //     {
+    //         mRigidBodyComponent->SetApplyGravity(true);
+    //         mRigidBodyComponent->SetApplyFriction(false);
+    //         mRigidBodyComponent->SetVelocity(Vector2::UnitX * 100.0f);
+    //         mGame->SetGamePlayState(Game::GamePlayState::Leaving);
+    //
+    //         // Play win sound
+    //         mGame->GetAudio()->PlaySound("StageClear.wav");
+    //         mIsOnPole = false;
+    //         mIsRunning = true;
+    //     }
+    // }
 
     // If Punk is leaving the level, kill him if he enters the castle
-    const float castleDoorPos = Game::LEVEL_WIDTH * Game::TILE_SIZE - 10 * Game::TILE_SIZE;
-
-    if (mGame->GetGamePlayState() == Game::GamePlayState::Leaving &&
-        mPosition.x >= castleDoorPos)
-    {
-        // Stop Punk and set the game scene to Level 2
-        mState = ActorState::Destroy;
-        mGame->SetGameScene(Game::GameScene::Level2, 3.5f);
-
-        return;
-    }
-
+    // TESTE PARA ELE MUDAR DE NIVEL.
+    //ENTÃO QUANDO O MAPA ESTIVER PRONTO É SO COLOCAR A POSIÇÃO DO
+    //PORTAL AQUI QUE ELE MUDA DE NIVEL
+    // const float castleDoorPos = 500;
+    //
+    // if (mPosition.x >= castleDoorPos)
+    // {
+    //     // Stop Punk and set the game scene to Level 2
+    //     mState = ActorState::Destroy;
+    //     mGame->SetGameScene(Game::GameScene::Level2, 3.5f);
+    //
+    //     return;
+    // }
+    MaintainInbound();
     ManageAnimations();
+    if (!mIsDying) return;
+
+    // mDeathTimer -= deltaTime;
+    //
+    // if (mDeathTimer > 0.0f) return;
+
+    mColliderComponent->SetEnabled(false);
+    mRigidBodyComponent->SetEnabled(false);
+    mDrawComponent->SetEnabled(false);
+
+    mGame->Quit();
 }
 
 void Punk::ManageAnimations()
 {
     if(mIsDying)
     {
-        mDrawComponent->SetAnimation("Dead");
+        mDrawComponent->SetAnimation("dying");
     }
-    else if(mIsOnPole)
-    {
-        mDrawComponent->SetAnimation("win");
-    }
-    else if (mIsOnGround && mIsRunning)
+    else if (mIsRunning)
     {
         mDrawComponent->SetAnimation("run");
     }
-    else if (mIsOnGround && !mIsRunning)
+    else if (!mIsRunning)
     {
         mDrawComponent->SetAnimation("idle");
-    }
-    else if (!mIsOnGround)
-    {
-        mDrawComponent->SetAnimation("jump");
     }
 }
 
@@ -155,7 +189,7 @@ void Punk::Kill()
 {
     mIsDying = true;
     mGame->SetGamePlayState(Game::GamePlayState::GameOver);
-    mDrawComponent->SetAnimation("Dead");
+    mDrawComponent->SetAnimation("dying");
 
     // Disable collider and rigid body
     mRigidBodyComponent->SetEnabled(false);
@@ -205,22 +239,27 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
 {
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
-        other->GetOwner()->Kill();
+        //other->GetOwner()->Kill();
         mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, mJumpSpeed / 2.5f));
 
         // Play jump sound
         mGame->GetAudio()->PlaySound("Stomp.wav");
     }
-    else if (other->GetLayer() == ColliderLayer::Blocks)
-    {
-        if (!mIsOnGround)
-        {
-            // Play bump sound
-            mGame->GetAudio()->PlaySound("Bump.wav");
 
-            // Cast actor to Block to call OnBump
-            Block* block = static_cast<Block*>(other->GetOwner());
-            block->OnBump();
-        }
+    else if (other->GetLayer() == ColliderLayer::Bricks && minOverlap < 0) {
+        Block *block = static_cast<Block*>(other->GetOwner());
+        block->OnColision();
     }
+    // else if (other->GetLayer() == ColliderLayer::Blocks)
+    // {
+        // if (!mIsOnGround)
+        // {
+        //     // Play bump sound
+        //     mGame->GetAudio()->PlaySound("Bump.wav");
+        //
+        //     // Cast actor to Block to call OnBump
+        //     Block* block = static_cast<Block*>(other->GetOwner());
+        //     block->OnBump();
+        // }
+    // }
 }

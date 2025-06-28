@@ -36,9 +36,7 @@ void RigidBodyComponent::Update(float deltaTime)
     }
 
     // Apply friction
-    if(mApplyFriction && Math::Abs(mVelocity.x) > 0.05f) {
-        ApplyForce( Vector2(-mFrictionCoefficient * mVelocity.x, 0.0f) );
-    }
+    ApplyForce(-mFrictionCoefficient * mVelocity);
 
     // Euler Integration
     mVelocity += mAcceleration * deltaTime;
@@ -52,25 +50,18 @@ void RigidBodyComponent::Update(float deltaTime)
 
     auto collider = mOwner->GetComponent<AABBColliderComponent>();
 
-    if(mVelocity.x != 0.0f)
-    {
-        mOwner->SetPosition(Vector2(mOwner->GetPosition().x + mVelocity.x * deltaTime,
-                                         mOwner->GetPosition().y));
+    mOwner->SetPosition(Vector2(mOwner->GetPosition().x + mVelocity.x * deltaTime,
+                                mOwner->GetPosition().y));
 
-        if (collider) {
-            collider->DetectHorizontalCollision(this);
-        }
+    if (collider) {
+        collider->DetectHorizontalCollision(this);
     }
 
-    if(mVelocity.y != 0.0f)
-    {
-        mOwner->SetPosition(Vector2(mOwner->GetPosition().x,
-                                         mOwner->GetPosition().y + mVelocity.y * deltaTime));
+    mOwner->SetPosition(Vector2(mOwner->GetPosition().x,
+                                mOwner->GetPosition().y + mVelocity.y * deltaTime));
 
-        if (collider) {
-            collider->DetectVertialCollision(this);
-        }
-
+    if (collider) {
+        collider->DetectVertialCollision(this);
     }
 
     mAcceleration.Set(0.f, 0.f);
