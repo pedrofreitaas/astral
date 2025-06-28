@@ -83,13 +83,31 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
             continue; // Ignore this collider
         }
 
-        if (Intersect(*collider))
-        {
-            float minHorizontalOverlap = GetMinHorizontalOverlap(collider);
-            ResolveHorizontalCollisions(rigidBody, minHorizontalOverlap);
+        if (Intersect(*collider)) {
+            if(collider->GetLayer() == ColliderLayer::PlayerProjectile &&
+               this->GetLayer() == ColliderLayer::Player) {
+                continue;
+               }
+            if(collider->GetLayer() == ColliderLayer::EnemyProjectile &&
+               this->GetLayer() == ColliderLayer::Enemy) {
+                continue;
+               }
 
-            mOwner->OnHorizontalCollision(minHorizontalOverlap, collider);
-            return minHorizontalOverlap;
+            float overlap = GetMinHorizontalOverlap(collider);
+
+
+            if((collider->GetLayer() == ColliderLayer::PlayerProjectile &&
+               this->GetLayer() == ColliderLayer::Enemy) ||
+               (collider->GetLayer() == ColliderLayer::EnemyProjectile &&
+               this->GetLayer() == ColliderLayer::Player)) {
+                mOwner->OnHorizontalCollision(overlap, collider);
+                return overlap;
+               }
+
+            ResolveHorizontalCollisions(rigidBody, overlap);
+            mOwner->OnHorizontalCollision(overlap, collider);
+
+            return overlap;
         }
     }
 
@@ -117,14 +135,30 @@ float AABBColliderComponent::DetectVertialCollision(RigidBodyComponent *rigidBod
             continue; // Ignore this collider
         }
 
-        if (Intersect(*collider))
-        {
-            float minVerticalOverlap = GetMinVerticalOverlap(collider);
-            ResolveVerticalCollisions(rigidBody, minVerticalOverlap);
+        if (Intersect(*collider)) {
+            if(collider->GetLayer() == ColliderLayer::PlayerProjectile &&
+               this->GetLayer() == ColliderLayer::Player) {
+                continue;
+               }
+            if(collider->GetLayer() == ColliderLayer::EnemyProjectile &&
+               this->GetLayer() == ColliderLayer::Enemy) {
+                continue;
+               }
 
-            // Callback only for closest (first) collision
-            mOwner->OnVerticalCollision(minVerticalOverlap, collider);
-            return minVerticalOverlap;
+            float overlap = GetMinVerticalOverlap(collider);
+
+            if((collider->GetLayer() == ColliderLayer::PlayerProjectile &&
+               this->GetLayer() == ColliderLayer::Enemy) ||
+               (collider->GetLayer() == ColliderLayer::EnemyProjectile &&
+               this->GetLayer() == ColliderLayer::Player)) {
+                mOwner->OnVerticalCollision(overlap, collider);
+                return overlap;
+               }
+
+            ResolveVerticalCollisions(rigidBody, overlap);
+            mOwner->OnVerticalCollision(overlap, collider);
+
+            return overlap;
         }
     }
 

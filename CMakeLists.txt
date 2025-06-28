@@ -77,6 +77,10 @@ add_executable(${PROJECT_NAME}
         Source/Actors/FSM/Chase.h
         Source/Actors/FSM/Attack.cpp
         Source/Actors/FSM/Attack.h
+        Source/Actors/Projectile.cpp
+        Source/Actors/Projectile.h
+        Source/Actors/ProjectileEffect.cpp
+        Source/Actors/ProjectileEffect.h
 )
 
 #target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf SDL2_mixer::SDL2_mixer)

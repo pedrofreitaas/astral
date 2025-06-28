@@ -32,9 +32,19 @@ private:
     bool mIsOnPole;
     bool mIsDying;
 
+    bool mIsShooting; //Shooting related
+    float mFireCooldown; //Shooting related
+    int mLives = 5;
+    float mInvincibilityTimer = 0.0f;
+
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
 
+    class Actor* mArm; //Shooting related
+    class DrawSpriteComponent* mArmDraw; //Shooting related
+
     void MaintainInbound();
+    void ShootAt(Vector2 targetPos); //Shooting related
+    void TakeDamage();
 };

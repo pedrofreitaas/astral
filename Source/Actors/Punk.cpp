@@ -4,7 +4,10 @@
 
 #include "Punk.h"
 #include "Block.h"
+#include "Projectile.h"
+#include "ProjectileEffect.h"
 #include "../Game.h"
+#include "../Components/DrawComponents/DrawSpriteComponent.h"
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
 
@@ -16,6 +19,8 @@ Punk::Punk(Game* game, const float forwardSpeed, const float jumpSpeed)
         , mForwardSpeed(forwardSpeed)
         , mJumpSpeed(jumpSpeed)
         , mPoleSlideTimer(0.0f)
+        , mIsShooting(false)
+        , mFireCooldown(0.0f)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f, false);
     mColliderComponent = new AABBColliderComponent(this, 14, 20, 18, 28,
@@ -29,9 +34,14 @@ Punk::Punk(Game* game, const float forwardSpeed, const float jumpSpeed)
     mDrawComponent->AddAnimation("idle", {0,1,2,3});
     mDrawComponent->AddAnimation("run", {4,5,6,7,8,9});
     mDrawComponent->AddAnimation("jump", {10,11,12,13});
+    mDrawComponent->AddAnimation("shooting", {3});
 
     mDrawComponent->SetAnimation("idle");
     mDrawComponent->SetAnimFPS(10.0f);
+
+    mArm = new Actor(mGame);
+    mArmDraw = new DrawSpriteComponent(mArm, "../Assets/Sprites/Punk/arm_gun.png", 18, 28, 200);
+    mArmDraw->SetPivot(Vector2(0.5f, 0.5f));
 }
 
 void Punk::OnProcessInput(const uint8_t* state)
@@ -41,27 +51,36 @@ void Punk::OnProcessInput(const uint8_t* state)
 
     mIsRunning = false;
 
-    if (state[SDL_SCANCODE_D])
-    {
-        mRigidBodyComponent->ApplyForce(Vector2(mForwardSpeed, 0.0f));
-        mRotation = 0.0f;
-        mIsRunning = true;
-    }
+    int mouseX, mouseY;
+    Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
 
-    else if (state[SDL_SCANCODE_A])
-    {
-        mRigidBodyComponent->ApplyForce(Vector2(-mForwardSpeed, 0.0f));
-        mRotation = Math::Pi;
-        mIsRunning = true;
-    }
+    if ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))) {
 
-    else if (state[SDL_SCANCODE_W]) {
+        Vector2 mouseWorld = Vector2(static_cast<float>(mouseX), static_cast<float>(mouseY)) + GetGame()->GetCameraPos();
+        ShootAt(mouseWorld);
+
+    } else {
+        mIsShooting = false;
+        if (state[SDL_SCANCODE_D]) {
+            mRigidBodyComponent->ApplyForce(Vector2(mForwardSpeed, 0.0f));
+            SetRotation(0.0f);
+            mIsRunning = true;
+        }
+        if (state[SDL_SCANCODE_A]) {
+            mRigidBodyComponent->ApplyForce(Vector2(-mForwardSpeed, 0.0f));
+            SetRotation(Math::Pi);
+            mIsRunning = true;
+        }
+
+        if (state[SDL_SCANCODE_W]) {
             mRigidBodyComponent->ApplyForce(Vector2(0.0f, -mForwardSpeed));
-        mIsRunning = true;
-    }
-    else if (state[SDL_SCANCODE_S]) {
+            mIsRunning = true;
+        }
+
+        if (state[SDL_SCANCODE_S]) {
             mRigidBodyComponent->ApplyForce(Vector2(0.0f, mForwardSpeed));
-        mIsRunning = true;
+            mIsRunning = true;
+        }
     }
 }
 
@@ -80,6 +99,59 @@ void Punk::OnHandleKeyPress(const int key, const bool isPressed)
     // }
 }
 
+
+
+void Punk::ShootAt(Vector2 targetPos)
+{
+    mIsShooting = true;
+    mIsRunning = false;
+    mRigidBodyComponent->SetVelocity(Vector2(0.0f, 0.0f));
+
+    Vector2 center = mColliderComponent->GetMin() + Vector2(mColliderComponent->GetWidth() / 2, mColliderComponent->GetHeight() / 2);
+    Vector2 direction = targetPos - center;
+    direction.Normalize();
+
+    if (targetPos.x > center.x) {
+        SetRotation(0.0f);
+        mArmDraw->SetFlip(false);
+    } else {
+        SetRotation(Math::Pi);
+        mArmDraw->SetFlip(true);
+    }
+
+    Vector2 shoulderOffset = (GetRotation() == 0.0f) ? Vector2(-2.0f, -20.0f) : Vector2(-13.0f, -20.0f);
+    mArm->SetPosition(center + shoulderOffset);
+    float angle = atan2f(direction.y, direction.x);
+    mArm->SetRotation(angle);
+
+    if (mFireCooldown <= 0.0f) {
+        Projectile* projectile = new Projectile(mGame, 5.0f, 1.0f, ColliderLayer::PlayerProjectile);
+        Vector2 shotOffset = (GetRotation() == 0.0f) ? Vector2(2.0f, -7.0f) : Vector2(-4.0f, -7.0f);
+        projectile->SetPosition(center + shotOffset);
+        projectile->GetComponent<RigidBodyComponent>()->ApplyForce(direction * 3000.0f);
+
+        new ProjectileEffect(mGame, center + shotOffset, angle);
+
+        mFireCooldown = 0.5f;
+    }
+}
+
+
+void Punk::TakeDamage()
+{
+    if (mIsDying) return;
+
+    if (mInvincibilityTimer > 0.0f) return;
+
+    mLives--;
+    mInvincibilityTimer = 0.25f;
+
+    if (mLives <= 0) {
+        Kill();
+    } else {
+        SDL_Log("PUNK: Took damage. Lives left: %d", mLives);
+    }
+}
 
 void Punk::MaintainInbound() {
     Vector2 cameraPos = GetGame()->GetCameraPos();
@@ -154,6 +226,16 @@ void Punk::OnUpdate(float deltaTime)
     //
     //     return;
     // }
+
+    mFireCooldown -= deltaTime;
+    if (mIsShooting)
+        mArmDraw->SetIsVisible(true);
+    else
+        mArmDraw->SetIsVisible(false);
+
+    if (mInvincibilityTimer > 0.0f)
+        mInvincibilityTimer -= deltaTime;
+
     MaintainInbound();
     ManageAnimations();
     if (!mIsDying) return;
@@ -174,6 +256,9 @@ void Punk::ManageAnimations()
     if(mIsDying)
     {
         mDrawComponent->SetAnimation("dying");
+    }
+    else if (mIsShooting) {
+        mDrawComponent->SetAnimation("shooting");
     }
     else if (mIsRunning)
     {
@@ -226,13 +311,17 @@ void Punk::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* 
 {
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
-        Kill();
+        TakeDamage();
     }
-    else if (other->GetLayer() == ColliderLayer::Pole)
-    {
-        mIsOnPole = true;
-        Win(other);
+    if (other->GetLayer() == ColliderLayer::EnemyProjectile) {
+        TakeDamage();
+        other->GetOwner()->SetState(ActorState::Destroy);
     }
+    // else if (other->GetLayer() == ColliderLayer::Pole)
+    // {
+    //     mIsOnPole = true;
+    //     Win(other);
+    // }
 }
 
 void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
@@ -240,10 +329,15 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
         //other->GetOwner()->Kill();
-        mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, mJumpSpeed / 2.5f));
+        TakeDamage();
+        //mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, mJumpSpeed / 2.5f));
 
         // Play jump sound
-        mGame->GetAudio()->PlaySound("Stomp.wav");
+        //mGame->GetAudio()->PlaySound("Stomp.wav");
+    }
+    if (other->GetLayer() == ColliderLayer::EnemyProjectile) {
+        TakeDamage();
+        other->GetOwner()->SetState(ActorState::Destroy);
     }
 
     else if (other->GetLayer() == ColliderLayer::Bricks && minOverlap < 0) {

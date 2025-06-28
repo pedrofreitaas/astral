@@ -16,7 +16,9 @@ enum class ColliderLayer
     Enemy,
     Blocks,
     Pole,
-    Bricks
+    Bricks,
+    EnemyProjectile,
+    PlayerProjectile
 };
 
 class AABBColliderComponent : public Component
