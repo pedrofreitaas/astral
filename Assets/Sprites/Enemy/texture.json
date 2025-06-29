@@ -1,0 +1,140 @@
+{
+  "frames": [
+    {
+      "filename": "attack.png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 1166,
+        "h": 22
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1166,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 1166,
+        "h": 22
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "run.png",
+      "frame": {
+        "x": 0,
+        "y": 22,
+        "w": 848,
+        "h": 22
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 848,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 848,
+        "h": 22
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "death.png",
+      "frame": {
+        "x": 1166,
+        "y": 0,
+        "w": 530,
+        "h": 22
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 530,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 530,
+        "h": 22
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "idle.png",
+      "frame": {
+        "x": 0,
+        "y": 44,
+        "w": 530,
+        "h": 22
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 530,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 530,
+        "h": 22
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "damaged.png",
+      "frame": {
+        "x": 848,
+        "y": 22,
+        "w": 212,
+        "h": 22
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 212,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 212,
+        "h": 22
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "texture.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1696,
+      "h": 66
+    },
+    "scale": 1
+  }
+}
