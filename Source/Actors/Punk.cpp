@@ -28,7 +28,9 @@ Punk::Punk(Game* game, const float forwardSpeed, const float jumpSpeed)
 
     mDrawComponent = new DrawAnimatedComponent(this,
                                               "../Assets/Sprites/Punk/texture.png",
-                                              "../Assets/Sprites/Punk/texture.json");
+                                              "../Assets/Sprites/Punk/texture.json",
+                                              100
+                                            );
 
     mDrawComponent->AddAnimation("dying", {13,14,15,16,17,18});
     mDrawComponent->AddAnimation("idle", {0,1,2,3});

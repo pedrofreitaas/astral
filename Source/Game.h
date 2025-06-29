@@ -12,7 +12,7 @@
 #include <unordered_map>
 #include "AudioSystem.h"
 #include "Math.h"
-
+#include "Json.h"
 
 class Game
 {
@@ -121,7 +121,7 @@ private:
 
     // Load the level from a CSV file as a 2D array
     int **ReadLevelData(const std::string& fileName, int width, int height);
-    void BuildLevel(int** levelData, int width, int height);
+    void BuildLevel(std::string blocksDir);
 
     // Spatial Hashing for collision detection
     class SpatialHashing* mSpatialHashing;
@@ -170,4 +170,6 @@ private:
 
     int ***mFirstLevelLayers;
     int ***mSecondLevelLayers;
+
+    nlohmann::json mMapJson;
 };

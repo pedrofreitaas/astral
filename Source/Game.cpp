@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------
 // From Game Programming in C++ by Sanjay Madhav
 // Copyright (C) 2017 Sanjay Madhav. All rights reserved.
-// 
+//
 // Released under the BSD License
 // See LICENSE in root directory for full details.
 // ----------------------------------------------------------------
@@ -14,6 +14,7 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
+#include "Json.h"
 #include "CSV.h"
 #include "Random.h"
 #include "Game.h"
@@ -31,29 +32,8 @@
 #include "Components/ColliderComponents/AABBColliderComponent.h"
 
 Game::Game(int windowWidth, int windowHeight)
-        :mWindow(nullptr)
-        ,mRenderer(nullptr)
-        ,mTicksCount(0)
-        ,mIsRunning(true)
-        ,mWindowWidth(windowWidth)
-        ,mWindowHeight(windowHeight)
-        ,mPunk(nullptr)
-        ,mHUD(nullptr)
-        ,mBackgroundColor(0, 0, 0)
-        ,mModColor(255, 255, 255)
-        ,mCameraPos(Vector2::Zero)
-        ,mAudio(nullptr)
-        ,mGameTimer(0.0f)
-        ,mGameTimeLimit(0)
-        ,mSceneManagerTimer(0.0f)
-        ,mSceneManagerState(SceneManagerState::None)
-        ,mGameScene(GameScene::MainMenu)
-        ,mNextScene(GameScene::Level1)
-        ,mBackgroundTexture(nullptr)
-        ,mBackgroundSize(Vector2::Zero)
-        ,mBackgroundPosition(Vector2::Zero)
+    : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true), mWindowWidth(windowWidth), mWindowHeight(windowHeight), mPunk(nullptr), mHUD(nullptr), mBackgroundColor(0, 0, 0), mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr), mGameTimer(0.0f), mGameTimeLimit(0), mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu), mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero), mBackgroundPosition(Vector2::Zero)
 {
-
 }
 
 bool Game::Initialize()
@@ -126,7 +106,8 @@ void Game::SetGameScene(Game::GameScene scene, float transitionTime)
             mSceneManagerState = SceneManagerState::Entering;
             mSceneManagerTimer = transitionTime;
         }
-        else {
+        else
+        {
             SDL_Log("Invalid game scene: %d", static_cast<int>(scene));
             return;
         }
@@ -167,7 +148,7 @@ void Game::ChangeScene()
         mBackgroundColor.Set(24.0f, 22.0f, 30.0f);
 
         // Set background color
-        //SetBackgroundImage("../Assets/Sprites/Background.png", Vector2(TILE_SIZE,0), Vector2(6784,448));
+        // SetBackgroundImage("../Assets/Sprites/Background.png", Vector2(TILE_SIZE,0), Vector2(6784,448));
 
         // Initialize main menu actors
         LoadMainMenu();
@@ -175,13 +156,13 @@ void Game::ChangeScene()
     else if (mNextScene == GameScene::Level1)
     {
         // Start Music
-        //mMusicHandle = mAudio->PlaySound("MusicMain.ogg", true);
+        // mMusicHandle = mAudio->PlaySound("MusicMain.ogg", true);
 
         // Set background color
-        //mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
+        // mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
 
         // Create HUD
-        //mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
+        // mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
 
         // Reset HUD
         // mGameTimeLimit = 400;
@@ -191,37 +172,37 @@ void Game::ChangeScene()
         //  Set background color
         // SetBackgroundImage("../Assets/Sprites/Background.png", Vector2(TILE_SIZE,0), Vector2(6784,448));
 
-         //Draw Flag
-         // auto flag = new Actor(this);
-         //flag->SetPosition(Vector2(FIRST_LEVEL_WIDTH * TILE_SIZE - (16 * TILE_SIZE) - 16, 3 * TILE_SIZE));
+        // Draw Flag
+        //  auto flag = new Actor(this);
+        // flag->SetPosition(Vector2(FIRST_LEVEL_WIDTH * TILE_SIZE - (16 * TILE_SIZE) - 16, 3 * TILE_SIZE));
 
-        //Add a flag sprite
-        //new DrawSpriteComponent(flag, "../Assets/Sprites/Background_Flag.png", 32.0f, 32.0f, 1);
+        // Add a flag sprite
+        // new DrawSpriteComponent(flag, "../Assets/Sprites/Background_Flag.png", 32.0f, 32.0f, 1);
 
         // Add a flag pole taking the entire height
-        //new AABBColliderComponent(flag, 30, 0, 4, TILE_SIZE * FIRST_LEVEL_HEIGHT, ColliderLayer::Pole, true);
+        // new AABBColliderComponent(flag, 30, 0, 4, TILE_SIZE * FIRST_LEVEL_HEIGHT, ColliderLayer::Pole, true);
 
         // Initialize actors
-        LoadLevel("../Assets/Levels/map1/layer0.csv", FIRST_LEVEL_WIDTH, FIRST_LEVEL_HEIGHT);
+        LoadLevel("../Assets/Levels/map1/map.json", FIRST_LEVEL_WIDTH, FIRST_LEVEL_HEIGHT);
     }
     else if (mNextScene == GameScene::Level2)
     {
-        //Start Music
-        // mMusicHandle = mAudio->PlaySound("MusicUnderground.ogg", true);
+        // Start Music
+        //  mMusicHandle = mAudio->PlaySound("MusicUnderground.ogg", true);
 
         // Set background color
-        //mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
+        // mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
 
         // Set mod color
-        //mModColor.Set(0.0f, 255.0f, 200.0f);
+        // mModColor.Set(0.0f, 255.0f, 200.0f);
 
         // Create HUD
-        //mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
+        // mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
 
         // Reset HUD
-       // mGameTimeLimit = 400;
-        //mHUD->SetTime(mGameTimeLimit);
-        //mHUD->SetLevelName("1-2");
+        // mGameTimeLimit = 400;
+        // mHUD->SetTime(mGameTimeLimit);
+        // mHUD->SetLevelName("1-2");
 
         // Initialize actors
         LoadLevel("../Assets/Levels/map1/layer0.csv", FIRST_LEVEL_WIDTH, FIRST_LEVEL_HEIGHT);
@@ -234,48 +215,56 @@ void Game::ChangeScene()
 void Game::LoadMainMenu()
 {
     // Load font
-    UIScreen* mainMenu = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+    UIScreen *mainMenu = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
 
     // Draw a row of blocks on the ground
     for (int x = 0; x < FIRST_LEVEL_WIDTH; ++x)
     {
         Vector2 blockPos = Vector2(x * TILE_SIZE, (FIRST_LEVEL_HEIGHT - 2) * TILE_SIZE);
-        //mainMenu->AddImage("../Assets/Sprites/Blocks/BlockA.png", blockPos, Vector2(TILE_SIZE, TILE_SIZE));
+        // mainMenu->AddImage("../Assets/Sprites/Blocks/BlockA.png", blockPos, Vector2(TILE_SIZE, TILE_SIZE));
     }
 
     // Draw Punk
     Vector2 punkPos = Vector2(4 * TILE_SIZE, (FIRST_LEVEL_HEIGHT - 3) * TILE_SIZE);
-    //mainMenu->AddImage("../Assets/Sprites/Punk/Idle.png", punkPos, Vector2(TILE_SIZE, TILE_SIZE));
+    // mainMenu->AddImage("../Assets/Sprites/Punk/Idle.png", punkPos, Vector2(TILE_SIZE, TILE_SIZE));
 
     // Add title
     const Vector2 titleSize = Vector2(178.0f, 110.0f) * 2.0f;
-    const Vector2 titlePos = Vector2(mWindowWidth/2.0f - titleSize.x/2.0f, 50.0f);
+    const Vector2 titlePos = Vector2(mWindowWidth / 2.0f - titleSize.x / 2.0f, 50.0f);
     mainMenu->AddImage("../Assets/Sprites/eter.png", titlePos, titleSize);
 
     // Add menu buttons
     const Vector2 buttonSize = Vector2(200.0f, 40.0f);
-    const Vector2 button1Pos = Vector2(mWindowWidth/2.0f - buttonSize.x/2.0f, titlePos.y + titleSize.y + 30.0f);
-    const Vector2 button2Pos = Vector2(mWindowWidth/2.0f - buttonSize.x/2.0f, button1Pos.y + buttonSize.y + 5.0f);
+    const Vector2 button1Pos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, titlePos.y + titleSize.y + 30.0f);
+    const Vector2 button2Pos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, button1Pos.y + buttonSize.y + 5.0f);
 
-    mainMenu->AddButton("Play", button1Pos, buttonSize, [this]() {
-        SetGameScene(GameScene::Level1);
-    });
+    mainMenu->AddButton("Play", button1Pos, buttonSize, [this]()
+                        { SetGameScene(GameScene::Level1); });
 
-    mainMenu->AddButton("Quit", button2Pos, buttonSize, [this]{Quit();});
+    mainMenu->AddButton("Quit", button2Pos, buttonSize, [this]
+                        { Quit(); });
 }
 
-void Game::LoadLevel(const std::string& levelName, const int levelWidth, const int levelHeight)
+void Game::LoadLevel(const std::string &levelName, const int levelWidth, const int levelHeight)
 {
-    // Load level data
-    int **mLevelData = ReadLevelData(levelName, levelWidth, levelHeight);
+    std::ifstream in(levelName);
+    if (!in.is_open())
+    {
+        SDL_Log("Could not open map file");
+        return;
+    }
 
-    if (!mLevelData) {
-        SDL_Log("Failed to load level data");
+    try {
+        in >> mMapJson;
+    }
+    catch (const nlohmann::json::parse_error &e)
+    {
+        SDL_Log("JSON parse error: %s", e.what());
         return;
     }
 
     // Instantiate level actors
-    BuildLevel(mLevelData, levelWidth, levelHeight);
+    BuildLevel("../Assets/Levels/map1/blocks/");
     mPunk = new Punk(this, 1000.0f, -1000.0f);
     mPunk->SetPosition(Vector2(100.0f, 100.0f));
 
@@ -284,69 +273,43 @@ void Game::LoadLevel(const std::string& levelName, const int levelWidth, const i
     mEnemy->Start();
 }
 
-void Game::BuildLevel(int** levelData, int width, int height)
+static std::string ZeroPadId(int id, int width = 3)
 {
-    for (int i = 0; i < height; i++)
-    {
-        for (int j = 0; j < width; j++)
-        {
-            int tileId = levelData[i][j];
-            Vector2 position(j * TILE_SIZE, i * TILE_SIZE);
-
-            std::string prefixPath = "../Assets/Levels/Tilesets/map1/";
-
-            auto block = new Block(
-                 this,
-                 prefixPath + std::to_string(tileId) + ".png",
-                 ColliderLayer::Blocks,
-                 false
-             ); //new Brick(this, id_to_paths[tileId]);
-            block->SetPosition(position);
-        }
-    }
-    // // Const map to convert tile ID to block type
-    // const std::map<int, const std::string> tileMap = {
-    //         {0, "../Assets/Sprites/Blocks/BlockA.png"},
-    //         {1, "../Assets/Sprites/Blocks/BlockC.png"},
-    //         {2, "../Assets/Sprites/Blocks/BlockF.png"},
-    //         {4, "../Assets/Sprites/Blocks/BlockB.png"},
-    //         {6, "../Assets/Sprites/Blocks/BlockI.png"},
-    //         {8, "../Assets/Sprites/Blocks/BlockD.png"},
-    //         {9, "../Assets/Sprites/Blocks/BlockH.png"},
-    //         {12, "../Assets/Sprites/Blocks/BlockG.png"}
-    // };
-    //
-    // for (int y = 0; y < FIRST_LEVEL_HEIGHT; ++y)
-    // {
-    //     for (int x = 0; x < FIRST_LEVEL_WIDTH; ++x)
-    //     {
-    //         int tile = levelData[y][x];
-    //
-    //         if(tile == 16) // Punk
-    //         {
-    //             mPunk = new Punk(this);
-    //             mPunk->SetPosition(Vector2(x * TILE_SIZE, y * TILE_SIZE));
-    //         }
-    //         else if(tile == 10) // Spawner
-    //         {
-    //             Spawner* spawner = new Spawner(this, SPAWN_DISTANCE);
-    //             spawner->SetPosition(Vector2(x * TILE_SIZE, y * TILE_SIZE));
-    //         }
-    //         else // Blocks
-    //         {
-    //             auto it = tileMap.find(tile);
-    //             if (it != tileMap.end())
-    //             {
-    //                 // Create a block actor
-    //                 Block* block = new Block(this, it->second);
-    //                 block->SetPosition(Vector2(x * TILE_SIZE, y * TILE_SIZE));
-    //             }
-    //         }
-    //     }
-    // }
+    std::ostringstream oss;
+    oss << std::setw(width) << std::setfill('0') << id;
+    return oss.str();
 }
 
-int **Game::ReadLevelData(const std::string& fileName, int width, int height)
+void Game::BuildLevel(std::string blocksDir)
+{
+    const auto &layers = mMapJson.at("layers");
+
+    int layer_idx = 0;
+    for (const auto &layer : layers) {
+        const auto &tiles = layer.at("tiles");
+
+        for (const auto &t : tiles)
+        {
+            int id = std::stoi(t.at("id").get<std::string>());
+            int x = t.at("x").get<int>();
+            int y = t.at("y").get<int>();
+
+            Vector2 position(x * TILE_SIZE, y * TILE_SIZE);
+
+            std::string texPath = blocksDir + "/" + ZeroPadId(id) + ".png";
+
+            auto *block = new Block(this,
+                                    texPath,
+                                    Layers[layer_idx]);
+
+            block->SetPosition(position);
+        }
+
+        layer_idx++;
+    }
+}
+
+int **Game::ReadLevelData(const std::string &fileName, int width, int height)
 {
     std::ifstream file(fileName);
     if (!file.is_open())
@@ -387,8 +350,6 @@ int **Game::ReadLevelData(const std::string& fileName, int width, int height)
 
     file.close();
     return levelData;
-
-
 }
 
 void Game::RunLoop()
@@ -408,23 +369,24 @@ void Game::ProcessInput()
     {
         switch (event.type)
         {
-            case SDL_QUIT:
-                Quit();
-                break;
-            case SDL_KEYDOWN:
-                // Handle key press for UI screens
-                if (!mUIStack.empty()) {
-                    mUIStack.back()->HandleKeyPress(event.key.keysym.sym);
-                }
+        case SDL_QUIT:
+            Quit();
+            break;
+        case SDL_KEYDOWN:
+            // Handle key press for UI screens
+            if (!mUIStack.empty())
+            {
+                mUIStack.back()->HandleKeyPress(event.key.keysym.sym);
+            }
 
-                HandleKeyPressActors(event.key.keysym.sym, event.key.repeat == 0);
+            HandleKeyPressActors(event.key.keysym.sym, event.key.repeat == 0);
 
-                // Check if the Return key has been pressed to pause/unpause the game
-                if (event.key.keysym.sym == SDLK_RETURN)
-                {
-                    TogglePause();
-                }
-                break;
+            // Check if the Return key has been pressed to pause/unpause the game
+            if (event.key.keysym.sym == SDLK_RETURN)
+            {
+                TogglePause();
+            }
+            break;
         }
     }
 
@@ -433,26 +395,28 @@ void Game::ProcessInput()
 
 void Game::ProcessInputActors()
 {
-    if(mGamePlayState == GamePlayState::Playing)
+    if (mGamePlayState == GamePlayState::Playing)
     {
         // Get actors on camera
-        std::vector<Actor*> actorsOnCamera =
-                mSpatialHashing->QueryOnCamera(mCameraPos,mWindowWidth,mWindowHeight);
+        std::vector<Actor *> actorsOnCamera =
+            mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
 
-        const Uint8* state = SDL_GetKeyboardState(nullptr);
+        const Uint8 *state = SDL_GetKeyboardState(nullptr);
 
         bool isPunkoOnCamera = false;
-        for (auto actor: actorsOnCamera)
+        for (auto actor : actorsOnCamera)
         {
             actor->ProcessInput(state);
 
-            if (actor == mPunk) {
+            if (actor == mPunk)
+            {
                 isPunkoOnCamera = true;
             }
         }
 
         // If Punk is not on camera, process input for him
-        if (!isPunkoOnCamera && mPunk) {
+        if (!isPunkoOnCamera && mPunk)
+        {
             mPunk->ProcessInput(state);
         }
     }
@@ -460,28 +424,30 @@ void Game::ProcessInputActors()
 
 void Game::HandleKeyPressActors(const int key, const bool isPressed)
 {
-    if(mGamePlayState == GamePlayState::Playing)
+    if (mGamePlayState == GamePlayState::Playing)
     {
         // Get actors on camera
-        std::vector<Actor*> actorsOnCamera =
-                mSpatialHashing->QueryOnCamera(mCameraPos,mWindowWidth,mWindowHeight);
+        std::vector<Actor *> actorsOnCamera =
+            mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
 
         // Handle key press for actors
         bool isPunkoOnCamera = false;
-        for (auto actor: actorsOnCamera) {
+        for (auto actor : actorsOnCamera)
+        {
             actor->HandleKeyPress(key, isPressed);
 
-            if (actor == mPunk) {
+            if (actor == mPunk)
+            {
                 isPunkoOnCamera = true;
             }
         }
 
         // If Punk is not on camera, handle key press for him
-        if (!isPunkoOnCamera && mPunk) {
+        if (!isPunkoOnCamera && mPunk)
+        {
             mPunk->HandleKeyPress(key, isPressed);
         }
     }
-
 }
 
 void Game::TogglePause()
@@ -505,7 +471,8 @@ void Game::TogglePause()
 
 void Game::UpdateGame()
 {
-    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
+    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16))
+        ;
 
     float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
     if (deltaTime > 0.05f)
@@ -515,7 +482,7 @@ void Game::UpdateGame()
 
     mTicksCount = SDL_GetTicks();
 
-    if(mGamePlayState != GamePlayState::Paused && mGamePlayState != GamePlayState::GameOver)
+    if (mGamePlayState != GamePlayState::Paused && mGamePlayState != GamePlayState::GameOver)
     {
         // Reinsert all actors and pending actors
         UpdateActors(deltaTime);
@@ -525,19 +492,25 @@ void Game::UpdateGame()
     mAudio->Update(deltaTime);
 
     // Reinsert UI screens
-    for (auto ui : mUIStack) {
-        if (ui->GetState() == UIScreen::UIState::Active) {
+    for (auto ui : mUIStack)
+    {
+        if (ui->GetState() == UIScreen::UIState::Active)
+        {
             ui->Update(deltaTime);
         }
     }
 
     // Delete any UIElements that are closed
     auto iter = mUIStack.begin();
-    while (iter != mUIStack.end()) {
-        if ((*iter)->GetState() == UIScreen::UIState::Closing) {
+    while (iter != mUIStack.end())
+    {
+        if ((*iter)->GetState() == UIScreen::UIState::Closing)
+        {
             delete *iter;
             iter = mUIStack.erase(iter);
-        } else {
+        }
+        else
+        {
             ++iter;
         }
     }
@@ -545,10 +518,10 @@ void Game::UpdateGame()
     // ---------------------
     // Game Specific Updates
     // ---------------------
-    if(mGameScene != GameScene::MainMenu && mGamePlayState == GamePlayState::Playing)
+    if (mGameScene != GameScene::MainMenu && mGamePlayState == GamePlayState::Playing)
     {
         // Reinsert level time
-       // UpdateLevelTime(deltaTime);
+        // UpdateLevelTime(deltaTime);
     }
 
     UpdateSceneManager(deltaTime);
@@ -557,19 +530,19 @@ void Game::UpdateGame()
 
 void Game::UpdateSceneManager(float deltaTime)
 {
-    if(mSceneManagerState == SceneManagerState::Entering)
+    if (mSceneManagerState == SceneManagerState::Entering)
     {
         mSceneManagerTimer -= deltaTime;
-        if(mSceneManagerTimer <= 0.0f)
+        if (mSceneManagerTimer <= 0.0f)
         {
             mSceneManagerTimer = TRANSITION_TIME;
             mSceneManagerState = SceneManagerState::Active;
         }
     }
-    else if(mSceneManagerState == SceneManagerState::Active)
+    else if (mSceneManagerState == SceneManagerState::Active)
     {
         mSceneManagerTimer -= deltaTime;
-        if(mSceneManagerTimer <= 0.0f)
+        if (mSceneManagerTimer <= 0.0f)
         {
             ChangeScene();
             mSceneManagerState = SceneManagerState::None;
@@ -586,7 +559,8 @@ void Game::UpdateLevelTime(float deltaTime)
         mGameTimer = 0.0f;
         mGameTimeLimit--;
 
-        if (mGameTimeLimit > 0) {
+        if (mGameTimeLimit > 0)
+        {
             mHUD->SetTime(mGameTimeLimit);
         }
         else
@@ -630,21 +604,23 @@ void Game::UpdateCamera()
 void Game::UpdateActors(float deltaTime)
 {
     // Get actors on camera
-    std::vector<Actor*> actorsOnCamera =
-        mSpatialHashing->QueryOnCamera(mCameraPos,mWindowWidth,mWindowHeight);
+    std::vector<Actor *> actorsOnCamera =
+        mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
 
     bool isPunkOnCamera = false;
     for (auto actor : actorsOnCamera)
     {
         actor->Update(deltaTime);
-        if (actor == mPunk) {
+        if (actor == mPunk)
+        {
             isPunkOnCamera = true;
         }
     }
 
     // If Punk is not on camera, update him (player should always be updated)
-    if (!isPunkOnCamera && mPunk) {
-         mPunk->Update(deltaTime);
+    if (!isPunkOnCamera && mPunk)
+    {
+        mPunk->Update(deltaTime);
     }
 
     for (auto actor : actorsOnCamera)
@@ -652,33 +628,34 @@ void Game::UpdateActors(float deltaTime)
         if (actor->GetState() == ActorState::Destroy)
         {
             delete actor;
-            if (actor == mPunk) {
+            if (actor == mPunk)
+            {
                 mPunk = nullptr;
             }
         }
     }
 }
 
-void Game::AddActor(Actor* actor)
+void Game::AddActor(Actor *actor)
 {
     mSpatialHashing->Insert(actor);
 }
 
-void Game::RemoveActor(Actor* actor)
+void Game::RemoveActor(Actor *actor)
 {
     mSpatialHashing->Remove(actor);
 }
-void Game::Reinsert(Actor* actor)
+void Game::Reinsert(Actor *actor)
 {
     mSpatialHashing->Reinsert(actor);
 }
 
-std::vector<Actor *> Game::GetNearbyActors(const Vector2& position, const int range)
+std::vector<Actor *> Game::GetNearbyActors(const Vector2 &position, const int range)
 {
     return mSpatialHashing->Query(position, range);
 }
 
-std::vector<AABBColliderComponent *> Game::GetNearbyColliders(const Vector2& position, const int range)
+std::vector<AABBColliderComponent *> Game::GetNearbyColliders(const Vector2 &position, const int range)
 {
     return mSpatialHashing->QueryColliders(position, range);
 }
@@ -694,20 +671,20 @@ void Game::GenerateOutput()
     // Draw background texture considering camera position
     if (mBackgroundTexture)
     {
-        SDL_Rect dstRect = { static_cast<int>(mBackgroundPosition.x - mCameraPos.x),
-                             static_cast<int>(mBackgroundPosition.y - mCameraPos.y),
-                             static_cast<int>(mBackgroundSize.x),
-                             static_cast<int>(mBackgroundSize.y) };
+        SDL_Rect dstRect = {static_cast<int>(mBackgroundPosition.x - mCameraPos.x),
+                            static_cast<int>(mBackgroundPosition.y - mCameraPos.y),
+                            static_cast<int>(mBackgroundSize.x),
+                            static_cast<int>(mBackgroundSize.y)};
 
         SDL_RenderCopy(mRenderer, mBackgroundTexture, nullptr, &dstRect);
     }
 
     // Get actors on camera
-    std::vector<Actor*> actorsOnCamera =
-            mSpatialHashing->QueryOnCamera(mCameraPos,mWindowWidth,mWindowHeight);
+    std::vector<Actor *> actorsOnCamera =
+        mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
 
     // Get list of drawables in draw order
-    std::vector<DrawComponent*> drawables;
+    std::vector<DrawComponent *> drawables;
 
     for (auto actor : actorsOnCamera)
     {
@@ -720,7 +697,8 @@ void Game::GenerateOutput()
 
     // Sort drawables by draw order
     std::sort(drawables.begin(), drawables.end(),
-              [](const DrawComponent* a, const DrawComponent* b) {
+              [](const DrawComponent *a, const DrawComponent *b)
+              {
                   return a->GetDrawOrder() < b->GetDrawOrder();
               });
 
@@ -731,7 +709,7 @@ void Game::GenerateOutput()
     }
 
     // Draw all UI screens
-    for (auto ui :mUIStack)
+    for (auto ui : mUIStack)
     {
         ui->Draw(mRenderer);
     }
@@ -740,7 +718,7 @@ void Game::GenerateOutput()
     if (mSceneManagerState == SceneManagerState::Active)
     {
         SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
-        SDL_Rect rect = { 0, 0, mWindowWidth, mWindowHeight };
+        SDL_Rect rect = {0, 0, mWindowWidth, mWindowHeight};
         SDL_RenderFillRect(mRenderer, &rect);
     }
 
@@ -748,16 +726,18 @@ void Game::GenerateOutput()
     SDL_RenderPresent(mRenderer);
 }
 
-void Game::SetBackgroundImage(const std::string& texturePath, const Vector2 &position, const Vector2 &size)
+void Game::SetBackgroundImage(const std::string &texturePath, const Vector2 &position, const Vector2 &size)
 {
-    if (mBackgroundTexture) {
+    if (mBackgroundTexture)
+    {
         SDL_DestroyTexture(mBackgroundTexture);
         mBackgroundTexture = nullptr;
     }
 
     // Load background texture
     mBackgroundTexture = LoadTexture(texturePath);
-    if (!mBackgroundTexture) {
+    if (!mBackgroundTexture)
+    {
         SDL_Log("Failed to load background texture: %s", texturePath.c_str());
     }
 
@@ -768,19 +748,21 @@ void Game::SetBackgroundImage(const std::string& texturePath, const Vector2 &pos
     mBackgroundSize.Set(size.x, size.y);
 }
 
-SDL_Texture* Game::LoadTexture(const std::string& texturePath)
+SDL_Texture *Game::LoadTexture(const std::string &texturePath)
 {
-    SDL_Surface* surface = IMG_Load(texturePath.c_str());
+    SDL_Surface *surface = IMG_Load(texturePath.c_str());
 
-    if (!surface) {
+    if (!surface)
+    {
         SDL_Log("Failed to load image: %s", IMG_GetError());
         return nullptr;
     }
 
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(mRenderer, surface);
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(mRenderer, surface);
     SDL_FreeSurface(surface);
 
-    if (!texture) {
+    if (!texture)
+    {
         SDL_Log("Failed to create texture: %s", SDL_GetError());
         return nullptr;
     }
@@ -788,8 +770,7 @@ SDL_Texture* Game::LoadTexture(const std::string& texturePath)
     return texture;
 }
 
-
-UIFont* Game::LoadFont(const std::string& fileName)
+UIFont *Game::LoadFont(const std::string &fileName)
 {
     auto iter = mFonts.find(fileName);
     if (iter != mFonts.end())
@@ -798,7 +779,7 @@ UIFont* Game::LoadFont(const std::string& fileName)
     }
     else
     {
-        UIFont* font = new UIFont(mRenderer);
+        UIFont *font = new UIFont(mRenderer);
         if (font->Load(fileName))
         {
             mFonts.emplace(fileName, font);
@@ -819,13 +800,15 @@ void Game::UnloadScene()
     delete mSpatialHashing;
 
     // Delete UI screens
-    for (auto ui : mUIStack) {
+    for (auto ui : mUIStack)
+    {
         delete ui;
     }
     mUIStack.clear();
 
     // Delete background texture
-    if (mBackgroundTexture) {
+    if (mBackgroundTexture)
+    {
         SDL_DestroyTexture(mBackgroundTexture);
         mBackgroundTexture = nullptr;
     }
@@ -835,7 +818,8 @@ void Game::Shutdown()
 {
     UnloadScene();
 
-    for (auto font : mFonts) {
+    for (auto font : mFonts)
+    {
         font.second->Unload();
         delete font.second;
     }

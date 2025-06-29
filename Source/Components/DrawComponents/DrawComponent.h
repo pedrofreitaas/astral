@@ -8,6 +8,19 @@
 #include <vector>
 #include <SDL.h>
 
+enum class DrawLayerPosition
+{
+    Ground = 0,
+    Player = 100,
+    Sky = 200
+};
+
+constexpr DrawLayerPosition Layers[] = {
+  DrawLayerPosition::Ground,
+  DrawLayerPosition::Player,
+  DrawLayerPosition::Sky
+};
+
 class DrawComponent : public Component
 {
 public:
