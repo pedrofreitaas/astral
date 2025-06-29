@@ -8,17 +8,23 @@ project(${PROJECT_NAME})
 
 find_package(SDL2 2.32.2 EXACT REQUIRED)
 find_package(SDL2_image REQUIRED)
+set(SDL2_ttf_DIR "/usr/lib/x86_64-linux-gnu/")
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 
-include_directories("C:/Program Files/SDL2_image/include")
-link_directories("C:/Program Files/SDL2_image/lib/x64")
+# find_package(SDL2 2.32.2 EXACT REQUIRED)
+# find_package(SDL2_image REQUIRED)
+# find_package(SDL2_ttf REQUIRED)
+# find_package(SDL2_mixer REQUIRED)
 
-include_directories("C:/Program Files/SDL2_ttf/include")
-link_directories("C:/Program Files/SDL2_ttf/lib/x64")
+# include_directories("C:/Program Files/SDL2_image/include")
+# link_directories("C:/Program Files/SDL2_image/lib/x64")
 
-include_directories("C:/Program Files/SDL2_mixer/include")
-link_directories("C:/Program Files/SDL2_mixer/lib/x64")
+# include_directories("C:/Program Files/SDL2_ttf/include")
+# link_directories("C:/Program Files/SDL2_ttf/lib/x64")
+
+# include_directories("C:/Program Files/SDL2_mixer/include")
+# link_directories("C:/Program Files/SDL2_mixer/lib/x64")
 
 add_executable(${PROJECT_NAME}
         Source/Main.cpp
@@ -83,5 +89,5 @@ add_executable(${PROJECT_NAME}
         Source/Actors/ProjectileEffect.h
 )
 
-#target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf SDL2_mixer::SDL2_mixer)
-target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} SDL2_image SDL2_ttf SDL2_mixer)
+target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf SDL2_mixer::SDL2_mixer)
+# target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} SDL2_image SDL2_ttf SDL2_mixer)
