@@ -284,7 +284,7 @@ void Game::BuildLevel(std::string blocksDir)
 {
     const auto &layers = mMapJson.at("layers");
 
-    int layer_idx = 0;
+    int layer_idx = 2;
     for (const auto &layer : layers) {
         const auto &tiles = layer.at("tiles");
 
@@ -305,7 +305,7 @@ void Game::BuildLevel(std::string blocksDir)
             block->SetPosition(position);
         }
 
-        layer_idx++;
+        layer_idx--;
     }
 }
 
