@@ -23,12 +23,11 @@ public:
     // Reinsert the HUD elements
     void SetTime(int time);
 
-    void SetLevelName(const std::string& levelName);
+    void SetLevelName();
     void UpdateLives(int lives);
 
 private:
     // HUD elements
     UIText* mLives;
     UIText* mTimeText;
-
 };

@@ -103,7 +103,7 @@ void Game::SetGameScene(Game::GameScene scene, float transitionTime)
     // Scene Manager FSM: using if/else instead of switch
     if (mSceneManagerState == SceneManagerState::None)
     {
-        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2)
+        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::FinalScene)
         {
             mNextScene = scene;
             mSceneManagerState = SceneManagerState::Entering;
@@ -196,12 +196,31 @@ void Game::ChangeScene()
         LoadLevel("../Assets/Levels/map2/map.json", "../Assets/Levels/map2/blocks/");
 
         const auto &key = new Item(
-            this, 
-            "../Assets/Levels/map2/blocks/021.png", 
+            this,
+            "../Assets/Levels/map2/blocks/021.png",
             [this](Item&){ mPunk->FindKey(); },
             10, 10
         );
         key->SetPosition(Vector2(128.0f, 640.0f));
+
+        // const auto &portal = new Portal(this);
+        // portal->SetPosition(Vector2(243.0f, 620.0f));
+    }
+    else if (mNextScene == GameScene::FinalScene) {
+        // Start Music
+        mAudio->StopSound(mMusicHandle);
+        mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
+        mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
+
+        UIScreen *final = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+        const Vector2 titleSize = Vector2(mWindowWidth, mWindowHeight);
+        const Vector2 titlePos = Vector2(0.0f, 0.0f);
+        final->AddImage("../Assets/Sprites/img.png", titlePos, titleSize);
+
+        UIScreen *final2 = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+        const Vector2 titleSize2 = Vector2(220, 110.0f) * 1.5f;
+        const Vector2 titlePos2 = Vector2(mWindowWidth / 2.0f - 160, mWindowHeight / 3.0f);
+        final2->AddImage("../Assets/Sprites/win.png", titlePos2, titleSize2);
     }
 
     // Set new scene

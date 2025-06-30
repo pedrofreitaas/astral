@@ -111,9 +111,9 @@ void UIScreen::Close()
 	mState = UIState::Closing;
 }
 
-UIText* UIScreen::AddText(const std::string &name, const Vector2 &pos, const Vector2 &dims, const int pointSize, const int unsigned wrapLength)
+UIText* UIScreen::AddText(const std::string &name, const Vector2 &pos, const Vector2 &dims, const int pointSize, const int unsigned wrapLength, const Vector3 &color)
 {
-    auto t = new UIText(name, mFont, pointSize, wrapLength, pos, dims, Vector3(0.0f,0.0f,95.0f));
+    auto t = new UIText(name, mFont, pointSize, wrapLength, pos, dims, color);
     mTexts.emplace_back(t);
     return t;
 }

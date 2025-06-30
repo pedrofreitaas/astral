@@ -7,6 +7,7 @@
 #include "Projectile.h"
 #include "ProjectileEffect.h"
 #include "../Game.h"
+#include "Portal.h"
 #include "../Components/DrawComponents/DrawSpriteComponent.h"
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
@@ -243,7 +244,7 @@ void Punk::Kill()
     mColliderComponent->SetEnabled(false);
 
     mGame->GetAudio()->StopAllSounds();
-    mGame->GetAudio()->PlaySound("Dead.wav");
+    //mGame->GetAudio()->PlaySound("Dead.wav");
 
     mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
 }
@@ -284,9 +285,14 @@ void Punk::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Portal)
-    {
+    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level1) {
         mGame->SetGameScene(Game::GameScene::Level2, .25f);
+        other->SetEnabled(false);
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level2) {
+        mGame->SetGameScene(Game::GameScene::FinalScene, .25f);
         other->SetEnabled(false);
         return;
     }
@@ -312,9 +318,14 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent *ot
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Portal)
-    {
+    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level1) {
         mGame->SetGameScene(Game::GameScene::Level2, .25f);
+        other->SetEnabled(false);
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level2) {
+        mGame->SetGameScene(Game::GameScene::FinalScene, .25f);
         other->SetEnabled(false);
         return;
     }
@@ -328,5 +339,7 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent *ot
 void Punk::FindKey()
 {
     mFoundKey = true;
+    const auto &portal = new Portal(mGame);
+    portal->SetPosition(Vector2(243.0f, 620.0f));
     mGame->GetAudio()->PlaySound("KeyPick.wav");
 }
