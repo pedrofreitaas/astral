@@ -320,8 +320,9 @@ void Punk::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* 
         return;
     }
 
-    else if (other->GetLayer() == ColliderLayer::Portal) {
-        SDL_Log("PUNK: Entering portal");
+    if (other->GetLayer() == ColliderLayer::Portal) {
+        mGame->SetGameScene(Game::GameScene::Level2, .25f);
+        other->SetEnabled(false);
         return;
     }
 }
@@ -330,32 +331,19 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
 {
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
-        //other->GetOwner()->Kill();
         TakeDamage();
-        //mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, mJumpSpeed / 2.5f));
-
-        // Play jump sound
-        //mGame->GetAudio()->PlaySound("Stomp.wav");
+        return;
     }
+
     if (other->GetLayer() == ColliderLayer::EnemyProjectile) {
         TakeDamage();
         other->GetOwner()->SetState(ActorState::Destroy);
+        return;
     }
 
-    else if (other->GetLayer() == ColliderLayer::Bricks && minOverlap < 0) {
-        Block *block = static_cast<Block*>(other->GetOwner());
-        block->OnColision();
+    if (other->GetLayer() == ColliderLayer::Portal) {
+        mGame->SetGameScene(Game::GameScene::Level2, .25f);
+        other->SetEnabled(false);
+        return;
     }
-    // else if (other->GetLayer() == ColliderLayer::Blocks)
-    // {
-        // if (!mIsOnGround)
-        // {
-        //     // Play bump sound
-        //     mGame->GetAudio()->PlaySound("Bump.wav");
-        //
-        //     // Cast actor to Block to call OnBump
-        //     Block* block = static_cast<Block*>(other->GetOwner());
-        //     block->OnBump();
-        // }
-    // }
 }

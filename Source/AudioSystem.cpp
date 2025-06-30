@@ -238,6 +238,8 @@ Mix_Chunk* AudioSystem::GetSound(const std::string& soundName)
 			return nullptr;
 		}
 
+        Mix_VolumeChunk(chunk, 3);
+        mSounds.emplace(fileName, chunk);
 		mSounds.emplace(fileName, chunk);
 	}
 	return chunk;

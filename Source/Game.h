@@ -17,10 +17,8 @@
 class Game
 {
 public:
-    static const int FIRST_LEVEL_WIDTH = 60;
-    static const int FIRST_LEVEL_HEIGHT = 15;
-    static const int LEVEL_WIDTH = 215;
-    static const int LEVEL_HEIGHT = 15;
+    static const int LEVEL_WIDTH = 60;
+    static const int LEVEL_HEIGHT = 60;
     static const int TILE_SIZE = 32;
     static const int SPAWN_DISTANCE = 700;
     static const int TRANSITION_TIME = 1;
@@ -65,7 +63,7 @@ public:
 
     // Level functions
     void LoadMainMenu();
-    void LoadLevel(const std::string& levelName, const int levelWidth, const int levelHeight);
+    void LoadLevel(const std::string& levelName, const std::string& blocksDir);
 
     std::vector<Actor *> GetNearbyActors(const Vector2& position, const int range = 1);
     std::vector<class AABBColliderComponent *> GetNearbyColliders(const Vector2& position, const int range = 2);

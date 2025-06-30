@@ -33,7 +33,8 @@
 #include "Components/ColliderComponents/AABBColliderComponent.h"
 
 Game::Game(int windowWidth, int windowHeight)
-    : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true), mWindowWidth(windowWidth), mWindowHeight(windowHeight), mPunk(nullptr), mHUD(nullptr), mBackgroundColor(0, 0, 0), mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr), mGameTimer(0.0f), mGameTimeLimit(0), mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu), mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero), mBackgroundPosition(Vector2::Zero)
+    : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true), 
+    mWindowWidth(windowWidth), mWindowHeight(windowHeight), mPunk(nullptr), mHUD(nullptr), mBackgroundColor(0, 0, 0), mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr), mGameTimer(0.0f), mGameTimeLimit(0), mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu), mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero), mBackgroundPosition(Vector2::Zero)
 {
 }
 
@@ -86,8 +87,8 @@ bool Game::Initialize()
     mAudio = new AudioSystem();
 
     mSpatialHashing = new SpatialHashing(TILE_SIZE * 4.0f,
-                                         FIRST_LEVEL_WIDTH * TILE_SIZE,
-                                         FIRST_LEVEL_HEIGHT * TILE_SIZE);
+                                         LEVEL_WIDTH * TILE_SIZE,
+                                         LEVEL_HEIGHT * TILE_SIZE);
     mTicksCount = SDL_GetTicks();
 
     // Init all game actors
@@ -140,7 +141,7 @@ void Game::ChangeScene()
     mGamePlayState = GamePlayState::Playing;
 
     // Reset scene manager state
-    mSpatialHashing = new SpatialHashing(TILE_SIZE * 4.0f, FIRST_LEVEL_WIDTH * TILE_SIZE, FIRST_LEVEL_HEIGHT * TILE_SIZE);
+    mSpatialHashing = new SpatialHashing(TILE_SIZE * 4.0f, LEVEL_WIDTH * TILE_SIZE, LEVEL_HEIGHT * TILE_SIZE);
 
     // Scene Manager FSM: using if/else instead of switch
     if (mNextScene == GameScene::MainMenu)
@@ -148,65 +149,43 @@ void Game::ChangeScene()
         // Set background color
         mBackgroundColor.Set(24.0f, 22.0f, 30.0f);
 
-        // Set background color
-        // SetBackgroundImage("../Assets/Sprites/Background.png", Vector2(TILE_SIZE,0), Vector2(6784,448));
-
         // Initialize main menu actors
         LoadMainMenu();
     }
     else if (mNextScene == GameScene::Level1)
     {
         // Start Music
-        // mMusicHandle = mAudio->PlaySound("MusicMain.ogg", true);
+        mMusicHandle = mAudio->PlaySound("MainTheme.ogg", true);
 
         // Set background color
-        // mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
+        mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
 
-        // Create HUD
-        // mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
+        LoadLevel("../Assets/Levels/map1/map.json", "../Assets/Levels/map1/blocks/");
+        
+        mPunk = new Punk(this, 1000.0f, -1000.0f);
+        mPunk->SetPosition(Vector2(32.0f, 320.0f));
 
-        // Reset HUD
-        // mGameTimeLimit = 400;
-        // mHUD->SetTime(mGameTimeLimit);
-        // mHUD->SetLevelName("1-1");
-
-        //  Set background color
-        // SetBackgroundImage("../Assets/Sprites/Background.png", Vector2(TILE_SIZE,0), Vector2(6784,448));
-
-        // Draw Flag
-        //  auto flag = new Actor(this);
-        // flag->SetPosition(Vector2(FIRST_LEVEL_WIDTH * TILE_SIZE - (16 * TILE_SIZE) - 16, 3 * TILE_SIZE));
-
-        // Add a flag sprite
-        // new DrawSpriteComponent(flag, "../Assets/Sprites/Background_Flag.png", 32.0f, 32.0f, 1);
-
-        // Add a flag pole taking the entire height
-        // new AABBColliderComponent(flag, 30, 0, 4, TILE_SIZE * FIRST_LEVEL_HEIGHT, ColliderLayer::Pole, true);
-
-        // Initialize actors
-        LoadLevel("../Assets/Levels/map1/map.json", FIRST_LEVEL_WIDTH, FIRST_LEVEL_HEIGHT);
+        const auto &portal = new Portal(this);
+        portal->SetPosition(Vector2(1160.0f, 32.0f));
     }
     else if (mNextScene == GameScene::Level2)
     {
         // Start Music
-        //  mMusicHandle = mAudio->PlaySound("MusicUnderground.ogg", true);
+        mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
 
         // Set background color
-        // mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
+        mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
 
-        // Set mod color
-        // mModColor.Set(0.0f, 255.0f, 200.0f);
+        // Settings actors
+        mPunk = new Punk(this, 1000.0f, -1000.0f);
+        mPunk->SetPosition(Vector2(32.0f, 64.0f));
 
-        // Create HUD
-        // mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
-
-        // Reset HUD
-        // mGameTimeLimit = 400;
-        // mHUD->SetTime(mGameTimeLimit);
-        // mHUD->SetLevelName("1-2");
+        mEnemy = new Enemy(this, mPunk);
+        mEnemy->SetPosition(Vector2(960.0f, 256.0f));
+        mEnemy->Start();
 
         // Initialize actors
-        LoadLevel("../Assets/Levels/map1/layer0.csv", FIRST_LEVEL_WIDTH, FIRST_LEVEL_HEIGHT);
+        LoadLevel("../Assets/Levels/map2/map.json", "../Assets/Levels/map2/blocks/");
     }
 
     // Set new scene
@@ -217,17 +196,6 @@ void Game::LoadMainMenu()
 {
     // Load font
     UIScreen *mainMenu = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
-
-    // Draw a row of blocks on the ground
-    for (int x = 0; x < FIRST_LEVEL_WIDTH; ++x)
-    {
-        Vector2 blockPos = Vector2(x * TILE_SIZE, (FIRST_LEVEL_HEIGHT - 2) * TILE_SIZE);
-        // mainMenu->AddImage("../Assets/Sprites/Blocks/BlockA.png", blockPos, Vector2(TILE_SIZE, TILE_SIZE));
-    }
-
-    // Draw Punk
-    Vector2 punkPos = Vector2(4 * TILE_SIZE, (FIRST_LEVEL_HEIGHT - 3) * TILE_SIZE);
-    // mainMenu->AddImage("../Assets/Sprites/Punk/Idle.png", punkPos, Vector2(TILE_SIZE, TILE_SIZE));
 
     // Add title
     const Vector2 titleSize = Vector2(178.0f, 110.0f) * 2.0f;
@@ -246,9 +214,9 @@ void Game::LoadMainMenu()
                         { Quit(); });
 }
 
-void Game::LoadLevel(const std::string &levelName, const int levelWidth, const int levelHeight)
+void Game::LoadLevel(const std::string &levelPath, const std::string &blocksDir)
 {
-    std::ifstream in(levelName);
+    std::ifstream in(levelPath);
     if (!in.is_open())
     {
         SDL_Log("Could not open map file");
@@ -265,16 +233,7 @@ void Game::LoadLevel(const std::string &levelName, const int levelWidth, const i
     }
 
     // Instantiate level actors
-    BuildLevel("../Assets/Levels/map1/blocks/");
-    mPunk = new Punk(this, 1000.0f, -1000.0f);
-    mPunk->SetPosition(Vector2(100.0f, 100.0f));
-
-    mEnemy = new Enemy(this, mPunk);
-    mEnemy->SetPosition(Vector2(500.0f, 300.0f));
-    mEnemy->Start();
-
-    const auto &portal = new Portal(this);
-    portal->SetPosition(Vector2(1160.0f, 32.0f));
+    BuildLevel(blocksDir);
 }
 
 static std::string ZeroPadId(int id, int width = 3)
@@ -289,7 +248,8 @@ void Game::BuildLevel(std::string blocksDir)
     const auto &layers = mMapJson.at("layers");
 
     int layer_idx = 2;
-    for (const auto &layer : layers) {
+    for (const auto &layer : layers)
+    {
         const auto &tiles = layer.at("tiles");
 
         for (const auto &t : tiles)
@@ -300,7 +260,7 @@ void Game::BuildLevel(std::string blocksDir)
 
             Vector2 position(x * TILE_SIZE, y * TILE_SIZE);
 
-            std::string texPath = blocksDir + "/" + ZeroPadId(id) + ".png";
+            std::string texPath = blocksDir + ZeroPadId(id) + ".png";
 
             auto *block = new Block(this,
                                     texPath,
@@ -582,8 +542,8 @@ void Game::UpdateCamera()
     {
         float cameraX = mPunk->GetPosition().x - mWindowWidth / 2.0f;
         float cameraY = mPunk->GetPosition().y - mWindowHeight / 2.0f;
-        float maxCameraX = FIRST_LEVEL_WIDTH * TILE_SIZE - mWindowWidth;
-        float maxCameraY = FIRST_LEVEL_HEIGHT * TILE_SIZE - mWindowWidth;
+        float maxCameraX = LEVEL_WIDTH * TILE_SIZE - mWindowWidth;
+        float maxCameraY = LEVEL_HEIGHT * TILE_SIZE - mWindowWidth;
 
         mCameraPos.x = std::min(cameraX, maxCameraX);
         mCameraPos.y = std::min(cameraY, maxCameraY);
@@ -598,7 +558,7 @@ void Game::UpdateCamera()
     // if (horizontalCameraPos > mCameraPos.x)
     // {
     //     // Limit camera to the right side of the level
-    //     float maxCameraPos = (FIRST_LEVEL_WIDTH * TILE_SIZE) - mWindowWidth;
+    //     float maxCameraPos = (LEVEL_WIDTH * TILE_SIZE) - mWindowWidth;
     //     horizontalCameraPos = Math::Clamp(horizontalCameraPos, 0.0f, maxCameraPos);
     //
     //     mCameraPos.x = horizontalCameraPos;
