@@ -7,22 +7,16 @@
 #include "../../Game.h"
 #include <algorithm>
 
-
-AABBColliderComponent::AABBColliderComponent(class Actor* owner, int dx, int dy, int w, int h,
-        ColliderLayer layer, bool isStatic, int updateOrder)
-        :Component(owner, updateOrder)
-        ,mOffset(Vector2((float)dx, (float)dy))
-        ,mIsStatic(isStatic)
-        ,mWidth(w)
-        ,mHeight(h)
-        ,mLayer(layer)
+AABBColliderComponent::AABBColliderComponent(class Actor *owner, int dx, int dy, int w, int h,
+                                             ColliderLayer layer, bool isStatic, int updateOrder)
+    : Component(owner, updateOrder), mOffset(Vector2((float)dx, (float)dy)), mIsStatic(isStatic), mWidth(w), mHeight(h), mLayer(layer)
 {
-//    mOwner->GetGame()->AddCollider(this);
+    //    mOwner->GetGame()->AddCollider(this);
 }
 
 AABBColliderComponent::~AABBColliderComponent()
 {
-//    mOwner->GetGame()->RemoveCollider(this);
+    //    mOwner->GetGame()->RemoveCollider(this);
 }
 
 Vector2 AABBColliderComponent::GetMin() const
@@ -40,71 +34,55 @@ Vector2 AABBColliderComponent::GetCenter() const
     return GetMin() + Vector2((float)mWidth / 2.0f, (float)mHeight / 2.0f);
 }
 
-bool AABBColliderComponent::Intersect(const AABBColliderComponent& b) const
+bool AABBColliderComponent::Intersect(const AABBColliderComponent &b) const
 {
     return (GetMin().x < b.GetMax().x && GetMax().x > b.GetMin().x &&
             GetMin().y < b.GetMax().y && GetMax().y > b.GetMin().y);
 }
 
-float AABBColliderComponent::GetMinVerticalOverlap(AABBColliderComponent* b) const
+float AABBColliderComponent::GetMinVerticalOverlap(AABBColliderComponent *b) const
 {
-    float top = GetMin().y - b->GetMax().y; // Top
+    float top = GetMin().y - b->GetMax().y;  // Top
     float down = GetMax().y - b->GetMin().y; // Down
 
     return (Math::Abs(top) < Math::Abs(down)) ? top : down;
 }
 
-float AABBColliderComponent::GetMinHorizontalOverlap(AABBColliderComponent* b) const
+float AABBColliderComponent::GetMinHorizontalOverlap(AABBColliderComponent *b) const
 {
     float right = GetMax().x - b->GetMin().x; // Right
-    float left = GetMin().x - b->GetMax().x; // Left
+    float left = GetMin().x - b->GetMax().x;  // Left
 
     return (Math::Abs(left) < Math::Abs(right)) ? left : right;
 }
 
 float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigidBody)
 {
-    if (mIsStatic || !mIsEnabled) return false;
+    if (mIsStatic || !mIsEnabled)
+        return false;
 
     // Use spatial hashing to get nearby colliders
     auto colliders = mOwner->GetGame()->GetNearbyColliders(mOwner->GetPosition());
 
-    std::sort(colliders.begin(), colliders.end(), [this](AABBColliderComponent* a, AABBColliderComponent* b) {
-        return Math::Abs((a->GetCenter() - GetCenter()).LengthSq() < (b->GetCenter() - GetCenter()).LengthSq());
-    });
+    std::sort(colliders.begin(), colliders.end(), [this](AABBColliderComponent *a, AABBColliderComponent *b)
+              { return Math::Abs((a->GetCenter() - GetCenter()).LengthSq() < (b->GetCenter() - GetCenter()).LengthSq()); });
 
-    for (auto& collider : colliders)
+    for (auto &collider : colliders)
     {
-        if (collider == this || !collider->IsEnabled()) continue;
+        if (collider == this || !collider->IsEnabled())
+            continue;
 
-        // Check if the collider is in the same layer or if it should be ignored
-        if (ColliderIgnoreMap.at(mLayer).find(collider->GetLayer()) != ColliderIgnoreMap.at(mLayer).end())
+        if (Intersect(*collider))
         {
-            continue; // Ignore this collider
-        }
-
-        if (Intersect(*collider)) {
-            if(collider->GetLayer() == ColliderLayer::PlayerProjectile &&
-               this->GetLayer() == ColliderLayer::Player) {
-                continue;
-               }
-            if(collider->GetLayer() == ColliderLayer::EnemyProjectile &&
-               this->GetLayer() == ColliderLayer::Enemy) {
-                continue;
-               }
-
             float overlap = GetMinHorizontalOverlap(collider);
 
+            // Check if the collider is in the same layer or if it should be ignored
+            if (ColliderIgnoreMap.at(mLayer)
+                .find(collider->GetLayer()) == ColliderIgnoreMap.at(mLayer).end())
+            {
+                ResolveHorizontalCollisions(rigidBody, overlap);
+            }
 
-            if((collider->GetLayer() == ColliderLayer::PlayerProjectile &&
-               this->GetLayer() == ColliderLayer::Enemy) ||
-               (collider->GetLayer() == ColliderLayer::EnemyProjectile &&
-               this->GetLayer() == ColliderLayer::Player)) {
-                mOwner->OnHorizontalCollision(overlap, collider);
-                return overlap;
-               }
-
-            ResolveHorizontalCollisions(rigidBody, overlap);
             mOwner->OnHorizontalCollision(overlap, collider);
 
             return overlap;
@@ -116,46 +94,31 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
 
 float AABBColliderComponent::DetectVertialCollision(RigidBodyComponent *rigidBody)
 {
-    if (mIsStatic || !mIsEnabled) return false;
+    if (mIsStatic || !mIsEnabled)
+        return false;
 
     // Use spatial hashing to get nearby colliders
     auto colliders = mOwner->GetGame()->GetNearbyColliders(mOwner->GetPosition());
 
-    std::sort(colliders.begin(), colliders.end(), [this](AABBColliderComponent* a, AABBColliderComponent* b) {
-        return Math::Abs((a->GetCenter() - GetCenter()).LengthSq() < (b->GetCenter() - GetCenter()).LengthSq());
-    });
+    std::sort(colliders.begin(), colliders.end(), [this](AABBColliderComponent *a, AABBColliderComponent *b)
+              { return Math::Abs((a->GetCenter() - GetCenter()).LengthSq() < (b->GetCenter() - GetCenter()).LengthSq()); });
 
-    for (auto& collider : colliders)
+    for (auto &collider : colliders)
     {
-        if (collider == this || !collider->IsEnabled()) continue;
+        if (collider == this || !collider->IsEnabled())
+            continue;
 
-        // Check if the collider is in the same layer or if it should be ignored
-        if (ColliderIgnoreMap.at(mLayer).find(collider->GetLayer()) != ColliderIgnoreMap.at(mLayer).end())
+        if (Intersect(*collider))
         {
-            continue; // Ignore this collider
-        }
-
-        if (Intersect(*collider)) {
-            if(collider->GetLayer() == ColliderLayer::PlayerProjectile &&
-               this->GetLayer() == ColliderLayer::Player) {
-                continue;
-               }
-            if(collider->GetLayer() == ColliderLayer::EnemyProjectile &&
-               this->GetLayer() == ColliderLayer::Enemy) {
-                continue;
-               }
-
             float overlap = GetMinVerticalOverlap(collider);
 
-            if((collider->GetLayer() == ColliderLayer::PlayerProjectile &&
-               this->GetLayer() == ColliderLayer::Enemy) ||
-               (collider->GetLayer() == ColliderLayer::EnemyProjectile &&
-               this->GetLayer() == ColliderLayer::Player)) {
-                mOwner->OnVerticalCollision(overlap, collider);
-                return overlap;
-               }
+            // Check if the collider is in the same layer or if it should be ignored
+            if (ColliderIgnoreMap.at(mLayer)
+                .find(collider->GetLayer()) == ColliderIgnoreMap.at(mLayer).end())
+            {
+                ResolveVerticalCollisions(rigidBody, overlap);
+            }
 
-            ResolveVerticalCollisions(rigidBody, overlap);
             mOwner->OnVerticalCollision(overlap, collider);
 
             return overlap;
@@ -176,7 +139,8 @@ void AABBColliderComponent::ResolveVerticalCollisions(RigidBodyComponent *rigidB
     mOwner->SetPosition(mOwner->GetPosition() - Vector2(0.0f, minYOverlap));
     rigidBody->SetVelocity(Vector2(rigidBody->GetVelocity().x, 0.f));
 
-    if (minYOverlap > .0f) {
+    if (minYOverlap > .0f)
+    {
         mOwner->SetOnGround();
     }
 }

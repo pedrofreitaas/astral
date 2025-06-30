@@ -25,6 +25,7 @@
 #include "Actors/Block.h"
 #include "Actors/Spawner.h"
 #include "Actors/Enemy.h"
+#include "Actors/Portal.h"
 #include "UIElements/UIScreen.h"
 #include "Components/DrawComponents/DrawComponent.h"
 #include "Components/DrawComponents/DrawSpriteComponent.h"
@@ -271,6 +272,9 @@ void Game::LoadLevel(const std::string &levelName, const int levelWidth, const i
     mEnemy = new Enemy(this, mPunk);
     mEnemy->SetPosition(Vector2(500.0f, 300.0f));
     mEnemy->Start();
+
+    const auto &portal = new Portal(this);
+    portal->SetPosition(Vector2(1160.0f, 32.0f));
 }
 
 static std::string ZeroPadId(int id, int width = 3)

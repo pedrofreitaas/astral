@@ -101,8 +101,6 @@ void Punk::OnHandleKeyPress(const int key, const bool isPressed)
     // }
 }
 
-
-
 void Punk::ShootAt(Vector2 targetPos)
 {
     mIsShooting = true;
@@ -137,7 +135,6 @@ void Punk::ShootAt(Vector2 targetPos)
         mFireCooldown = 0.5f;
     }
 }
-
 
 void Punk::TakeDamage()
 {
@@ -314,16 +311,19 @@ void Punk::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* 
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
         TakeDamage();
+        return;
     }
+
     if (other->GetLayer() == ColliderLayer::EnemyProjectile) {
         TakeDamage();
         other->GetOwner()->SetState(ActorState::Destroy);
+        return;
     }
-    // else if (other->GetLayer() == ColliderLayer::Pole)
-    // {
-    //     mIsOnPole = true;
-    //     Win(other);
-    // }
+
+    else if (other->GetLayer() == ColliderLayer::Portal) {
+        SDL_Log("PUNK: Entering portal");
+        return;
+    }
 }
 
 void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
