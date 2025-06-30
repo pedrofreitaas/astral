@@ -19,6 +19,7 @@ public:
 
     void Kill() override;
     void Win(AABBColliderComponent *poleCollider);
+    int Lives() { return mLives; }
 
 private:
     static const int POLE_SLIDE_TIME = 1; // Time in seconds to slide down the pole

@@ -159,6 +159,7 @@ void Game::ChangeScene()
 
         // Set background color
         mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
+        mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
 
         LoadLevel("../Assets/Levels/map1/map.json", "../Assets/Levels/map1/blocks/");
         
@@ -173,6 +174,8 @@ void Game::ChangeScene()
         // Start Music
         mAudio->StopSound(mMusicHandle);
         mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
+
+        mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
 
         // Set background color
         mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
@@ -487,10 +490,15 @@ void Game::UpdateGame()
     {
         // Reinsert level time
         // UpdateLevelTime(deltaTime);
+        if (mPunk) {
+            mHUD->UpdateLives(mPunk->Lives());
+        }
     }
 
     UpdateSceneManager(deltaTime);
     UpdateCamera();
+
+
 }
 
 void Game::UpdateSceneManager(float deltaTime)
