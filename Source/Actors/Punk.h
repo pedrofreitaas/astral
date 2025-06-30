@@ -6,6 +6,8 @@
 #include "Actor.h"
 #include <SDL.h>
 
+const float DEATH_TIMER = 0.71; // seconds
+
 class Punk : public Actor
 {
 public:
@@ -34,7 +36,7 @@ private:
     float mPoleSlideTimer;
     bool mIsRunning;
     bool mIsOnPole;
-    bool mIsDying;
+    bool mIsDying; float mDeathTimer;
     bool mFoundKey;
 
     bool mIsShooting; //Shooting related

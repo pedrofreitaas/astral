@@ -12,7 +12,7 @@
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
 
 Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
-    : Actor(game), mIsRunning(false), mIsOnPole(false), mIsDying(false), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed), mPoleSlideTimer(0.0f), mIsShooting(false), mFireCooldown(0.0f), mFoundKey(false)
+    : Actor(game), mIsRunning(false), mIsOnPole(false), mIsDying(false), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed), mPoleSlideTimer(0.0f), mIsShooting(false), mFireCooldown(0.0f), mFoundKey(false), mDeathTimer(0.0f)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f, false);
     mColliderComponent = new AABBColliderComponent(this, 14, 20, 18, 28,
@@ -152,11 +152,9 @@ void Punk::TakeDamage()
 
     if (mLives <= 0)
     {
-        Kill();
-    }
-    else
-    {
-        SDL_Log("PUNK: Took damage. Lives left: %d", mLives);
+        mIsDying = true;
+        mDrawComponent->SetAnimFPS(8.0f);
+        mDeathTimer = DEATH_TIMER;
     }
 }
 
@@ -192,53 +190,18 @@ void Punk::MaintainInbound()
 
 void Punk::OnUpdate(float deltaTime)
 {
-    // Check if Punk is off the ground
-    // if (mRigidBodyComponent && mRigidBodyComponent->GetVelocity().y != 0) {
-    //     mIsOnGround = false;
-    // }
-    //
-    // // Limit Punk's position to the camera view
-    // mPosition.x = Math::Max(mPosition.x, mGame->GetCameraPos().x);
-    //
-    // // Kill Punk if he falls below the screen
-    // if (mGame->GetGamePlayState() == Game::GamePlayState::Playing && mPosition.y > mGame->GetWindowHeight())
-    // {
-    //     Kill();
-    // }
+    MaintainInbound();
+    ManageAnimations();
 
-    // if (mIsOnPole)
-    // {
-    //     // If Punk is on the pole, update the pole slide timer
-    //     mPoleSlideTimer -= deltaTime;
-    //     if (mPoleSlideTimer <= 0.0f)
-    //     {
-    //         mRigidBodyComponent->SetApplyGravity(true);
-    //         mRigidBodyComponent->SetApplyFriction(false);
-    //         mRigidBodyComponent->SetVelocity(Vector2::UnitX * 100.0f);
-    //         mGame->SetGamePlayState(Game::GamePlayState::Leaving);
-    //
-    //         // Play win sound
-    //         mGame->GetAudio()->PlaySound("StageClear.wav");
-    //         mIsOnPole = false;
-    //         mIsRunning = true;
-    //     }
-    // }
+    if (mIsDying) {
+        mDeathTimer-=deltaTime;
 
-    // If Punk is leaving the level, kill him if he enters the castle
-    // TESTE PARA ELE MUDAR DE NIVEL.
-    // ENTÃO QUANDO O MAPA ESTIVER PRONTO É SO COLOCAR A POSIÇÃO DO
-    // PORTAL AQUI QUE ELE MUDA DE NIVEL
-    // const float castleDoorPos = 500;
-    //
-    // if (mPosition.x >= castleDoorPos)
-    // {
-    //     // Stop Punk and set the game scene to Level 2
-    //     mState = ActorState::Destroy;
-    //     mGame->SetGameScene(Game::GameScene::Level2, 3.5f);
-    //
-    //     return;
-    // }
-
+        if (mDeathTimer <= 0) {
+            mGame->Quit();
+        }
+        return;
+    }
+    
     mFireCooldown -= deltaTime;
     if (mIsShooting)
         mArmDraw->SetIsVisible(true);
@@ -247,21 +210,6 @@ void Punk::OnUpdate(float deltaTime)
 
     if (mInvincibilityTimer > 0.0f)
         mInvincibilityTimer -= deltaTime;
-
-    MaintainInbound();
-    ManageAnimations();
-    if (!mIsDying)
-        return;
-
-    // mDeathTimer -= deltaTime;
-    //
-    // if (mDeathTimer > 0.0f) return;
-
-    mColliderComponent->SetEnabled(false);
-    mRigidBodyComponent->SetEnabled(false);
-    mDrawComponent->SetEnabled(false);
-
-    mGame->Quit();
 }
 
 void Punk::ManageAnimations()
