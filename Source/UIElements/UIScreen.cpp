@@ -113,7 +113,7 @@ void UIScreen::Close()
 
 UIText* UIScreen::AddText(const std::string &name, const Vector2 &pos, const Vector2 &dims, const int pointSize, const int unsigned wrapLength)
 {
-    auto t = new UIText(name, mFont, pointSize, wrapLength, pos, dims, Color::White);
+    auto t = new UIText(name, mFont, pointSize, wrapLength, pos, dims, Vector3(0.0f,0.0f,95.0f));
     mTexts.emplace_back(t);
     return t;
 }

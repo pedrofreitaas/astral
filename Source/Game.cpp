@@ -161,6 +161,9 @@ void Game::ChangeScene()
         mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
         mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
 
+        mGameTimeLimit = 100;
+        mHUD->SetTime(mGameTimeLimit);
+
         LoadLevel("../Assets/Levels/map1/map.json", "../Assets/Levels/map1/blocks/");
         
         mPunk = new Punk(this, 1000.0f, -1000.0f);
@@ -489,7 +492,7 @@ void Game::UpdateGame()
     if (mGameScene != GameScene::MainMenu && mGamePlayState == GamePlayState::Playing)
     {
         // Reinsert level time
-        // UpdateLevelTime(deltaTime);
+        UpdateLevelTime(deltaTime);
         if (mPunk) {
             mHUD->UpdateLives(mPunk->Lives());
         }

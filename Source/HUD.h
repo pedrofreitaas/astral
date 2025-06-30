@@ -29,4 +29,6 @@ public:
 private:
     // HUD elements
     UIText* mLives;
+    UIText* mTimeText;
+
 };
