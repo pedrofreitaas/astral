@@ -4,6 +4,7 @@
 
 #pragma once
 #include "Actor.h"
+#include <SDL.h>
 
 class Punk : public Actor
 {
@@ -21,6 +22,8 @@ public:
     void Win(AABBColliderComponent *poleCollider);
     int Lives() { return mLives; }
 
+    void FindKey();
+
 private:
     static const int POLE_SLIDE_TIME = 1; // Time in seconds to slide down the pole
 
@@ -32,6 +35,7 @@ private:
     bool mIsRunning;
     bool mIsOnPole;
     bool mIsDying;
+    bool mFoundKey;
 
     bool mIsShooting; //Shooting related
     float mFireCooldown; //Shooting related

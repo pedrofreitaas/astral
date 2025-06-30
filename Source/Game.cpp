@@ -26,6 +26,7 @@
 #include "Actors/Spawner.h"
 #include "Actors/Enemy.h"
 #include "Actors/Portal.h"
+#include "Actors/Item.h"
 #include "UIElements/UIScreen.h"
 #include "Components/DrawComponents/DrawComponent.h"
 #include "Components/DrawComponents/DrawSpriteComponent.h"
@@ -33,8 +34,8 @@
 #include "Components/ColliderComponents/AABBColliderComponent.h"
 
 Game::Game(int windowWidth, int windowHeight)
-    : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true), 
-    mWindowWidth(windowWidth), mWindowHeight(windowHeight), mPunk(nullptr), mHUD(nullptr), mBackgroundColor(0, 0, 0), mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr), mGameTimer(0.0f), mGameTimeLimit(0), mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu), mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero), mBackgroundPosition(Vector2::Zero)
+    : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true),
+      mWindowWidth(windowWidth), mWindowHeight(windowHeight), mPunk(nullptr), mHUD(nullptr), mBackgroundColor(0, 0, 0), mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr), mGameTimer(0.0f), mGameTimeLimit(0), mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu), mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero), mBackgroundPosition(Vector2::Zero)
 {
 }
 
@@ -165,7 +166,7 @@ void Game::ChangeScene()
         mHUD->SetTime(mGameTimeLimit);
 
         LoadLevel("../Assets/Levels/map1/map.json", "../Assets/Levels/map1/blocks/");
-        
+
         mPunk = new Punk(this, 1000.0f, -1000.0f);
         mPunk->SetPosition(Vector2(32.0f, 320.0f));
 
@@ -193,6 +194,14 @@ void Game::ChangeScene()
 
         // Initialize actors
         LoadLevel("../Assets/Levels/map2/map.json", "../Assets/Levels/map2/blocks/");
+
+        const auto &key = new Item(
+            this, 
+            "../Assets/Levels/map2/blocks/021.png", 
+            [this](Item&){ mPunk->FindKey(); },
+            10, 10
+        );
+        key->SetPosition(Vector2(128.0f, 640.0f));
     }
 
     // Set new scene
@@ -230,7 +239,8 @@ void Game::LoadLevel(const std::string &levelPath, const std::string &blocksDir)
         return;
     }
 
-    try {
+    try
+    {
         in >> mMapJson;
     }
     catch (const nlohmann::json::parse_error &e)
@@ -493,15 +503,14 @@ void Game::UpdateGame()
     {
         // Reinsert level time
         UpdateLevelTime(deltaTime);
-        if (mPunk) {
+        if (mPunk)
+        {
             mHUD->UpdateLives(mPunk->Lives());
         }
     }
 
     UpdateSceneManager(deltaTime);
     UpdateCamera();
-
-
 }
 
 void Game::UpdateSceneManager(float deltaTime)

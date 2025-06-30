@@ -11,31 +11,22 @@
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
 
-Punk::Punk(Game* game, const float forwardSpeed, const float jumpSpeed)
-        : Actor(game)
-        , mIsRunning(false)
-        , mIsOnPole(false)
-        , mIsDying(false)
-        , mForwardSpeed(forwardSpeed)
-        , mJumpSpeed(jumpSpeed)
-        , mPoleSlideTimer(0.0f)
-        , mIsShooting(false)
-        , mFireCooldown(0.0f)
+Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
+    : Actor(game), mIsRunning(false), mIsOnPole(false), mIsDying(false), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed), mPoleSlideTimer(0.0f), mIsShooting(false), mFireCooldown(0.0f), mFoundKey(false)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f, false);
     mColliderComponent = new AABBColliderComponent(this, 14, 20, 18, 28,
                                                    ColliderLayer::Player);
 
     mDrawComponent = new DrawAnimatedComponent(this,
-                                              "../Assets/Sprites/Punk/texture.png",
-                                              "../Assets/Sprites/Punk/texture.json",
-                                              static_cast<int>(DrawLayerPosition::Player)+1
-                                            );
+                                               "../Assets/Sprites/Punk/texture.png",
+                                               "../Assets/Sprites/Punk/texture.json",
+                                               static_cast<int>(DrawLayerPosition::Player) + 1);
 
-    mDrawComponent->AddAnimation("dying", {13,14,15,16,17,18});
-    mDrawComponent->AddAnimation("idle", {0,1,2,3});
-    mDrawComponent->AddAnimation("run", {4,5,6,7,8,9});
-    mDrawComponent->AddAnimation("jump", {10,11,12,13});
+    mDrawComponent->AddAnimation("dying", {13, 14, 15, 16, 17, 18});
+    mDrawComponent->AddAnimation("idle", {0, 1, 2, 3});
+    mDrawComponent->AddAnimation("run", {4, 5, 6, 7, 8, 9});
+    mDrawComponent->AddAnimation("jump", {10, 11, 12, 13});
     mDrawComponent->AddAnimation("shooting", {3});
 
     mDrawComponent->SetAnimation("idle");
@@ -46,40 +37,47 @@ Punk::Punk(Game* game, const float forwardSpeed, const float jumpSpeed)
     mArmDraw->SetPivot(Vector2(0.5f, 0.5f));
 }
 
-void Punk::OnProcessInput(const uint8_t* state)
+void Punk::OnProcessInput(const uint8_t *state)
 {
-    //if(mGame->GetGamePlayState() != Game::GamePlayState::Playing) return;
-    if (mIsDying) return;
+    // if(mGame->GetGamePlayState() != Game::GamePlayState::Playing) return;
+    if (mIsDying)
+        return;
 
     mIsRunning = false;
 
     int mouseX, mouseY;
     Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
 
-    if ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))) {
+    if ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)))
+    {
 
         Vector2 mouseWorld = Vector2(static_cast<float>(mouseX), static_cast<float>(mouseY)) + GetGame()->GetCameraPos();
         ShootAt(mouseWorld);
-
-    } else {
+    }
+    else
+    {
         mIsShooting = false;
-        if (state[SDL_SCANCODE_D]) {
+        if (state[SDL_SCANCODE_D])
+        {
             mRigidBodyComponent->ApplyForce(Vector2(mForwardSpeed, 0.0f));
             SetRotation(0.0f);
             mIsRunning = true;
         }
-        if (state[SDL_SCANCODE_A]) {
+        if (state[SDL_SCANCODE_A])
+        {
             mRigidBodyComponent->ApplyForce(Vector2(-mForwardSpeed, 0.0f));
             SetRotation(Math::Pi);
             mIsRunning = true;
         }
 
-        if (state[SDL_SCANCODE_W]) {
+        if (state[SDL_SCANCODE_W])
+        {
             mRigidBodyComponent->ApplyForce(Vector2(0.0f, -mForwardSpeed));
             mIsRunning = true;
         }
 
-        if (state[SDL_SCANCODE_S]) {
+        if (state[SDL_SCANCODE_S])
+        {
             mRigidBodyComponent->ApplyForce(Vector2(0.0f, mForwardSpeed));
             mIsRunning = true;
         }
@@ -88,7 +86,8 @@ void Punk::OnProcessInput(const uint8_t* state)
 
 void Punk::OnHandleKeyPress(const int key, const bool isPressed)
 {
-    if(mGame->GetGamePlayState() != Game::GamePlayState::Playing) return;
+    if (mGame->GetGamePlayState() != Game::GamePlayState::Playing)
+        return;
 
     // Jump
     // if (key == SDLK_SPACE && isPressed && mIsOnGround)
@@ -111,10 +110,13 @@ void Punk::ShootAt(Vector2 targetPos)
     Vector2 direction = targetPos - center;
     direction.Normalize();
 
-    if (targetPos.x > center.x) {
+    if (targetPos.x > center.x)
+    {
         SetRotation(0.0f);
         mArmDraw->SetFlip(false);
-    } else {
+    }
+    else
+    {
         SetRotation(Math::Pi);
         mArmDraw->SetFlip(true);
     }
@@ -124,8 +126,9 @@ void Punk::ShootAt(Vector2 targetPos)
     float angle = atan2f(direction.y, direction.x);
     mArm->SetRotation(angle);
 
-    if (mFireCooldown <= 0.0f) {
-        Projectile* projectile = new Projectile(mGame, 5.0f, 1.0f, ColliderLayer::PlayerProjectile);
+    if (mFireCooldown <= 0.0f)
+    {
+        Projectile *projectile = new Projectile(mGame, 5.0f, 1.0f, ColliderLayer::PlayerProjectile);
         Vector2 shotOffset = (GetRotation() == 0.0f) ? Vector2(2.0f, -7.0f) : Vector2(-4.0f, -7.0f);
         projectile->SetPosition(center + shotOffset);
         projectile->GetComponent<RigidBodyComponent>()->ApplyForce(direction * 3000.0f);
@@ -138,21 +141,27 @@ void Punk::ShootAt(Vector2 targetPos)
 
 void Punk::TakeDamage()
 {
-    if (mIsDying) return;
+    if (mIsDying)
+        return;
 
-    if (mInvincibilityTimer > 0.0f) return;
+    if (mInvincibilityTimer > 0.0f)
+        return;
 
     mLives--;
     mInvincibilityTimer = 0.25f;
 
-    if (mLives <= 0) {
+    if (mLives <= 0)
+    {
         Kill();
-    } else {
+    }
+    else
+    {
         SDL_Log("PUNK: Took damage. Lives left: %d", mLives);
     }
 }
 
-void Punk::MaintainInbound() {
+void Punk::MaintainInbound()
+{
     Vector2 cameraPos = GetGame()->GetCameraPos();
     Vector2 getUpperLeftBorder = mColliderComponent->GetMin();
     Vector2 getBottomRightBorder = mColliderComponent->GetMax();
@@ -162,18 +171,22 @@ void Punk::MaintainInbound() {
     int maxXBoundary = cameraPos.x + GetGame()->GetWindowWidth();
     int maxYBoundary = cameraPos.y + GetGame()->GetWindowHeight();
 
-    if (getUpperLeftBorder.x < 0) {
+    if (getUpperLeftBorder.x < 0)
+    {
         SetPosition(Vector2(-offset.x, GetPosition().y));
     }
-    else if (getBottomRightBorder.x > maxXBoundary) {
-        SetPosition(Vector2(maxXBoundary-mWidth-offset.x, GetPosition().y));
+    else if (getBottomRightBorder.x > maxXBoundary)
+    {
+        SetPosition(Vector2(maxXBoundary - mWidth - offset.x, GetPosition().y));
     }
 
-    if (getUpperLeftBorder.y < 0) {
+    if (getUpperLeftBorder.y < 0)
+    {
         SetPosition(Vector2(GetPosition().x, -offset.y));
     }
-    else if (getBottomRightBorder.y > maxYBoundary) {
-        SetPosition(Vector2(GetPosition().x, maxYBoundary-mHeight-offset.y));
+    else if (getBottomRightBorder.y > maxYBoundary)
+    {
+        SetPosition(Vector2(GetPosition().x, maxYBoundary - mHeight - offset.y));
     }
 }
 
@@ -213,8 +226,8 @@ void Punk::OnUpdate(float deltaTime)
 
     // If Punk is leaving the level, kill him if he enters the castle
     // TESTE PARA ELE MUDAR DE NIVEL.
-    //ENTÃO QUANDO O MAPA ESTIVER PRONTO É SO COLOCAR A POSIÇÃO DO
-    //PORTAL AQUI QUE ELE MUDA DE NIVEL
+    // ENTÃO QUANDO O MAPA ESTIVER PRONTO É SO COLOCAR A POSIÇÃO DO
+    // PORTAL AQUI QUE ELE MUDA DE NIVEL
     // const float castleDoorPos = 500;
     //
     // if (mPosition.x >= castleDoorPos)
@@ -237,7 +250,8 @@ void Punk::OnUpdate(float deltaTime)
 
     MaintainInbound();
     ManageAnimations();
-    if (!mIsDying) return;
+    if (!mIsDying)
+        return;
 
     // mDeathTimer -= deltaTime;
     //
@@ -252,11 +266,12 @@ void Punk::OnUpdate(float deltaTime)
 
 void Punk::ManageAnimations()
 {
-    if(mIsDying)
+    if (mIsDying)
     {
         mDrawComponent->SetAnimation("dying");
     }
-    else if (mIsShooting) {
+    else if (mIsShooting)
+    {
         mDrawComponent->SetAnimation("shooting");
     }
     else if (mIsRunning)
@@ -306,7 +321,7 @@ void Punk::Win(AABBColliderComponent *poleCollider)
     mPoleSlideTimer = POLE_SLIDE_TIME; // Start the pole slide timer
 }
 
-void Punk::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
+void Punk::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
@@ -314,20 +329,27 @@ void Punk::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* 
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::EnemyProjectile) {
+    if (other->GetLayer() == ColliderLayer::EnemyProjectile)
+    {
         TakeDamage();
         other->GetOwner()->SetState(ActorState::Destroy);
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Portal) {
+    if (other->GetLayer() == ColliderLayer::Portal)
+    {
         mGame->SetGameScene(Game::GameScene::Level2, .25f);
         other->SetEnabled(false);
         return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Item)
+    {
+        other->GetOwner()->OnCollision();
     }
 }
 
-void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
+void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
@@ -335,15 +357,28 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::EnemyProjectile) {
+    if (other->GetLayer() == ColliderLayer::EnemyProjectile)
+    {
         TakeDamage();
         other->GetOwner()->SetState(ActorState::Destroy);
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Portal) {
+    if (other->GetLayer() == ColliderLayer::Portal)
+    {
         mGame->SetGameScene(Game::GameScene::Level2, .25f);
         other->SetEnabled(false);
         return;
     }
+
+    if (other->GetLayer() == ColliderLayer::Item)
+    {
+        other->GetOwner()->OnCollision();
+    }
+}
+
+void Punk::FindKey()
+{
+    mFoundKey = true;
+    mGame->GetAudio()->PlaySound("KeyPick.wav");
 }

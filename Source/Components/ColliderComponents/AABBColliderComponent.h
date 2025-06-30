@@ -19,7 +19,8 @@ enum class ColliderLayer
     Bricks,
     EnemyProjectile,
     PlayerProjectile,
-    Portal
+    Portal,
+    Item
 };
 
 class AABBColliderComponent : public Component
@@ -27,7 +28,7 @@ class AABBColliderComponent : public Component
 public:
     // Collider ignore map
     const std::map<ColliderLayer, const std::set<ColliderLayer>> ColliderIgnoreMap = {
-        {ColliderLayer::Player, { ColliderLayer::Portal, ColliderLayer::PlayerProjectile }},
+        {ColliderLayer::Player, { ColliderLayer::Portal, ColliderLayer::PlayerProjectile, ColliderLayer::Item }},
         {ColliderLayer::Enemy,  { ColliderLayer::EnemyProjectile }},
         {ColliderLayer::Blocks, { ColliderLayer::Blocks }},
         {ColliderLayer::Pole, {}}

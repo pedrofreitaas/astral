@@ -6,25 +6,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(PROJECT_NAME "tp4-smb-1-2")
 project(${PROJECT_NAME})
 
-find_package(SDL2 2.32.2 EXACT REQUIRED)
-find_package(SDL2_image REQUIRED)
-set(SDL2_ttf_DIR "/usr/lib/x86_64-linux-gnu/")
-find_package(SDL2_ttf REQUIRED)
-find_package(SDL2_mixer REQUIRED)
+# Use PkgConfig to find SDL2 libraries
+find_package(PkgConfig REQUIRED)
 
-# find_package(SDL2 2.32.2 EXACT REQUIRED)
-# find_package(SDL2_image REQUIRED)
-# find_package(SDL2_ttf REQUIRED)
-# find_package(SDL2_mixer REQUIRED)
-
-# include_directories("C:/Program Files/SDL2_image/include")
-# link_directories("C:/Program Files/SDL2_image/lib/x64")
-
-# include_directories("C:/Program Files/SDL2_ttf/include")
-# link_directories("C:/Program Files/SDL2_ttf/lib/x64")
-
-# include_directories("C:/Program Files/SDL2_mixer/include")
-# link_directories("C:/Program Files/SDL2_mixer/lib/x64")
+# Find SDL2 with specific version
+pkg_check_modules(SDL2 REQUIRED sdl2>=2.32.2)
+pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
+pkg_check_modules(SDL2_TTF REQUIRED SDL2_ttf)
+pkg_check_modules(SDL2_MIXER REQUIRED SDL2_mixer)
 
 add_executable(${PROJECT_NAME}
         Source/Main.cpp
@@ -89,7 +78,10 @@ add_executable(${PROJECT_NAME}
         Source/Actors/ProjectileEffect.h
         Source/Actors/Portal.h
         Source/Actors/Portal.cpp
+        Source/Actors/Item.h
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf SDL2_mixer::SDL2_mixer)
-# target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} SDL2_image SDL2_ttf SDL2_mixer)
+# Link libraries using PkgConfig variables
+target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS} ${SDL2_MIXER_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_MIXER_LIBRARIES})
+target_compile_options(${PROJECT_NAME} PRIVATE ${SDL2_CFLAGS_OTHER})
