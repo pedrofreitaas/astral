@@ -27,7 +27,8 @@ public:
     {
         MainMenu,
         Level1,
-        Level2
+        Level2,
+        FinalScene
     };
 
     enum class SceneManagerState
@@ -101,6 +102,7 @@ public:
 
     void SetGamePlayState(GamePlayState state) { mGamePlayState = state; }
     GamePlayState GetGamePlayState() const { return mGamePlayState; }
+    GameScene GetGameScene() const { return mGameScene; }
 
 private:
     void ProcessInput();

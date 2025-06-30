@@ -225,7 +225,6 @@ void Punk::OnUpdate(float deltaTime)
     //
     //     return;
     // }
-
     mFireCooldown -= deltaTime;
     if (mIsShooting)
         mArmDraw->SetIsVisible(true);
@@ -280,7 +279,7 @@ void Punk::Kill()
     mColliderComponent->SetEnabled(false);
 
     mGame->GetAudio()->StopAllSounds();
-    mGame->GetAudio()->PlaySound("Dead.wav");
+    //mGame->GetAudio()->PlaySound("Dead.wav");
 
     mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
 }
@@ -320,8 +319,14 @@ void Punk::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* 
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Portal) {
+    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level1) {
         mGame->SetGameScene(Game::GameScene::Level2, .25f);
+        other->SetEnabled(false);
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level2) {
+        mGame->SetGameScene(Game::GameScene::FinalScene, .25f);
         other->SetEnabled(false);
         return;
     }
@@ -341,8 +346,14 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Portal) {
+    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level1) {
         mGame->SetGameScene(Game::GameScene::Level2, .25f);
+        other->SetEnabled(false);
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level2) {
+        mGame->SetGameScene(Game::GameScene::FinalScene, .25f);
         other->SetEnabled(false);
         return;
     }
