@@ -7,6 +7,7 @@
 #include "Projectile.h"
 #include "ProjectileEffect.h"
 #include "../Game.h"
+#include "Portal.h"
 #include "../Components/DrawComponents/DrawSpriteComponent.h"
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
@@ -390,5 +391,7 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent *ot
 void Punk::FindKey()
 {
     mFoundKey = true;
+    const auto &portal = new Portal(mGame);
+    portal->SetPosition(Vector2(243.0f, 620.0f));
     mGame->GetAudio()->PlaySound("KeyPick.wav");
 }

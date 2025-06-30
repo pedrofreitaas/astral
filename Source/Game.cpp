@@ -203,8 +203,8 @@ void Game::ChangeScene()
         );
         key->SetPosition(Vector2(128.0f, 640.0f));
 
-        const auto &portal = new Portal(this);
-        portal->SetPosition(Vector2(243.0f, 620.0f));
+        // const auto &portal = new Portal(this);
+        // portal->SetPosition(Vector2(243.0f, 620.0f));
     }
     else if (mNextScene == GameScene::FinalScene) {
         // Start Music
