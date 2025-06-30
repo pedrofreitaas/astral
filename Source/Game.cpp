@@ -171,6 +171,7 @@ void Game::ChangeScene()
     else if (mNextScene == GameScene::Level2)
     {
         // Start Music
+        mAudio->StopSound(mMusicHandle);
         mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
 
         // Set background color
