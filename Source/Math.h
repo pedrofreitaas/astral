@@ -10,6 +10,7 @@
 #include <cmath>
 #include <memory.h>
 #include <limits>
+#include <random>
 
 namespace Math
 {
@@ -83,7 +84,7 @@ namespace Math
 	{
 		return acosf(value);
 	}
-	
+
 	inline float Atan2(float y, float x)
 	{
 		return atan2f(y, x);
@@ -103,10 +104,29 @@ namespace Math
 	{
 		return sqrtf(value);
 	}
-	
+
 	inline float Fmod(float numer, float denom)
 	{
 		return fmod(numer, denom);
+	}
+
+	inline float RandRange(float min, float max)
+	{
+		// Static para não recriar o engine a cada chamada
+		static std::random_device rd;
+		static std::mt19937 gen(rd());
+
+		std::uniform_real_distribution<float> distrib(min, max);
+		return distrib(gen);
+	}
+
+	inline int RandRangeInt(int min, int max)
+	{
+		static std::random_device rd;
+		static std::mt19937 gen(rd());
+
+		std::uniform_int_distribution<int> distrib(min, max);
+		return distrib(gen);
 	}
 }
 

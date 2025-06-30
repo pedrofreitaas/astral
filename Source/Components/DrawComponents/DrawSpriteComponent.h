@@ -18,6 +18,9 @@ public:
     void SetFlip(bool flip) { mFlip = flip; }
     void SetPivot(const Vector2& pivot) { mPivot = pivot; }
 
+    int GetWidth() const { return mWidth; }
+    int GetHeight() const { return mHeight; }
+
 protected:
     // Map of textures loaded
     SDL_Texture* mSpriteSheetSurface;

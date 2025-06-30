@@ -19,6 +19,8 @@ class Enemy: public Actor {
         void Kill() override;
         void ChangeState(std::unique_ptr<State> newState);
 
+        void TakeDamage();
+        void SetFacingLeft(bool isLeft);
         void Start();
         void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
         void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
@@ -31,6 +33,8 @@ class Enemy: public Actor {
         DrawAnimatedComponent* GetDrawComponent() { return mDrawComponent; }
         float GetVelocidade() const { return mVelocidade; }
         void MoveTowardsPlayer();
+        void DrawSpriteDebug(SDL_Renderer* renderer);
+        void DrawColliderDebug(SDL_Renderer* renderer);
 
     private:
         // Ponteiros para os componentes, igual ao Punk
@@ -46,6 +50,10 @@ class Enemy: public Actor {
         float mVelocidade;
         bool mIsDying;
         float mDeathTimer;
+
+        int mHP = 3;
+        bool mTakingDamage = false;
+        float mDamageTimer = 0.0f;
 
         bool mIsShooting; //Shooting related
         float mFireCooldown; //Shooting related
