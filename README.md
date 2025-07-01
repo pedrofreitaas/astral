@@ -1,5 +1,3 @@
-[kanban](https://trello.com/b/meu65TzE/tp-final-jogos) -> [apagar depois]
-
 # 🎮 Éter
 
 > *Uma jornada entre dimensões corrompidas e escolhas morais.*
@@ -20,7 +18,7 @@
 
 ## 🧭 Sobre o Jogo
 
-**Éter** é um jogo top-down shooter em 2D que combina exploração, combate e narrativa interpretativa. O protagonista acorda em uma floresta desconhecida, sem saber como chegou ali. Ao explorar, ele descobre que está preso entre realidades corrompidas — e só ele pode decidir o destino desse universo. A jornada se desenrola de forma silenciosa e ambiental, guiada por pistas visuais e atmosferas mutáveis, em vez de diálogos diretos.
+**Éter** é um jogo top-down shooter em 2D que combina exploração, combate e narrativa interpretativa. O protagonista acorda em uma floresta desconhecida, sem saber como chegou ali. Ao explorar, ele descobre que está preso entre realidades corrompidas, e só ele pode decidir o destino desse universo. A jornada se desenrola de forma silenciosa e ambiental, guiada por pistas visuais e atmosferas mutáveis, em vez de diálogos diretos.
 
 Inspirado por jogos como *Enter the Gungeon*, *Moonlighter* e *Hyper Light Drifter*, Éter entrega uma experiência onde o jogador explora mapas interconectados, derrota inimigos cada vez mais desafiadores, coleta recursos e desbloqueia novas habilidades e armas. As mecânicas principais incluem movimentação fluida com WASD, tiro direcional com o mouse, sistema de defesa temporária, HUD com indicadores de vida e energia, e progressão por fases. A cada ambiente superado, novas camadas da história são reveladas, acompanhadas por mudanças sutis na ambientação e na trilha sonora.
 
@@ -47,4 +45,4 @@ O objetivo inicial é sobreviver e encontrar respostas, mas com o tempo o foco s
 
 ---
 
-> 🎓 Desenvolvido como parte da disciplina de Desenvolvimento de Jogos Digitais – 2025(DCC192).
+> 🎓 Desenvolvido como parte da disciplina de Desenvolvimento de Jogos Digitais – 2025 (DCC192).
