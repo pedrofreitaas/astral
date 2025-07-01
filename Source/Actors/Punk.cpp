@@ -51,39 +51,36 @@ void Punk::OnProcessInput(const uint8_t *state)
     int mouseX, mouseY;
     Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
 
-    if ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)))
-    {
-
+    if ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))) {
         Vector2 mouseWorld = Vector2(static_cast<float>(mouseX), static_cast<float>(mouseY)) + GetGame()->GetCameraPos();
         ShootAt(mouseWorld);
+        return;
     }
-    else
+
+    mIsShooting = false;
+    if (state[SDL_SCANCODE_D])
     {
-        mIsShooting = false;
-        if (state[SDL_SCANCODE_D])
-        {
-            mRigidBodyComponent->ApplyForce(Vector2(mForwardSpeed, 0.0f));
-            SetRotation(0.0f);
-            mIsRunning = true;
-        }
-        if (state[SDL_SCANCODE_A])
-        {
-            mRigidBodyComponent->ApplyForce(Vector2(-mForwardSpeed, 0.0f));
-            SetRotation(Math::Pi);
-            mIsRunning = true;
-        }
+        mRigidBodyComponent->ApplyForce(Vector2(mForwardSpeed, 0.0f));
+        SetRotation(0.0f);
+        mIsRunning = true;
+    }
+    if (state[SDL_SCANCODE_A])
+    {
+        mRigidBodyComponent->ApplyForce(Vector2(-mForwardSpeed, 0.0f));
+        SetRotation(Math::Pi);
+        mIsRunning = true;
+    }
 
-        if (state[SDL_SCANCODE_W])
-        {
-            mRigidBodyComponent->ApplyForce(Vector2(0.0f, -mForwardSpeed));
-            mIsRunning = true;
-        }
+    if (state[SDL_SCANCODE_W])
+    {
+        mRigidBodyComponent->ApplyForce(Vector2(0.0f, -mForwardSpeed));
+        mIsRunning = true;
+    }
 
-        if (state[SDL_SCANCODE_S])
-        {
-            mRigidBodyComponent->ApplyForce(Vector2(0.0f, mForwardSpeed));
-            mIsRunning = true;
-        }
+    if (state[SDL_SCANCODE_S])
+    {
+        mRigidBodyComponent->ApplyForce(Vector2(0.0f, mForwardSpeed));
+        mIsRunning = true;
     }
 }
 
@@ -131,7 +128,7 @@ void Punk::ShootAt(Vector2 targetPos)
 
     if (mFireCooldown <= 0.0f)
     {
-        Projectile *projectile = new Projectile(mGame, 5.0f, 1.0f, ColliderLayer::PlayerProjectile);
+        Projectile *projectile = new Projectile(mGame, ColliderLayer::PlayerProjectile);
         Vector2 shotOffset = (GetRotation() == 0.0f) ? Vector2(2.0f, -7.0f) : Vector2(-4.0f, -7.0f);
         projectile->SetPosition(center + shotOffset);
         projectile->GetComponent<RigidBodyComponent>()->ApplyForce(direction * 3000.0f);
@@ -196,15 +193,17 @@ void Punk::OnUpdate(float deltaTime)
     MaintainInbound();
     ManageAnimations();
 
-    if (mIsDying) {
-        mDeathTimer-=deltaTime;
+    if (mIsDying)
+    {
+        mDeathTimer -= deltaTime;
 
-        if (mDeathTimer <= 0) {
+        if (mDeathTimer <= 0)
+        {
             mGame->Quit();
         }
         return;
     }
-    
+
     mFireCooldown -= deltaTime;
     if (mIsShooting)
         mArmDraw->SetIsVisible(true);
@@ -246,7 +245,7 @@ void Punk::Kill()
     mColliderComponent->SetEnabled(false);
 
     mGame->GetAudio()->StopAllSounds();
-    //mGame->GetAudio()->PlaySound("Dead.wav");
+    // mGame->GetAudio()->PlaySound("Dead.wav");
 
     mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
 }
@@ -287,13 +286,15 @@ void Punk::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level1) {
+    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level1)
+    {
         mGame->SetGameScene(Game::GameScene::Level2, .25f);
         other->SetEnabled(false);
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level2) {
+    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level2)
+    {
         mGame->SetGameScene(Game::GameScene::FinalScene, .25f);
         other->SetEnabled(false);
         return;
@@ -320,13 +321,15 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent *ot
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level1) {
+    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level1)
+    {
         mGame->SetGameScene(Game::GameScene::Level2, .25f);
         other->SetEnabled(false);
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level2) {
+    if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level2)
+    {
         mGame->SetGameScene(Game::GameScene::FinalScene, .25f);
         other->SetEnabled(false);
         return;
