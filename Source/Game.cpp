@@ -170,9 +170,6 @@ void Game::ChangeScene()
         mPunk = new Punk(this, 1000.0f, -1000.0f);
         mPunk->SetPosition(Vector2(32.0f, 320.0f));
 
-        auto spawner = new Spawner(this, 300.0f);
-        spawner->SetPosition(Vector2(500.0f, 100.0f));
-
         const auto &portal = new Portal(this);
         portal->SetPosition(Vector2(1160.0f, 32.0f));
     }
@@ -233,22 +230,16 @@ void Game::ChangeScene()
 void Game::LoadMainMenu()
 {
     // Load font
-
-    UIScreen *title = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
-    const Vector2 titleSize_ = Vector2(178.0f, 65.0f);
-    const Vector2 titlePos_ = Vector2(mWindowWidth / 2.0f - titleSize_.x / 2.0f, 50.0f);
-    title->AddText("ETER", titlePos_, titleSize_,  40, 1024, Color::White);
-
     UIScreen *mainMenu = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
 
     // Add title
     const Vector2 titleSize = Vector2(178.0f, 110.0f) * 2.0f;
-    const Vector2 titlePos = Vector2(mWindowWidth / 2.0f - titleSize.x / 2.0f, 105.0f);
+    const Vector2 titlePos = Vector2(mWindowWidth / 2.0f - titleSize.x / 2.0f, 50.0f);
     mainMenu->AddImage("../Assets/Sprites/eter.png", titlePos, titleSize);
 
     // Add menu buttons
     const Vector2 buttonSize = Vector2(200.0f, 40.0f);
-    const Vector2 button1Pos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, titlePos.y + titleSize.y + 5.0f);
+    const Vector2 button1Pos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, titlePos.y + titleSize.y + 30.0f);
     const Vector2 button2Pos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, button1Pos.y + buttonSize.y + 5.0f);
 
     mainMenu->AddButton("Play", button1Pos, buttonSize, [this]()
