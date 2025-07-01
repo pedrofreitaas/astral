@@ -3,6 +3,9 @@
 //
 
 #include "Enemy.h"
+
+#include <iostream>
+
 #include "Projectile.h"
 #include "Block.h"
 #include "../Game.h"
@@ -30,17 +33,30 @@ Enemy::Enemy(Game* game, Punk* punk)
 
     // Use os assets do seu inimigo aqui
     mDrawComponent = new DrawAnimatedComponent(this,
-                                               "../Assets/Sprites/Punk/texture.png",
-                                               "../Assets/Sprites/Punk/texture.json");
+                                               "../Assets/Sprites/Enemy/texture.png",
+                                               "../Assets/Sprites/Enemy/texture.json");
 
     // Adiciona as animações que o inimigo terá
-    mDrawComponent->AddAnimation("dying", {13,14,15,16,17,18});
-    mDrawComponent->AddAnimation("idle", {0,1,2,3});
-    mDrawComponent->AddAnimation("run", {4,5,6,7,8,9});
-    mDrawComponent->AddAnimation("jump", {10,11,12,13});
+    mDrawComponent->AddAnimation("idle", {24,25,26,27,28});
+    mDrawComponent->AddAnimation("run", {11,12,13,14,15,16,17,18});
+    mDrawComponent->AddAnimation("attack", {0,1,2,3,4,5,6,7,8,9,10});
+    mDrawComponent->AddAnimation("death", {19,20,21,22,23});
+    mDrawComponent->AddAnimation("damaged", {27,28});
+
+    // mDrawComponent->AddAnimation("run", {0,1,2,3,4,5,6,7});
+    // mDrawComponent->AddAnimation("charge", {18,19,20,21});
+    // mDrawComponent->AddAnimation("attack", {14,15,16,17});
+    // mDrawComponent->AddAnimation("death", {8,9,10,11,12,13});
+    // mDrawComponent->AddAnimation("damaged", {22,23});
+    //
+    //
+    // mDrawComponent->SetAnimation("run");
+    // mDrawComponent->SetAnimFPS(10.0f);
+    // mDrawComponent->SetPivot(Vector2(0.5f, 0.5f));
 
     mDrawComponent->SetAnimation("idle");
     mDrawComponent->SetAnimFPS(10.0f);
+    mDrawComponent->SetPivot(Vector2(0.5f, 0.5f));
 
     // --- A INICIALIZAÇÃO DA FSM ACONTECE AQUI! ---
     // O inimigo começa no estado "Patrulhando"
@@ -52,27 +68,66 @@ Enemy::~Enemy() {
     // O unique_ptr m_estadoAtual cuidará de se deletar automaticamente
 }
 
-void Enemy::OnUpdate(float deltaTime) {
-    
-    if (mFireCooldown > 0.0f)
-    {
-        mFireCooldown -= deltaTime;
-    }
 
-    // Se estiver morrendo, processa a morte (lógica copiada do Punk)
-    if (mIsDying) {
-        mDeathTimer -= deltaTime;
-        if (mDeathTimer <= 0.0f) {
-            SetState(ActorState::Destroy); // Marca para ser destruído pelo Game
+void Enemy::OnUpdate(float deltaTime)
+{
+   // std::cout << "[ENEMY] Animação atual: "
+   //       << mDrawComponent->GetCurrentAnimationName() << std::endl;
+    if (mTakingDamage)
+    {
+        mDamageTimer -= deltaTime;
+        if (mDamageTimer <= 0.0f)
+        {
+            mTakingDamage = false;
+
+            if (mHP <= 0)
+            {
+                Kill();
+            }
+            else
+            {
+                mDrawComponent->SetAnimation("idle");
+            }
         }
         return;
     }
 
-    // --- A MÁGICA DA FSM ---
-    // Em vez de checar input, nós simplesmente executamos o estado atual.
-    // O estado decidirá se deve mover, atacar ou mudar para outro estado.
+    if (mFireCooldown > 0.0f)
+        mFireCooldown -= deltaTime;
+
+    if (mIsDying) {
+        mDeathTimer -= deltaTime;
+        if (mDeathTimer <= 0.0f) {
+            SetState(ActorState::Destroy);
+        }
+        return;
+    }
+
     if (mEstadoAtual) {
         mEstadoAtual->Update(this, deltaTime);
+    }
+}
+
+
+void Enemy::TakeDamage()
+{
+    if (mIsDying || mTakingDamage) return;
+
+    mHP--;
+
+    if (mHP <= 0)
+    {
+        mTakingDamage = true;
+        mDamageTimer = 0.2f;
+        mDrawComponent->SetAnimation("damaged");
+        mRigidBodyComponent->SetVelocity(Vector2::Zero);
+    }
+    else
+    {
+        mTakingDamage = true;
+        mDamageTimer = 0.2f;
+        mDrawComponent->SetAnimation("damaged");
+        mRigidBodyComponent->SetVelocity(Vector2::Zero);
     }
 }
 
@@ -100,7 +155,7 @@ void Enemy::Kill() {
     mIsDying = true;
     mDeathTimer = INIMIGO_DEATH_TIME;
     mRigidBodyComponent->SetVelocity(Vector2::Zero); // Para de se mover
-    mDrawComponent->SetAnimation("dying");
+    mDrawComponent->SetAnimation("death");
 }
 
 void Enemy::ShootAtPlayer(Vector2 targetPos, AABBColliderComponent* targetColliderComponent) //OBS: target pos no caso do jogador é o mouse, é onde estamos mirando. Aqui seria a posição do jogador
@@ -162,7 +217,8 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent*
     if (mIsDying) return;
 
     if (other->GetLayer() == ColliderLayer::PlayerProjectile) {
-        //TakeDamage(); TODO
+        TakeDamage();
+
         other->GetOwner()->SetState(ActorState::Destroy);
     }
 }
@@ -172,7 +228,8 @@ void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent* o
     if (mIsDying) return;
 
     if (other->GetLayer() == ColliderLayer::PlayerProjectile) {
-        //TakeDamage(); TODO
+        TakeDamage();
+
         other->GetOwner()->SetState(ActorState::Destroy);
     }
 
@@ -181,3 +238,6 @@ void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent* o
         block->OnColision();
     }
 }
+
+
+

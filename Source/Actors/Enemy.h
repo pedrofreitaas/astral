@@ -11,44 +11,49 @@
 #include "FSM/State.h"
 
 class Enemy: public Actor {
-    public:
-        Enemy(Game* game, Punk* player);
-        ~Enemy();
+public:
+    Enemy(Game* game, Punk* player);
+    ~Enemy();
 
-        void OnUpdate(float deltaTime) override;
-        void Kill() override;
-        void ChangeState(std::unique_ptr<State> newState);
+    void OnUpdate(float deltaTime) override;
+    void Kill() override;
+    void ChangeState(std::unique_ptr<State> newState);
 
-        void Start();
-        void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
-        void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
+    void Start();
+    void TakeDamage();
 
-        void ShootAtPlayer(Vector2 targetPos, AABBColliderComponent* targetComponent); //Shooting related
+    void ShootAtPlayer(Vector2 targetPos, AABBColliderComponent* targetComponent); //Shooting related
 
-        // Getters para os Estados
-        Punk* GetPunk() { return mPunk; }
-        RigidBodyComponent* GetRigidBody() { return mRigidBodyComponent; }
-        DrawAnimatedComponent* GetDrawComponent() { return mDrawComponent; }
-        float GetVelocidade() const { return mVelocidade; }
-        void MoveTowardsPlayer();
+    void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
+    void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
 
-    private:
-        // Ponteiros para os componentes, igual ao Punk
-        RigidBodyComponent* mRigidBodyComponent;
-        AABBColliderComponent* mColliderComponent;
-        DrawAnimatedComponent* mDrawComponent;
+    // Getters para os Estados
+    Punk* GetPunk() { return mPunk; }
+    RigidBodyComponent* GetRigidBody() { return mRigidBodyComponent; }
+    DrawAnimatedComponent* GetDrawComponent() { return mDrawComponent; }
+    float GetVelocidade() const { return mVelocidade; }
+    void MoveTowardsPlayer();
 
-        // O cérebro da FSM
-        std::unique_ptr<State> mEstadoAtual;
+private:
+    // Ponteiros para os componentes, igual ao Punk
+    RigidBodyComponent* mRigidBodyComponent;
+    AABBColliderComponent* mColliderComponent;
+    DrawAnimatedComponent* mDrawComponent;
 
-        // Dados específicos do inimigo
-        Punk* mPunk; // Precisa de uma referência ao player para saber quem seguir/atacar
-        float mVelocidade;
-        bool mIsDying;
-        float mDeathTimer;
+    // O cérebro da FSM
+    std::unique_ptr<State> mEstadoAtual;
 
-        bool mIsShooting; //Shooting related
-        float mFireCooldown; //Shooting related
+    // Dados específicos do inimigo
+    Punk* mPunk; // Precisa de uma referência ao player para saber quem seguir/atacar
+    float mVelocidade;
+    bool mIsDying;
+    float mDeathTimer;
+    int mHP = 3;
+    bool mTakingDamage = false;
+    float mDamageTimer = 0.0f;
+
+    bool mIsShooting; //Shooting related
+    float mFireCooldown; //Shooting related
 };
 
 #endif //ENEMY_H
