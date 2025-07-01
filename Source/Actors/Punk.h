@@ -4,6 +4,7 @@
 
 #pragma once
 #include "Actor.h"
+#include "PunkArm.h"
 #include <SDL.h>
 
 const float DEATH_TIMER = 0.71; // seconds
@@ -48,6 +49,7 @@ private:
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
 
+    class PunkArm* mArm2;
     class Actor* mArm; //Shooting related
     class DrawSpriteComponent* mArmDraw; //Shooting related
 

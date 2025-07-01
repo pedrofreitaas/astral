@@ -6,13 +6,14 @@
 
 #include "Actor.h"
 #include "Punk.h"
+#include "../Components/DrawComponents/DrawSpriteComponent.h"
 
 class PunkArm : public Actor
 {
 public:
-    explicit PunkArm(Game* game, Punk* punk);
+    explicit PunkArm(Game* game, class Punk* punk);
 
 private:
-    class DrawComponent* mDrawComponent;
+    class DrawSpriteComponent* mDrawComponent;
     class Punk* mPunk;
 };

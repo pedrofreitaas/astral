@@ -36,6 +36,8 @@ Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
     mArm = new Actor(mGame);
     mArmDraw = new DrawSpriteComponent(mArm, "../Assets/Sprites/Punk/arm_gun.png", 18, 28, 200);
     mArmDraw->SetPivot(Vector2(0.5f, 0.5f));
+
+    mArm2 = new PunkArm(mGame, this);
 }
 
 void Punk::OnProcessInput(const uint8_t *state)
