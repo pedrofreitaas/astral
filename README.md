@@ -11,9 +11,10 @@
 ## 📸 Screenshots
 
 
-| Cena na floresta | Cena na caverna | HUD com vida e munição | Cena final  |
-|------------------|---------------------|--------------------------|-------------|
-| ![img.png](img.png) | ![img_2.png](img_2.png) | ![screenshot3](img/hud.png) | ![img_3.png](img_3.png)|
+| Cena na floresta | Cena na caverna | Protagonista | Cena final  |
+|------------------|-----------------|--------------|-------------|
+| <img src="img.png" width="200"/> | <img src="img_2.png" width="200"/> | <img src="img_4.png" width="200"/> | <img src="img_3.png" width="200"/> |
+
 ---
 
 ## 🧭 Sobre o Jogo
