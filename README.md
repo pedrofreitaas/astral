@@ -12,12 +12,10 @@
 
 ## 📸 Screenshots
 
-> *Adicione imagens reais após o primeiro build jogável!*
 
-| Cena na floresta | Combate na caverna | HUD com vida e munição |
-|------------------|---------------------|--------------------------|
-| ![screenshot1](img/forest.png) | ![screenshot2](img/cave.png) | ![screenshot3](img/hud.png) |
-
+| Cena na floresta | Cena na caverna | HUD com vida e munição | Cena final  |
+|------------------|---------------------|--------------------------|-------------|
+| ![img.png](img.png) | ![img_2.png](img_2.png) | ![screenshot3](img/hud.png) | ![img_3.png](img_3.png)|
 ---
 
 ## 🧭 Sobre o Jogo
