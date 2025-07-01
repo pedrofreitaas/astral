@@ -33,15 +33,19 @@ Enemy::Enemy(Game* game, Punk* punk)
 
     // Use os assets do seu inimigo aqui
     mDrawComponent = new DrawAnimatedComponent(this,
-                                               "../Assets/Sprites/Enemy/texture.png",
+                                               "../Assets/Sprites/Enemy/minion.png",
                                                "../Assets/Sprites/Enemy/texture.json");
 
     // Adiciona as animações que o inimigo terá
-    mDrawComponent->AddAnimation("idle", {24,25,26,27,28});
-    mDrawComponent->AddAnimation("run", {11,12,13,14,15,16,17,18});
-    mDrawComponent->AddAnimation("attack", {0,1,2,3,4,5,6,7,8,9,10});
-    mDrawComponent->AddAnimation("death", {19,20,21,22,23});
-    mDrawComponent->AddAnimation("damaged", {27,28});
+    mDrawComponent->AddAnimation("idle", {0,1,2,3,4});
+    mDrawComponent->AddAnimation("run", {5,6,7,8,9,10,11,12});
+    //mDrawComponent->AddAnimation("attack", {0,1,2,3,4,5,6,7,8,9,10});
+    mDrawComponent->AddAnimation("death", {15,16,17,18,19});
+    mDrawComponent->AddAnimation("damaged", {13,14});
+
+    mDrawComponent->SetAnimation("idle");
+    mDrawComponent->SetAnimFPS(10.0f);
+    mDrawComponent->SetPivot(Vector2(0.5f, 0.5f));
 
     // mDrawComponent->AddAnimation("run", {0,1,2,3,4,5,6,7});
     // mDrawComponent->AddAnimation("charge", {18,19,20,21});
@@ -53,10 +57,6 @@ Enemy::Enemy(Game* game, Punk* punk)
     // mDrawComponent->SetAnimation("run");
     // mDrawComponent->SetAnimFPS(10.0f);
     // mDrawComponent->SetPivot(Vector2(0.5f, 0.5f));
-
-    mDrawComponent->SetAnimation("idle");
-    mDrawComponent->SetAnimFPS(10.0f);
-    mDrawComponent->SetPivot(Vector2(0.5f, 0.5f));
 
     // --- A INICIALIZAÇÃO DA FSM ACONTECE AQUI! ---
     // O inimigo começa no estado "Patrulhando"
