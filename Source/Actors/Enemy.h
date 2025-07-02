@@ -12,7 +12,7 @@
 
 class Enemy: public Actor {
 public:
-    Enemy(Game* game, Punk* player);
+    Enemy(Game* game, Punk* player, int type);
     ~Enemy();
 
     void OnUpdate(float deltaTime) override;
@@ -51,7 +51,7 @@ private:
     int mHP = 3;
     bool mTakingDamage = false;
     float mDamageTimer = 0.0f;
-
+    int mType;
     bool mIsShooting; //Shooting related
     float mFireCooldown; //Shooting related
 };
