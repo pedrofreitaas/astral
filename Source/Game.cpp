@@ -32,6 +32,11 @@
 #include "Components/DrawComponents/DrawSpriteComponent.h"
 #include "Components/DrawComponents/DrawPolygonComponent.h"
 #include "Components/ColliderComponents/AABBColliderComponent.h"
+#include <filesystem>
+#include <regex>
+
+
+namespace fs = std::filesystem;
 
 Game::Game(int windowWidth, int windowHeight)
     : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true),
@@ -165,17 +170,17 @@ void Game::ChangeScene()
         mGameTimeLimit = 100;
         mHUD->SetTime(mGameTimeLimit);
 
-        LoadLevel("../Assets/Levels/map1/map.json", "../Assets/Levels/map1/blocks/");
+        LoadLevel("../Assets/Levels/map_1/map_tiled.json", "../Assets/Levels/map_1/");
 
         mPunk = new Punk(this, 1000.0f, -1000.0f);
-        mPunk->SetPosition(Vector2(32.0f, 320.0f));
+        mPunk->SetPosition(Vector2(128.0f, 1088.0f));
 
         auto spawner = new Spawner(this, 300.0f, 0);
         spawner->SetPosition(Vector2(500.0f, 100.0f));
 
 
         const auto &portal = new Portal(this);
-        portal->SetPosition(Vector2(1160.0f, 32.0f));
+        portal->SetPosition(Vector2(622.0f, 210.0f));
     }
     else if (mNextScene == GameScene::Level2)
     {
@@ -196,11 +201,11 @@ void Game::ChangeScene()
         spawner->SetPosition(Vector2(500.0f, 100.0f));
 
         // Initialize actors
-        LoadLevel("../Assets/Levels/map2/map.json", "../Assets/Levels/map2/blocks/");
+        LoadLevel("../Assets/Levels/map_2/map_tiled.json", "../Assets/Levels/map_2/");
 
         const auto &key = new Item(
             this,
-            "../Assets/Levels/map2/blocks/021.png",
+            "../Assets/Levels/map_2/blocks/dungeon_3/021.png",
             [this](Item&){ mPunk->FindKey(); },
             10, 10
         );
@@ -281,42 +286,105 @@ void Game::LoadLevel(const std::string &levelPath, const std::string &blocksDir)
     BuildLevel(blocksDir);
 }
 
-static std::string ZeroPadId(int id, int width = 3)
+
+std::unordered_map<int, std::string> LoadGlobalTileMap(
+    const nlohmann::json &mapJson,
+    const std::string &mapDir)
 {
-    std::ostringstream oss;
-    oss << std::setw(width) << std::setfill('0') << id;
-    return oss.str();
+    std::unordered_map<int, std::string> globalTileMap;
+
+    std::regex tileRegex("<tile id=\"(\\d+)\">");
+    std::regex imageRegex("source=\"([^\"]+)\"");
+
+    for (const auto &tileset : mapJson["tilesets"])
+    {
+        int firstGid = tileset["firstgid"];
+        std::string tsxRelPath = tileset["source"];  // ex: "../blocks/tileset_1.tsx"
+
+        fs::path tsxPath = fs::path(mapDir) / tsxRelPath;
+        fs::path tilesetDir = tsxPath.parent_path();
+
+        std::ifstream file(tsxPath);
+        if (!file.is_open())
+        {
+            SDL_Log("Erro ao abrir TSX: %s", tsxPath.string().c_str());
+            continue;
+        }
+
+        std::string line;
+        int currentLocalId = -1;
+
+        while (std::getline(file, line))
+        {
+            std::smatch match;
+
+            if (std::regex_search(line, match, tileRegex))
+            {
+                currentLocalId = std::stoi(match[1].str());
+            }
+            else if (currentLocalId != -1 && std::regex_search(line, match, imageRegex))
+            {
+                std::string imageFile = match[1].str();
+                int globalId = firstGid + currentLocalId;
+                std::string fullPath = (tilesetDir / imageFile).string();
+
+                globalTileMap[globalId] = fullPath;
+
+                currentLocalId = -1;
+            }
+        }
+    }
+
+    return globalTileMap;
 }
 
 void Game::BuildLevel(std::string blocksDir)
 {
+    auto globalTileMap = LoadGlobalTileMap(mMapJson, blocksDir);
+
     const auto &layers = mMapJson.at("layers");
 
-    int layer_idx = 2;
     for (const auto &layer : layers)
     {
-        const auto &tiles = layer.at("tiles");
+        const auto &tiles = layer.at("data");
+        int width = layer.at("width");
+        int height = layer.at("height");
+        std::string name = layer.at("name").get<std::string>();
 
-        for (const auto &t : tiles)
+        int layer_idx;
+        if (name.find("ground") != std::string::npos)
+            layer_idx = 0;
+        else if (name.find("player") != std::string::npos)
+            layer_idx = 1;
+        else if (name.find("details_top") != std::string::npos)
+            layer_idx = 2;
+        else if (name.find("details_down") != std::string::npos)
+            layer_idx = 3;
+        else
+            layer_idx = 4;
+
+        for (int y = 0; y < height; ++y)
         {
-            int id = std::stoi(t.at("id").get<std::string>());
-            int x = t.at("x").get<int>();
-            int y = t.at("y").get<int>();
+            for (int x = 0; x < width; ++x)
+            {
+                int index = y * width + x;
+                int gid = tiles[index];
 
-            Vector2 position(x * TILE_SIZE, y * TILE_SIZE);
+                if (gid == 0) continue; // tile vazio
 
-            std::string texPath = blocksDir + ZeroPadId(id) + ".png";
+                auto it = globalTileMap.find(gid);
+                if (it == globalTileMap.end()) continue;
 
-            auto *block = new Block(this,
-                                    texPath,
-                                    Layers[layer_idx]);
+                std::string texPath = it->second;
+                Vector2 position(x * TILE_SIZE, y * TILE_SIZE);
 
-            block->SetPosition(position);
+                auto *block = new Block(this, texPath, Layers[layer_idx]);
+                block->SetPosition(position);
+            }
         }
-
-        layer_idx--;
     }
 }
+
 
 int **Game::ReadLevelData(const std::string &fileName, int width, int height)
 {
