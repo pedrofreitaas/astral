@@ -1,0 +1,15 @@
+para alterar o mapa:
+
+- basta abrir o json do mapa no tiled que ele já puxa por meio dos tsx os blocos
+
+observações:
+- os tsx fazem a conexão do id que aparece no json do mapa com a real imagem
+- a pasta 'blocks' é onde ficam os blocos em si
+- a função do game.cpp 'LoadGlobalTileMap' tem como único proposito fazer essa conexão entre id usado no json e imagem
+
+possíveis dúvidas:
+- como adicionar mais tiles? 
+    - só criar mais pastas dentro de blocks
+    - nessa pasta adicionar os tiles
+    - no tiled crie um novo conjunto de tiles, via conjunto de imagem(essa parte é criando o tsx)
+    - ai seleciona as imagens que você adicionou na pasta e pronto
