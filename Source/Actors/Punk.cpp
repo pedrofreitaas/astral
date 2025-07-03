@@ -33,11 +33,7 @@ Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
     mDrawComponent->SetAnimation("idle");
     mDrawComponent->SetAnimFPS(10.0f);
 
-    mArm = new Actor(mGame);
-    mArmDraw = new DrawSpriteComponent(mArm, "../Assets/Sprites/Punk/arm_gun.png", 18, 28, 200);
-    mArmDraw->SetPivot(Vector2(0.5f, 0.5f));
-
-    mArm2 = new PunkArm(mGame, this);
+    mArm = new PunkArm(mGame, this);
 }
 
 void Punk::OnProcessInput(const uint8_t *state)
@@ -48,16 +44,8 @@ void Punk::OnProcessInput(const uint8_t *state)
 
     mIsRunning = false;
 
-    int mouseX, mouseY;
-    Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
+    if (mArm->mIsShooting) return;
 
-    if ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))) {
-        Vector2 mouseWorld = Vector2(static_cast<float>(mouseX), static_cast<float>(mouseY)) + GetGame()->GetCameraPos();
-        ShootAt(mouseWorld);
-        return;
-    }
-
-    mIsShooting = false;
     if (state[SDL_SCANCODE_D])
     {
         mRigidBodyComponent->ApplyForce(Vector2(mForwardSpeed, 0.0f));
@@ -86,57 +74,6 @@ void Punk::OnProcessInput(const uint8_t *state)
 
 void Punk::OnHandleKeyPress(const int key, const bool isPressed)
 {
-    if (mGame->GetGamePlayState() != Game::GamePlayState::Playing)
-        return;
-
-    // Jump
-    // if (key == SDLK_SPACE && isPressed && mIsOnGround)
-    // {
-    //     mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, mJumpSpeed));
-    //     mIsOnGround = false;
-    //
-    //     // Play jump sound
-    //     mGame->GetAudio()->PlaySound("Jump.wav");
-    // }
-}
-
-void Punk::ShootAt(Vector2 targetPos)
-{
-    mIsShooting = true;
-    mIsRunning = false;
-    mRigidBodyComponent->SetVelocity(Vector2(0.0f, 0.0f));
-
-    Vector2 center = mColliderComponent->GetMin() + Vector2(mColliderComponent->GetWidth() / 2, mColliderComponent->GetHeight() / 2);
-    Vector2 direction = targetPos - center;
-    direction.Normalize();
-
-    if (targetPos.x > center.x)
-    {
-        SetRotation(0.0f);
-        mArmDraw->SetFlip(false);
-    }
-    else
-    {
-        SetRotation(Math::Pi);
-        mArmDraw->SetFlip(true);
-    }
-
-    Vector2 shoulderOffset = (GetRotation() == 0.0f) ? Vector2(-2.0f, -20.0f) : Vector2(-13.0f, -20.0f);
-    mArm->SetPosition(center + shoulderOffset);
-    float angle = atan2f(direction.y, direction.x);
-    mArm->SetRotation(angle);
-
-    if (mFireCooldown <= 0.0f)
-    {
-        Projectile *projectile = new Projectile(mGame, ColliderLayer::PlayerProjectile);
-        Vector2 shotOffset = (GetRotation() == 0.0f) ? Vector2(2.0f, -7.0f) : Vector2(-4.0f, -7.0f);
-        projectile->SetPosition(center + shotOffset);
-        projectile->GetComponent<RigidBodyComponent>()->ApplyForce(direction * 3000.0f);
-
-        new ProjectileEffect(mGame, center + shotOffset, angle);
-
-        mFireCooldown = 0.5f;
-    }
 }
 
 void Punk::TakeDamage()
@@ -204,12 +141,6 @@ void Punk::OnUpdate(float deltaTime)
         return;
     }
 
-    mFireCooldown -= deltaTime;
-    if (mIsShooting)
-        mArmDraw->SetIsVisible(true);
-    else
-        mArmDraw->SetIsVisible(false);
-
     if (mInvincibilityTimer > 0.0f)
         mInvincibilityTimer -= deltaTime;
 }
@@ -220,7 +151,7 @@ void Punk::ManageAnimations()
     {
         mDrawComponent->SetAnimation("dying");
     }
-    else if (mIsShooting)
+    else if (mArm->mIsShooting)
     {
         mDrawComponent->SetAnimation("shooting");
     }

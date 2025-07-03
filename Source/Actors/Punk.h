@@ -27,6 +27,11 @@ public:
 
     void FindKey();
 
+    Vector2 GetCenter() const
+    {
+        return mColliderComponent->GetCenter();
+    }   
+
 private:
     static const int POLE_SLIDE_TIME = 1; // Time in seconds to slide down the pole
 
@@ -49,11 +54,8 @@ private:
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
 
-    class PunkArm* mArm2;
-    class Actor* mArm; //Shooting related
-    class DrawSpriteComponent* mArmDraw; //Shooting related
+    class PunkArm* mArm;
 
     void MaintainInbound();
-    void ShootAt(Vector2 targetPos); //Shooting related
     void TakeDamage();
 };
