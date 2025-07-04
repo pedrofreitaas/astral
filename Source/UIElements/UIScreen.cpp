@@ -49,6 +49,11 @@ void UIScreen::Update(float deltaTime)
 
 void UIScreen::Draw(SDL_Renderer *renderer)
 {
+    // Draw images
+    for (auto img : mImages) {
+        img->Draw(renderer, mPos);
+    }
+
     // Draw texts
     for (auto t : mTexts) {
         t->Draw(renderer, mPos);
@@ -59,10 +64,7 @@ void UIScreen::Draw(SDL_Renderer *renderer)
         b->Draw(renderer, mPos);
     }
 
-    // Draw images
-    for (auto img : mImages) {
-        img->Draw(renderer, mPos);
-    }
+
 }
 
 void UIScreen::ProcessInput(const uint8_t* keys)

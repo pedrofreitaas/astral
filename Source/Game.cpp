@@ -34,6 +34,7 @@
 #include "Components/ColliderComponents/AABBColliderComponent.h"
 #include <filesystem>
 #include <regex>
+#include "UIElements/DialogueSystem.h"
 
 
 namespace fs = std::filesystem;
@@ -95,6 +96,7 @@ bool Game::Initialize()
     mSpatialHashing = new SpatialHashing(TILE_SIZE * 4.0f,
                                          LEVEL_WIDTH * TILE_SIZE,
                                          LEVEL_HEIGHT * TILE_SIZE);
+    DialogueSystem::Get()->Initialize(this);
     mTicksCount = SDL_GetTicks();
 
     // Init all game actors
@@ -108,7 +110,9 @@ void Game::SetGameScene(Game::GameScene scene, float transitionTime)
     // Scene Manager FSM: using if/else instead of switch
     if (mSceneManagerState == SceneManagerState::None)
     {
+        //if (scene == GameScene::MainMenu || scene == GameScene::Intro || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::FinalScene)
         if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::FinalScene)
+
         {
             mNextScene = scene;
             mSceneManagerState = SceneManagerState::Entering;
@@ -158,6 +162,20 @@ void Game::ChangeScene()
         // Initialize main menu actors
         LoadMainMenu();
     }
+    // else if (mNextScene == GameScene::Intro) {
+    //     mMusicHandle = mAudio->PlaySound("MainTheme.ogg", true);
+    //     mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
+    //
+    //     UIScreen *intro = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+    //     const Vector2 titleSize = Vector2(mWindowWidth, mWindowHeight);
+    //     const Vector2 titlePos = Vector2(0.0f, 0.0f);
+    //     intro->AddImage("../Assets/Sprites/img.png", titlePos, titleSize);
+    //
+    //     const Vector2 buttonSize = Vector2(200.0f, 40.0f);
+    //     const Vector2 button1Pos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, mWindowHeight * 0.8f);
+    //     intro->AddButton("Continue", button1Pos, buttonSize, [this]()
+    //                 { SetGameScene(GameScene::Level1);});
+    // }
     else if (mNextScene == GameScene::Level1)
     {
         // Start Music
@@ -167,7 +185,7 @@ void Game::ChangeScene()
         mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
         mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
 
-        mGameTimeLimit = 100;
+        mGameTimeLimit = 400;
         mHUD->SetTime(mGameTimeLimit);
 
         LoadLevel("../Assets/Levels/map_1/map_tiled.json", "../Assets/Levels/map_1/");
@@ -181,6 +199,18 @@ void Game::ChangeScene()
 
         const auto &portal = new Portal(this);
         portal->SetPosition(Vector2(622.0f, 210.0f));
+        DialogueSystem::Get()->StartDialogue(
+        { // Um vetor com as falas
+            "Punk: Ugh... Minha cabeca... Onde estou?",
+            "Punk: A ultima coisa que lembro... foi de um clarao.",
+            "Punk: Tenho que sair desta floresta. E descobrir o que esta acontecendo."
+
+        },
+        [this]() { // Esta função será chamada quando o diálogo terminar
+            // Retorna o estado do jogo para "Playing" para que a fase comece.
+            SetGamePlayState(GamePlayState::Playing);
+        }
+    );
     }
     else if (mNextScene == GameScene::Level2)
     {
@@ -189,6 +219,9 @@ void Game::ChangeScene()
         mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
 
         mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
+
+        mGameTimeLimit = 400;
+        mHUD->SetTime(mGameTimeLimit);
 
         // Set background color
         mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
@@ -211,6 +244,16 @@ void Game::ChangeScene()
         );
         key->SetPosition(Vector2(128.0f, 640.0f));
 
+        DialogueSystem::Get()->StartDialogue(
+{
+    "Punk: Oque? Parece que agora estou em uma dimensao totalmente diferente",
+    "Punk: Sera que este e o ETER? Como o mestre havia me falado?"
+},
+[this]() { // Esta função será chamada quando o diálogo terminar
+    // Retorna o estado do jogo para "Playing" para que a fase comece.
+    SetGamePlayState(GamePlayState::Playing);
+}
+);
         // const auto &portal = new Portal(this);
         // portal->SetPosition(Vector2(243.0f, 620.0f));
     }
@@ -261,6 +304,33 @@ void Game::LoadMainMenu()
 
     mainMenu->AddButton("Quit", button2Pos, buttonSize, [this]
                         { Quit(); });
+}
+
+void Game::LoadLostScreen()
+{
+    // Cria uma nova tela de UI para a derrota
+    UIScreen* lostScreen = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+
+    // Adiciona o texto "Voce Perdeu!"
+    const Vector2 titleSize = Vector2(400.0f, 100.0f);
+    const Vector2 titlePos = Vector2(mWindowWidth / 2.0f - titleSize.x / 2.0f, 150.0f);
+    lostScreen->AddText("Voce Perdeu!", titlePos, titleSize, 40, 1024, Color::Red);
+
+    // Adiciona botões com opções para o jogador
+    const Vector2 buttonSize = Vector2(250.0f, 50.0f);
+    const Vector2 retryPos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, 300.0f);
+    const Vector2 menuPos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, retryPos.y + buttonSize.y + 15.0f);
+
+    // Botão "Tentar Novamente" que reseta a cena atual
+    lostScreen->AddButton("Tentar Novamente", retryPos, buttonSize, [this]() {
+        ResetGameScene(.25f); // Função que você já tem para reiniciar a fase
+    });
+
+    // Botão "Voltar ao Menu" que leva para a cena do menu principal
+    // Botão "Voltar ao Menu"
+    lostScreen->AddButton("Voltar ao Menu", menuPos, buttonSize, [this]() {
+        SetGameScene(GameScene::MainMenu, .25f);
+    });
 }
 
 void Game::LoadLevel(const std::string &levelPath, const std::string &blocksDir)
@@ -467,7 +537,18 @@ void Game::ProcessInput()
         }
     }
 
-    ProcessInputActors();
+    const Uint8 *keyState = SDL_GetKeyboardState(nullptr);
+    if (DialogueSystem::Get()->IsActive())
+    {
+        DialogueSystem::Get()->HandleInput(keyState);
+    }
+    // else if (mGamePlayState == GamePlayState::GameOver)
+    // {
+    //     // Não faz nada, efetivamente pausando o input do jogador.
+    // }
+    else {
+        ProcessInputActors();
+    }
 }
 
 void Game::ProcessInputActors()
@@ -559,7 +640,7 @@ void Game::UpdateGame()
 
     mTicksCount = SDL_GetTicks();
 
-    if (mGamePlayState != GamePlayState::Paused && mGamePlayState != GamePlayState::GameOver)
+    if (mGamePlayState == GamePlayState::Playing)
     {
         // Reinsert all actors and pending actors
         UpdateActors(deltaTime);
@@ -595,7 +676,9 @@ void Game::UpdateGame()
     // ---------------------
     // Game Specific Updates
     // ---------------------
+    // if (mGameScene != GameScene::MainMenu && mGameScene != GameScene::Intro && mGamePlayState == GamePlayState::Playing)
     if (mGameScene != GameScene::MainMenu && mGamePlayState == GamePlayState::Playing)
+
     {
         // Reinsert level time
         UpdateLevelTime(deltaTime);
@@ -630,25 +713,28 @@ void Game::UpdateSceneManager(float deltaTime)
         }
     }
 }
-
 void Game::UpdateLevelTime(float deltaTime)
 {
-    // Reinsert game timer
-    mGameTimer += deltaTime;
-    if (mGameTimer >= 0.5f)
+    if (mGamePlayState != GamePlayState::Playing)
     {
-        mGameTimer = 0.0f;
+        return;
+    }
+
+    mGameTimer += deltaTime;
+
+    while (mGameTimer >= 1.0f)
+    {
+        // Subtraímos 1.0f em vez de zerar o timer. Isso mantém a precisão.
+        mGameTimer -= 1.0f;
         mGameTimeLimit--;
 
-        if (mGameTimeLimit > 0)
+        mHUD->SetTime(std::max(0, mGameTimeLimit));
+        if (mGameTimeLimit <= 0)
         {
-            mHUD->SetTime(mGameTimeLimit);
-        }
-        else
-        {
-            // Kill Punk if time limit is reached
-            mHUD->SetTime(mGameTimeLimit);
             mPunk->Kill();
+            SetGamePlayState(GamePlayState::GameOver);
+            //LoadLostScreen();
+            break;
         }
     }
 }
@@ -802,6 +888,7 @@ void Game::GenerateOutput()
         SDL_Rect rect = {0, 0, mWindowWidth, mWindowHeight};
         SDL_RenderFillRect(mRenderer, &rect);
     }
+    DialogueSystem::Get()->Draw(mRenderer);
 
     // Swap front buffer and back buffer
     SDL_RenderPresent(mRenderer);
