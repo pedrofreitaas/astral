@@ -9,6 +9,7 @@
 #include "Punk.h"
 #include "../Game.h"
 #include "FSM/State.h"
+#include "../Components/DrawComponents/DrawRectangleComponent.h"
 
 class Enemy: public Actor {
 public:
@@ -54,6 +55,12 @@ private:
     int mType;
     bool mIsShooting; //Shooting related
     float mFireCooldown; //Shooting related
+
+    Actor* mHudBase;
+    DrawRectangleComponent* mDrawHudBackground;
+    DrawRectangleComponent* mDrawHudLife;
+    int mMaxHP;
+
 };
 
 #endif //ENEMY_H
