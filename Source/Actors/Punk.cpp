@@ -11,6 +11,7 @@
 #include "../Components/DrawComponents/DrawSpriteComponent.h"
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
+#include "../UIElements/DialogueSystem.h"
 
 Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
     : Actor(game), mIsRunning(false), mIsOnPole(false), mIsDying(false), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed), mPoleSlideTimer(0.0f), mIsShooting(false), mFireCooldown(0.0f), mFoundKey(false), mDeathTimer(0.0f)
@@ -191,6 +192,12 @@ void Punk::MaintainInbound()
 
 void Punk::OnUpdate(float deltaTime)
 {
+    if (mGame->GetGamePlayState() == Game::GamePlayState::Dialogue)
+    {
+        mDrawComponent->SetAnimation("idle");
+        return;
+    }
+
     MaintainInbound();
     ManageAnimations();
 
@@ -339,6 +346,15 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent *ot
 void Punk::FindKey()
 {
     mFoundKey = true;
+    DialogueSystem::Get()->StartDialogue(
+    {
+        "Punk: Oque? Parece que essa é uma dimensao totalmente diferente",
+        "Punk: Será que este é o ETER? Como o mestre havia me falado?",
+    },
+    [this]() {
+        mGame->SetGamePlayState(Game::GamePlayState::Playing);
+    }
+    );
     const auto &portal = new Portal(mGame);
     portal->SetPosition(Vector2(243.0f, 620.0f));
     mGame->GetAudio()->PlaySound("KeyPick.wav");
