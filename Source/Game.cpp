@@ -230,7 +230,7 @@ void Game::ChangeScene()
 
         // Settings actors
         mPunk = new Punk(this, 1000.0f, -1000.0f);
-        mPunk->SetPosition(Vector2(32.0f, 64.0f));
+        mPunk->SetPosition(Vector2(1138.0f, 224.0f));
 
         auto spawner = new Spawner(this, 300.0f, 1);
         spawner->SetPosition(Vector2(500.0f, 100.0f));
@@ -244,7 +244,7 @@ void Game::ChangeScene()
             [this](Item&){ mPunk->FindKey(); },
             10, 10
         );
-        key->SetPosition(Vector2(128.0f, 640.0f));
+        key->SetPosition(Vector2(160.0f, 192.0f));
 
         DialogueSystem::Get()->StartDialogue(
 {
