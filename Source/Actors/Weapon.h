@@ -18,13 +18,14 @@ public:
 
     virtual void Shoot(Game *game, Vector2 &start_pos, Vector2 &fire_dir) = 0;
 
+    void Disable(); void Enable();
     void Reload(int ammo);
     bool CanShoot();
     void Update(float deltaTime, bool isShooting, bool flip);
 
+    bool mEnabled;
     class PunkArm *mArm;
-    int mAmmo;
-    int mMaxAmmo;
+    int mAmmo; int mMaxAmmo;
     const float mFireCooldown; float mFireCooldownTimer;
     const float mReloadCooldown; float mReloadCooldownTimer;
     DrawSpriteComponent *mDrawComponent;
@@ -33,6 +34,13 @@ public:
 class Pistol : public Weapon
 {
 public:
-    Pistol(class PunkArm *mArm, int maxAmmo = 5, float fireCooldown = 0.8f, float reloadCooldown = 5.0f);
+    Pistol(class PunkArm *mArm, int maxAmmo = 5, float fireCooldown = 0.8f, float reloadCooldown = 1.5f);
+    void Shoot(Game *game, Vector2 &start_pos, Vector2 &fire_dir) override;
+};
+
+class Shotgun : public Weapon
+{
+public:
+    Shotgun(class PunkArm *mArm, int maxAmmo = 2, float fireCooldown = 1.0f, float reloadCooldown = 5.0f);
     void Shoot(Game *game, Vector2 &start_pos, Vector2 &fire_dir) override;
 };

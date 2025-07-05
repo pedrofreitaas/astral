@@ -2,9 +2,13 @@
 
 PunkArm::PunkArm(Game *game, Punk *punk, const std::function<void()> &onShotCallback)
     : Actor(game), mPunk(punk), mIsShooting(false), mFireCooldown(0.0f), mAngle(0.0f),
-      mTargetPos(Vector2::Zero), mFireDir(Vector2::Zero), mPistol(nullptr)
+      mTargetPos(Vector2::Zero), mFireDir(Vector2::Zero), mPistol(nullptr), mShotgun(nullptr), mChosenWeapon(nullptr)
 {
+    mShotgun = new Shotgun(this);
     mPistol = new Pistol(this);
+    
+    mChosenWeapon = mPistol;
+    mChosenWeapon->Enable();
 
     mOnShotCallback = [this, onShotCallback]() {
         onShotCallback();
@@ -33,9 +37,9 @@ Vector2 PunkArm::mShotOffset()
 
 void PunkArm::OnShoot()
 {
-    if (!mPistol->CanShoot()) {
+    if (!mChosenWeapon->CanShoot()) {
         if (mGame->GetAudio()->GetSoundState(mDryBulletSoundHandle) != SoundState::Playing && 
-            mPistol->mAmmo <= 0)
+            mChosenWeapon->mAmmo <= 0)
         {
             mDryBulletSoundHandle = mGame->GetAudio()->PlaySound("DryFire.ogg");
         }
@@ -43,7 +47,7 @@ void PunkArm::OnShoot()
     };
 
     Vector2 shotPos = mPunk->GetCenter() + mShotOffset();
-    mPistol->Shoot(GetGame(), shotPos, mFireDir);
+    mChosenWeapon->Shoot(GetGame(), shotPos, mFireDir);
     
     mOnShotCallback();
     
@@ -81,5 +85,20 @@ void PunkArm::OnUpdate(float deltaTime)
     SetPosition(mPunk->GetCenter() + mShoulderOffset());
     SetRotation(mAngle);
 
-    mPistol->Update(deltaTime, mIsShooting, mTargetPos.x <= mPunk->GetCenter().x);
+    mChosenWeapon->Update(deltaTime, mIsShooting, mTargetPos.x <= mPunk->GetCenter().x);
+}
+
+void PunkArm::ChangeWeapon()
+{
+    if (mChosenWeapon == mPistol && mShotgun != nullptr) {
+        mChosenWeapon = mShotgun;
+        mPistol->Disable();
+    } 
+    
+    else if (mChosenWeapon == mShotgun && mPistol != nullptr) {
+        mChosenWeapon = mPistol;
+        mShotgun->Disable();
+    }
+
+    mChosenWeapon->Enable();
 }

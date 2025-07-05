@@ -29,10 +29,13 @@ public:
 
     bool IsAimingRight();
     bool IsAimingLeft();
+    bool IsShooting() const { return mIsShooting; }
 
 private:
     class Punk *mPunk;
+    class Weapon *mChosenWeapon;
     class Pistol *mPistol;
+    class Shotgun *mShotgun;
     Vector2 mTargetPos;
     Vector2 mFireDir;
     float mAngle;
@@ -40,6 +43,8 @@ private:
 
     SoundHandle mDryBulletSoundHandle;
     SoundHandle mShootSoundHandle;
+
+    void ChangeWeapon();
 
     friend class Punk;
 
