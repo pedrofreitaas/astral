@@ -53,7 +53,7 @@ bool Game::Initialize()
         return false;
     }
 
-    mWindow = SDL_CreateWindow("ETER", 0, 0, mWindowWidth, mWindowHeight, 0);
+    mWindow = SDL_CreateWindow("ETER", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, mWindowWidth, mWindowHeight, 0);
     if (!mWindow)
     {
         SDL_Log("Failed to create window: %s", SDL_GetError());
@@ -92,7 +92,6 @@ bool Game::Initialize()
 
     // Initialize game systems
     mAudio = new AudioSystem();
-
     mSpatialHashing = new SpatialHashing(TILE_SIZE * 4.0f,
                                          LEVEL_WIDTH * TILE_SIZE,
                                          LEVEL_HEIGHT * TILE_SIZE);
@@ -101,6 +100,9 @@ bool Game::Initialize()
 
     // Init all game actors
     SetGameScene(GameScene::MainMenu);
+
+    SDL_ShowCursor(SDL_DISABLE);
+    SDL_SetRelativeMouseMode(SDL_FALSE);
 
     return true;
 }
@@ -183,7 +185,7 @@ void Game::ChangeScene()
 
         // Set background color
         mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
-        mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
+        mHUD = new HUD(this, "../Assets/Fonts/VT323-Regular.ttf");
 
         mGameTimeLimit = 400;
         mHUD->SetTime(mGameTimeLimit);
@@ -218,7 +220,7 @@ void Game::ChangeScene()
         mAudio->StopSound(mMusicHandle);
         mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
 
-        mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
+        mHUD = new HUD(this, "../Assets/Fonts/VT323-Regular.ttf");
 
         mGameTimeLimit = 400;
         mHUD->SetTime(mGameTimeLimit);
@@ -263,12 +265,12 @@ void Game::ChangeScene()
         mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
         mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
 
-        UIScreen *final = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+        UIScreen *final = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");
         const Vector2 titleSize = Vector2(mWindowWidth, mWindowHeight);
         const Vector2 titlePos = Vector2(0.0f, 0.0f);
         final->AddImage("../Assets/Sprites/img.png", titlePos, titleSize);
 
-        UIScreen *final2 = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+        UIScreen *final2 = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");
         const Vector2 titleSize2 = Vector2(220, 110.0f) * 1.5f;
         const Vector2 titlePos2 = Vector2(mWindowWidth / 2.0f - 160, mWindowHeight / 3.0f);
         final2->AddImage("../Assets/Sprites/win.png", titlePos2, titleSize2);
@@ -280,30 +282,75 @@ void Game::ChangeScene()
 
 void Game::LoadMainMenu()
 {
-    // Load font
+    int CHAR_WIDTH = 16;
+    int WORD_HEIGHT = 20;
 
-    UIScreen *title = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
-    const Vector2 titleSize_ = Vector2(178.0f, 65.0f);
-    const Vector2 titlePos_ = Vector2(mWindowWidth / 2.0f - titleSize_.x / 2.0f, 50.0f);
-    title->AddText("ETER", titlePos_, titleSize_,  40, 1024, Color::White);
+    UIScreen *mainMenu = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");    
+    mainMenu->AddBackground("../Assets/Sprites/Menu/eter_extended_side.jpg", Vector2(0,0), Vector2(mWindowWidth, mWindowHeight));
+    
+    //const Vector2 titleSize = Vector2(178.0f, 65.0f);
+    //const Vector2 titlePos = Vector2(mWindowWidth / 2.0f - titleSize.x / 2.0f, 50.0f);
+    //mainMenu->AddText("ETER", titleSize, titlePos,  60, 1024, Color::White);
+    const Vector2 titleSize = Vector2(300.0f, 180.0f);
+    const Vector2 titlePos = Vector2(mWindowWidth / 3.1f - titleSize.x / 2.0f, 20.0f);
+    mainMenu->AddImage("../Assets/Sprites/Menu/eter_title.png", titlePos, titleSize);
+    
+    const Vector2 buttonSize = Vector2(230.0f, 55.0f);
+    const Vector2 button1Pos = Vector2(mWindowWidth / 4.0f * 3 - buttonSize.x / 2.0f, titlePos.y + titleSize.y + 15.0f);
+    const Vector2 button2Pos = Vector2(mWindowWidth / 4.0f * 3 - buttonSize.x / 2.0f, button1Pos.y + buttonSize.y + 5.0f);
+    const Vector2 button3Pos = Vector2(mWindowWidth / 4.0f * 3 - buttonSize.x / 2.0f, button2Pos.y + buttonSize.y + 5.0f);
 
-    UIScreen *mainMenu = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
-
-    // Add title
-    const Vector2 titleSize = Vector2(178.0f, 110.0f) * 2.0f;
-    const Vector2 titlePos = Vector2(mWindowWidth / 2.0f - titleSize.x / 2.0f, 105.0f);
-    mainMenu->AddImage("../Assets/Sprites/eter.png", titlePos, titleSize);
-
-    // Add menu buttons
-    const Vector2 buttonSize = Vector2(200.0f, 40.0f);
-    const Vector2 button1Pos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, titlePos.y + titleSize.y + 5.0f);
-    const Vector2 button2Pos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, button1Pos.y + buttonSize.y + 5.0f);
-
-    mainMenu->AddButton("Play", button1Pos, buttonSize, [this]()
+    mainMenu->AddButton(" ", button1Pos, buttonSize, [this]()
                         { SetGameScene(GameScene::Level1); });
+    mainMenu->AddText("Play", button1Pos+Vector2(buttonSize.x/2 - CHAR_WIDTH*2, buttonSize.y/3), Vector2(CHAR_WIDTH * 4, WORD_HEIGHT), 40, 1024, Color::White);
+    mainMenu->AddImage("../Assets/Sprites/Menu/button.png", button1Pos, buttonSize);
 
-    mainMenu->AddButton("Quit", button2Pos, buttonSize, [this]
+    mainMenu->AddButton(" ", button2Pos, buttonSize, [this]()
+    {
+        int CHAR_WIDTH = 14;
+        int WORD_HEIGHT = 20;
+
+        UIScreen* howToPlay = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");
+        const Vector2 howToPlaySize = Vector2(504.0f, 365.0f);
+        const Vector2 howToPlayPos = Vector2(mWindowWidth/2 - howToPlaySize.x/2 + 5, 20.0f);
+        howToPlay->AddBackground("../Assets/Sprites/Menu/info_frame.png", howToPlayPos, howToPlaySize);
+
+        // Texto de instrução
+        std::vector<std::string> instructionsList = {
+            "Use W A S D para se mover",
+            "Use o mouse para mirar",
+            "Clique para atirar",
+            "Evite os inimigos!"
+        };
+        for(int i = 0; i < instructionsList.size(); ++i)
+        {
+            howToPlay->AddText(instructionsList[i], Vector2(mWindowWidth/2 - CHAR_WIDTH * instructionsList[i].size()/2, howToPlayPos.y + howToPlaySize.y / 3 + WORD_HEIGHT * i),
+                               Vector2(CHAR_WIDTH * instructionsList[i].size(), WORD_HEIGHT), 36, 1024, Color::White);
+        }
+
+        // Botão OK
+        Vector2 okSize = Vector2(150, 50);
+        Vector2 okPos = Vector2(mWindowWidth * 0.39, mWindowHeight * 0.72);
+        howToPlay->AddButton(" ", okPos, okSize, [this]()
+        {
+            PopUI(); // Sai do How To Play
+        });
+        howToPlay->AddText("OK", Vector2(mWindowWidth * 0.475, mWindowHeight * 0.75), Vector2(CHAR_WIDTH*2, WORD_HEIGHT), 40, 1024, Color::White);
+        howToPlay->AddImage("../Assets/Sprites/Menu/button.png", okPos, okSize);
+
+        SDL_Event dummy;
+        while (SDL_PeepEvents(&dummy, 1, SDL_GETEVENT, SDL_MOUSEBUTTONDOWN, SDL_MOUSEBUTTONDOWN) > 0);
+
+
+        PushUI(howToPlay); // Mostra tela por cima
+    });
+    mainMenu->AddText("How To Play", button2Pos+Vector2(buttonSize.x/2 - CHAR_WIDTH*5.5, buttonSize.y/3), Vector2(CHAR_WIDTH * 11, WORD_HEIGHT),40, 1024, Color::White);
+    mainMenu->AddImage("../Assets/Sprites/Menu/button.png", button2Pos, buttonSize);
+
+    mainMenu->AddButton(" ", button3Pos, buttonSize, [this]
                         { Quit(); });
+    mainMenu->AddText("Quit", button3Pos+Vector2(buttonSize.x/2 - CHAR_WIDTH*2, buttonSize.y/3), Vector2(CHAR_WIDTH * 4, WORD_HEIGHT), 40, 1024, Color::White);
+    mainMenu->AddImage("../Assets/Sprites/Menu/button.png", button3Pos, buttonSize);
 }
 
 void Game::LoadLostScreen()
@@ -676,16 +723,20 @@ void Game::UpdateGame()
     // ---------------------
     // Game Specific Updates
     // ---------------------
-    // if (mGameScene != GameScene::MainMenu && mGameScene != GameScene::Intro && mGamePlayState == GamePlayState::Playing)
-    if (mGameScene != GameScene::MainMenu && mGamePlayState == GamePlayState::Playing)
-
+    if (mGameScene != GameScene::MainMenu)
     {
-        // Reinsert level time
-        UpdateLevelTime(deltaTime);
-        if (mPunk)
-        {
-            mHUD->UpdateLives(mPunk->Lives());
-        }
+        int mouseX, mouseY;
+        SDL_GetMouseState(&mouseX, &mouseY);
+        mHUD->UpdateMousePosition(mouseX, mouseY);
+        
+        if(mGamePlayState == GamePlayState::Playing){
+            // Reinsert level time
+            UpdateLevelTime(deltaTime);
+            if (mPunk)
+            {
+                mHUD->UpdateLives(mPunk->Lives());
+            }
+        }   
     }
 
     UpdateSceneManager(deltaTime);

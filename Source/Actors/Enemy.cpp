@@ -15,6 +15,7 @@
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/ColliderComponents/AABBColliderComponent.h"
 #include "FSM/Patrol.h"
+#include "../Components/DrawComponents/DrawRectangleComponent.h"
 
 // Inclui os estados que vamos usar
 
