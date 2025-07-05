@@ -80,6 +80,7 @@ public:
 
     // UI functions
     void PushUI(class UIScreen* screen) { mUIStack.emplace_back(screen);}
+    void PopUI() { mUIStack.pop_back();}
     const std::vector<class UIScreen*>& GetUIStack() { return mUIStack; }
 
     // Window functions

@@ -41,7 +41,7 @@ private:
 
     bool mIsShooting; //Shooting related
     float mFireCooldown; //Shooting related
-    int mLives = 5;
+    int mLives = 6;
     float mInvincibilityTimer = 0.0f;
 
     class RigidBodyComponent* mRigidBodyComponent;
