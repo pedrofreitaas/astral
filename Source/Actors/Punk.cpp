@@ -299,7 +299,12 @@ void Punk::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *
     }
 
     if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level2) {
-        mGame->SetGameScene(Game::GameScene::FinalScene, .25f);
+        mGame->SetGameScene(Game::GameScene::Ending_GoHome, .25f);
+        other->SetEnabled(false);
+        return;
+    }
+    if (other->GetLayer() == ColliderLayer::Portal2 && mGame->GetGameScene() == Game::GameScene::Level2) {
+        mGame->SetGameScene(Game::GameScene::Ending_Stay, .25f);
         other->SetEnabled(false);
         return;
     }
@@ -332,7 +337,12 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent *ot
     }
 
     if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level2) {
-        mGame->SetGameScene(Game::GameScene::FinalScene, .25f);
+        mGame->SetGameScene(Game::GameScene::Ending_GoHome, .25f);
+        other->SetEnabled(false);
+        return;
+    }
+    if (other->GetLayer() == ColliderLayer::Portal2 && mGame->GetGameScene() == Game::GameScene::Level2) {
+        mGame->SetGameScene(Game::GameScene::Ending_Stay, .25f);
         other->SetEnabled(false);
         return;
     }
@@ -351,7 +361,7 @@ void Punk::FindKey()
             "Voz: Voce conseguiu. A ultima chave foi encontrada.",
             "Voz: O caminho se abre em dois. O seu... e o nosso.",
             "Voz: O portal verde oferece o seu lar, a sua paz... ao custo da nossa existencia.",
-            "Voz: O portal púrpura vai te manter aqui, como o novo guardiao, para nos salvar.",
+            "Voz: O portal roxo vai te manter aqui, como o novo guardiao, para nos salvar.",
             "Voz: A escolha e sua, Viajante do Eter."
         },
     [this]() {
@@ -361,7 +371,7 @@ void Punk::FindKey()
     const auto &portal = new Portal(mGame);
     portal->SetPosition(Vector2(243.0f, 620.0f));
 
-    // const auto &portal2 = new Portal(mGame);
-    // portal2->SetPosition(Vector2(343.0f, 620.0f));
+    const auto &portal2 = new Portal(mGame, 1);
+    portal2->SetPosition(Vector2(343.0f, 620.0f));
     mGame->GetAudio()->PlaySound("KeyPick.wav");
 }

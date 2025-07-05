@@ -29,7 +29,8 @@ public:
         // Intro,
         Level1,
         Level2,
-        FinalScene
+        Ending_GoHome,
+        Ending_Stay
     };
 
     enum class SceneManagerState

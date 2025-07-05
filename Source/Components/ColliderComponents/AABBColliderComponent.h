@@ -20,6 +20,7 @@ enum class ColliderLayer
     EnemyProjectile,
     PlayerProjectile,
     Portal,
+    Portal2,
     Item
 };
 

@@ -113,7 +113,7 @@ void Game::SetGameScene(Game::GameScene scene, float transitionTime)
     if (mSceneManagerState == SceneManagerState::None)
     {
         //if (scene == GameScene::MainMenu || scene == GameScene::Intro || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::FinalScene)
-        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::FinalScene)
+        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::Ending_Stay || scene == GameScene::Ending_GoHome)
 
         {
             mNextScene = scene;
@@ -259,7 +259,7 @@ void Game::ChangeScene()
         // const auto &portal = new Portal(this);
         // portal->SetPosition(Vector2(243.0f, 620.0f));
     }
-    else if (mNextScene == GameScene::FinalScene) {
+    else if (mNextScene == GameScene::Ending_Stay) {
         // Start Music
         mAudio->StopSound(mMusicHandle);
         mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
@@ -271,9 +271,25 @@ void Game::ChangeScene()
         final->AddImage("../Assets/Sprites/img.png", titlePos, titleSize);
 
         UIScreen *final2 = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");
-        const Vector2 titleSize2 = Vector2(220, 110.0f) * 1.5f;
-        const Vector2 titlePos2 = Vector2(mWindowWidth / 2.0f - 160, mWindowHeight / 3.0f);
-        final2->AddImage("../Assets/Sprites/win.png", titlePos2, titleSize2);
+        const Vector2 titleSize2 = Vector2(220, 110.0f) * 2.0f;
+        const Vector2 titlePos2 = Vector2(mWindowWidth / 2.0f - 200, mWindowHeight / 3.0f);
+        final2->AddImage("../Assets/Sprites/Final_eter.png", titlePos2, titleSize2);
+    }
+    else if (mNextScene == GameScene::Ending_GoHome) {
+        // Start Music
+        mAudio->StopSound(mMusicHandle);
+        mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
+        mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
+
+        UIScreen *final = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");
+        const Vector2 titleSize = Vector2(mWindowWidth, mWindowHeight);
+        const Vector2 titlePos = Vector2(0.0f, 0.0f);
+        final->AddImage("../Assets/Sprites/img.png", titlePos, titleSize);
+
+        UIScreen *final2 = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");
+        const Vector2 titleSize2 = Vector2(220, 110.0f) * 2.0f;
+        const Vector2 titlePos2 = Vector2(mWindowWidth / 2.0f - 200, mWindowHeight / 3.0f);
+        final2->AddImage("../Assets/Sprites/Final_casa.png", titlePos2, titleSize2);
     }
 
     // Set new scene
