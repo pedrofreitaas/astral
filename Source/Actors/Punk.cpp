@@ -13,7 +13,7 @@
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
 
 Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
-    : Actor(game), mIsRunning(false), mIsOnPole(false), mIsDying(false), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed), mPoleSlideTimer(0.0f), mIsShooting(false), mFireCooldown(0.0f), mFoundKey(false), mDeathTimer(0.0f)
+    : Actor(game), mIsRunning(false), mIsOnPole(false), mIsDying(false), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed), mPoleSlideTimer(0.0f), mFoundKey(false), mDeathTimer(0.0f)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f, false);
     mColliderComponent = new AABBColliderComponent(this, 14, 20, 18, 28,
@@ -33,12 +33,19 @@ Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
     mDrawComponent->SetAnimation("idle");
     mDrawComponent->SetAnimFPS(10.0f);
 
-    mArm = new PunkArm(mGame, this);
+    mArm = new PunkArm(mGame, this, [this]() {
+        OnShoot();
+    });
+}
+
+void Punk::OnShoot()
+{
+    mRigidBodyComponent->ApplyForce(mArm->mFireDir * -3000.0f);
+    mGame->GetAudio()->PlaySound("Fire.wav");
 }
 
 void Punk::OnProcessInput(const uint8_t *state)
 {
-    // if(mGame->GetGamePlayState() != Game::GamePlayState::Playing) return;
     if (mIsDying)
         return;
 
@@ -129,6 +136,9 @@ void Punk::OnUpdate(float deltaTime)
 {
     MaintainInbound();
     ManageAnimations();
+
+    if (mArm->IsAimingRight()) SetRotation(0.0f);
+    else if (mArm->IsAimingLeft()) SetRotation(Math::Pi);
 
     if (mIsDying)
     {

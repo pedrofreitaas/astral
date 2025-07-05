@@ -27,6 +27,8 @@ public:
 
     void FindKey();
 
+    void OnShoot();
+
     Vector2 GetCenter() const
     {
         return mColliderComponent->GetCenter();
@@ -45,8 +47,6 @@ private:
     bool mIsDying; float mDeathTimer;
     bool mFoundKey;
 
-    bool mIsShooting; //Shooting related
-    float mFireCooldown; //Shooting related
     int mLives = 5;
     float mInvincibilityTimer = 0.0f;
 

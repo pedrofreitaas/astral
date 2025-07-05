@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <functional>
 #include "Actor.h"
 #include "Punk.h"
 #include "../Components/DrawComponents/DrawSpriteComponent.h"
@@ -14,20 +15,18 @@
 class PunkArm : public Actor
 {
 public:
-    explicit PunkArm(Game* game, class Punk* punk);
+    explicit PunkArm(Game* game, class Punk* punk, const std::function<void()> &onShotCallback);
 
     void OnShoot();
 
     void OnUpdate(float deltaTime) override;
     void OnProcessInput(const Uint8* keyState) override;
     
-    Vector2 mShoulderOffset() {
-        return (GetRotation() == 0.0f) ? Vector2(-2.0f, -20.0f) : Vector2(-13.0f, -20.0f);
-    }
+    Vector2 mShoulderOffset();
+    Vector2 mShotOffset();
 
-    Vector2 mShotOffset() {
-        return (GetRotation() == 0.0f) ? Vector2(2.0f, -7.0f) : Vector2(-4.0f, -7.0f);
-    }
+    bool IsAimingRight();
+    bool IsAimingLeft();
 
 private:
     class DrawSpriteComponent* mDrawComponent;
@@ -35,6 +34,9 @@ private:
 
     Vector2 mTargetPos;
     Vector2 mFireDir;
+    float mAngle;
+
+    std::function<void()> mOnShotCallback;
 
     friend class Punk;
 
