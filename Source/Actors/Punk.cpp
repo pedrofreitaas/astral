@@ -41,7 +41,6 @@ Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
 void Punk::OnShoot()
 {
     mRigidBodyComponent->ApplyForce(mArm->mFireDir * -3000.0f);
-    mGame->GetAudio()->PlaySound("Fire.wav");
 }
 
 void Punk::OnProcessInput(const uint8_t *state)

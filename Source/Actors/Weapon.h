@@ -25,14 +25,14 @@ public:
     class PunkArm *mArm;
     int mAmmo;
     int mMaxAmmo;
-    float mFireCooldown;
-    float mReloadCooldown;
+    const float mFireCooldown; float mFireCooldownTimer;
+    const float mReloadCooldown; float mReloadCooldownTimer;
     DrawSpriteComponent *mDrawComponent;
 };
 
 class Pistol : public Weapon
 {
 public:
-    Pistol(class PunkArm *mArm, int maxAmmo = 5, float fireCooldown = 0.8f, float reloadCooldown = 1.5f);
+    Pistol(class PunkArm *mArm, int maxAmmo = 5, float fireCooldown = 0.8f, float reloadCooldown = 5.0f);
     void Shoot(Game *game, Vector2 &start_pos, Vector2 &fire_dir) override;
 };

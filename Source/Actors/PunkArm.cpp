@@ -33,12 +33,26 @@ Vector2 PunkArm::mShotOffset()
 
 void PunkArm::OnShoot()
 {
-    if (!mPistol->CanShoot()) return;
+    if (!mPistol->CanShoot()) {
+        if (mGame->GetAudio()->GetSoundState(mDryBulletSoundHandle) != SoundState::Playing && 
+            mPistol->mAmmo <= 0)
+        {
+            mDryBulletSoundHandle = mGame->GetAudio()->PlaySound("DryFire.ogg");
+        }
+        return;
+    };
 
     Vector2 shotPos = mPunk->GetCenter() + mShotOffset();
     mPistol->Shoot(GetGame(), shotPos, mFireDir);
+    
     mOnShotCallback();
+    
     mIsShooting = true;
+
+    if (mGame->GetAudio()->GetSoundState(mShootSoundHandle) == SoundState::Playing) {
+        mGame->GetAudio()->StopSound(mShootSoundHandle);
+    }
+    mShootSoundHandle = mGame->GetAudio()->PlaySound("Fire.wav");
 }
 
 void PunkArm::OnProcessInput(const Uint8 *keyState)

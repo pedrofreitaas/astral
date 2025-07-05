@@ -1,8 +1,8 @@
 #include "Weapon.h"
 
 Weapon::Weapon(class PunkArm *mArm, int maxAmmo, float fireCooldown, float reloadCooldown)
-    : mArm(mArm), mAmmo(maxAmmo), mMaxAmmo(maxAmmo), mFireCooldown(fireCooldown),
-      mDrawComponent(nullptr), mReloadCooldown(reloadCooldown)
+    : mArm(mArm), mAmmo(maxAmmo), mMaxAmmo(maxAmmo), mFireCooldown(fireCooldown), mFireCooldownTimer(fireCooldown),
+      mDrawComponent(nullptr), mReloadCooldown(reloadCooldown), mReloadCooldownTimer(reloadCooldown)
 {
 }
 
@@ -13,18 +13,19 @@ void Weapon::Reload(int ammo)
 
 bool Weapon::CanShoot()
 {
-    return mAmmo > 0 && mFireCooldown <= 0.0f;
+    return mAmmo > 0 && mFireCooldownTimer <= 0.0f;
 }
 
 void Weapon::Update(float deltaTime, bool isShooting, bool flip)
 {    
-    if (mFireCooldown > 0.0f) mFireCooldown -= deltaTime;
-    else mFireCooldown = 0.0f;
+    if (mFireCooldownTimer > 0.0f) mFireCooldownTimer -= deltaTime;
+    else mFireCooldownTimer = 0.0f;
 
-    if (mReloadCooldown > 0.0f) mReloadCooldown -= deltaTime;
+    if (mReloadCooldownTimer > 0.0f) mReloadCooldownTimer -= deltaTime;
     else {
-        mReloadCooldown = 0.0f;
+        mReloadCooldownTimer = mReloadCooldown;
         Reload(1);
+        SDL_Log("Reloaded! Ammo: %d", mAmmo);
     }
 
     mDrawComponent->SetIsVisible(isShooting);
@@ -52,5 +53,5 @@ void Pistol::Shoot(Game *game, Vector2 &start_pos, Vector2 &fire_dir)
     new ProjectileEffect(game, start_pos, angle);
 
     mAmmo--;
-    mFireCooldown = 0.8f;
+    mFireCooldownTimer = mFireCooldown;
 }

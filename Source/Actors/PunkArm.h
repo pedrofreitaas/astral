@@ -12,6 +12,7 @@
 #include "../Game.h"
 #include "./Projectile.h"
 #include "./ProjectileEffect.h"
+#include "../AudioSystem.h"
 
 class PunkArm : public Actor
 {
@@ -36,6 +37,9 @@ private:
     Vector2 mFireDir;
     float mAngle;
     std::function<void()> mOnShotCallback;
+
+    SoundHandle mDryBulletSoundHandle;
+    SoundHandle mShootSoundHandle;
 
     friend class Punk;
 
