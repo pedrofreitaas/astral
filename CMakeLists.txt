@@ -79,6 +79,8 @@ add_executable(${PROJECT_NAME}
         Source/Actors/Item.h
         Source/Actors/PunkArm.h
         Source/Actors/PunkArm.cpp
+        Source/Actors/Weapon.h
+        Source/Actors/Weapon.cpp
 )
 
 # Link libraries using PkgConfig variables

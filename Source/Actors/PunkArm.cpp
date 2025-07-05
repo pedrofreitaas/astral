@@ -1,12 +1,10 @@
 #include "PunkArm.h"
 
 PunkArm::PunkArm(Game *game, Punk *punk, const std::function<void()> &onShotCallback)
-    : Actor(game), mPunk(punk), mIsShooting(false), mFireCooldown(0.0f), mAngle(0.0f)
+    : Actor(game), mPunk(punk), mIsShooting(false), mFireCooldown(0.0f), mAngle(0.0f),
+      mTargetPos(Vector2::Zero), mFireDir(Vector2::Zero), mPistol(nullptr)
 {
-    mDrawComponent = new DrawSpriteComponent(this, "../Assets/Sprites/Punk/arm_gun.png", 18, 28, 200);
-    mDrawComponent->SetPivot(Vector2(0.5f, 0.5f));
-
-    mDrawComponent->SetEnabled(false);
+    mPistol = new Pistol(this);
 
     mOnShotCallback = [this, onShotCallback]() {
         onShotCallback();
@@ -35,18 +33,11 @@ Vector2 PunkArm::mShotOffset()
 
 void PunkArm::OnShoot()
 {
-    if (mFireCooldown > 0.0f)
-        return;
+    if (!mPistol->CanShoot()) return;
 
-    Projectile *projectile = new Projectile(mGame, ColliderLayer::PlayerProjectile);
-
-    projectile->SetPosition(mPunk->GetCenter() + mShotOffset());
-    projectile->GetComponent<RigidBodyComponent>()->ApplyForce(mFireDir * 3000.0f);
-
-    new ProjectileEffect(mGame, mPunk->GetCenter() + mShotOffset(), mAngle);
-
+    Vector2 shotPos = mPunk->GetCenter() + mShotOffset();
+    mPistol->Shoot(GetGame(), shotPos, mFireDir);
     mOnShotCallback();
-    mFireCooldown = 0.8f;
     mIsShooting = true;
 }
 
@@ -73,8 +64,8 @@ void PunkArm::OnUpdate(float deltaTime)
     if (mFireCooldown >= 0.0f) mFireCooldown -= deltaTime;
     else mFireCooldown = 0.0f;
 
-    mDrawComponent->SetIsVisible(mIsShooting);
     SetPosition(mPunk->GetCenter() + mShoulderOffset());
     SetRotation(mAngle);
-    mDrawComponent->SetFlip(mTargetPos.x <= mPunk->GetCenter().x);
+
+    mPistol->Update(deltaTime, mIsShooting, mTargetPos.x <= mPunk->GetCenter().x);
 }

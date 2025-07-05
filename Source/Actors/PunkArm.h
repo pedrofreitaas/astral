@@ -7,6 +7,7 @@
 #include <functional>
 #include "Actor.h"
 #include "Punk.h"
+#include "Weapon.h"
 #include "../Components/DrawComponents/DrawSpriteComponent.h"
 #include "../Game.h"
 #include "./Projectile.h"
@@ -15,13 +16,13 @@
 class PunkArm : public Actor
 {
 public:
-    explicit PunkArm(Game* game, class Punk* punk, const std::function<void()> &onShotCallback);
+    explicit PunkArm(Game *game, class Punk *punk, const std::function<void()> &onShotCallback);
 
     void OnShoot();
 
     void OnUpdate(float deltaTime) override;
-    void OnProcessInput(const Uint8* keyState) override;
-    
+    void OnProcessInput(const Uint8 *keyState) override;
+
     Vector2 mShoulderOffset();
     Vector2 mShotOffset();
 
@@ -29,13 +30,11 @@ public:
     bool IsAimingLeft();
 
 private:
-    class DrawSpriteComponent* mDrawComponent;
-    class Punk* mPunk;
-
+    class Punk *mPunk;
+    class Pistol *mPistol;
     Vector2 mTargetPos;
     Vector2 mFireDir;
     float mAngle;
-
     std::function<void()> mOnShotCallback;
 
     friend class Punk;
