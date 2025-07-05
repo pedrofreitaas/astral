@@ -372,6 +372,6 @@ void Punk::FindKey()
     portal->SetPosition(Vector2(288.0f, 992.0f));
 
     const auto &portal2 = new Portal(mGame, 1);
-    portal2->SetPosition(Vector2(384.0f, 992.0f));
+    portal2->SetPosition(Vector2(416.0f, 992.0f));
     mGame->GetAudio()->PlaySound("KeyPick.wav");
 }
