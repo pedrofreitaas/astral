@@ -347,15 +347,21 @@ void Punk::FindKey()
 {
     mFoundKey = true;
     DialogueSystem::Get()->StartDialogue(
-    {
-        "Punk: Oque? Parece que essa é uma dimensao totalmente diferente",
-        "Punk: Será que este é o ETER? Como o mestre havia me falado?",
-    },
+        {
+            "Voz: Voce conseguiu. A ultima chave foi encontrada.",
+            "Voz: O caminho se abre em dois. O seu... e o nosso.",
+            "Voz: O portal verde oferece o seu lar, a sua paz... ao custo da nossa existencia.",
+            "Voz: O portal púrpura vai te manter aqui, como o novo guardiao, para nos salvar.",
+            "Voz: A escolha e sua, Viajante do Eter."
+        },
     [this]() {
         mGame->SetGamePlayState(Game::GamePlayState::Playing);
     }
     );
     const auto &portal = new Portal(mGame);
     portal->SetPosition(Vector2(243.0f, 620.0f));
+
+    // const auto &portal2 = new Portal(mGame);
+    // portal2->SetPosition(Vector2(343.0f, 620.0f));
     mGame->GetAudio()->PlaySound("KeyPick.wav");
 }
