@@ -1,8 +1,11 @@
 #include "Weapon.h"
 
 Weapon::Weapon(class PunkArm *mArm, int maxAmmo, float fireCooldown, float reloadCooldown)
-    : mArm(mArm), mAmmo(maxAmmo), mMaxAmmo(maxAmmo), mFireCooldown(fireCooldown), mFireCooldownTimer(fireCooldown),
-      mDrawComponent(nullptr), mReloadCooldown(reloadCooldown), mReloadCooldownTimer(reloadCooldown), mEnabled(false)
+    : mArm(mArm), mAmmo(maxAmmo), mMaxAmmo(maxAmmo), 
+      mFireCooldown(fireCooldown), mFireCooldownTimer(fireCooldown),
+      mDrawComponent(nullptr), mReloadCooldown(reloadCooldown), 
+      mReloadCooldownTimer(reloadCooldown), mEnabled(false),
+      mPunkArmConfig("shooting_left_arm")
 {
 }
 
@@ -51,51 +54,87 @@ void Weapon::Update(float deltaTime, bool isShooting, bool flip)
 Pistol::Pistol(class PunkArm *mArm, int maxAmmo, float fireCooldown, float reloadCooldown)
     : Weapon(mArm, maxAmmo, fireCooldown, reloadCooldown)
 {
-    mDrawComponent = new DrawSpriteComponent(mArm, "../Assets/Sprites/Punk/pistol.png", 18, 28, 200);
+    mDrawComponent = new DrawSpriteComponent(
+        mArm, 
+        "../Assets/Sprites/Punk/pistol.png", 
+        48, 48, 
+        static_cast<int>(DrawLayerPosition::Player) - 10
+    );
     mDrawComponent->SetPivot(Vector2(0.5f, 0.5f));
     mDrawComponent->SetIsVisible(false);
 }
 
-void Pistol::Shoot(Game *game, Vector2 &start_pos, Vector2 &fire_dir) 
+Vector2 Pistol::ShotOffset() 
+{
+    return Vector2(0.0f, 0.0f);
+}
+
+Vector2 Pistol::Shoot(Vector2 &target) 
 {
     if (!CanShoot())
-        return;
+        return Vector2::Zero;
 
-    Projectile *projectile = new Projectile(game, ColliderLayer::PlayerProjectile);
-    projectile->SetPosition(start_pos);
-    projectile->GetComponent<RigidBodyComponent>()->ApplyForce(fire_dir * 3000.0f);
+    Projectile *projectile = new Projectile(
+        mArm->GetPunk()->GetGame(), 
+        ColliderLayer::PlayerProjectile
+    );
 
-    float angle = atan2f(fire_dir.y, fire_dir.x);
-    new ProjectileEffect(game, start_pos, angle);
+    Vector2 punkCenter = mArm->GetPunk()->GetCenter();
+    Vector2 startPos = punkCenter + ShotOffset();
+
+    Vector2 fireDir = target - startPos;
+    fireDir.Normalize();
+
+    projectile->SetPosition(startPos);
+    projectile->GetComponent<RigidBodyComponent>()->ApplyForce(fireDir * 3000.0f);
+
+    float angle = atan2f(fireDir.y, fireDir.x);
+    new ProjectileEffect(mArm->GetPunk()->GetGame(), startPos, angle);
 
     mAmmo--;
     mFireCooldownTimer = mFireCooldown;
+
+    return fireDir * 3000.0f;
 }
 
 Shotgun::Shotgun(class PunkArm *mArm, int maxAmmo, float fireCooldown, float reloadCooldown)
     : Weapon(mArm, maxAmmo, fireCooldown, reloadCooldown)
 {
-    mDrawComponent = new DrawSpriteComponent(mArm, "../Assets/Sprites/Punk/pistol.png", 18, 28, 200);
+    mDrawComponent = new DrawSpriteComponent(
+        mArm, 
+        "../Assets/Sprites/Punk/shotgun.png", 
+        48, 48, 
+        static_cast<int>(DrawLayerPosition::Sky)
+    );
     mDrawComponent->SetPivot(Vector2(0.5f, 0.5f));
     mDrawComponent->SetIsVisible(false);
+    mPunkArmConfig = "shooting_noarm";
 }
 
-void Shotgun::Shoot(Game *game, Vector2 &start_pos, Vector2 &fire_dir) 
+Vector2 Shotgun::ShotOffset() 
+{
+    return Vector2(0.0f, 0.0f);
+}
+
+Vector2 Shotgun::Shoot(Vector2 &target) 
 {
     if (!CanShoot())
-        return;
+        return Vector2::Zero;
+
+    Vector2 punkCenter = mArm->GetPunk()->GetCenter();
+    Vector2 startPos = punkCenter + ShotOffset();
+
+    Vector2 fireDir = target - startPos;
+    fireDir.Normalize();
 
     for (int i = -1; i <= 1; ++i) {
-        Projectile *projectile = new Projectile(game, ColliderLayer::PlayerProjectile);
-        projectile->SetPosition(start_pos);
-        Vector2 spreadDir = fire_dir + Vector2(0.1f * i, 0.0f); // Spread the shot
-        spreadDir.Normalize();
-        projectile->GetComponent<RigidBodyComponent>()->ApplyForce(spreadDir * 3000.0f);
+        Projectile *projectile = new Projectile(mArm->GetPunk()->GetGame(), ColliderLayer::PlayerProjectile);
+        projectile->SetPosition(startPos);
+        projectile->GetComponent<RigidBodyComponent>()->ApplyForce(fireDir * Matrix2::CreateRotation(i * Math::Pi/6.0f) * 1800.0f);
     }
-
-    // float angle = atan2f(fire_dir.y, fire_dir.x);
-    // new ProjectileEffect(game, start_pos, angle);
 
     mAmmo--;
     mFireCooldownTimer = mFireCooldown;
+
+    return fireDir * 12000.f;
 }

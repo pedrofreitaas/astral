@@ -708,10 +708,14 @@ void Game::GenerateOutput()
 
     for (auto actor : actorsOnCamera)
     {
-        auto drawable = actor->GetComponent<DrawComponent>();
-        if (drawable && drawable->IsVisible())
+        std::vector<DrawComponent*> actorDrawables = actor->GetComponents<DrawComponent>();
+        
+        for (auto drawable : actorDrawables)
         {
-            drawables.emplace_back(drawable);
+            if (drawable && drawable->IsVisible())
+            {
+                drawables.emplace_back(drawable);
+            }
         }
     }
 

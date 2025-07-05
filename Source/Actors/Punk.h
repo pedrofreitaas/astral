@@ -7,7 +7,7 @@
 #include "PunkArm.h"
 #include <SDL.h>
 
-const float DEATH_TIMER = 0.71; // seconds
+const float DEATH_TIMER = 0.71f; // seconds
 
 class Punk : public Actor
 {
@@ -27,7 +27,7 @@ public:
 
     void FindKey();
 
-    void OnShoot();
+    void OnShoot(Vector2 &recoilForce);
 
     Vector2 GetCenter() const
     {

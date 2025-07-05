@@ -5,6 +5,7 @@
 #pragma once
 
 #include <functional>
+#include <string>
 #include "Actor.h"
 #include "Punk.h"
 #include "Weapon.h"
@@ -17,16 +18,16 @@
 class PunkArm : public Actor
 {
 public:
-    explicit PunkArm(Game *game, class Punk *punk, const std::function<void()> &onShotCallback);
+    explicit PunkArm(Game *game, class Punk *punk, const std::function<void(Vector2 &recoilForce)> &onShotCallback);
 
     void OnShoot();
 
     void OnUpdate(float deltaTime) override;
     void OnProcessInput(const Uint8 *keyState) override;
+    std::string ArmConfig();
 
-    Vector2 mShoulderOffset();
-    Vector2 mShotOffset();
-
+    class Punk *GetPunk() const { return mPunk; };
+    Vector2 GetTargetPos();
     bool IsAimingRight();
     bool IsAimingLeft();
     bool IsShooting() const { return mIsShooting; }
@@ -34,15 +35,14 @@ public:
 private:
     class Punk *mPunk;
     class Weapon *mChosenWeapon;
-    class Pistol *mPistol;
-    class Shotgun *mShotgun;
-    Vector2 mTargetPos;
-    Vector2 mFireDir;
-    float mAngle;
-    std::function<void()> mOnShotCallback;
+    class Pistol *mPistol; class Shotgun *mShotgun;
+    std::function<void(Vector2 &recoilForce)> mOnShotCallback;
 
     SoundHandle mDryBulletSoundHandle;
     SoundHandle mShootSoundHandle;
+
+    float mChangeWeaponCooldown;
+    float mChangeWeaponTimer;
 
     void ChangeWeapon();
 

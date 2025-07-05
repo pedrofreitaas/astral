@@ -24,23 +24,24 @@ Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
                                                "../Assets/Sprites/Punk/texture.json",
                                                static_cast<int>(DrawLayerPosition::Player) + 1);
 
-    mDrawComponent->AddAnimation("dying", {13, 14, 15, 16, 17, 18});
     mDrawComponent->AddAnimation("idle", {0, 1, 2, 3});
-    mDrawComponent->AddAnimation("run", {4, 5, 6, 7, 8, 9});
-    mDrawComponent->AddAnimation("jump", {10, 11, 12, 13});
-    mDrawComponent->AddAnimation("shooting", {3});
+    mDrawComponent->AddAnimation("run", {4, 5, 6, 7, 8, 9, 10});
+    mDrawComponent->AddAnimation("dying", {11, 12, 13, 14, 15, 16});
+    mDrawComponent->AddAnimation("shooting_left_arm", {3});
+    mDrawComponent->AddAnimation("shooting_noarm", {17});
+    mDrawComponent->AddAnimation("dash", {18, 19, 20, 21, 22, 23});
 
     mDrawComponent->SetAnimation("idle");
-    mDrawComponent->SetAnimFPS(10.0f);
+    mDrawComponent->SetAnimFPS(13.0f);
 
-    mArm = new PunkArm(mGame, this, [this]() {
-        OnShoot();
+    mArm = new PunkArm(mGame, this, [this](Vector2 &recoilDir) {
+        OnShoot(recoilDir);
     });
 }
 
-void Punk::OnShoot()
+void Punk::OnShoot(Vector2 &recoilForce)
 {
-    mRigidBodyComponent->ApplyForce(mArm->mFireDir * -3000.0f);
+    mRigidBodyComponent->ApplyForce(recoilForce);
 }
 
 void Punk::OnProcessInput(const uint8_t *state)
@@ -75,6 +76,11 @@ void Punk::OnProcessInput(const uint8_t *state)
     {
         mRigidBodyComponent->ApplyForce(Vector2(0.0f, mForwardSpeed));
         mIsRunning = true;
+    }
+
+    if (state[SDL_SCANCODE_F])
+    {
+        mArm->ChangeWeapon();
     }
 }
 
@@ -162,7 +168,7 @@ void Punk::ManageAnimations()
     }
     else if (mArm->mIsShooting)
     {
-        mDrawComponent->SetAnimation("shooting");
+        mDrawComponent->SetAnimation(mArm->ArmConfig());
     }
     else if (mIsRunning)
     {
