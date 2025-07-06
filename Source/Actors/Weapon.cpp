@@ -76,7 +76,7 @@ Vector2 Pistol::Shoot(Vector2 &target)
         return Vector2::Zero;
 
     Projectile *projectile = new Projectile(
-        mArm->GetPunk()->GetGame(), 
+        mArm->GetPunk()->GetGame(),
         ColliderLayer::PlayerProjectile
     );
 
@@ -87,6 +87,7 @@ Vector2 Pistol::Shoot(Vector2 &target)
     fireDir.Normalize();
 
     projectile->SetPosition(startPos);
+    projectile->mPreviousPosition = startPos;
     projectile->GetComponent<RigidBodyComponent>()->ApplyForce(fireDir * 3000.0f);
 
     float angle = atan2f(fireDir.y, fireDir.x);
@@ -131,6 +132,7 @@ Vector2 Shotgun::Shoot(Vector2 &target)
     for (int i = -1; i <= 1; ++i) {
         Projectile *projectile = new Projectile(mArm->GetPunk()->GetGame(), ColliderLayer::PlayerProjectile);
         projectile->SetPosition(startPos);
+        projectile->mPreviousPosition = startPos;
         projectile->GetComponent<RigidBodyComponent>()->ApplyForce(fireDir * Matrix2::CreateRotation(i * Math::Pi/6.0f) * 1800.0f);
     }
 
