@@ -133,6 +133,7 @@ void Punk::ShootAt(Vector2 targetPos)
         Projectile *projectile = new Projectile(mGame, 5.0f, 1.0f, ColliderLayer::PlayerProjectile);
         Vector2 shotOffset = (GetRotation() == 0.0f) ? Vector2(2.0f, -7.0f) : Vector2(-4.0f, -7.0f);
         projectile->SetPosition(center + shotOffset);
+        projectile->mPreviousPosition = center + shotOffset;
         projectile->GetComponent<RigidBodyComponent>()->ApplyForce(direction * 3000.0f);
 
         new ProjectileEffect(mGame, center + shotOffset, angle);
