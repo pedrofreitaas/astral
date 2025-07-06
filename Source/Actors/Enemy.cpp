@@ -194,7 +194,6 @@ void Enemy::Kill() {
 
 void Enemy::ShootAtPlayer(Vector2 targetPos, AABBColliderComponent* targetColliderComponent) //OBS: target pos no caso do jogador é o mouse, é onde estamos mirando. Aqui seria a posição do jogador
 {
-
     Vector2 playerCenterOffset = Vector2(targetColliderComponent->GetWidth() / 2, targetColliderComponent->GetHeight() / 2);
     Vector2 targetPosCenter = targetPos + playerCenterOffset;
 
@@ -211,11 +210,11 @@ void Enemy::ShootAtPlayer(Vector2 targetPos, AABBColliderComponent* targetCollid
     Vector2 firePosition = center + mouthOffset;
 
     if (mFireCooldown <= 0.0f) {
-        Projectile* projectile = new Projectile(mGame, 5.0f, 1.0f, ColliderLayer::EnemyProjectile);
+        Projectile* projectile = new Projectile(mGame, ColliderLayer::EnemyProjectile, 2);
         projectile->SetPosition(firePosition);
         projectile->mPreviousPosition = firePosition;
         projectile->GetComponent<RigidBodyComponent>()->ApplyForce(direction * 2500.0f);
-        mFireCooldown = 0.3f;
+        mFireCooldown = .9f;
     }
 }
 

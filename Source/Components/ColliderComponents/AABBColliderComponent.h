@@ -46,6 +46,8 @@ public:
 
     void SetStatic(bool isStatic) { mIsStatic = isStatic; }
 
+    bool IsOnCamera();
+
     Vector2 GetMin() const;
     Vector2 GetMax() const;
     Vector2 GetCenter() const;

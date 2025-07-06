@@ -11,17 +11,8 @@ ProjectileEffect::ProjectileEffect(Game* game, const Vector2& position, float ro
     SetPosition(positionCentered);
     SetRotation(rotation);
 
-    mDrawComponent = new DrawSpriteComponent(this, "../Assets/Sprites/Projectile/projectile_effect.png", 168, 28, 20);
+    mDrawComponent = new DrawSpriteComponent(this, "../Assets/Sprites/Projectile/projectile_effect.png", 168, 28, 999);
     mDrawComponent->SetPivot(Vector2(0.0f, 0.5f));
-
-    //TODO - mudar para animado
-    // mDrawComponent = new DrawAnimatedComponent(this,
-    //     "../Assets/Sprites/Projectile/projectile_effect_anim.png",
-    //     "../Assets/Sprites/Projectile/projectile_effect_anim.json");
-
-    // mDrawComponent->AddAnimation("shoot", {0, 1, 2, 3, 4, 5});
-    // mDrawComponent->SetAnimation("shoot");
-    // mDrawComponent->SetAnimFPS(5.0f); 
 }
 
 void ProjectileEffect::OnUpdate(float deltaTime)

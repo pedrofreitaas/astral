@@ -144,3 +144,15 @@ void AABBColliderComponent::ResolveVerticalCollisions(RigidBodyComponent *rigidB
         mOwner->SetOnGround();
     }
 }
+
+bool AABBColliderComponent::IsOnCamera()
+{
+    Vector2 cameraPos = mOwner->GetGame()->GetCameraPos();
+    Vector2 min = GetMin();
+    Vector2 max = GetMax();
+
+    return (min.x < cameraPos.x + mOwner->GetGame()->GetWindowWidth() &&
+            max.x > cameraPos.x &&
+            min.y < cameraPos.y + mOwner->GetGame()->GetWindowHeight() &&
+            max.y > cameraPos.y);
+}

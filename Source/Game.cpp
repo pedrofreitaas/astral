@@ -164,6 +164,20 @@ void Game::ChangeScene()
         // Initialize main menu actors
         LoadMainMenu();
     }
+    // else if (mNextScene == GameScene::Intro) {
+    //     mMusicHandle = mAudio->PlaySound("MainTheme.ogg", true);
+    //     mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
+    //
+    //     UIScreen *intro = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+    //     const Vector2 titleSize = Vector2(mWindowWidth, mWindowHeight);
+    //     const Vector2 titlePos = Vector2(0.0f, 0.0f);
+    //     intro->AddImage("../Assets/Sprites/img.png", titlePos, titleSize);
+    //
+    //     const Vector2 buttonSize = Vector2(200.0f, 40.0f);
+    //     const Vector2 button1Pos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, mWindowHeight * 0.8f);
+    //     intro->AddButton("Continue", button1Pos, buttonSize, [this]()
+    //                 { SetGameScene(GameScene::Level1);});
+    // }
     else if (mNextScene == GameScene::Level1)
     {
         // Start Music
@@ -184,9 +198,8 @@ void Game::ChangeScene()
         auto spawner = new Spawner(this, 3000.f, 0);
         spawner->SetPosition(Vector2(500.0f, 1000.0f));
 
-        // const auto &portal = new Portal(this);
-        // portal->SetPosition(Vector2(622.0f, 210.0f));
-
+       // const auto &portal = new Portal(this);
+       // portal->SetPosition(Vector2(622.0f, 210.0f));
         DialogueSystem::Get()->StartDialogue(
         { // Um vetor com as falas
             "Punk: Ugh... Minha cabeca... Onde estou?",
@@ -194,7 +207,8 @@ void Game::ChangeScene()
             "Punk: Tenho que sair desta floresta. E descobrir o que esta acontecendo."
 
         },
-        [this]() {
+        [this]() { // Esta função será chamada quando o diálogo terminar
+            // Retorna o estado do jogo para "Playing" para que a fase comece.
             SetGamePlayState(GamePlayState::Playing);
         }
     );
@@ -294,6 +308,7 @@ void Game::ChangeScene()
     }
 
     else if (mNextScene == GameScene::Ending_GoHome) {
+        // Start Music
         mAudio->StopSound(mMusicHandle);
         mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
         mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
@@ -352,7 +367,10 @@ void Game::LoadMainMenu()
             "Use W A S D para se mover",
             "Use o mouse para mirar",
             "Clique para atirar",
-            "Evite os inimigos!"
+            "Evite os inimigos!",
+            "Aperte F para trocar de arma",
+            "Seus tiros recarregam,",
+            "enquanto não estiver atirando",
         };
         for(int i = 0; i < instructionsList.size(); ++i)
         {
@@ -767,6 +785,8 @@ void Game::UpdateGame()
             if (mPunk)
             {
                 mHUD->UpdateLives(mPunk->Lives());
+                mHUD->UpdateAmmo(mPunk->GetAmmo(), mPunk->GetMaxAmmo());
+                mHUD->UpdateGun(mPunk->GetCurrentWeaponName());
             }
         }   
     }
@@ -938,10 +958,14 @@ void Game::GenerateOutput()
 
     for (auto actor : actorsOnCamera)
     {
-        auto drawable = actor->GetComponent<DrawComponent>();
-        if (drawable && drawable->IsVisible())
+        std::vector<DrawComponent*> actorDrawables = actor->GetComponents<DrawComponent>();
+
+        for (auto drawable : actorDrawables)
         {
-            drawables.emplace_back(drawable);
+            if (drawable && drawable->IsVisible())
+            {
+                drawables.emplace_back(drawable);
+            }
         }
     }
 

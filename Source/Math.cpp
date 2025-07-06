@@ -24,6 +24,13 @@ const Vector3 Vector3::NegUnitZ(0.0f, 0.0f, -1.0f);
 const Vector3 Vector3::Infinity(Math::Infinity, Math::Infinity, Math::Infinity);
 const Vector3 Vector3::NegInfinity(Math::NegInfinity, Math::NegInfinity, Math::NegInfinity);
 
+static float m2Ident[2][2] =
+{
+	{ 1.0f, 0.0f },
+	{ 0.0f, 1.0f }
+};
+const Matrix2 Matrix2::Identity(m2Ident);
+
 static float m3Ident[3][3] =
 {
 	{ 1.0f, 0.0f, 0.0f },

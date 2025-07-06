@@ -7,18 +7,21 @@
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
 #include "../Components/DrawComponents/DrawSpriteComponent.h"
 
-Projectile::Projectile(Game* game, const float length, const float deathTimer, ColliderLayer layer)
+Projectile::Projectile(Game* game, const float length, const float deathTimer, ColliderLayer layer, int type)
         :Actor(game)
         ,mLength(length)
         ,mDeathTimer(deathTimer)
 {
     Vector2 v1 = Vector2(-mLength / 2.0f, 0.0f);
     Vector2 v2 = Vector2(mLength / 2.0f, 0.0f);
+    std::string bullet_path = (type == 1) ? "../Assets/Sprites/Projectile/bullet1.png" :
+                                               "../Assets/Sprites/Projectile/bullet2.png";
 
     std::vector<Vector2> verts { v1, v2 };
+    mDrawComponent = new DrawSpriteComponent(this, bullet_path, 8, 6, 999);
 
     //mDrawComponent = new DrawPolygonComponent(this, verts,100);
-    mDrawComponent = new DrawSpriteComponent(this, "../Assets/Sprites/Projectile/bullet.png", 4, 3, 100);
+    //mDrawComponent = new DrawSpriteComponent(this, "../Assets/Sprites/Projectile/bullet.png", 4, 3, 100);
     mRigidBodyComponent = new RigidBodyComponent(this, 0.1f, 0, false);
     mColliderComponent = new AABBColliderComponent(this, 0, 0, 7, 6, layer, true);
     mPreviousPosition = GetPosition();
@@ -95,31 +98,23 @@ void Projectile::OnUpdate(float deltaTime)
     mPreviousPosition = newPos;
 
     mDeathTimer -= deltaTime;
-    if (mDeathTimer <= 0.0f) {
+    if (mDeathTimer <= 0.0f || !mColliderComponent->IsOnCamera()) {
         SetState(ActorState::Destroy);
-        //SDL_Log("[Projectile] Destroyed at %.1f, %.1f", newPos.x, newPos.y);
-
     }
 }
 
-void Projectile::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
+void Projectile::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    Vector2 currentPos = GetPosition();
-
-    if (other->GetLayer() == ColliderLayer::Blocks || other->GetLayer() == ColliderLayer::Bricks) {
+    if (other->GetLayer() == ColliderLayer::Blocks || other->GetLayer() == ColliderLayer::Bricks)
+    {
         SetState(ActorState::Destroy);
-        //SDL_Log("[Projectile] Destroyed at %.1f, %.1f", currentPos.x, currentPos.y);
-
     }
 }
 
-void Projectile::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
+void Projectile::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    Vector2 currentPos = GetPosition();
-
-    if (other->GetLayer() == ColliderLayer::Blocks || other->GetLayer() == ColliderLayer::Bricks) {
+    if (other->GetLayer() == ColliderLayer::Blocks || other->GetLayer() == ColliderLayer::Bricks)
+    {
         SetState(ActorState::Destroy);
-        //SDL_Log("[Projectile] Destroyed at %.1f, %.1f", currentPos.x, currentPos.y);
-
     }
 }

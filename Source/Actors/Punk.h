@@ -4,9 +4,10 @@
 
 #pragma once
 #include "Actor.h"
+#include "PunkArm.h"
 #include <SDL.h>
 
-const float DEATH_TIMER = 0.71; // seconds
+const float DEATH_TIMER = 0.71f; // seconds
 
 class Punk : public Actor
 {
@@ -27,6 +28,18 @@ public:
     void FindKey();
     void FindHeart();
 
+    void OnShoot(Vector2 &recoilForce);
+
+    Vector2 GetCenter() const
+    {
+        return mColliderComponent->GetCenter();
+    }   
+
+    int GetAmmo();
+    int GetMaxAmmo();
+
+    std::string GetCurrentWeaponName();
+
 private:
     static const int POLE_SLIDE_TIME = 1; // Time in seconds to slide down the pole
 
@@ -40,8 +53,6 @@ private:
     bool mIsDying; float mDeathTimer;
     bool mFoundKey;
 
-    bool mIsShooting; //Shooting related
-    float mFireCooldown; //Shooting related
     int mLives = 6;
     float mInvincibilityTimer = 0.0f;
 
@@ -49,10 +60,8 @@ private:
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
 
-    class Actor* mArm; //Shooting related
-    class DrawSpriteComponent* mArmDraw; //Shooting related
+    class PunkArm* mArm;
 
     void MaintainInbound();
-    void ShootAt(Vector2 targetPos); //Shooting related
     void TakeDamage();
 };

@@ -14,7 +14,7 @@
 #include "../UIElements/DialogueSystem.h"
 
 Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
-    : Actor(game), mIsRunning(false), mIsOnPole(false), mIsDying(false), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed), mPoleSlideTimer(0.0f), mIsShooting(false), mFireCooldown(0.0f), mFoundKey(false), mDeathTimer(0.0f)
+    : Actor(game), mIsRunning(false), mIsOnPole(false), mIsDying(false), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed), mPoleSlideTimer(0.0f), mFoundKey(false), mDeathTimer(0.0f)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f, false);
     mColliderComponent = new AABBColliderComponent(this, 14, 20, 18, 28,
@@ -25,18 +25,23 @@ Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
                                                "../Assets/Sprites/Punk/texture.json",
                                                static_cast<int>(DrawLayerPosition::Player) + 1);
 
-    mDrawComponent->AddAnimation("dying", {13, 14, 15, 16, 17, 18});
     mDrawComponent->AddAnimation("idle", {0, 1, 2, 3});
-    mDrawComponent->AddAnimation("run", {4, 5, 6, 7, 8, 9});
-    mDrawComponent->AddAnimation("jump", {10, 11, 12, 13});
-    mDrawComponent->AddAnimation("shooting", {3});
+    mDrawComponent->AddAnimation("run", {4, 5, 6, 7, 8, 9, 10});
+    mDrawComponent->AddAnimation("dying", {11, 12, 13, 14, 15, 16});
+    mDrawComponent->AddAnimation("shooting_left_arm", {3});
+    mDrawComponent->AddAnimation("shooting_noarm", {17});
+    mDrawComponent->AddAnimation("dash", {18, 19, 20, 21, 22, 23});
 
     mDrawComponent->SetAnimation("idle");
-    mDrawComponent->SetAnimFPS(10.0f);
+    mDrawComponent->SetAnimFPS(13.0f);
 
-    mArm = new Actor(mGame);
-    mArmDraw = new DrawSpriteComponent(mArm, "../Assets/Sprites/Punk/arm_gun.png", 18, 28, 200);
-    mArmDraw->SetPivot(Vector2(0.5f, 0.5f));
+    mArm = new PunkArm(mGame, this, [this](Vector2 &recoilDir)
+                       { OnShoot(recoilDir); });
+}
+
+void Punk::OnShoot(Vector2 &recoilForce)
+{
+    mRigidBodyComponent->ApplyForce(recoilForce);
 }
 
 void Punk::OnProcessInput(const uint8_t *state)
@@ -47,99 +52,42 @@ void Punk::OnProcessInput(const uint8_t *state)
 
     mIsRunning = false;
 
-    int mouseX, mouseY;
-    Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
+    if (mArm->mIsShooting)
+        return;
 
-    if ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)))
+    if (state[SDL_SCANCODE_D])
     {
-
-        Vector2 mouseWorld = Vector2(static_cast<float>(mouseX), static_cast<float>(mouseY)) + GetGame()->GetCameraPos();
-        ShootAt(mouseWorld);
+        mRigidBodyComponent->ApplyForce(Vector2(mForwardSpeed, 0.0f));
+        SetRotation(0.0f);
+        mIsRunning = true;
     }
-    else
+    if (state[SDL_SCANCODE_A])
     {
-        mIsShooting = false;
-        if (state[SDL_SCANCODE_D])
-        {
-            mRigidBodyComponent->ApplyForce(Vector2(mForwardSpeed, 0.0f));
-            SetRotation(0.0f);
-            mIsRunning = true;
-        }
-        if (state[SDL_SCANCODE_A])
-        {
-            mRigidBodyComponent->ApplyForce(Vector2(-mForwardSpeed, 0.0f));
-            SetRotation(Math::Pi);
-            mIsRunning = true;
-        }
+        mRigidBodyComponent->ApplyForce(Vector2(-mForwardSpeed, 0.0f));
+        SetRotation(Math::Pi);
+        mIsRunning = true;
+    }
 
-        if (state[SDL_SCANCODE_W])
-        {
-            mRigidBodyComponent->ApplyForce(Vector2(0.0f, -mForwardSpeed));
-            mIsRunning = true;
-        }
+    if (state[SDL_SCANCODE_W])
+    {
+        mRigidBodyComponent->ApplyForce(Vector2(0.0f, -mForwardSpeed));
+        mIsRunning = true;
+    }
 
-        if (state[SDL_SCANCODE_S])
-        {
-            mRigidBodyComponent->ApplyForce(Vector2(0.0f, mForwardSpeed));
-            mIsRunning = true;
-        }
+    if (state[SDL_SCANCODE_S])
+    {
+        mRigidBodyComponent->ApplyForce(Vector2(0.0f, mForwardSpeed));
+        mIsRunning = true;
+    }
+
+    if (state[SDL_SCANCODE_F])
+    {
+        mArm->ChangeWeapon();
     }
 }
 
 void Punk::OnHandleKeyPress(const int key, const bool isPressed)
 {
-    if (mGame->GetGamePlayState() != Game::GamePlayState::Playing)
-        return;
-
-    // Jump
-    // if (key == SDLK_SPACE && isPressed && mIsOnGround)
-    // {
-    //     mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, mJumpSpeed));
-    //     mIsOnGround = false;
-    //
-    //     // Play jump sound
-    //     mGame->GetAudio()->PlaySound("Jump.wav");
-    // }
-}
-
-void Punk::ShootAt(Vector2 targetPos)
-{
-    mIsShooting = true;
-    mIsRunning = false;
-    mRigidBodyComponent->SetVelocity(Vector2(0.0f, 0.0f));
-
-    Vector2 center = mColliderComponent->GetMin() + Vector2(mColliderComponent->GetWidth() / 2, mColliderComponent->GetHeight() / 2);
-    Vector2 direction = targetPos - center;
-    direction.Normalize();
-
-    if (targetPos.x > center.x)
-    {
-        SetRotation(0.0f);
-        mArmDraw->SetFlip(false);
-    }
-    else
-    {
-        SetRotation(Math::Pi);
-        mArmDraw->SetFlip(true);
-    }
-
-    Vector2 shoulderOffset = (GetRotation() == 0.0f) ? Vector2(-2.0f, -20.0f) : Vector2(-13.0f, -20.0f);
-    mArm->SetPosition(center + shoulderOffset);
-    float angle = atan2f(direction.y, direction.x);
-    mArm->SetRotation(angle);
-
-    if (mFireCooldown <= 0.0f)
-    {
-        Projectile *projectile = new Projectile(mGame, 5.0f, 1.0f, ColliderLayer::PlayerProjectile);
-        Vector2 shotOffset = (GetRotation() == 0.0f) ? Vector2(2.0f, -7.0f) : Vector2(-4.0f, -7.0f);
-        projectile->SetPosition(center + shotOffset);
-        projectile->mPreviousPosition = center + shotOffset;
-        projectile->GetComponent<RigidBodyComponent>()->ApplyForce(direction * 3000.0f);
-
-        new ProjectileEffect(mGame, center + shotOffset, angle);
-
-        mFireCooldown = 0.5f;
-    }
 }
 
 void Punk::TakeDamage()
@@ -199,23 +147,26 @@ void Punk::OnUpdate(float deltaTime)
         return;
     }
 
+    mArm->SetPosition(GetPosition());
+
     MaintainInbound();
     ManageAnimations();
 
-    if (mIsDying) {
-        mDeathTimer-=deltaTime;
+    if (mArm->IsAimingRight())
+        SetRotation(0.0f);
+    else if (mArm->IsAimingLeft())
+        SetRotation(Math::Pi);
 
-        if (mDeathTimer <= 0) {
+    if (mIsDying)
+    {
+        mDeathTimer -= deltaTime;
+
+        if (mDeathTimer <= 0)
+        {
             mGame->Quit();
         }
         return;
     }
-    
-    mFireCooldown -= deltaTime;
-    if (mIsShooting)
-        mArmDraw->SetIsVisible(true);
-    else
-        mArmDraw->SetIsVisible(false);
 
     if (mInvincibilityTimer > 0.0f)
         mInvincibilityTimer -= deltaTime;
@@ -227,9 +178,9 @@ void Punk::ManageAnimations()
     {
         mDrawComponent->SetAnimation("dying");
     }
-    else if (mIsShooting)
+    else if (mArm->mIsShooting)
     {
-        mDrawComponent->SetAnimation("shooting");
+        mDrawComponent->SetAnimation(mArm->ArmConfig());
     }
     else if (mIsRunning)
     {
@@ -252,7 +203,7 @@ void Punk::Kill()
     mColliderComponent->SetEnabled(false);
 
     mGame->GetAudio()->StopAllSounds();
-    //mGame->GetAudio()->PlaySound("Dead.wav");
+    // mGame->GetAudio()->PlaySound("Dead.wav");
 
     mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
 }
@@ -397,4 +348,32 @@ void Punk::FindKey()
 void Punk::FindHeart() {
     if (mLives < 6) {mLives++;}
     mGame->GetAudio()->PlaySound("KeyPick.wav");
+}
+
+int Punk::GetAmmo()
+{
+    return mArm->mChosenWeapon->mAmmo;
+}
+
+int Punk::GetMaxAmmo()
+{
+    return mArm->mChosenWeapon->mMaxAmmo;
+}
+
+std::string Punk::GetCurrentWeaponName()
+{
+    if (!mArm->mChosenWeapon) {
+        return "Unkown";
+    }
+
+    if (mArm->mChosenWeapon == mArm->mPistol)
+    {
+        return "Pistol";
+    }
+    else if (mArm->mChosenWeapon == mArm->mShotgun)
+    {
+        return "Shotgun";
+    }
+
+    return "Unknown";
 }

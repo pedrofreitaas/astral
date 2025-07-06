@@ -10,7 +10,7 @@ project(${PROJECT_NAME})
 find_package(PkgConfig REQUIRED)
 
 # Find SDL2 with specific version
-pkg_check_modules(SDL2 REQUIRED sdl2>=2.32.2)
+pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
 pkg_check_modules(SDL2_TTF REQUIRED SDL2_ttf)
 pkg_check_modules(SDL2_MIXER REQUIRED SDL2_mixer)
@@ -42,8 +42,6 @@ add_executable(${PROJECT_NAME}
         Source/Components/DrawComponents/DrawAnimatedComponent.h
         Source/Actors/Block.cpp
         Source/Actors/Block.h
-        Source/Actors/Goomba.cpp
-        Source/Actors/Goomba.h
         Source/Actors/Spawner.cpp
         Source/Actors/Spawner.h
         Source/AudioSystem.cpp
@@ -79,6 +77,14 @@ add_executable(${PROJECT_NAME}
         Source/Actors/Portal.h
         Source/Actors/Portal.cpp
         Source/Actors/Item.h
+        Source/Actors/PunkArm.h
+        Source/Actors/PunkArm.cpp
+        Source/Actors/Weapon.h
+        Source/Actors/Weapon.cpp
+        Source/UIElements/DialogueSystem.cpp
+        Source/UIElements/DialogueSystem.h
+        Source/Components/DrawComponents/DrawRectangleComponent.h
+        Source/Components/DrawComponents/DrawRectangleComponent.cpp
 )
 
 # Link libraries using PkgConfig variables

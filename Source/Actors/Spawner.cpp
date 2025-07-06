@@ -5,7 +5,6 @@
 #include "Spawner.h"
 #include "../Game.h"
 #include "Punk.h"
-#include "Goomba.h"
 #include "Enemy.h"
 
 Spawner::Spawner(Game* game, float spawnDistance, int type)

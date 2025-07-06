@@ -4,7 +4,7 @@
 class Projectile : public Actor
 {
 public:
-    Projectile(class Game* game, float length = 10.0f, float deathTimer = 1.0f, ColliderLayer layer = ColliderLayer::EnemyProjectile);
+    Projectile(class Game* game, ColliderLayer layer, int type=1);
 
     void OnUpdate(float deltaTime) override;
 
@@ -15,10 +15,7 @@ public:
     bool LineIntersectsAABB(const Vector2& p1, const Vector2& p2, AABBColliderComponent* box);
     Vector2 mPreviousPosition;
 
-private:
-    float mLength;
-    float mDeathTimer;
-
+private:    
     class DrawSpriteComponent* mDrawComponent;
     class RigidBodyComponent* mRigidBodyComponent;
     class AABBColliderComponent* mColliderComponent;
