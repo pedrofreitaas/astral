@@ -26,9 +26,11 @@ public:
     enum class GameScene
     {
         MainMenu,
+        // Intro,
         Level1,
         Level2,
-        FinalScene
+        Ending_GoHome,
+        Ending_Stay
     };
 
     enum class SceneManagerState
@@ -45,7 +47,8 @@ public:
         Paused,
         GameOver,
         LevelComplete,
-        Leaving
+        Leaving,
+        Dialogue
     };
 
     Game(int windowWidth, int windowHeight);
@@ -80,6 +83,7 @@ public:
 
     // UI functions
     void PushUI(class UIScreen* screen) { mUIStack.emplace_back(screen);}
+    void PopUI() { mUIStack.pop_back();}
     const std::vector<class UIScreen*>& GetUIStack() { return mUIStack; }
 
     // Window functions
@@ -103,6 +107,9 @@ public:
     void SetGamePlayState(GamePlayState state) { mGamePlayState = state; }
     GamePlayState GetGamePlayState() const { return mGamePlayState; }
     GameScene GetGameScene() const { return mGameScene; }
+    SDL_Window* GetWindow() { return mWindow; }
+    SDL_Renderer* GetRenderer() const { return mRenderer; }
+    void LoadLostScreen();
 
 private:
     void ProcessInput();

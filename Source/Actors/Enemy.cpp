@@ -15,48 +15,68 @@
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/ColliderComponents/AABBColliderComponent.h"
 #include "FSM/Patrol.h"
+#include "../Components/DrawComponents/DrawRectangleComponent.h"
 
 // Inclui os estados que vamos usar
 
 const float INIMIGO_DEATH_TIME = 0.35f;
 
-Enemy::Enemy(Game* game, Punk* punk)
+Enemy::Enemy(Game* game, Punk* punk, int type)
     : Actor(game)
     , mPunk(punk)
     , mVelocidade(75.0f) // Velocidade um pouco menor que a do player
     , mIsDying(false)
     , mDeathTimer(0.0f)
+    ,mType(type)
+    ,mMaxHP(3)
+   ,mHP(3)
+
 {
     // Configura os componentes, assim como no Punk
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 2.0f, false);
     mColliderComponent = new AABBColliderComponent(this, 0, 0, 32, 32, ColliderLayer::Enemy);
+    if (mType == 0) {
+        //inimigoA
+        // Use os assets do seu inimigo aqui
+        mDrawComponent = new DrawAnimatedComponent(this,
+                                                  "../Assets/Sprites/Enemy/minion.png",
+                                                   "../Assets/Sprites/Enemy/texture.json");
 
-    // Use os assets do seu inimigo aqui
-    mDrawComponent = new DrawAnimatedComponent(this,
-                                               "../Assets/Sprites/Enemy/minion.png",
-                                               "../Assets/Sprites/Enemy/texture.json");
+        // // Adiciona as animações que o inimigo terá
+         mDrawComponent->AddAnimation("idle", {0,1,2,3,4});
+         mDrawComponent->AddAnimation("run", {5,6,7,8,9,10,11,12});
+         mDrawComponent->AddAnimation("death", {15,16,17,18,19});
+         mDrawComponent->AddAnimation("damaged", {13,14});
+        //
+         mDrawComponent->SetAnimation("idle");
+         mDrawComponent->SetAnimFPS(10.0f);
+         mDrawComponent->SetPivot(Vector2(0.5f, 0.5f));
+    }
+    else {
+        //inimigoB
+        mDrawComponent = new DrawAnimatedComponent(this,
+                                                   "../Assets/Sprites/EnemyB/hot_wheels.png",
+                                                   "../Assets/Sprites/EnemyB/texture.json");
+        mDrawComponent->AddAnimation("sleep", {1});
+        mDrawComponent->AddAnimation("idle", {2,3,4,5});
+        mDrawComponent->AddAnimation("run", {6,7,8,9,10,11,12,13});
+        mDrawComponent->AddAnimation("attack", {14,15,16,17});
+        mDrawComponent->AddAnimation("damaged", {18,19});
+        mDrawComponent->AddAnimation("death", {20,21,22,23});
 
-    // Adiciona as animações que o inimigo terá
-    mDrawComponent->AddAnimation("idle", {0,1,2,3,4});
-    mDrawComponent->AddAnimation("run", {5,6,7,8,9,10,11,12});
-    //mDrawComponent->AddAnimation("attack", {0,1,2,3,4,5,6,7,8,9,10});
-    mDrawComponent->AddAnimation("death", {15,16,17,18,19});
-    mDrawComponent->AddAnimation("damaged", {13,14});
 
-    mDrawComponent->SetAnimation("idle");
-    mDrawComponent->SetAnimFPS(10.0f);
-    mDrawComponent->SetPivot(Vector2(0.5f, 0.5f));
+        mDrawComponent->SetAnimation("run");
+        mDrawComponent->SetAnimFPS(10.0f);
+        mDrawComponent->SetPivot(Vector2(0.5f, 0.5f));
+    }
 
-    // mDrawComponent->AddAnimation("run", {0,1,2,3,4,5,6,7});
-    // mDrawComponent->AddAnimation("charge", {18,19,20,21});
-    // mDrawComponent->AddAnimation("attack", {14,15,16,17});
-    // mDrawComponent->AddAnimation("death", {8,9,10,11,12,13});
-    // mDrawComponent->AddAnimation("damaged", {22,23});
-    //
-    //
-    // mDrawComponent->SetAnimation("run");
-    // mDrawComponent->SetAnimFPS(10.0f);
-    // mDrawComponent->SetPivot(Vector2(0.5f, 0.5f));
+    mHudBase = new Actor(mGame);
+    float barWidth = 50.0f;
+    float barHeight = 6.0f;
+
+    // Barra vermelha (vida cheia no início)
+    mDrawHudLife = new DrawRectangleComponent(mHudBase, Vector2(barWidth, barHeight), Vector3(1.0f, 0.0f, 0.0f), 201);
+
 
     // --- A INICIALIZAÇÃO DA FSM ACONTECE AQUI! ---
     // O inimigo começa no estado "Patrulhando"
@@ -65,14 +85,14 @@ Enemy::Enemy(Game* game, Punk* punk)
 }
 
 Enemy::~Enemy() {
-    // O unique_ptr m_estadoAtual cuidará de se deletar automaticamente
+    if (mHudBase)
+        mHudBase->SetState(ActorState::Destroy);
 }
 
 
 void Enemy::OnUpdate(float deltaTime)
 {
-   // std::cout << "[ENEMY] Animação atual: "
-   //       << mDrawComponent->GetCurrentAnimationName() << std::endl;
+
     if (mTakingDamage)
     {
         mDamageTimer -= deltaTime;
@@ -105,6 +125,20 @@ void Enemy::OnUpdate(float deltaTime)
 
     if (mEstadoAtual) {
         mEstadoAtual->Update(this, deltaTime);
+    }
+
+    if (!mIsDying) {
+        Vector2 enemyPos = GetPosition();
+        Vector2 hudOffset(0.0f, -20.0f);
+        if (mHudBase)
+            mHudBase->SetPosition(enemyPos + hudOffset);
+
+        if (mDrawHudLife)
+        {
+            float hpPercent = static_cast<float>(mHP) / 3.0f;
+            float fullWidth = 50.0f;
+            mDrawHudLife->SetSize(Vector2(fullWidth * hpPercent, 6.0f));
+        }
     }
 }
 

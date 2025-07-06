@@ -1,9 +1,16 @@
 #include "Portal.h"
 
-Portal::Portal(Game* game)
+Portal::Portal(Game* game, int type)
     : Actor(game)
 {
-    mColliderComponent = new AABBColliderComponent(this, 0, 0, 64, 64, ColliderLayer::Portal, true);
+    if (type == 0)
+    {
+        mColliderComponent = new AABBColliderComponent(this, 0, 0, 64, 64, ColliderLayer::Portal, true);
+    }
+    else
+    {
+        mColliderComponent = new AABBColliderComponent(this, 0, 0, 64, 64, ColliderLayer::Portal2, true);
+    }
 
     mDrawComponent = new DrawAnimatedComponent(this,
                                                "../Assets/Sprites/Portal/texture.png",

@@ -14,6 +14,8 @@ PunkArm::PunkArm(Game *game, Punk *punk, const std::function<void(Vector2 &recoi
     mOnShotCallback = [this, onShotCallback](Vector2 &recoilForce) {
         onShotCallback(recoilForce);
     };
+
+    SetPosition(mPunk->GetPosition());
 }
 
 std::string PunkArm::ArmConfig()
@@ -87,7 +89,6 @@ void PunkArm::OnUpdate(float deltaTime)
     float angle = atan2f(fireDir.y, fireDir.x);
     
     SetRotation(angle);
-    SetPosition(mPunk->GetPosition());
     mChosenWeapon->Update(deltaTime, mIsShooting, GetTargetPos().x <= mPunk->GetCenter().x);
 }
 

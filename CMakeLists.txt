@@ -81,6 +81,10 @@ add_executable(${PROJECT_NAME}
         Source/Actors/PunkArm.cpp
         Source/Actors/Weapon.h
         Source/Actors/Weapon.cpp
+        Source/UIElements/DialogueSystem.cpp
+        Source/UIElements/DialogueSystem.h
+        Source/Components/DrawComponents/DrawRectangleComponent.h
+        Source/Components/DrawComponents/DrawRectangleComponent.cpp
 )
 
 # Link libraries using PkgConfig variables

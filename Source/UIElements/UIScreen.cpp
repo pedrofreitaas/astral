@@ -40,6 +40,16 @@ UIScreen::~UIScreen()
         delete img;
     }
     mImages.clear();
+
+    for (auto img : mCursors) {
+        delete img;
+    }
+    mCursors.clear();
+
+    for (auto img : mBackground) {
+        delete img;
+    }
+    mBackground.clear();
 }
 
 void UIScreen::Update(float deltaTime)
@@ -49,19 +59,24 @@ void UIScreen::Update(float deltaTime)
 
 void UIScreen::Draw(SDL_Renderer *renderer)
 {
-    // Draw texts
+    for (auto t : mBackground) {
+        t->Draw(renderer, mPos);
+    }
+
+    for (auto img : mImages) {
+        img->Draw(renderer, mPos);
+    }
+
+    for (auto b : mButtons) {
+        b->Draw(renderer, mPos);
+    }
+    
     for (auto t : mTexts) {
         t->Draw(renderer, mPos);
     }
 
-    // Draw buttons
-    for (auto b : mButtons) {
-        b->Draw(renderer, mPos);
-    }
-
-    // Draw images
-    for (auto img : mImages) {
-        img->Draw(renderer, mPos);
+    for (auto t : mCursors) {
+        t->Draw(renderer, mPos);
     }
 }
 
@@ -136,5 +151,19 @@ UIImage* UIScreen::AddImage(const std::string &imagePath, const Vector2 &pos, co
 {
     auto img = new UIImage(imagePath, pos, dims, color);
     mImages.emplace_back(img);
+    return img;
+}
+
+UIImage* UIScreen::AddCursor(const std::string &imagePath, const Vector2 &pos, const Vector2 &dims, const Vector3 &color)
+{
+    auto img = new UIImage(imagePath, pos, dims, color);
+    mCursors.emplace_back(img);
+    return img;
+}
+
+UIImage* UIScreen::AddBackground(const std::string &imagePath, const Vector2 &pos, const Vector2 &dims, const Vector3 &color)
+{
+    auto img = new UIImage(imagePath, pos, dims, color);
+    mBackground.emplace_back(img);
     return img;
 }

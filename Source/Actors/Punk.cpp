@@ -11,6 +11,7 @@
 #include "../Components/DrawComponents/DrawSpriteComponent.h"
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
+#include "../UIElements/DialogueSystem.h"
 
 Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
     : Actor(game), mIsRunning(false), mIsOnPole(false), mIsDying(false), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed), mPoleSlideTimer(0.0f), mFoundKey(false), mDeathTimer(0.0f)
@@ -34,9 +35,8 @@ Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
     mDrawComponent->SetAnimation("idle");
     mDrawComponent->SetAnimFPS(13.0f);
 
-    mArm = new PunkArm(mGame, this, [this](Vector2 &recoilDir) {
-        OnShoot(recoilDir);
-    });
+    mArm = new PunkArm(mGame, this, [this](Vector2 &recoilDir)
+                       { OnShoot(recoilDir); });
 }
 
 void Punk::OnShoot(Vector2 &recoilForce)
@@ -51,7 +51,8 @@ void Punk::OnProcessInput(const uint8_t *state)
 
     mIsRunning = false;
 
-    if (mArm->mIsShooting) return;
+    if (mArm->mIsShooting)
+        return;
 
     if (state[SDL_SCANCODE_D])
     {
@@ -139,11 +140,21 @@ void Punk::MaintainInbound()
 
 void Punk::OnUpdate(float deltaTime)
 {
+    if (mGame->GetGamePlayState() == Game::GamePlayState::Dialogue)
+    {
+        mDrawComponent->SetAnimation("idle");
+        return;
+    }
+
+    mArm->SetPosition(GetPosition());
+
     MaintainInbound();
     ManageAnimations();
 
-    if (mArm->IsAimingRight()) SetRotation(0.0f);
-    else if (mArm->IsAimingLeft()) SetRotation(Math::Pi);
+    if (mArm->IsAimingRight())
+        SetRotation(0.0f);
+    else if (mArm->IsAimingLeft())
+        SetRotation(Math::Pi);
 
     if (mIsDying)
     {
@@ -241,7 +252,13 @@ void Punk::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *
 
     if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level2)
     {
-        mGame->SetGameScene(Game::GameScene::FinalScene, .25f);
+        mGame->SetGameScene(Game::GameScene::Ending_GoHome, .25f);
+        other->SetEnabled(false);
+        return;
+    }
+    if (other->GetLayer() == ColliderLayer::Portal2 && mGame->GetGameScene() == Game::GameScene::Level2)
+    {
+        mGame->SetGameScene(Game::GameScene::Ending_Stay, .25f);
         other->SetEnabled(false);
         return;
     }
@@ -276,7 +293,13 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent *ot
 
     if (other->GetLayer() == ColliderLayer::Portal && mGame->GetGameScene() == Game::GameScene::Level2)
     {
-        mGame->SetGameScene(Game::GameScene::FinalScene, .25f);
+        mGame->SetGameScene(Game::GameScene::Ending_GoHome, .25f);
+        other->SetEnabled(false);
+        return;
+    }
+    if (other->GetLayer() == ColliderLayer::Portal2 && mGame->GetGameScene() == Game::GameScene::Level2)
+    {
+        mGame->SetGameScene(Game::GameScene::Ending_Stay, .25f);
         other->SetEnabled(false);
         return;
     }
@@ -290,7 +313,48 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent *ot
 void Punk::FindKey()
 {
     mFoundKey = true;
+    DialogueSystem::Get()->StartDialogue(
+        {"Voz: Voce conseguiu. A ultima chave foi encontrada.",
+         "Voz: O caminho se abre em dois. O seu... e o nosso.",
+         "Voz: O portal verde oferece o seu lar, a sua paz... ao custo da nossa existencia.",
+         "Voz: O portal roxo vai te manter aqui, como o novo guardiao, para nos salvar.",
+         "Voz: A escolha e sua, Viajante do Eter."},
+        [this]()
+        {
+            mGame->SetGamePlayState(Game::GamePlayState::Playing);
+        });
     const auto &portal = new Portal(mGame);
-    portal->SetPosition(Vector2(243.0f, 620.0f));
+    portal->SetPosition(Vector2(288.0f, 992.0f));
+
+    const auto &portal2 = new Portal(mGame, 1);
+    portal2->SetPosition(Vector2(416.0f, 992.0f));
     mGame->GetAudio()->PlaySound("KeyPick.wav");
+}
+
+int Punk::GetAmmo()
+{
+    return mArm->mChosenWeapon->mAmmo;
+}
+
+int Punk::GetMaxAmmo()
+{
+    return mArm->mChosenWeapon->mMaxAmmo;
+}
+
+std::string Punk::GetCurrentWeaponName()
+{
+    if (!mArm->mChosenWeapon) {
+        return "Unkown";
+    }
+    
+    if (mArm->mChosenWeapon == mArm->mPistol)
+    {
+        return "Pistol";
+    }
+    else if (mArm->mChosenWeapon == mArm->mShotgun)
+    {
+        return "Shotgun";
+    }
+
+    return "Unknown";
 }

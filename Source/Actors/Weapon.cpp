@@ -41,8 +41,9 @@ void Weapon::Update(float deltaTime, bool isShooting, bool flip)
     if (mFireCooldownTimer > 0.0f) mFireCooldownTimer -= deltaTime;
     else mFireCooldownTimer = 0.0f;
 
-    if (mReloadCooldownTimer > 0.0f) mReloadCooldownTimer -= deltaTime;
-    else {
+    if (mReloadCooldownTimer > 0.0f && !mArm->IsShooting()) mReloadCooldownTimer -= deltaTime;
+    
+    if (mReloadCooldownTimer <= 0.0f) {
         mReloadCooldownTimer = mReloadCooldown;
         Reload(1);
     }

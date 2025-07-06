@@ -10,7 +10,7 @@
 
 class Portal: public Actor {
     public:
-        Portal(Game* game);
+        Portal(Game* game, int type = 0);
         ~Portal();
 
     private:

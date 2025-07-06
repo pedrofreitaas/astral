@@ -11,7 +11,7 @@
 class HUD : public UIScreen
 {
 public:
-    const int POINT_SIZE = 48;
+    const int POINT_SIZE = 38;
     const int WORD_HEIGHT = 20.0f;
     const int WORD_OFFSET = 25.0f;
     const int CHAR_WIDTH = 20.0f;
@@ -22,12 +22,21 @@ public:
 
     // Reinsert the HUD elements
     void SetTime(int time);
-
-    void SetLevelName();
     void UpdateLives(int lives);
+    void UpdateAmmo(int ammo, int maxAmmo);
+    void UpdateGun(std::string gunName);
+    void UpdateMousePosition(int x, int y);
 
 private:
     // HUD elements
-    UIText* mLives;
     UIText* mTimeText;
+
+    UIImage* mFrame;
+    UIImage* mPunkIcon;
+    std::string mGunName; UIImage* mGunIcon;
+    std::vector<UIImage*> mLives;
+    std::vector<UIImage*> mAmmo; std::vector<UIImage*> mAmmoBackground;
+    UIText* mProjectileText;
+
+    UIImage* mCursor;
 };

@@ -9,10 +9,11 @@
 #include "Punk.h"
 #include "../Game.h"
 #include "FSM/State.h"
+#include "../Components/DrawComponents/DrawRectangleComponent.h"
 
 class Enemy: public Actor {
 public:
-    Enemy(Game* game, Punk* player);
+    Enemy(Game* game, Punk* player, int type);
     ~Enemy();
 
     void OnUpdate(float deltaTime) override;
@@ -51,9 +52,15 @@ private:
     int mHP = 3;
     bool mTakingDamage = false;
     float mDamageTimer = 0.0f;
-
+    int mType;
     bool mIsShooting; //Shooting related
     float mFireCooldown; //Shooting related
+
+    Actor* mHudBase;
+    DrawRectangleComponent* mDrawHudBackground;
+    DrawRectangleComponent* mDrawHudLife;
+    int mMaxHP;
+
 };
 
 #endif //ENEMY_H
