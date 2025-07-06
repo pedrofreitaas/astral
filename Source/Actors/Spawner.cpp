@@ -41,13 +41,12 @@ void Spawner::OnUpdate(float deltaTime)
                         case 0: offset = Vector2(-30.0f, 0.0f); break;
                         case 1: offset = Vector2(0.0f, 0.0f); break;
                         case 2: offset = Vector2(30.0f, 0.0f); break;
-                       // case 3: offset = Vector2(60.0f, 0.0f); break;
                     }
 
                     auto enemy = new Enemy(mGame, const_cast<Punk*>(punk), 0);
                     Vector2 spawnPos = center + offset;
                     enemy->SetPosition(spawnPos);
-                    SDL_Log("Enemy spawned at: %.1f, %.1f", spawnPos.x, spawnPos.y);
+                    //SDL_Log("Enemy spawned at: %.1f, %.1f", spawnPos.x, spawnPos.y);
                 }
             }
         }
