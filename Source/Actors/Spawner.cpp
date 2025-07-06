@@ -46,6 +46,8 @@ void Spawner::OnUpdate(float deltaTime)
                     auto enemy = new Enemy(mGame, const_cast<Punk*>(punk), 0);
                     Vector2 spawnPos = center + offset;
                     enemy->SetPosition(spawnPos);
+                    enemy->Start();
+
                     //SDL_Log("Enemy spawned at: %.1f, %.1f", spawnPos.x, spawnPos.y);
                 }
             }
@@ -74,6 +76,8 @@ void Spawner::OnUpdate(float deltaTime)
                     auto enemy = new Enemy(mGame, const_cast<Punk*>(punk), 1);
                     Vector2 spawnPos = center + offset;
                     enemy->SetPosition(spawnPos);
+                    enemy->Start();
+
                     //SDL_Log("Enemy type 1 spawned at: %.1f, %.1f", spawnPos.x, spawnPos.y);
                 }
             }
