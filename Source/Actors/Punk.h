@@ -25,6 +25,7 @@ public:
     int Lives() { return mLives; }
 
     void FindKey();
+    void FindHeart();
 
 private:
     static const int POLE_SLIDE_TIME = 1; // Time in seconds to slide down the pole

@@ -393,3 +393,8 @@ void Punk::FindKey()
     }
 
 }
+
+void Punk::FindHeart() {
+    if (mLives < 6) {mLives++;}
+    mGame->GetAudio()->PlaySound("KeyPick.wav");
+}

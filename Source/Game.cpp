@@ -205,6 +205,24 @@ void Game::ChangeScene()
             10, 10
         );
         key->SetPosition(Vector2(1510.0f, 125.0f));
+
+        const auto &heart1 = new Item(
+    this,
+    "../Assets/Sprites/Itens/07.png",
+    [this](Item&){ mPunk->FindHeart(); },
+    10, 10
+);
+        heart1->SetPosition(Vector2(1749.0f, 392.0f));
+
+        const auto &heart2 = new Item(
+    this,
+    "../Assets/Sprites/Itens/07.png",
+    [this](Item&){ mPunk->FindHeart(); },
+    10, 10
+);
+        heart2->SetPosition(Vector2(484.0f, 399.0f));
+
+
     }
     else if (mNextScene == GameScene::Level2)
     {
@@ -247,9 +265,15 @@ void Game::ChangeScene()
     SetGamePlayState(GamePlayState::Playing);
 }
 );
-        // const auto &portal = new Portal(this);
-        // portal->SetPosition(Vector2(243.0f, 620.0f));
-    }
+            const auto &heart1 = new Item(
+    this,
+    "../Assets/Sprites/Itens/07.png",
+    [this](Item&){ mPunk->FindHeart(); },
+    10, 10
+    );
+            heart1->SetPosition(Vector2(367.0f, 364.0f));
+        }
+
     else if (mNextScene == GameScene::Ending_Stay) {
         mAudio->StopSound(mMusicHandle);
         mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);

@@ -60,6 +60,17 @@ void HUD::SetTime(int time)
 }
 
 void HUD::UpdateLives(int lives) {
+    const int maxLives = 6;
+    if (lives > maxLives) {
+        lives = maxLives;
+    }
+
+    while (lives > mLives.size()) {
+        float newHeartX = 70.0f + static_cast<float>(mLives.size()) * 17.0f;
+        Vector2 newHeartPos = Vector2(newHeartX, 20.0f);
+        UIImage* newLife = AddImage("../Assets/Sprites/Hud/life_full.png", newHeartPos, Vector2(16.5f, 8.0f));
+        mLives.push_back(newLife);
+    }
     while(lives < mLives.size()) {
         mLives[lives]->~UIImage();
         mLives.pop_back();
