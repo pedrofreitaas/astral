@@ -195,8 +195,8 @@ void Game::ChangeScene()
         mPunk = new Punk(this, 1000.0f, -1000.0f);
         mPunk->SetPosition(Vector2(128.0f, 1088.0f));
 
-        auto spawner = new Spawner(this, 300.0f, 0);
-        spawner->SetPosition(Vector2(500.0f, 100.0f));
+        auto spawner = new Spawner(this, 3000.f, 0);
+        spawner->SetPosition(Vector2(500.0f, 1000.0f));
 
         // const auto &portal = new Portal(this);
         // portal->SetPosition(Vector2(622.0f, 210.0f));
