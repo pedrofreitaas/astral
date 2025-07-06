@@ -239,7 +239,7 @@ void Game::ChangeScene()
         mPunk = new Punk(this, 1000.0f, -1000.0f);
         mPunk->SetPosition(Vector2(1138.0f, 224.0f));
 
-        auto spawner = new Spawner(this, 300.0f, 1);
+        auto spawner = new Spawner(this, 3000.0f, 1);
         spawner->SetPosition(Vector2(500.0f, 100.0f));
 
         // Initialize actors
