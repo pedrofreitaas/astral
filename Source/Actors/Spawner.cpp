@@ -26,29 +26,60 @@ void Spawner::OnUpdate(float deltaTime)
 
             std::vector<Vector2> groupCenters = {
                 //Vector2(200.0f, 200.0f),  // Grupo 1
-                Vector2(520.0f, 300.0f),  // Grupo 2
-                Vector2(1200.0f, 1000.0f),  // Grupo 3
-                Vector2(1400.0f, 400.0f)  // Grupo 4
+                Vector2(640.0f, 448.0f),  // Grupo 2
+                Vector2(992.0f, 864.0f),  // Grupo 3
+                Vector2(1536.0f, 672.0f),  // Grupo 4
+                Vector2(1856.0f, 544.0f),  // Grupo 4
+                Vector2(1504.0f, 416.0f)  // Grupo 4
             };
 
+            int groupNumber = 0;
             for (const auto& center : groupCenters)
             {
-                for (int i = 0; i < 3; i++) // 4 inimigos por grupo
-                {
-                    Vector2 offset;
-                    switch (i) {
-                        case 0: offset = Vector2(-30.0f, 0.0f); break;
-                        case 1: offset = Vector2(0.0f, 0.0f); break;
-                        case 2: offset = Vector2(30.0f, 0.0f); break;
-                    }
-
+                // 1 inimigo por grupo
+                if(groupNumber == 2 || groupNumber == 3) {
+                    Vector2 offset = Vector2(-30.0f, 0.0f);
                     auto enemy = new Enemy(mGame, const_cast<Punk*>(punk), 0);
                     Vector2 spawnPos = center + offset;
                     enemy->SetPosition(spawnPos);
                     enemy->Start();
-
-                    //SDL_Log("Enemy spawned at: %.1f, %.1f", spawnPos.x, spawnPos.y);
                 }
+                // 2 inimigo por grupo
+                else if(groupNumber == 4){
+                    for (int i = 0; i < 2; i++)
+                    {
+                        Vector2 offset;
+                        switch (i) {
+                            case 0: offset = Vector2(-30.0f, 0.0f); break;
+                            case 1: offset = Vector2(0.0f, 0.0f); break;
+                        }
+
+                        auto enemy = new Enemy(mGame, const_cast<Punk*>(punk), 0);
+                        Vector2 spawnPos = center + offset;
+                        enemy->SetPosition(spawnPos);
+                        enemy->Start();
+
+                    }
+                }
+                // 3 inimigo por grupo
+                else{
+                    for (int i = 0; i < 3; i++) // 3 inimigos por grupo
+                    {
+                        Vector2 offset;
+                        switch (i) {
+                            case 0: offset = Vector2(-30.0f, 0.0f); break;
+                            case 1: offset = Vector2(0.0f, 0.0f); break;
+                            case 2: offset = Vector2(30.0f, 0.0f); break;
+                        }
+
+                        auto enemy = new Enemy(mGame, const_cast<Punk*>(punk), 0);
+                        Vector2 spawnPos = center + offset;
+                        enemy->SetPosition(spawnPos);
+                        enemy->Start();
+
+                    }
+                }
+                groupNumber++;
             }
         }
         else {
