@@ -213,6 +213,7 @@ void Enemy::ShootAtPlayer(Vector2 targetPos, AABBColliderComponent* targetCollid
     if (mFireCooldown <= 0.0f) {
         Projectile* projectile = new Projectile(mGame, 5.0f, 1.0f, ColliderLayer::EnemyProjectile);
         projectile->SetPosition(firePosition);
+        projectile->mPreviousPosition = firePosition;
         projectile->GetComponent<RigidBodyComponent>()->ApplyForce(direction * 2500.0f);
         mFireCooldown = 0.3f;
     }

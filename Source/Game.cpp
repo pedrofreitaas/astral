@@ -181,8 +181,8 @@ void Game::ChangeScene()
         mPunk = new Punk(this, 1000.0f, -1000.0f);
         mPunk->SetPosition(Vector2(128.0f, 1088.0f));
 
-        auto spawner = new Spawner(this, 300.0f, 0);
-        spawner->SetPosition(Vector2(500.0f, 100.0f));
+        auto spawner = new Spawner(this, 3000.f, 0);
+        spawner->SetPosition(Vector2(500.0f, 1000.0f));
 
         // const auto &portal = new Portal(this);
         // portal->SetPosition(Vector2(622.0f, 210.0f));
@@ -224,7 +224,7 @@ void Game::ChangeScene()
         mPunk = new Punk(this, 1000.0f, -1000.0f);
         mPunk->SetPosition(Vector2(1138.0f, 224.0f));
 
-        auto spawner = new Spawner(this, 300.0f, 1);
+        auto spawner = new Spawner(this, 3000.0f, 1);
         spawner->SetPosition(Vector2(500.0f, 100.0f));
 
         // Initialize actors
@@ -670,13 +670,13 @@ void Game::TogglePause()
         if (mGamePlayState == GamePlayState::Playing)
         {
             mGamePlayState = GamePlayState::Paused;
-            mAudio->PlaySound("Coin.wav");
+            //mAudio->PlaySound("Coin.wav");
             mAudio->PauseSound(mMusicHandle);
         }
         else if (mGamePlayState == GamePlayState::Paused)
         {
             mGamePlayState = GamePlayState::Playing;
-            mAudio->PlaySound("Coin.wav");
+            //mAudio->PlaySound("Coin.wav");
             mAudio->ResumeSound(mMusicHandle);
         }
     }
