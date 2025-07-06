@@ -27,6 +27,7 @@ public:
 
     void FindKey();
     void FindHeart();
+    void FindShotgun();
 
     void OnShoot(Vector2 &recoilForce);
 

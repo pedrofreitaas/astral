@@ -41,48 +41,44 @@ namespace fs = std::filesystem;
 
 Game::Game(int windowWidth, int windowHeight)
     : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true),
-      mWindowWidth(windowWidth), mWindowHeight(windowHeight), mPunk(nullptr), mHUD(nullptr), mBackgroundColor(0, 0, 0), mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr), mGameTimer(0.0f), mGameTimeLimit(0), mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu), mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero), mBackgroundPosition(Vector2::Zero)
-{
+      mWindowWidth(windowWidth), mWindowHeight(windowHeight), mPunk(nullptr), mHUD(nullptr), mBackgroundColor(0, 0, 0),
+      mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr), mGameTimer(0.0f), mGameTimeLimit(0),
+      mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu),
+      mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero),
+      mBackgroundPosition(Vector2::Zero) {
 }
 
-bool Game::Initialize()
-{
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
-    {
+bool Game::Initialize() {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
         return false;
     }
 
     mWindow = SDL_CreateWindow("ETER", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, mWindowWidth, mWindowHeight, 0);
-    if (!mWindow)
-    {
+    if (!mWindow) {
         SDL_Log("Failed to create window: %s", SDL_GetError());
         return false;
     }
 
     mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (!mRenderer)
-    {
+    if (!mRenderer) {
         SDL_Log("Failed to create renderer: %s", SDL_GetError());
         return false;
     }
 
-    if (IMG_Init(IMG_INIT_PNG) == 0)
-    {
+    if (IMG_Init(IMG_INIT_PNG) == 0) {
         SDL_Log("Unable to initialize SDL_image: %s", SDL_GetError());
         return false;
     }
 
     // Initialize SDL_ttf
-    if (TTF_Init() != 0)
-    {
+    if (TTF_Init() != 0) {
         SDL_Log("Failed to initialize SDL_ttf");
         return false;
     }
 
     // Initialize SDL_mixer
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == -1)
-    {
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == -1) {
         SDL_Log("Failed to initialize SDL_mixer");
         return false;
     }
@@ -107,39 +103,31 @@ bool Game::Initialize()
     return true;
 }
 
-void Game::SetGameScene(Game::GameScene scene, float transitionTime)
-{
+void Game::SetGameScene(Game::GameScene scene, float transitionTime) {
     // Scene Manager FSM: using if/else instead of switch
-    if (mSceneManagerState == SceneManagerState::None)
-    {
+    if (mSceneManagerState == SceneManagerState::None) {
         //if (scene == GameScene::MainMenu || scene == GameScene::Intro || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::FinalScene)
-        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::Ending_Stay || scene == GameScene::Ending_GoHome)
-
-        {
+        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2 || scene ==
+            GameScene::Ending_Stay || scene == GameScene::Ending_GoHome) {
             mNextScene = scene;
             mSceneManagerState = SceneManagerState::Entering;
             mSceneManagerTimer = transitionTime;
-        }
-        else
-        {
+        } else {
             SDL_Log("Invalid game scene: %d", static_cast<int>(scene));
             return;
         }
-    }
-    else
-    {
+    } else {
         SDL_Log("Scene Manager is already in a transition state");
         return;
     }
 }
 
-void Game::ResetGameScene(float transitionTime)
-{
+void Game::ResetGameScene(float transitionTime) {
     SetGameScene(mGameScene, transitionTime);
 }
 
-void Game::ChangeScene()
-{
+
+void Game::ChangeScene() {
     // Unload current Scene
     UnloadScene();
 
@@ -156,8 +144,7 @@ void Game::ChangeScene()
     mSpatialHashing = new SpatialHashing(TILE_SIZE * 4.0f, LEVEL_WIDTH * TILE_SIZE, LEVEL_HEIGHT * TILE_SIZE);
 
     // Scene Manager FSM: using if/else instead of switch
-    if (mNextScene == GameScene::MainMenu)
-    {
+    if (mNextScene == GameScene::MainMenu) {
         // Set background color
         mBackgroundColor.Set(24.0f, 22.0f, 30.0f);
 
@@ -178,8 +165,7 @@ void Game::ChangeScene()
     //     intro->AddButton("Continue", button1Pos, buttonSize, [this]()
     //                 { SetGameScene(GameScene::Level1);});
     // }
-    else if (mNextScene == GameScene::Level1)
-    {
+    else if (mNextScene == GameScene::Level1) {
         // Start Music
         mMusicHandle = mAudio->PlaySound("MainTheme.ogg", true);
 
@@ -198,48 +184,54 @@ void Game::ChangeScene()
         auto spawner = new Spawner(this, 3000.f, 0);
         spawner->SetPosition(Vector2(500.0f, 1000.0f));
 
-       // const auto &portal = new Portal(this);
-       // portal->SetPosition(Vector2(622.0f, 210.0f));
+        // const auto &portal = new Portal(this);
+        // portal->SetPosition(Vector2(622.0f, 210.0f));
         DialogueSystem::Get()->StartDialogue(
-        { // Um vetor com as falas
-            "Punk: Ugh... Minha cabeca... Onde estou?",
-            "Punk: A ultima coisa que lembro... foi de um clarao.",
-            "Punk: Tenho que sair desta floresta. E descobrir o que esta acontecendo."
+            {
+                // Um vetor com as falas
+                "Punk: Ugh... Minha cabeca... Onde estou?",
+                "Punk: A ultima coisa que lembro... foi de um clarao.",
+                "Punk: Tenho que sair desta floresta. E descobrir o que esta acontecendo."
 
-        },
-        [this]() { // Esta função será chamada quando o diálogo terminar
-            // Retorna o estado do jogo para "Playing" para que a fase comece.
-            SetGamePlayState(GamePlayState::Playing);
-        }
-    );
+            },
+            [this]() {
+                // Esta função será chamada quando o diálogo terminar
+                // Retorna o estado do jogo para "Playing" para que a fase comece.
+                SetGamePlayState(GamePlayState::Playing);
+            }
+        );
         const auto &key = new Item(
             this,
             "../Assets/Levels/map_2/blocks/dungeon_3/021.png",
-            [this](Item&){ mPunk->FindKey(); },
+            [this](Item &) { mPunk->FindKey(); },
             10, 10
         );
         key->SetPosition(Vector2(1510.0f, 125.0f));
 
         const auto &heart1 = new Item(
-    this,
-    "../Assets/Sprites/Itens/07.png",
-    [this](Item&){ mPunk->FindHeart(); },
-    10, 10
-);
+            this,
+            "../Assets/Sprites/Itens/07.png",
+            [this](Item &) { mPunk->FindHeart(); },
+            10, 10
+        );
         heart1->SetPosition(Vector2(1749.0f, 392.0f));
 
+        const auto &shotGun = new Item(
+            this,
+            "../Assets/Sprites/Punk/shotgun.png",
+            [this](Item &) { mPunk->FindShotgun(); },
+            10, 10
+        );
+        shotGun->SetPosition(Vector2(480.0f, 800.0f));
+
         const auto &heart2 = new Item(
-    this,
-    "../Assets/Sprites/Itens/07.png",
-    [this](Item&){ mPunk->FindHeart(); },
-    10, 10
-);
+            this,
+            "../Assets/Sprites/Itens/07.png",
+            [this](Item &) { mPunk->FindHeart(); },
+            10, 10
+        );
         heart2->SetPosition(Vector2(484.0f, 399.0f));
-
-
-    }
-    else if (mNextScene == GameScene::Level2)
-    {
+    } else if (mNextScene == GameScene::Level2) {
         // Start Music
         mAudio->StopSound(mMusicHandle);
         mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
@@ -265,30 +257,28 @@ void Game::ChangeScene()
         const auto &key = new Item(
             this,
             "../Assets/Levels/map_2/blocks/dungeon_3/021.png",
-            [this](Item&){ mPunk->FindKey(); },
+            [this](Item &) { mPunk->FindKey(); },
             10, 10
         );
         key->SetPosition(Vector2(160.0f, 192.0f));
 
         DialogueSystem::Get()->StartDialogue(
-{
-    "Punk: Oque? Parece que agora estou em uma dimensao totalmente diferente",
-    "Punk: Sera que este e o ETER? Como o mestre havia me falado?"
-},
-[this]() {
-    SetGamePlayState(GamePlayState::Playing);
-}
-);
-            const auto &heart1 = new Item(
-    this,
-    "../Assets/Sprites/Itens/07.png",
-    [this](Item&){ mPunk->FindHeart(); },
-    10, 10
-    );
-            heart1->SetPosition(Vector2(367.0f, 364.0f));
-        }
-
-    else if (mNextScene == GameScene::Ending_Stay) {
+            {
+                "Punk: Oque? Parece que agora estou em uma dimensao totalmente diferente",
+                "Punk: Sera que este e o ETER? Como o mestre havia me falado?"
+            },
+            [this]() {
+                SetGamePlayState(GamePlayState::Playing);
+            }
+        );
+        const auto &heart1 = new Item(
+            this,
+            "../Assets/Sprites/Itens/07.png",
+            [this](Item &) { mPunk->FindHeart(); },
+            10, 10
+        );
+        heart1->SetPosition(Vector2(367.0f, 364.0f));
+    } else if (mNextScene == GameScene::Ending_Stay) {
         mAudio->StopSound(mMusicHandle);
         mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
         mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
@@ -299,15 +289,12 @@ void Game::ChangeScene()
         final->AddImage("../Assets/Sprites/Final_eter.png", titlePos, titleSize);
 
         DialogueSystem::Get()->StartDialogue(
-{
-    "Voz: O sacrificio foi feito.",
-    "Voz: Voce se tornou o guardiao do eter"
-},
-[this]() { Quit(); });
-
-    }
-
-    else if (mNextScene == GameScene::Ending_GoHome) {
+            {
+                "Voz: O sacrificio foi feito.",
+                "Voz: Voce se tornou o guardiao do eter"
+            },
+            [this]() { Quit(); });
+    } else if (mNextScene == GameScene::Ending_GoHome) {
         // Start Music
         mAudio->StopSound(mMusicHandle);
         mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
@@ -319,47 +306,48 @@ void Game::ChangeScene()
         final->AddImage("../Assets/Sprites/Final_casa1.png", titlePos, titleSize);
 
         DialogueSystem::Get()->StartDialogue(
-    {
-        "Voz: Voce voltou pra casa.",
-        "Voz: O Eter foi deixado para tras."
-    },
-    [this]() { Quit(); });
+            {
+                "Voz: Voce voltou pra casa.",
+                "Voz: O Eter foi deixado para tras."
+            },
+            [this]() { Quit(); });
     }
 
     // Set new scene
     mGameScene = mNextScene;
 }
 
-void Game::LoadMainMenu()
-{
+void Game::LoadMainMenu() {
     int CHAR_WIDTH = 16;
     int WORD_HEIGHT = 20;
 
-    UIScreen *mainMenu = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");    
-    mainMenu->AddBackground("../Assets/Sprites/Menu/eter_extended_side.jpg", Vector2(0,0), Vector2(mWindowWidth, mWindowHeight));
+    UIScreen *mainMenu = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");
+    mainMenu->AddBackground("../Assets/Sprites/Menu/eter_extended_side.jpg", Vector2(0, 0),
+                            Vector2(mWindowWidth, mWindowHeight));
 
     const Vector2 titleSize = Vector2(300.0f, 180.0f);
     const Vector2 titlePos = Vector2(mWindowWidth / 3.1f - titleSize.x / 2.0f, 20.0f);
     mainMenu->AddImage("../Assets/Sprites/Menu/eter_title.png", titlePos, titleSize);
-    
+
     const Vector2 buttonSize = Vector2(230.0f, 55.0f);
     const Vector2 button1Pos = Vector2(mWindowWidth / 4.0f * 3 - buttonSize.x / 2.0f, titlePos.y + titleSize.y + 15.0f);
-    const Vector2 button2Pos = Vector2(mWindowWidth / 4.0f * 3 - buttonSize.x / 2.0f, button1Pos.y + buttonSize.y + 5.0f);
-    const Vector2 button3Pos = Vector2(mWindowWidth / 4.0f * 3 - buttonSize.x / 2.0f, button2Pos.y + buttonSize.y + 5.0f);
+    const Vector2 button2Pos = Vector2(mWindowWidth / 4.0f * 3 - buttonSize.x / 2.0f,
+                                       button1Pos.y + buttonSize.y + 5.0f);
+    const Vector2 button3Pos = Vector2(mWindowWidth / 4.0f * 3 - buttonSize.x / 2.0f,
+                                       button2Pos.y + buttonSize.y + 5.0f);
 
-    mainMenu->AddButton(" ", button1Pos, buttonSize, [this]()
-                        { SetGameScene(GameScene::Level1); });
-    mainMenu->AddText("Play", button1Pos+Vector2(buttonSize.x/2 - CHAR_WIDTH*2, buttonSize.y/3), Vector2(CHAR_WIDTH * 4, WORD_HEIGHT), 40, 1024, Color::White);
+    mainMenu->AddButton(" ", button1Pos, buttonSize, [this]() { SetGameScene(GameScene::Level1); });
+    mainMenu->AddText("Play", button1Pos + Vector2(buttonSize.x / 2 - CHAR_WIDTH * 2, buttonSize.y / 3),
+                      Vector2(CHAR_WIDTH * 4, WORD_HEIGHT), 40, 1024, Color::White);
     mainMenu->AddImage("../Assets/Sprites/Menu/button.png", button1Pos, buttonSize);
 
-    mainMenu->AddButton(" ", button2Pos, buttonSize, [this]()
-    {
+    mainMenu->AddButton(" ", button2Pos, buttonSize, [this]() {
         int CHAR_WIDTH = 14;
         int WORD_HEIGHT = 20;
 
-        UIScreen* howToPlay = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");
+        UIScreen *howToPlay = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");
         const Vector2 howToPlaySize = Vector2(504.0f, 365.0f);
-        const Vector2 howToPlayPos = Vector2(mWindowWidth/2 - howToPlaySize.x/2 + 5, 20.0f);
+        const Vector2 howToPlayPos = Vector2(mWindowWidth / 2 - howToPlaySize.x / 2 + 5, 20.0f);
         howToPlay->AddBackground("../Assets/Sprites/Menu/info_frame.png", howToPlayPos, howToPlaySize);
 
         // Texto de instrução
@@ -372,20 +360,21 @@ void Game::LoadMainMenu()
             "Seus tiros recarregam,",
             "enquanto não estiver atirando",
         };
-        for(int i = 0; i < instructionsList.size(); ++i)
-        {
-            howToPlay->AddText(instructionsList[i], Vector2(mWindowWidth/2 - CHAR_WIDTH * instructionsList[i].size()/2, howToPlayPos.y + howToPlaySize.y / 3 + WORD_HEIGHT * i),
+        for (int i = 0; i < instructionsList.size(); ++i) {
+            howToPlay->AddText(instructionsList[i],
+                               Vector2(mWindowWidth / 2 - CHAR_WIDTH * instructionsList[i].size() / 2,
+                                       howToPlayPos.y + howToPlaySize.y / 3 + WORD_HEIGHT * i),
                                Vector2(CHAR_WIDTH * instructionsList[i].size(), WORD_HEIGHT), 36, 1024, Color::White);
         }
 
         // Botão OK
         Vector2 okSize = Vector2(150, 50);
         Vector2 okPos = Vector2(mWindowWidth * 0.39, mWindowHeight * 0.72);
-        howToPlay->AddButton(" ", okPos, okSize, [this]()
-        {
+        howToPlay->AddButton(" ", okPos, okSize, [this]() {
             PopUI(); // Sai do How To Play
         });
-        howToPlay->AddText("OK", Vector2(mWindowWidth * 0.475, mWindowHeight * 0.75), Vector2(CHAR_WIDTH*2, WORD_HEIGHT), 40, 1024, Color::White);
+        howToPlay->AddText("OK", Vector2(mWindowWidth * 0.475, mWindowHeight * 0.75),
+                           Vector2(CHAR_WIDTH * 2, WORD_HEIGHT), 40, 1024, Color::White);
         howToPlay->AddImage("../Assets/Sprites/Menu/button.png", okPos, okSize);
 
         SDL_Event dummy;
@@ -394,19 +383,19 @@ void Game::LoadMainMenu()
 
         PushUI(howToPlay); // Mostra tela por cima
     });
-    mainMenu->AddText("How To Play", button2Pos+Vector2(buttonSize.x/2 - CHAR_WIDTH*5.5, buttonSize.y/3), Vector2(CHAR_WIDTH * 11, WORD_HEIGHT),40, 1024, Color::White);
+    mainMenu->AddText("How To Play", button2Pos + Vector2(buttonSize.x / 2 - CHAR_WIDTH * 5.5, buttonSize.y / 3),
+                      Vector2(CHAR_WIDTH * 11, WORD_HEIGHT), 40, 1024, Color::White);
     mainMenu->AddImage("../Assets/Sprites/Menu/button.png", button2Pos, buttonSize);
 
-    mainMenu->AddButton(" ", button3Pos, buttonSize, [this]
-                        { Quit(); });
-    mainMenu->AddText("Quit", button3Pos+Vector2(buttonSize.x/2 - CHAR_WIDTH*2, buttonSize.y/3), Vector2(CHAR_WIDTH * 4, WORD_HEIGHT), 40, 1024, Color::White);
+    mainMenu->AddButton(" ", button3Pos, buttonSize, [this] { Quit(); });
+    mainMenu->AddText("Quit", button3Pos + Vector2(buttonSize.x / 2 - CHAR_WIDTH * 2, buttonSize.y / 3),
+                      Vector2(CHAR_WIDTH * 4, WORD_HEIGHT), 40, 1024, Color::White);
     mainMenu->AddImage("../Assets/Sprites/Menu/button.png", button3Pos, buttonSize);
 }
 
-void Game::LoadLostScreen()
-{
+void Game::LoadLostScreen() {
     // Cria uma nova tela de UI para a derrota
-    UIScreen* lostScreen = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+    UIScreen *lostScreen = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
 
     // Adiciona o texto "Voce Perdeu!"
     const Vector2 titleSize = Vector2(400.0f, 100.0f);
@@ -430,21 +419,16 @@ void Game::LoadLostScreen()
     });
 }
 
-void Game::LoadLevel(const std::string &levelPath, const std::string &blocksDir)
-{
+void Game::LoadLevel(const std::string &levelPath, const std::string &blocksDir) {
     std::ifstream in(levelPath);
-    if (!in.is_open())
-    {
+    if (!in.is_open()) {
         SDL_Log("Could not open map file");
         return;
     }
 
-    try
-    {
+    try {
         in >> mMapJson;
-    }
-    catch (const nlohmann::json::parse_error &e)
-    {
+    } catch (const nlohmann::json::parse_error &e) {
         SDL_Log("JSON parse error: %s", e.what());
         return;
     }
@@ -456,24 +440,21 @@ void Game::LoadLevel(const std::string &levelPath, const std::string &blocksDir)
 
 std::unordered_map<int, std::string> LoadGlobalTileMap(
     const nlohmann::json &mapJson,
-    const std::string &mapDir)
-{
+    const std::string &mapDir) {
     std::unordered_map<int, std::string> globalTileMap;
 
     std::regex tileRegex("<tile id=\"(\\d+)\">");
     std::regex imageRegex("source=\"([^\"]+)\"");
 
-    for (const auto &tileset : mapJson["tilesets"])
-    {
+    for (const auto &tileset: mapJson["tilesets"]) {
         int firstGid = tileset["firstgid"];
-        std::string tsxRelPath = tileset["source"];  // ex: "../blocks/tileset_1.tsx"
+        std::string tsxRelPath = tileset["source"]; // ex: "../blocks/tileset_1.tsx"
 
         fs::path tsxPath = fs::path(mapDir) / tsxRelPath;
         fs::path tilesetDir = tsxPath.parent_path();
 
         std::ifstream file(tsxPath);
-        if (!file.is_open())
-        {
+        if (!file.is_open()) {
             SDL_Log("Erro ao abrir TSX: %s", tsxPath.string().c_str());
             continue;
         }
@@ -481,16 +462,12 @@ std::unordered_map<int, std::string> LoadGlobalTileMap(
         std::string line;
         int currentLocalId = -1;
 
-        while (std::getline(file, line))
-        {
+        while (std::getline(file, line)) {
             std::smatch match;
 
-            if (std::regex_search(line, match, tileRegex))
-            {
+            if (std::regex_search(line, match, tileRegex)) {
                 currentLocalId = std::stoi(match[1].str());
-            }
-            else if (currentLocalId != -1 && std::regex_search(line, match, imageRegex))
-            {
+            } else if (currentLocalId != -1 && std::regex_search(line, match, imageRegex)) {
                 std::string imageFile = match[1].str();
                 int globalId = firstGid + currentLocalId;
                 std::string fullPath = (tilesetDir / imageFile).string();
@@ -505,14 +482,12 @@ std::unordered_map<int, std::string> LoadGlobalTileMap(
     return globalTileMap;
 }
 
-void Game::BuildLevel(std::string blocksDir)
-{
+void Game::BuildLevel(std::string blocksDir) {
     auto globalTileMap = LoadGlobalTileMap(mMapJson, blocksDir);
 
     const auto &layers = mMapJson.at("layers");
 
-    for (const auto &layer : layers)
-    {
+    for (const auto &layer: layers) {
         const auto &tiles = layer.at("data");
         int width = layer.at("width");
         int height = layer.at("height");
@@ -530,10 +505,8 @@ void Game::BuildLevel(std::string blocksDir)
         else
             layer_idx = 4;
 
-        for (int y = 0; y < height; ++y)
-        {
-            for (int x = 0; x < width; ++x)
-            {
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
                 int index = y * width + x;
                 int gid = tiles[index];
 
@@ -553,40 +526,33 @@ void Game::BuildLevel(std::string blocksDir)
 }
 
 
-int **Game::ReadLevelData(const std::string &fileName, int width, int height)
-{
+int **Game::ReadLevelData(const std::string &fileName, int width, int height) {
     std::ifstream file(fileName);
-    if (!file.is_open())
-    {
+    if (!file.is_open()) {
         SDL_Log("Failed to open level file: \'%s\'", fileName.c_str());
         return nullptr;
     }
 
     int **levelData = new int *[height];
-    for (int i = 0; i < height; i++)
-    {
+    for (int i = 0; i < height; i++) {
         levelData[i] = new int[width];
     }
 
     std::string line;
     int row = 0;
-    while (std::getline(file, line))
-    {
-        if (row >= height)
-        {
+    while (std::getline(file, line)) {
+        if (row >= height) {
             SDL_Log("Level file has more rows than expected height %d", height);
             break;
         }
 
         std::vector<int> tokens = CSVHelper::Split(line);
-        if (tokens.size() != width)
-        {
+        if (tokens.size() != width) {
             SDL_Log("Level file has a problem in the width");
             return nullptr;
         }
 
-        for (int col = 0; col < width; col++)
-        {
+        for (int col = 0; col < width; col++) {
             levelData[row][col] = tokens[col];
         }
         row++;
@@ -596,47 +562,39 @@ int **Game::ReadLevelData(const std::string &fileName, int width, int height)
     return levelData;
 }
 
-void Game::RunLoop()
-{
-    while (mIsRunning)
-    {
+void Game::RunLoop() {
+    while (mIsRunning) {
         ProcessInput();
         UpdateGame();
         GenerateOutput();
     }
 }
 
-void Game::ProcessInput()
-{
+void Game::ProcessInput() {
     SDL_Event event;
-    while (SDL_PollEvent(&event))
-    {
-        switch (event.type)
-        {
-        case SDL_QUIT:
-            Quit();
-            break;
-        case SDL_KEYDOWN:
-            // Handle key press for UI screens
-            if (!mUIStack.empty())
-            {
-                mUIStack.back()->HandleKeyPress(event.key.keysym.sym);
-            }
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_QUIT:
+                Quit();
+                break;
+            case SDL_KEYDOWN:
+                // Handle key press for UI screens
+                if (!mUIStack.empty()) {
+                    mUIStack.back()->HandleKeyPress(event.key.keysym.sym);
+                }
 
-            HandleKeyPressActors(event.key.keysym.sym, event.key.repeat == 0);
+                HandleKeyPressActors(event.key.keysym.sym, event.key.repeat == 0);
 
             // Check if the Return key has been pressed to pause/unpause the game
-            if (event.key.keysym.sym == SDLK_RETURN)
-            {
-                TogglePause();
-            }
-            break;
+                if (event.key.keysym.sym == SDLK_RETURN) {
+                    TogglePause();
+                }
+                break;
         }
     }
 
     const Uint8 *keyState = SDL_GetKeyboardState(nullptr);
-    if (DialogueSystem::Get()->IsActive())
-    {
+    if (DialogueSystem::Get()->IsActive()) {
         DialogueSystem::Get()->HandleInput(keyState);
     }
     // else if (mGamePlayState == GamePlayState::GameOver)
@@ -648,75 +606,60 @@ void Game::ProcessInput()
     }
 }
 
-void Game::ProcessInputActors()
-{
-    if (mGamePlayState == GamePlayState::Playing)
-    {
+void Game::ProcessInputActors() {
+    if (mGamePlayState == GamePlayState::Playing) {
         // Get actors on camera
         std::vector<Actor *> actorsOnCamera =
-            mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
+                mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
 
         const Uint8 *state = SDL_GetKeyboardState(nullptr);
 
         bool isPunkoOnCamera = false;
-        for (auto actor : actorsOnCamera)
-        {
+        for (auto actor: actorsOnCamera) {
             actor->ProcessInput(state);
 
-            if (actor == mPunk)
-            {
+            if (actor == mPunk) {
                 isPunkoOnCamera = true;
             }
         }
 
         // If Punk is not on camera, process input for him
-        if (!isPunkoOnCamera && mPunk)
-        {
+        if (!isPunkoOnCamera && mPunk) {
             mPunk->ProcessInput(state);
         }
     }
 }
 
-void Game::HandleKeyPressActors(const int key, const bool isPressed)
-{
-    if (mGamePlayState == GamePlayState::Playing)
-    {
+void Game::HandleKeyPressActors(const int key, const bool isPressed) {
+    if (mGamePlayState == GamePlayState::Playing) {
         // Get actors on camera
         std::vector<Actor *> actorsOnCamera =
-            mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
+                mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
 
         // Handle key press for actors
         bool isPunkoOnCamera = false;
-        for (auto actor : actorsOnCamera)
-        {
+        for (auto actor: actorsOnCamera) {
             actor->HandleKeyPress(key, isPressed);
 
-            if (actor == mPunk)
-            {
+            if (actor == mPunk) {
                 isPunkoOnCamera = true;
             }
         }
 
         // If Punk is not on camera, handle key press for him
-        if (!isPunkoOnCamera && mPunk)
-        {
+        if (!isPunkoOnCamera && mPunk) {
             mPunk->HandleKeyPress(key, isPressed);
         }
     }
 }
 
-void Game::TogglePause()
-{
-    if (mGameScene != GameScene::MainMenu)
-    {
-        if (mGamePlayState == GamePlayState::Playing)
-        {
+void Game::TogglePause() {
+    if (mGameScene != GameScene::MainMenu) {
+        if (mGamePlayState == GamePlayState::Playing) {
             mGamePlayState = GamePlayState::Paused;
             //mAudio->PlaySound("Coin.wav");
             mAudio->PauseSound(mMusicHandle);
-        }
-        else if (mGamePlayState == GamePlayState::Paused)
-        {
+        } else if (mGamePlayState == GamePlayState::Paused) {
             mGamePlayState = GamePlayState::Playing;
             //mAudio->PlaySound("Coin.wav");
             mAudio->ResumeSound(mMusicHandle);
@@ -724,21 +667,17 @@ void Game::TogglePause()
     }
 }
 
-void Game::UpdateGame()
-{
-    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16))
-        ;
+void Game::UpdateGame() {
+    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
 
     float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
-    if (deltaTime > 0.05f)
-    {
+    if (deltaTime > 0.05f) {
         deltaTime = 0.05f;
     }
 
     mTicksCount = SDL_GetTicks();
 
-    if (mGamePlayState == GamePlayState::Playing)
-    {
+    if (mGamePlayState == GamePlayState::Playing) {
         // Reinsert all actors and pending actors
         UpdateActors(deltaTime);
     }
@@ -747,25 +686,19 @@ void Game::UpdateGame()
     mAudio->Update(deltaTime);
 
     // Reinsert UI screens
-    for (auto ui : mUIStack)
-    {
-        if (ui->GetState() == UIScreen::UIState::Active)
-        {
+    for (auto ui: mUIStack) {
+        if (ui->GetState() == UIScreen::UIState::Active) {
             ui->Update(deltaTime);
         }
     }
 
     // Delete any UIElements that are closed
     auto iter = mUIStack.begin();
-    while (iter != mUIStack.end())
-    {
-        if ((*iter)->GetState() == UIScreen::UIState::Closing)
-        {
+    while (iter != mUIStack.end()) {
+        if ((*iter)->GetState() == UIScreen::UIState::Closing) {
             delete *iter;
             iter = mUIStack.erase(iter);
-        }
-        else
-        {
+        } else {
             ++iter;
         }
     }
@@ -773,67 +706,56 @@ void Game::UpdateGame()
     // ---------------------
     // Game Specific Updates
     // ---------------------
-    if (mGameScene != GameScene::MainMenu)
-    {
+    if (mGameScene != GameScene::MainMenu) {
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
         mHUD->UpdateMousePosition(mouseX, mouseY);
-        
-        if(mGamePlayState == GamePlayState::Playing){
+
+        if (mGamePlayState == GamePlayState::Playing) {
             // Reinsert level time
             UpdateLevelTime(deltaTime);
-            if (mPunk)
-            {
+            if (mPunk) {
                 mHUD->UpdateLives(mPunk->Lives());
                 mHUD->UpdateAmmo(mPunk->GetAmmo(), mPunk->GetMaxAmmo());
                 mHUD->UpdateGun(mPunk->GetCurrentWeaponName());
             }
-        }   
+        }
     }
 
     UpdateSceneManager(deltaTime);
     UpdateCamera();
 }
 
-void Game::UpdateSceneManager(float deltaTime)
-{
-    if (mSceneManagerState == SceneManagerState::Entering)
-    {
+void Game::UpdateSceneManager(float deltaTime) {
+    if (mSceneManagerState == SceneManagerState::Entering) {
         mSceneManagerTimer -= deltaTime;
-        if (mSceneManagerTimer <= 0.0f)
-        {
+        if (mSceneManagerTimer <= 0.0f) {
             mSceneManagerTimer = TRANSITION_TIME;
             mSceneManagerState = SceneManagerState::Active;
         }
-    }
-    else if (mSceneManagerState == SceneManagerState::Active)
-    {
+    } else if (mSceneManagerState == SceneManagerState::Active) {
         mSceneManagerTimer -= deltaTime;
-        if (mSceneManagerTimer <= 0.0f)
-        {
+        if (mSceneManagerTimer <= 0.0f) {
             ChangeScene();
             mSceneManagerState = SceneManagerState::None;
         }
     }
 }
-void Game::UpdateLevelTime(float deltaTime)
-{
-    if (mGamePlayState != GamePlayState::Playing)
-    {
+
+void Game::UpdateLevelTime(float deltaTime) {
+    if (mGamePlayState != GamePlayState::Playing) {
         return;
     }
 
     mGameTimer += deltaTime;
 
-    while (mGameTimer >= 1.0f)
-    {
+    while (mGameTimer >= 1.0f) {
         // Subtraímos 1.0f em vez de zerar o timer. Isso mantém a precisão.
         mGameTimer -= 1.0f;
         mGameTimeLimit--;
 
         mHUD->SetTime(std::max(0, mGameTimeLimit));
-        if (mGameTimeLimit <= 0)
-        {
+        if (mGameTimeLimit <= 0) {
             mPunk->Kill();
             SetGamePlayState(GamePlayState::GameOver);
             //LoadLostScreen();
@@ -842,10 +764,8 @@ void Game::UpdateLevelTime(float deltaTime)
     }
 }
 
-void Game::UpdateCamera()
-{
-    if (mPunk)
-    {
+void Game::UpdateCamera() {
+    if (mPunk) {
         float cameraX = mPunk->GetPosition().x - mWindowWidth / 2.0f;
         float cameraY = mPunk->GetPosition().y - mWindowHeight / 2.0f;
         float maxCameraX = LEVEL_WIDTH * TILE_SIZE - mWindowWidth;
@@ -871,67 +791,55 @@ void Game::UpdateCamera()
     // }
 }
 
-void Game::UpdateActors(float deltaTime)
-{
+void Game::UpdateActors(float deltaTime) {
     // Get actors on camera
     std::vector<Actor *> actorsOnCamera =
-        mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
+            mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
 
     bool isPunkOnCamera = false;
-    for (auto actor : actorsOnCamera)
-    {
+    for (auto actor: actorsOnCamera) {
         actor->Update(deltaTime);
-        if (actor == mPunk)
-        {
+        if (actor == mPunk) {
             isPunkOnCamera = true;
         }
     }
 
     // If Punk is not on camera, update him (player should always be updated)
-    if (!isPunkOnCamera && mPunk)
-    {
+    if (!isPunkOnCamera && mPunk) {
         mPunk->Update(deltaTime);
     }
 
-    for (auto actor : actorsOnCamera)
-    {
-        if (actor->GetState() == ActorState::Destroy)
-        {
+    for (auto actor: actorsOnCamera) {
+        if (actor->GetState() == ActorState::Destroy) {
             delete actor;
-            if (actor == mPunk)
-            {
+            if (actor == mPunk) {
                 mPunk = nullptr;
             }
         }
     }
 }
 
-void Game::AddActor(Actor *actor)
-{
+void Game::AddActor(Actor *actor) {
     mSpatialHashing->Insert(actor);
 }
 
-void Game::RemoveActor(Actor *actor)
-{
+void Game::RemoveActor(Actor *actor) {
     mSpatialHashing->Remove(actor);
 }
-void Game::Reinsert(Actor *actor)
-{
+
+void Game::Reinsert(Actor *actor) {
     mSpatialHashing->Reinsert(actor);
 }
 
-std::vector<Actor *> Game::GetNearbyActors(const Vector2 &position, const int range)
-{
+std::vector<Actor *> Game::GetNearbyActors(const Vector2 &position, const int range) {
     return mSpatialHashing->Query(position, range);
 }
 
-std::vector<AABBColliderComponent *> Game::GetNearbyColliders(const Vector2 &position, const int range)
-{
+std::vector<AABBColliderComponent *> Game::GetNearbyColliders(const Vector2 &position, const int range) {
     return mSpatialHashing->QueryColliders(position, range);
 }
 
-void Game::GenerateOutput()
-{
+void Game::GenerateOutput() {
     // Clear frame with background color
     SDL_SetRenderDrawColor(mRenderer, mBackgroundColor.x, mBackgroundColor.y, mBackgroundColor.z, 255);
 
@@ -939,31 +847,28 @@ void Game::GenerateOutput()
     SDL_RenderClear(mRenderer);
 
     // Draw background texture considering camera position
-    if (mBackgroundTexture)
-    {
-        SDL_Rect dstRect = {static_cast<int>(mBackgroundPosition.x - mCameraPos.x),
-                            static_cast<int>(mBackgroundPosition.y - mCameraPos.y),
-                            static_cast<int>(mBackgroundSize.x),
-                            static_cast<int>(mBackgroundSize.y)};
+    if (mBackgroundTexture) {
+        SDL_Rect dstRect = {
+            static_cast<int>(mBackgroundPosition.x - mCameraPos.x),
+            static_cast<int>(mBackgroundPosition.y - mCameraPos.y),
+            static_cast<int>(mBackgroundSize.x),
+            static_cast<int>(mBackgroundSize.y)
+        };
 
         SDL_RenderCopy(mRenderer, mBackgroundTexture, nullptr, &dstRect);
     }
 
     // Get actors on camera
     std::vector<Actor *> actorsOnCamera =
-        mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
+            mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
 
     // Get list of drawables in draw order
     std::vector<DrawComponent *> drawables;
+    for (auto actor: actorsOnCamera) {
+        std::vector<DrawComponent *> actorDrawables = actor->GetComponents<DrawComponent>();
 
-    for (auto actor : actorsOnCamera)
-    {
-        std::vector<DrawComponent*> actorDrawables = actor->GetComponents<DrawComponent>();
-
-        for (auto drawable : actorDrawables)
-        {
-            if (drawable && drawable->IsVisible())
-            {
+        for (auto drawable: actorDrawables) {
+            if (drawable && drawable->IsVisible()) {
                 drawables.emplace_back(drawable);
             }
         }
@@ -971,26 +876,22 @@ void Game::GenerateOutput()
 
     // Sort drawables by draw order
     std::sort(drawables.begin(), drawables.end(),
-              [](const DrawComponent *a, const DrawComponent *b)
-              {
+              [](const DrawComponent *a, const DrawComponent *b) {
                   return a->GetDrawOrder() < b->GetDrawOrder();
               });
 
     // Draw all drawables
-    for (auto drawable : drawables)
-    {
+    for (auto drawable: drawables) {
         drawable->Draw(mRenderer, mModColor);
     }
 
     // Draw all UI screens
-    for (auto ui : mUIStack)
-    {
+    for (auto ui: mUIStack) {
         ui->Draw(mRenderer);
     }
 
     // Draw transition rect
-    if (mSceneManagerState == SceneManagerState::Active)
-    {
+    if (mSceneManagerState == SceneManagerState::Active) {
         SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
         SDL_Rect rect = {0, 0, mWindowWidth, mWindowHeight};
         SDL_RenderFillRect(mRenderer, &rect);
@@ -1001,18 +902,15 @@ void Game::GenerateOutput()
     SDL_RenderPresent(mRenderer);
 }
 
-void Game::SetBackgroundImage(const std::string &texturePath, const Vector2 &position, const Vector2 &size)
-{
-    if (mBackgroundTexture)
-    {
+void Game::SetBackgroundImage(const std::string &texturePath, const Vector2 &position, const Vector2 &size) {
+    if (mBackgroundTexture) {
         SDL_DestroyTexture(mBackgroundTexture);
         mBackgroundTexture = nullptr;
     }
 
     // Load background texture
     mBackgroundTexture = LoadTexture(texturePath);
-    if (!mBackgroundTexture)
-    {
+    if (!mBackgroundTexture) {
         SDL_Log("Failed to load background texture: %s", texturePath.c_str());
     }
 
@@ -1023,12 +921,10 @@ void Game::SetBackgroundImage(const std::string &texturePath, const Vector2 &pos
     mBackgroundSize.Set(size.x, size.y);
 }
 
-SDL_Texture *Game::LoadTexture(const std::string &texturePath)
-{
+SDL_Texture *Game::LoadTexture(const std::string &texturePath) {
     SDL_Surface *surface = IMG_Load(texturePath.c_str());
 
-    if (!surface)
-    {
+    if (!surface) {
         SDL_Log("Failed to load image: %s", IMG_GetError());
         return nullptr;
     }
@@ -1036,8 +932,7 @@ SDL_Texture *Game::LoadTexture(const std::string &texturePath)
     SDL_Texture *texture = SDL_CreateTextureFromSurface(mRenderer, surface);
     SDL_FreeSurface(surface);
 
-    if (!texture)
-    {
+    if (!texture) {
         SDL_Log("Failed to create texture: %s", SDL_GetError());
         return nullptr;
     }
@@ -1045,22 +940,15 @@ SDL_Texture *Game::LoadTexture(const std::string &texturePath)
     return texture;
 }
 
-UIFont *Game::LoadFont(const std::string &fileName)
-{
+UIFont *Game::LoadFont(const std::string &fileName) {
     auto iter = mFonts.find(fileName);
-    if (iter != mFonts.end())
-    {
+    if (iter != mFonts.end()) {
         return iter->second;
-    }
-    else
-    {
+    } else {
         UIFont *font = new UIFont(mRenderer);
-        if (font->Load(fileName))
-        {
+        if (font->Load(fileName)) {
             mFonts.emplace(fileName, font);
-        }
-        else
-        {
+        } else {
             font->Unload();
             delete font;
             font = nullptr;
@@ -1069,32 +957,27 @@ UIFont *Game::LoadFont(const std::string &fileName)
     }
 }
 
-void Game::UnloadScene()
-{
+void Game::UnloadScene() {
     // Delete actors
     delete mSpatialHashing;
 
     // Delete UI screens
-    for (auto ui : mUIStack)
-    {
+    for (auto ui: mUIStack) {
         delete ui;
     }
     mUIStack.clear();
 
     // Delete background texture
-    if (mBackgroundTexture)
-    {
+    if (mBackgroundTexture) {
         SDL_DestroyTexture(mBackgroundTexture);
         mBackgroundTexture = nullptr;
     }
 }
 
-void Game::Shutdown()
-{
+void Game::Shutdown() {
     UnloadScene();
 
-    for (auto font : mFonts)
-    {
+    for (auto font: mFonts) {
         font.second->Unload();
         delete font.second;
     }

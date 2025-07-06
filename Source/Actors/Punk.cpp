@@ -82,6 +82,7 @@ void Punk::OnProcessInput(const uint8_t *state)
 
     if (state[SDL_SCANCODE_F])
     {
+        if (mArm->mFoundShotgun == false) return;
         mArm->ChangeWeapon();
     }
 }
@@ -350,6 +351,12 @@ void Punk::FindHeart() {
     mGame->GetAudio()->PlaySound("KeyPick.wav");
 }
 
+void Punk::FindShotgun() {
+    mArm->ChangeWeapon();
+    mArm->mFoundShotgun = true;
+    mGame->GetAudio()->PlaySound("KeyPick.wav");
+}
+
 int Punk::GetAmmo()
 {
     return mArm->mChosenWeapon->mAmmo;
@@ -363,7 +370,7 @@ int Punk::GetMaxAmmo()
 std::string Punk::GetCurrentWeaponName()
 {
     if (!mArm->mChosenWeapon) {
-        return "Unkown";
+        return "Unknown";
     }
 
     if (mArm->mChosenWeapon == mArm->mPistol)

@@ -10,6 +10,7 @@ PunkArm::PunkArm(Game *game, Punk *punk, const std::function<void(Vector2 &recoi
     
     mChosenWeapon = mPistol;
     mChosenWeapon->Enable();
+    mFoundShotgun = false;
 
     mOnShotCallback = [this, onShotCallback](Vector2 &recoilForce) {
         onShotCallback(recoilForce);
@@ -96,7 +97,7 @@ void PunkArm::ChangeWeapon()
 {
     if (mChangeWeaponTimer > 0.0f) return;
 
-    if (mChosenWeapon == mPistol && mShotgun != nullptr) {
+    if (mChosenWeapon == mPistol && mShotgun != nullptr && mFoundShotgun) {
         mChosenWeapon = mShotgun;
         mPistol->Disable();
     } 

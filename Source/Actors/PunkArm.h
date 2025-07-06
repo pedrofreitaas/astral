@@ -50,5 +50,6 @@ private:
 
 protected:
     bool mIsShooting;
+    bool mFoundShotgun;
     float mFireCooldown;
 };
