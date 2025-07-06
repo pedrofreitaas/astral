@@ -356,7 +356,23 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent *ot
 void Punk::FindKey()
 {
     mFoundKey = true;
-    DialogueSystem::Get()->StartDialogue(
+    mGame->GetAudio()->PlaySound("KeyPick.wav");
+
+    if (mGame->GetGameScene() == Game::GameScene::Level1) {
+        DialogueSystem::Get()->StartDialogue(
+        {
+            "Punk: Uma chave! Agora, o que sera que ela abre?",
+                "Punk: Melhor eu dar uma olhada ao redor."
+        },
+    [this]() {
+        mGame->SetGamePlayState(Game::GamePlayState::Playing);
+    }
+    );
+        const auto &portal = new Portal(mGame);
+        portal->SetPosition(Vector2(622.0f, 210.0f));
+    }
+    else {
+        DialogueSystem::Get()->StartDialogue(
         {
             "Voz: Voce conseguiu. A ultima chave foi encontrada.",
             "Voz: O caminho se abre em dois. O seu... e o nosso.",
@@ -368,10 +384,11 @@ void Punk::FindKey()
         mGame->SetGamePlayState(Game::GamePlayState::Playing);
     }
     );
-    const auto &portal = new Portal(mGame);
-    portal->SetPosition(Vector2(288.0f, 992.0f));
+        const auto &portal = new Portal(mGame);
+        portal->SetPosition(Vector2(288.0f, 992.0f));
 
-    const auto &portal2 = new Portal(mGame, 1);
-    portal2->SetPosition(Vector2(416.0f, 992.0f));
-    mGame->GetAudio()->PlaySound("KeyPick.wav");
+        const auto &portal2 = new Portal(mGame, 1);
+        portal2->SetPosition(Vector2(416.0f, 970.0f));
+    }
+
 }

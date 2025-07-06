@@ -198,9 +198,9 @@ void Game::ChangeScene()
         auto spawner = new Spawner(this, 300.0f, 0);
         spawner->SetPosition(Vector2(500.0f, 100.0f));
 
+        // const auto &portal = new Portal(this);
+        // portal->SetPosition(Vector2(622.0f, 210.0f));
 
-        const auto &portal = new Portal(this);
-        portal->SetPosition(Vector2(622.0f, 210.0f));
         DialogueSystem::Get()->StartDialogue(
         { // Um vetor com as falas
             "Punk: Ugh... Minha cabeca... Onde estou?",
@@ -213,6 +213,13 @@ void Game::ChangeScene()
             SetGamePlayState(GamePlayState::Playing);
         }
     );
+        const auto &key = new Item(
+            this,
+            "../Assets/Levels/map_2/blocks/dungeon_3/021.png",
+            [this](Item&){ mPunk->FindKey(); },
+            10, 10
+        );
+        key->SetPosition(Vector2(1510.0f, 125.0f));
     }
     else if (mNextScene == GameScene::Level2)
     {
@@ -251,8 +258,7 @@ void Game::ChangeScene()
     "Punk: Oque? Parece que agora estou em uma dimensao totalmente diferente",
     "Punk: Sera que este e o ETER? Como o mestre havia me falado?"
 },
-[this]() { // Esta função será chamada quando o diálogo terminar
-    // Retorna o estado do jogo para "Playing" para que a fase comece.
+[this]() {
     SetGamePlayState(GamePlayState::Playing);
 }
 );
@@ -260,7 +266,6 @@ void Game::ChangeScene()
         // portal->SetPosition(Vector2(243.0f, 620.0f));
     }
     else if (mNextScene == GameScene::Ending_Stay) {
-        // Start Music
         mAudio->StopSound(mMusicHandle);
         mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
         mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
@@ -276,7 +281,6 @@ void Game::ChangeScene()
         final2->AddImage("../Assets/Sprites/Final_eter.png", titlePos2, titleSize2);
     }
     else if (mNextScene == GameScene::Ending_GoHome) {
-        // Start Music
         mAudio->StopSound(mMusicHandle);
         mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
         mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
@@ -303,10 +307,7 @@ void Game::LoadMainMenu()
 
     UIScreen *mainMenu = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");    
     mainMenu->AddBackground("../Assets/Sprites/Menu/eter_extended_side.jpg", Vector2(0,0), Vector2(mWindowWidth, mWindowHeight));
-    
-    //const Vector2 titleSize = Vector2(178.0f, 65.0f);
-    //const Vector2 titlePos = Vector2(mWindowWidth / 2.0f - titleSize.x / 2.0f, 50.0f);
-    //mainMenu->AddText("ETER", titleSize, titlePos,  60, 1024, Color::White);
+
     const Vector2 titleSize = Vector2(300.0f, 180.0f);
     const Vector2 titlePos = Vector2(mWindowWidth / 3.1f - titleSize.x / 2.0f, 20.0f);
     mainMenu->AddImage("../Assets/Sprites/Menu/eter_title.png", titlePos, titleSize);
