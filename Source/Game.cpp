@@ -164,20 +164,6 @@ void Game::ChangeScene()
         // Initialize main menu actors
         LoadMainMenu();
     }
-    // else if (mNextScene == GameScene::Intro) {
-    //     mMusicHandle = mAudio->PlaySound("MainTheme.ogg", true);
-    //     mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
-    //
-    //     UIScreen *intro = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
-    //     const Vector2 titleSize = Vector2(mWindowWidth, mWindowHeight);
-    //     const Vector2 titlePos = Vector2(0.0f, 0.0f);
-    //     intro->AddImage("../Assets/Sprites/img.png", titlePos, titleSize);
-    //
-    //     const Vector2 buttonSize = Vector2(200.0f, 40.0f);
-    //     const Vector2 button1Pos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, mWindowHeight * 0.8f);
-    //     intro->AddButton("Continue", button1Pos, buttonSize, [this]()
-    //                 { SetGameScene(GameScene::Level1);});
-    // }
     else if (mNextScene == GameScene::Level1)
     {
         // Start Music
@@ -208,8 +194,7 @@ void Game::ChangeScene()
             "Punk: Tenho que sair desta floresta. E descobrir o que esta acontecendo."
 
         },
-        [this]() { // Esta função será chamada quando o diálogo terminar
-            // Retorna o estado do jogo para "Playing" para que a fase comece.
+        [this]() {
             SetGamePlayState(GamePlayState::Playing);
         }
     );
@@ -273,13 +258,17 @@ void Game::ChangeScene()
         UIScreen *final = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");
         const Vector2 titleSize = Vector2(mWindowWidth, mWindowHeight);
         const Vector2 titlePos = Vector2(0.0f, 0.0f);
-        final->AddImage("../Assets/Sprites/img.png", titlePos, titleSize);
+        final->AddImage("../Assets/Sprites/Final_eter.png", titlePos, titleSize);
 
-        UIScreen *final2 = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");
-        const Vector2 titleSize2 = Vector2(220, 110.0f) * 2.0f;
-        const Vector2 titlePos2 = Vector2(mWindowWidth / 2.0f - 200, mWindowHeight / 3.0f);
-        final2->AddImage("../Assets/Sprites/Final_eter.png", titlePos2, titleSize2);
+        DialogueSystem::Get()->StartDialogue(
+{
+    "Voz: O sacrificio foi feito.",
+    "Voz: Voce se tornou o guardiao do eter"
+},
+[this]() { Quit(); });
+
     }
+
     else if (mNextScene == GameScene::Ending_GoHome) {
         mAudio->StopSound(mMusicHandle);
         mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
@@ -288,12 +277,14 @@ void Game::ChangeScene()
         UIScreen *final = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");
         const Vector2 titleSize = Vector2(mWindowWidth, mWindowHeight);
         const Vector2 titlePos = Vector2(0.0f, 0.0f);
-        final->AddImage("../Assets/Sprites/img.png", titlePos, titleSize);
+        final->AddImage("../Assets/Sprites/Final_casa1.png", titlePos, titleSize);
 
-        UIScreen *final2 = new UIScreen(this, "../Assets/Fonts/VT323-Regular.ttf");
-        const Vector2 titleSize2 = Vector2(220, 110.0f) * 2.0f;
-        const Vector2 titlePos2 = Vector2(mWindowWidth / 2.0f - 200, mWindowHeight / 3.0f);
-        final2->AddImage("../Assets/Sprites/Final_casa.png", titlePos2, titleSize2);
+        DialogueSystem::Get()->StartDialogue(
+    {
+        "Voz: Voce voltou pra casa.",
+        "Voz: O Eter foi deixado para tras."
+    },
+    [this]() { Quit(); });
     }
 
     // Set new scene
