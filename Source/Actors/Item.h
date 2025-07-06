@@ -18,18 +18,19 @@ public:
     Item(Game *game,
          const std::string &texturePath,
          PickHandler onPick = nullptr,
-         int dx=0, int dy=0)
+         int dx=0, int dy=0,
+         int sizeX=Game::TILE_SIZE, int sizeY=Game::TILE_SIZE)
         : Actor(game),
           mOnPickCallback(std::move(onPick)),
           mIsPicked(false)
     {
         new DrawSpriteComponent(this, texturePath, 
-                                Game::TILE_SIZE, Game::TILE_SIZE, 
+                                sizeX, sizeY, 
                                 static_cast<int>(DrawLayerPosition::Player));
                                 
         new AABBColliderComponent(this, 
                                   0, 0, 
-                                  Game::TILE_SIZE, Game::TILE_SIZE,
+                                  sizeX, sizeY,
                                   ColliderLayer::Item, true);
     }
 

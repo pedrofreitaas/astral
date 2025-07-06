@@ -40,7 +40,7 @@ void Patrol::Update(Enemy* enemy, float deltaTime) {
     float distancia = diff.Length();
 
     // Se o jogador estiver dentro de um raio de 300 pixels, muda para o estado de perseguição
-    if (distancia < 250.0f) {
+    if (distancia < 200.0f) {
         //enemy->GetDrawComponent()->SetAnimation("jump");
         enemy->ChangeState(std::make_unique<Chase>());
         return;

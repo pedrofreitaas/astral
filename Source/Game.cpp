@@ -218,11 +218,12 @@ void Game::ChangeScene() {
 
         const auto &shotGun = new Item(
             this,
-            "../Assets/Sprites/Punk/shotgun.png",
+            "../Assets/Sprites/Hud/shotgun.png",
             [this](Item &) { mPunk->FindShotgun(); },
-            10, 10
+            10, 10,
+            39,10.5f
         );
-        shotGun->SetPosition(Vector2(480.0f, 800.0f));
+        shotGun->SetPosition(Vector2(640.0f, 864.0f));
 
         const auto &heart2 = new Item(
             this,
