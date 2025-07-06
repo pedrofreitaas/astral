@@ -20,7 +20,7 @@ Projectile::Projectile(Game* game, const float length, const float deathTimer, C
     //mDrawComponent = new DrawPolygonComponent(this, verts,100);
     mDrawComponent = new DrawSpriteComponent(this, "../Assets/Sprites/Projectile/bullet.png", 4, 3, 100);
     mRigidBodyComponent = new RigidBodyComponent(this, 0.1f, 0, false);
-    mColliderComponent = new AABBColliderComponent(this, 0, 0, 4, 3, layer, true);
+    mColliderComponent = new AABBColliderComponent(this, 0, 0, 7, 6, layer, true);
 }
 
 void Projectile::OnUpdate(float deltaTime)
