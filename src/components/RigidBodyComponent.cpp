@@ -10,7 +10,6 @@
 
 const float MAX_SPEED_X = 750.0f;
 const float MAX_SPEED_Y = 750.0f;
-const float GRAVITY = 2000.0f;
 
 RigidBodyComponent::RigidBodyComponent(class Actor* owner, float mass, float friction, bool applyGravity, int updateOrder)
         :Component(owner, updateOrder)
@@ -31,21 +30,24 @@ void RigidBodyComponent::ApplyForce(const Vector2 &force) {
 void RigidBodyComponent::Update(float deltaTime)
 {
     // Apply gravity acceleration
-    if(mApplyGravity) {
-        ApplyForce(Vector2::UnitY * GRAVITY);
-    }
+    if(mApplyGravity) SDL_Log("gravity w.i.p.");
 
     // Apply friction
-    ApplyForce(-mFrictionCoefficient * mVelocity);
+    if (mApplyFriction) ApplyForce(-mFrictionCoefficient * mVelocity);
 
     // Euler Integration
     mVelocity += mAcceleration * deltaTime;
 
+    // Clamp velocity
     mVelocity.x = Math::Clamp<float>(mVelocity.x, -MAX_SPEED_X, MAX_SPEED_X);
     mVelocity.y = Math::Clamp<float>(mVelocity.y, -MAX_SPEED_Y, MAX_SPEED_Y);
 
-    if(Math::NearZero(mVelocity.x, 1.0f)) {
+    if (Math::NearZero(mVelocity.x, 1.0f)) {
         mVelocity.x = 0.f;
+    }
+
+    if (Math::NearZero(mVelocity.y, 1.0f)) {
+        mVelocity.y = 0.f;
     }
 
     auto collider = mOwner->GetComponent<AABBColliderComponent>();
