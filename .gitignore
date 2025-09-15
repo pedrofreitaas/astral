@@ -80,3 +80,7 @@ fabric.properties
 .DS_Store
 
 build/
+
+.env
+
+.aider*
