@@ -317,7 +317,7 @@ void Game::LoadMainMenu() {
     int WORD_HEIGHT = 20;
 
     UIScreen *mainMenu = new UIScreen(this, "../assets/Fonts/VT323-Regular.ttf");
-    mainMenu->AddBackground("../assets/Sprites/Menu/eter_extended_side.jpg", Vector2(0, 0),
+    mainMenu->AddBackground("../assets/Sprites/Menu/background.png", Vector2(0, 0),
                             Vector2(mWindowWidth, mWindowHeight));
 
     const Vector2 titleSize = Vector2(300.0f, 180.0f);
