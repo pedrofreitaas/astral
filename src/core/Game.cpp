@@ -320,16 +320,19 @@ void Game::LoadMainMenu() {
     mainMenu->AddBackground("../assets/Sprites/Menu/background.png", Vector2(0, 0),
                             Vector2(mWindowWidth, mWindowHeight));
 
-    const Vector2 titleSize = Vector2(300.0f, 180.0f);
-    const Vector2 titlePos = Vector2(mWindowWidth / 3.1f - titleSize.x / 2.0f, 20.0f);
-    mainMenu->AddImage("../assets/Sprites/Menu/eter_title.png", titlePos, titleSize);
-
     const Vector2 buttonSize = Vector2(230.0f, 55.0f);
-    const Vector2 button1Pos = Vector2(mWindowWidth / 4.0f * 3 - buttonSize.x / 2.0f, titlePos.y + titleSize.y + 15.0f);
-    const Vector2 button2Pos = Vector2(mWindowWidth / 4.0f * 3 - buttonSize.x / 2.0f,
-                                       button1Pos.y + buttonSize.y + 5.0f);
-    const Vector2 button3Pos = Vector2(mWindowWidth / 4.0f * 3 - buttonSize.x / 2.0f,
-                                       button2Pos.y + buttonSize.y + 5.0f);
+    const Vector2 button1Pos = Vector2(
+        mWindowWidth / 2.0f - buttonSize.x / 2.0f,
+        200.0f
+    );
+    const Vector2 button2Pos = Vector2(
+        button1Pos.x,
+        button1Pos.y + buttonSize.y + 5.0f
+    );
+    const Vector2 button3Pos = Vector2(
+        button1Pos.x,
+        button2Pos.y + buttonSize.y + 5.0f
+    );
 
     mainMenu->AddButton(" ", button1Pos, buttonSize, [this]() { SetGameScene(GameScene::Level1); });
     mainMenu->AddText("Play", button1Pos + Vector2(buttonSize.x / 2 - CHAR_WIDTH * 2, buttonSize.y / 3),
