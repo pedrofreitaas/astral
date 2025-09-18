@@ -1,0 +1,43 @@
+{
+	"columns": 19,
+	"image": "TreasureHunters\/Treasure Hunters\/Pirate Ship\/Sprites\/Tilesets\/Terrain and Back Wall (32x32).png",
+	"imageheight": 416,
+	"imagewidth": 608,
+	"margin": 0,
+	"name": "Terrain and Back Wall (32x32)",
+	"spacing": 0,
+	"tilecount": 247,
+	"tiledversion": "1.11.2",
+	"tileheight": 32,
+	"tiles": [
+		{
+			"id": 20,
+			"objectgroup": {
+				"draworder": "index",
+				"id": 3,
+				"name": "",
+				"objects": [
+					{
+						"height": 32,
+						"id": 6,
+						"name": "",
+						"rotation": 0,
+						"type": "",
+						"visible": true,
+						"width": 32,
+						"x": 0,
+						"y": 0
+					}
+				],
+				"opacity": 1,
+				"type": "objectgroup",
+				"visible": true,
+				"x": 0,
+				"y": 0
+			}
+		}
+	],
+	"tilewidth": 32,
+	"type": "tileset",
+	"version": "1.10"
+}

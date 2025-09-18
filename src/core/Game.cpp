@@ -31,7 +31,7 @@
 #include "../components/draw/DrawSpriteComponent.h"
 #include "../components/collider/AABBColliderComponent.h"
 #include "../ui/DialogueSystem.h"
-
+#include "Map.h"
 
 namespace fs = std::filesystem;
 
@@ -121,7 +121,6 @@ void Game::SetGameScene(Game::GameScene scene, float transitionTime) {
 void Game::ResetGameScene(float transitionTime) {
     SetGameScene(mGameScene, transitionTime);
 }
-
 
 void Game::ChangeScene() {
     // Unload current Scene
@@ -313,6 +312,9 @@ void Game::ChangeScene() {
 }
 
 void Game::LoadMainMenu() {
+    Map map(this, "demo.json");
+    map.print();
+
     int CHAR_WIDTH = 16;
     int WORD_HEIGHT = 20;
 

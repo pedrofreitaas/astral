@@ -71,6 +71,10 @@ add_executable(${PROJECT_NAME}
         src/actors/Weapon.cpp
         src/ui/DialogueSystem.cpp
         src/ui/DialogueSystem.h
+        src/core/Tileset.h
+        src/core/Tileset.cpp
+        src/core/Map.h
+        src/core/Map.cpp
 )
 
 # Link libraries using PkgConfig variables
