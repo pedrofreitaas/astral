@@ -29,7 +29,9 @@ std::map<std::string, Tileset> Map::LoadAllAvailableTilesets(const std::string &
 			SDL_Log("Warning: Duplicate tileset name found: %s. Overwriting previous entry.", t.GetName().c_str());
 		}
 
-		allAvailableTilesets[t.GetName()] = t;
+		// this line is a major issue 
+		// allAvailableTilesets[t.GetName()] = t;
+		allAvailableTilesets.insert_or_assign(t.GetName(), std::move(t));
 	}
 
 	return allAvailableTilesets;
@@ -61,7 +63,14 @@ Map::Map(Game *game, std::string jsonPath)
 
 		tilesetName = tilesetName.substr(0, tilesetName.find_last_of('.'));
 
-		Tileset t = allAvailableTilesets[tilesetName];
+		// Tileset t = allAvailableTilesets[tilesetName]; - this line is a major issue
+		auto it = allAvailableTilesets.find(tilesetName);
+		if (it == allAvailableTilesets.end())
+		{
+			SDL_Log("Warning: Tileset %s not found in available tilesets. Skipping.", tilesetName.c_str());
+			throw std::runtime_error("Tileset not found: " + tilesetName);
+		}
+		Tileset t = it->second;
 
 		if (t.GetName().empty())
 		{
@@ -69,7 +78,7 @@ Map::Map(Game *game, std::string jsonPath)
 			continue;
 		}
 
-		mTilesets[tilesetData["name"]] = t;
+		mTilesets.emplace(tilesetName, t);
 	}
 
 	mLayers = std::vector<Layer>();
@@ -94,5 +103,9 @@ void Map::print()
 	SDL_Log("Map Size: %dx%d", mapWidth, mapHeight);
 	SDL_Log("Tile Size: %dx%d", tileWidth, tileHeight);
 	SDL_Log("Number of Tilesets: %zu", mTilesets.size());
+	for (const auto &pair : mTilesets) {
+		SDL_Log("Tileset: %s", pair.first.c_str());
+	}
+
 	SDL_Log("Number of Layers: %zu", mLayers.size());
 }

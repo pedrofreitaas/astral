@@ -14,6 +14,8 @@ struct Tile {
 class Tileset
 {
 public:
+    Tileset() : mImageWidth(0), mImageHeight(0), mTileWidth(0), mTileHeight(0) {}
+
     Tileset(std::string jsonPath);
     ~Tileset();
 
