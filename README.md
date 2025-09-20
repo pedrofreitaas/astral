@@ -1,9 +1,6 @@
-# Astral - 2D Game
-2D game with C++ and SDL2.
-![Astral background](assets/Sprites/Menu/background.png)
-
-## *Astral's GDD*
+# Astral
 ###### ✒️ By Pedro Oliveira
+![Astral background](assets/Sprites/Menu/background.png)
 
 ## 📖T.O.C.
 - [🗣️About](#🗣️about)
@@ -14,7 +11,8 @@
 - [💻Development](#💻development)
 
 ## 🗣️About
-#### - [📖TOC](#📖t.o.c.)
+###### [📖t.o.c.](#📖toc)
+
 Astral is a 2D game developed in C++ using the SDL2 library. The game is made for a University
 final project, formerly T.C.C., for UFMG (Federal University of Minas Gerais).
 
@@ -31,13 +29,18 @@ was called "Eter", and it's code is a start point to this project, called "Astra
 
 Both games will differ completely, but many of code can be reused as a starting point for later modifications.
 
-I'd like to credit __Eduarda Mendes, Mariana Assis, Luiza Viana__, and mainly, __***Lucas Ferreira***__ (that was my
-teacher during the discipline, and now my Mentor for this project specifically).
+I'd like to credit my colleagues __Eduarda Mendes, Mariana Assis, Luiza Viana__, and mainly, __***Lucas Ferreira***__, that was my
+teacher during the discipline, and now my Mentor for this project.
 
 ##### [[🤖 Eter's github repo]](https://github.com/eduardamendes2410/Jogos-TpFinal_)
 
 ## 🎨Artistic declaration
+###### [📖t.o.c.](#📖toc)
 ## 🎮Gameplay
+###### [📖t.o.c.](#📖toc)
 ## 🖼️Art
+###### [📖t.o.c.](#📖toc)
 ## 🔊Sounds
+###### [📖t.o.c.](#📖toc)
 ## 💻Development
+###### [📖t.o.c.](#📖toc)
