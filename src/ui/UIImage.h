@@ -16,7 +16,7 @@ public:
 
     ~UIImage();
 
-    void Draw(SDL_Renderer* renderer, const Vector2 &screenPos) override;
+    void Draw(SDL_Renderer* renderer, const Vector2 &screenPos, float spinAngle=0.0f);
 
 private:
     SDL_Texture* mTexture; // Texture for the image

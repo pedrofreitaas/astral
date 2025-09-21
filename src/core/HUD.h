@@ -37,6 +37,4 @@ private:
     std::vector<UIImage*> mLives;
     std::vector<UIImage*> mAmmo; std::vector<UIImage*> mAmmoBackground;
     UIText* mProjectileText;
-
-    UIImage* mCursor;
 };

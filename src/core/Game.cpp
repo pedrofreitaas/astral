@@ -593,7 +593,6 @@ void Game::UpdateGame()
     {
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
-        mHUD->UpdateMousePosition(mouseX, mouseY);
 
         if (mGamePlayState == GamePlayState::Playing)
         {

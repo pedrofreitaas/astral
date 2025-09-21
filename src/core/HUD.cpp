@@ -27,9 +27,6 @@ HUD::HUD(class Game* game, const std::string& fontName)
     for (int i = 0; i < 6; ++i) {
         mLives.push_back(AddImage("../assets/Sprites/Hud/life_full.png", Vector2(70.0f + i * 17.0f, 20.0f), Vector2(16.5f, 8.0f)));
     }
-
-    // Cursor
-    mCursor = AddCursor("../assets/Sprites/Hud/cursor.png", Vector2(0, 0), Vector2(15, 21));
 }
 
 HUD::~HUD()
@@ -117,8 +114,4 @@ void HUD::UpdateGun(std::string gunName) {
     }
 
     SDL_Log("Didn't find gun for HUD update.");
-}
-
-void HUD::UpdateMousePosition(int x, int y) {
-    mCursor->SetPosition(Vector2(static_cast<float>(x), static_cast<float>(y)));
 }

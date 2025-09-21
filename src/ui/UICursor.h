@@ -16,4 +16,8 @@ public:
     ~UICursor();
 
     void Draw(SDL_Renderer* renderer, const Vector2 &mousePos) override;
+
+private:
+    Vector2 mPreviousPos;
+    float mSpinningAngle;
 };
