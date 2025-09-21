@@ -32,6 +32,23 @@ Both games will differ completely, but many of code can be reused as a starting 
 I'd like to credit my colleagues __Eduarda Mendes, Mariana Assis, Luiza Viana__, and mainly, __***Lucas Ferreira***__, that was my
 teacher during the discipline, and now my Mentor for this project.
 
+### ❤️ Game briefing
+Meet Zoe, our adventurous main character, who’s unexpectedly launched into the cosmic unknown after a surreal encounter with a black hole. 
+What starts as an ordinary day in a suburban home quickly spirals into a journey across galaxies, chasing a mysterious guiding star through vibrant, 
+ever-changing levels.
+
+Astral is a space-themed platformer runner, blending exploration, fast-paced action, and clever mechanics. Players of all ages will run, jump,
+shoot, dodge, and collect unique powers as Zoe navigates the void. The guiding star sometimes races ahead, challenging you to explore and discover
+new paths before reuniting.
+
+Unlock elemental abilities like:
+- Ice Breath: Freeze enemies and alter surface friction.
+- Wind Gust: Move objects and push Zoe backward.
+- Fireball: Ricochet shots that explode on impact.
+- Electric Aura: Emit electricity, swap places with electrified objects, and strategize with time and distance limits.
+
+Astral is designed for casual gamers and indie fans, offering a cosmic adventure full of surprises, creative powers, and a dash of mystery.
+
 ##### [[🤖 Eter's github repo]](https://github.com/eduardamendes2410/Jogos-TpFinal_)
 
 ## 🎨Artistic declaration
@@ -40,6 +57,9 @@ teacher during the discipline, and now my Mentor for this project.
 ###### [📖t.o.c.](#📖toc)
 ## 🖼️Art
 ###### [📖t.o.c.](#📖toc)
+### Art credits
+Many of the assets used in this game were created by other artists, and I would like to give them the proper credits:
+- [Penzilla Design](https://penzilla.itch.io/): Main character sprites.
 ## 🔊Sounds
 ###### [📖t.o.c.](#📖toc)
 ## 💻Development
