@@ -79,7 +79,8 @@ void Punk::OnProcessInput(const uint8_t *state)
 
     if (state[SDL_SCANCODE_F])
     {
-        if (mArm->mFoundShotgun == false) return;
+        if (mArm->mFoundShotgun == false)
+            return;
         mArm->ChangeWeapon();
     }
 }
@@ -274,50 +275,38 @@ void Punk::FindKey()
     mFoundKey = true;
     mGame->GetAudio()->PlaySound("KeyPick.wav");
 
-    if (mGame->GetGameScene() == Game::GameScene::Level1) {
+    if (mGame->GetGameScene() == Game::GameScene::Level1)
+    {
         DialogueSystem::Get()->StartDialogue(
-        {
-            "Punk: Uma chave! Agora, o que sera que ela abre?",
-                "Punk: Melhor eu dar uma olhada ao redor."
-        },
-    [this]() {
-        mGame->SetGamePlayState(Game::GamePlayState::Playing);
+            {"Punk: Uma chave! Agora, o que sera que ela abre?",
+             "Punk: Melhor eu dar uma olhada ao redor."},
+            [this]() {}
+        );
     }
-    );
-        // const auto &portal = new Portal(mGame);
-        // portal->SetPosition(Vector2(622.0f, 210.0f));
-
-        SDL_Log("Key found, opening portal...");
-    }
-    else {
+    else
+    {
         DialogueSystem::Get()->StartDialogue(
-        {
-            "Voz: Voce conseguiu. A ultima chave foi encontrada.",
-            "Voz: O caminho se abre em dois. O seu... e o nosso.",
-            "Voz: O portal verde oferece o seu lar, a sua paz... ao custo da nossa existencia.",
-            "Voz: O portal roxo vai te manter aqui, como o novo guardiao, para nos salvar.",
-            "Voz: A escolha e sua, Viajante do Eter."
-        },
-    [this]() {
-        mGame->SetGamePlayState(Game::GamePlayState::Playing);
+            {"Voz: Voce conseguiu. A ultima chave foi encontrada.",
+             "Voz: O caminho se abre em dois. O seu... e o nosso.",
+             "Voz: O portal verde oferece o seu lar, a sua paz... ao custo da nossa existencia.",
+             "Voz: O portal roxo vai te manter aqui, como o novo guardiao, para nos salvar.",
+             "Voz: A escolha e sua, Viajante do Eter."},
+            [this](){}
+        );
     }
-    );
-        // const auto &portal = new Portal(mGame);
-        // portal->SetPosition(Vector2(288.0f, 992.0f));
-
-        // const auto &portal2 = new Portal(mGame, 1);
-        // portal2->SetPosition(Vector2(416.0f, 970.0f));
-        SDL_Log("Key found, opening portalS...");
-    }
-
 }
 
-void Punk::FindHeart() {
-    if (mLives < 6) {mLives++;}
+void Punk::FindHeart()
+{
+    if (mLives < 6)
+    {
+        mLives++;
+    }
     mGame->GetAudio()->PlaySound("KeyPick.wav");
 }
 
-void Punk::FindShotgun() {
+void Punk::FindShotgun()
+{
     mArm->ChangeWeapon();
     mArm->mFoundShotgun = true;
     mGame->GetAudio()->PlaySound("KeyPick.wav");
@@ -335,7 +324,8 @@ int Punk::GetMaxAmmo()
 
 std::string Punk::GetCurrentWeaponName()
 {
-    if (!mArm->mChosenWeapon) {
+    if (!mArm->mChosenWeapon)
+    {
         return "Unknown";
     }
 

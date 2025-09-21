@@ -139,6 +139,32 @@ void Game::ResetGameScene(float transitionTime)
     SetGameScene(mGameScene, transitionTime);
 }
 
+void Game::LoadFirstLevel()
+{
+    // Start Music
+    mMusicHandle = mAudio->PlaySound("MainTheme.ogg", true);
+
+    // Set background color
+    mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
+    mHUD = new HUD(this, "../assets/Fonts/VT323-Regular.ttf");
+
+    mGameTimeLimit = 400;
+    mHUD->SetTime(mGameTimeLimit);
+
+    LoadLevel("../assets/Levels/map_1/map_tiled.json", "../assets/Levels/map_1/");
+
+    mPunk = new Punk(this, 1000.0f, -1000.0f);
+    mPunk->SetPosition(Vector2(128.0f, 1088.0f));
+
+    auto spawner = new Spawner(this, 3000.f, 0);
+    spawner->SetPosition(Vector2(500.0f, 1000.0f));
+
+    DialogueSystem::Get()->StartDialogue(
+        {"Zoe: ..."},
+        [this]() {}
+    );
+}
+
 void Game::ChangeScene()
 {
     // Unload current Scene
@@ -157,74 +183,10 @@ void Game::ChangeScene()
     mSpatialHashing = new SpatialHashing(TILE_SIZE * 4.0f, LEVEL_WIDTH * TILE_SIZE, LEVEL_HEIGHT * TILE_SIZE);
 
     // Scene Manager FSM: using if/else instead of switch
-    if (mNextScene == GameScene::MainMenu) LoadMainMenu();
-    
+    if (mNextScene == GameScene::MainMenu)
+        LoadMainMenu();
     else if (mNextScene == GameScene::Level1)
-    {
-        // Start Music
-        mMusicHandle = mAudio->PlaySound("MainTheme.ogg", true);
-
-        // Set background color
-        mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
-        mHUD = new HUD(this, "../assets/Fonts/VT323-Regular.ttf");
-
-        mGameTimeLimit = 400;
-        mHUD->SetTime(mGameTimeLimit);
-
-        LoadLevel("../assets/Levels/map_1/map_tiled.json", "../assets/Levels/map_1/");
-
-        mPunk = new Punk(this, 1000.0f, -1000.0f);
-        mPunk->SetPosition(Vector2(128.0f, 1088.0f));
-
-        auto spawner = new Spawner(this, 3000.f, 0);
-        spawner->SetPosition(Vector2(500.0f, 1000.0f));
-
-        DialogueSystem::Get()->StartDialogue(
-            {// Um vetor com as falas
-             "Punk: Ugh... Minha cabeca... Onde estou?",
-             "Punk: A ultima coisa que lembro... foi de um clarao.",
-             "Punk: Tenho que sair desta floresta. E descobrir o que esta acontecendo."
-
-            },
-            [this]()
-            {
-                // Esta função será chamada quando o diálogo terminar
-                // Retorna o estado do jogo para "Playing" para que a fase comece.
-                SetGamePlayState(GamePlayState::Playing);
-            });
-        const auto &key = new Item(
-            this,
-            "../assets/Levels/map_2/blocks/dungeon_3/021.png",
-            [this](Item &)
-            { mPunk->FindKey(); },
-            10, 10);
-        key->SetPosition(Vector2(1510.0f, 125.0f));
-
-        const auto &heart1 = new Item(
-            this,
-            "../assets/Sprites/Itens/07.png",
-            [this](Item &)
-            { mPunk->FindHeart(); },
-            10, 10);
-        heart1->SetPosition(Vector2(1749.0f, 392.0f));
-
-        const auto &shotGun = new Item(
-            this,
-            "../assets/Sprites/Hud/shotgun.png",
-            [this](Item &)
-            { mPunk->FindShotgun(); },
-            10, 10,
-            39, 10.5f);
-        shotGun->SetPosition(Vector2(640.0f, 864.0f));
-
-        const auto &heart2 = new Item(
-            this,
-            "../assets/Sprites/Itens/07.png",
-            [this](Item &)
-            { mPunk->FindHeart(); },
-            10, 10);
-        heart2->SetPosition(Vector2(484.0f, 399.0f));
-    }
+        LoadFirstLevel();
 
     // Set new scene
     mGameScene = mNextScene;
@@ -232,19 +194,17 @@ void Game::ChangeScene()
         "../assets/Sprites/Hud/cursor.png",
         Vector2(0.0f, 0.0f),
         Vector2(33.0f, 33.0f),
-        Color::White
-    );
+        Color::White);
 }
 
 void Game::LoadMainMenu()
 {
     UIScreen *mainMenu = new UIScreen(this, "../assets/Fonts/VT323-Regular.ttf");
-    
+
     mainMenu->AddBackground(
         "../assets/Sprites/Menu/background.png",
         Vector2(0, 0),
-        Vector2(mWindowWidth, mWindowHeight)
-    );
+        Vector2(mWindowWidth, mWindowHeight));
 
     const Vector2 playButtonSize = Vector2(230.0f, 55.0f);
     const Vector2 playButtonPos = Vector2(
@@ -252,12 +212,12 @@ void Game::LoadMainMenu()
         200.0f);
 
     mainMenu->AddButton(
-        "Play", 
+        "Play",
         playButtonPos,
         playButtonSize,
-        [this](){ SetGameScene(GameScene::Level1); },
-        Vector2(CHAR_WIDTH * 4, WORD_HEIGHT)
-    );
+        [this]()
+        { SetGameScene(GameScene::Level1); },
+        Vector2(CHAR_WIDTH * 4, WORD_HEIGHT));
 }
 
 void Game::LoadLevel(const std::string &levelPath, const std::string &blocksDir)
@@ -640,31 +600,19 @@ void Game::UpdateLevelTime(float deltaTime)
 
 void Game::UpdateCamera()
 {
-    if (mPunk)
-    {
-        float cameraX = mPunk->GetPosition().x - mWindowWidth / 2.0f;
-        float cameraY = mPunk->GetPosition().y - mWindowHeight / 2.0f;
-        float maxCameraX = LEVEL_WIDTH * TILE_SIZE - mWindowWidth;
-        float maxCameraY = LEVEL_HEIGHT * TILE_SIZE - mWindowWidth;
+    if (!mPunk)
+        return;
 
-        mCameraPos.x = std::min(cameraX, maxCameraX);
-        mCameraPos.y = std::min(cameraY, maxCameraY);
+    float cameraX = mPunk->GetPosition().x - mWindowWidth / 2.0f;
+    float cameraY = mPunk->GetPosition().y - mWindowHeight / 2.0f;
+    float maxCameraX = LEVEL_WIDTH * TILE_SIZE - mWindowWidth;
+    float maxCameraY = LEVEL_HEIGHT * TILE_SIZE - mWindowWidth;
 
-        mCameraPos.x = std::max(0.0f, mCameraPos.x);
-        mCameraPos.y = std::max(0.0f, mCameraPos.y);
-    }
-    // if (!mPunk) return;
-    //
-    // float horizontalCameraPos = mPunk->GetPosition().x - (mWindowWidth / 2.0f);
-    //
-    // if (horizontalCameraPos > mCameraPos.x)
-    // {
-    //     // Limit camera to the right side of the level
-    //     float maxCameraPos = (LEVEL_WIDTH * TILE_SIZE) - mWindowWidth;
-    //     horizontalCameraPos = Math::Clamp(horizontalCameraPos, 0.0f, maxCameraPos);
-    //
-    //     mCameraPos.x = horizontalCameraPos;
-    // }
+    mCameraPos.x = std::min(cameraX, maxCameraX);
+    mCameraPos.y = std::min(cameraY, maxCameraY);
+
+    mCameraPos.x = std::max(0.0f, mCameraPos.x);
+    mCameraPos.y = std::max(0.0f, mCameraPos.y);
 }
 
 void Game::UpdateActors(float deltaTime)

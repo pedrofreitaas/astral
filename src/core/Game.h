@@ -119,6 +119,8 @@ private:
     SceneManagerState mSceneManagerState;
     float mSceneManagerTimer;
 
+    void LoadFirstLevel();
+
     // HUD functions
     void UpdateLevelTime(float deltaTime);
 

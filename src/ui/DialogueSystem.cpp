@@ -106,6 +106,7 @@ void DialogueSystem::HandleInput(const uint8_t* keyState)
                 
                 if (mOnComplete)
                 {
+                    mGame->SetGamePlayState(Game::GamePlayState::Playing);
                     mOnComplete();
                 }
             }
