@@ -13,6 +13,7 @@
 #include "AudioSystem.h"
 #include "../libs/Math.h"
 #include "../libs/Json.h"
+#include "../ui/UICursor.h"
 
 class Game
 {
@@ -179,3 +180,4 @@ private:
 
     nlohmann::json mMapJson;
 };
+

@@ -76,7 +76,11 @@ void UIScreen::Draw(SDL_Renderer *renderer)
     }
 
     for (auto t : mCursors) {
-        t->Draw(renderer, mPos);
+        int mouseX, mouseY;
+        SDL_GetMouseState(&mouseX, &mouseY);
+        Vector2 mousePos(static_cast<float>(mouseX), static_cast<float>(mouseY));
+        
+        t->Draw(renderer, mousePos);
     }
 }
 
@@ -161,7 +165,7 @@ UIImage* UIScreen::AddImage(const std::string &imagePath, const Vector2 &pos, co
 
 UIImage* UIScreen::AddCursor(const std::string &imagePath, const Vector2 &pos, const Vector2 &dims, const Vector3 &color)
 {
-    auto img = new UIImage(imagePath, pos, dims, color);
+    auto img = new UICursor(imagePath, pos, dims, color);
     mCursors.emplace_back(img);
     return img;
 }

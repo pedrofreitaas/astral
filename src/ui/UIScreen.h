@@ -17,6 +17,7 @@
 #include "UIText.h"
 #include "UIButton.h"
 #include "UIImage.h"
+#include "UICursor.h"
 
 class UIScreen
 {
@@ -70,6 +71,6 @@ protected:
 	std::vector<UIButton *> mButtons;
     std::vector<UIText *> mTexts;
     std::vector<UIImage *> mImages;
-    std::vector<UIImage *> mCursors;
+    std::vector<UICursor *> mCursors;
     std::vector<UIImage *> mBackground;
 };

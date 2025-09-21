@@ -158,25 +158,8 @@ void Game::ChangeScene()
     mSpatialHashing = new SpatialHashing(TILE_SIZE * 4.0f, LEVEL_WIDTH * TILE_SIZE, LEVEL_HEIGHT * TILE_SIZE);
 
     // Scene Manager FSM: using if/else instead of switch
-    if (mNextScene == GameScene::MainMenu)
-    {
-        // Initialize main menu actors
-        LoadMainMenu();
-    }
-    // else if (mNextScene == GameScene::Intro) {
-    //     mMusicHandle = mAudio->PlaySound("MainTheme.ogg", true);
-    //     mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
-    //
-    //     UIScreen *intro = new UIScreen(this, "../assets/Fonts/SMB.ttf");
-    //     const Vector2 titleSize = Vector2(mWindowWidth, mWindowHeight);
-    //     const Vector2 titlePos = Vector2(0.0f, 0.0f);
-    //     intro->AddImage("../assets/Sprites/img.png", titlePos, titleSize);
-    //
-    //     const Vector2 buttonSize = Vector2(200.0f, 40.0f);
-    //     const Vector2 button1Pos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, mWindowHeight * 0.8f);
-    //     intro->AddButton("Continue", button1Pos, buttonSize, [this]()
-    //                 { SetGameScene(GameScene::Level1);});
-    // }
+    if (mNextScene == GameScene::MainMenu) LoadMainMenu();
+    
     else if (mNextScene == GameScene::Level1)
     {
         // Start Music
@@ -243,97 +226,21 @@ void Game::ChangeScene()
             10, 10);
         heart2->SetPosition(Vector2(484.0f, 399.0f));
     }
-    else if (mNextScene == GameScene::Level2)
-    {
-        // Start Music
-        mAudio->StopSound(mMusicHandle);
-        mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
-
-        mHUD = new HUD(this, "../assets/Fonts/VT323-Regular.ttf");
-
-        mGameTimeLimit = 400;
-        mHUD->SetTime(mGameTimeLimit);
-
-        // Set background color
-        mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
-
-        // Settings actors
-        mPunk = new Punk(this, 1000.0f, -1000.0f);
-        mPunk->SetPosition(Vector2(1138.0f, 224.0f));
-
-        auto spawner = new Spawner(this, 3000.0f, 1);
-        spawner->SetPosition(Vector2(500.0f, 100.0f));
-
-        // Initialize actors
-        LoadLevel("../assets/Levels/map_2/map_tiled.json", "../assets/Levels/map_2/");
-
-        const auto &key = new Item(
-            this,
-            "../assets/Levels/map_2/blocks/dungeon_3/021.png",
-            [this](Item &)
-            { mPunk->FindKey(); },
-            10, 10);
-        key->SetPosition(Vector2(160.0f, 192.0f));
-
-        DialogueSystem::Get()->StartDialogue(
-            {"Punk: Oque? Parece que agora estou em uma dimensao totalmente diferente",
-             "Punk: Sera que este e o ETER? Como o mestre havia me falado?"},
-            [this]()
-            {
-                SetGamePlayState(GamePlayState::Playing);
-            });
-        const auto &heart1 = new Item(
-            this,
-            "../assets/Sprites/Itens/07.png",
-            [this](Item &)
-            { mPunk->FindHeart(); },
-            10, 10);
-        heart1->SetPosition(Vector2(367.0f, 364.0f));
-    }
-    else if (mNextScene == GameScene::Ending_Stay)
-    {
-        mAudio->StopSound(mMusicHandle);
-        mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
-        mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
-
-        UIScreen *final = new UIScreen(this, "../assets/Fonts/VT323-Regular.ttf");
-        const Vector2 titleSize = Vector2(mWindowWidth, mWindowHeight);
-        const Vector2 titlePos = Vector2(0.0f, 0.0f);
-        final->AddImage("../assets/Sprites/Final_eter.png", titlePos, titleSize);
-
-        DialogueSystem::Get()->StartDialogue(
-            {"Voz: O sacrificio foi feito.",
-             "Voz: Voce se tornou o guardiao do eter"},
-            [this]()
-            { Quit(); });
-    }
-    else if (mNextScene == GameScene::Ending_GoHome)
-    {
-        // Start Music
-        mAudio->StopSound(mMusicHandle);
-        mMusicHandle = mAudio->PlaySound("BattleTheme.mp3", true);
-        mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
-
-        UIScreen *final = new UIScreen(this, "../assets/Fonts/VT323-Regular.ttf");
-        const Vector2 titleSize = Vector2(mWindowWidth, mWindowHeight);
-        const Vector2 titlePos = Vector2(0.0f, 0.0f);
-        final->AddImage("../assets/Sprites/Final_casa1.png", titlePos, titleSize);
-
-        DialogueSystem::Get()->StartDialogue(
-            {"Voz: Voce voltou pra casa.",
-             "Voz: O Eter foi deixado para tras."},
-            [this]()
-            { Quit(); });
-    }
 
     // Set new scene
     mGameScene = mNextScene;
-    
+    mUIStack.front()->AddCursor(
+        "../assets/Sprites/Hud/cursor.png",
+        Vector2(0.0f, 0.0f),
+        Vector2(33.0f, 33.0f),
+        Color::White
+    );
 }
 
 void Game::LoadMainMenu()
 {
     UIScreen *mainMenu = new UIScreen(this, "../assets/Fonts/VT323-Regular.ttf");
+    
     mainMenu->AddBackground(
         "../assets/Sprites/Menu/background.png",
         Vector2(0, 0),
