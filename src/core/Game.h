@@ -27,11 +27,7 @@ public:
     enum class GameScene
     {
         MainMenu,
-        // Intro,
         Level1,
-        Level2,
-        Ending_GoHome,
-        Ending_Stay
     };
 
     enum class SceneManagerState
@@ -110,7 +106,6 @@ public:
     GameScene GetGameScene() const { return mGameScene; }
     SDL_Window* GetWindow() { return mWindow; }
     SDL_Renderer* GetRenderer() const { return mRenderer; }
-    void LoadLostScreen();
 
 private:
     void ProcessInput();

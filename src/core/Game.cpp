@@ -115,8 +115,7 @@ void Game::SetGameScene(Game::GameScene scene, float transitionTime)
     // Scene Manager FSM: using if/else instead of switch
     if (mSceneManagerState == SceneManagerState::None)
     {
-        // if (scene == GameScene::MainMenu || scene == GameScene::Intro || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::FinalScene)
-        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::Ending_Stay || scene == GameScene::Ending_GoHome)
+        if (scene == GameScene::MainMenu || scene == GameScene::Level1)
         {
             mNextScene = scene;
             mSceneManagerState = SceneManagerState::Entering;
@@ -259,33 +258,6 @@ void Game::LoadMainMenu()
         [this](){ SetGameScene(GameScene::Level1); },
         Vector2(CHAR_WIDTH * 4, WORD_HEIGHT)
     );
-}
-
-void Game::LoadLostScreen()
-{
-    // Cria uma nova tela de UI para a derrota
-    UIScreen *lostScreen = new UIScreen(this, "../assets/Fonts/SMB.ttf");
-
-    // Adiciona o texto "Voce Perdeu!"
-    const Vector2 titleSize = Vector2(400.0f, 100.0f);
-    const Vector2 titlePos = Vector2(mWindowWidth / 2.0f - titleSize.x / 2.0f, 150.0f);
-    lostScreen->AddText("Voce Perdeu!", titlePos, titleSize, 40, 1024, Color::Red);
-
-    // Adiciona botões com opções para o jogador
-    const Vector2 buttonSize = Vector2(250.0f, 50.0f);
-    const Vector2 retryPos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, 300.0f);
-    const Vector2 menuPos = Vector2(mWindowWidth / 2.0f - buttonSize.x / 2.0f, retryPos.y + buttonSize.y + 15.0f);
-
-    // Botão "Tentar Novamente" que reseta a cena atual
-    lostScreen->AddButton("Tentar Novamente", retryPos, buttonSize, [this]()
-                          {
-                              ResetGameScene(.25f); // Função que você já tem para reiniciar a fase
-                          });
-
-    // Botão "Voltar ao Menu" que leva para a cena do menu principal
-    // Botão "Voltar ao Menu"
-    lostScreen->AddButton("Voltar ao Menu", menuPos, buttonSize, [this]()
-                          { SetGameScene(GameScene::MainMenu, .25f); });
 }
 
 void Game::LoadLevel(const std::string &levelPath, const std::string &blocksDir)
@@ -653,7 +625,6 @@ void Game::UpdateLevelTime(float deltaTime)
         {
             mPunk->Kill();
             SetGamePlayState(GamePlayState::GameOver);
-            // LoadLostScreen();
             break;
         }
     }

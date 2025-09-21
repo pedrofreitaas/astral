@@ -12,7 +12,7 @@ std::map<std::string, Tileset> Map::LoadAllAvailableTilesets(const std::string &
 		if (entry.path().extension() != ".json")
 		{
 			SDL_Log("Skipping non-json file: %s", entry.path().string().c_str());
-			continue; // <-- important
+			continue;
 		}
 
 		std::string tilesetPath = entry.path().string();
@@ -32,6 +32,12 @@ std::map<std::string, Tileset> Map::LoadAllAvailableTilesets(const std::string &
 		// this line is a major issue 
 		// allAvailableTilesets[t.GetName()] = t;
 		allAvailableTilesets.insert_or_assign(t.GetName(), std::move(t));
+	}
+
+	// peformance warning if too many tilesets
+	if (allAvailableTilesets.size() > 15)
+	{
+		SDL_Log("Warning: More than 15 tilesets found (%zu). This may impact performance.", allAvailableTilesets.size());
 	}
 
 	return allAvailableTilesets;
