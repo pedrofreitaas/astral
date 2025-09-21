@@ -56,6 +56,8 @@ add_executable(${PROJECT_NAME}
         src/ui/UIText.h
         src/ui/UIElement.cpp
         src/ui/UIElement.h
+        src/ui/UICursor.cpp
+        src/ui/UICursor.h
         src/core/HUD.h
         src/core/HUD.cpp
         src/ui/UIImage.cpp

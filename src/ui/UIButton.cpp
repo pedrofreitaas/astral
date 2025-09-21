@@ -6,7 +6,7 @@
 
 UIButton::UIButton(const std::string& text, class UIFont* font, std::function<void()> onClick,
                     const Vector2& pos, const Vector2& size, const Vector3& color,
-                    int pointSize , unsigned wrapLength,
+                    int pointSize, unsigned wrapLength,
                     const Vector2 &textPos, const Vector2 &textSize, const Vector3& textColor)
         :UIElement(pos, size, color)
         ,mOnClick(onClick)
@@ -20,7 +20,6 @@ UIButton::~UIButton()
 {
 
 }
-
 
 void UIButton::Draw(SDL_Renderer *renderer, const Vector2 &screenPos)
 {

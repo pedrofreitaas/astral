@@ -10,8 +10,8 @@
 #define SDL_MAIN_HANDLED
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 720;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 1920;
+const int SCREEN_HEIGHT = 1080;
 
 int main(int argc, char** argv)
 {
