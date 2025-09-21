@@ -21,6 +21,12 @@ UIButton::~UIButton()
 
 }
 
+bool UIButton::IsInside(const Vector2 &pt) const
+{
+    return (pt.x >= mPosition.x && pt.x <= mPosition.x + mSize.x &&
+            pt.y >= mPosition.y && pt.y <= mPosition.y + mSize.y);
+}
+
 void UIButton::Draw(SDL_Renderer *renderer, const Vector2 &screenPos)
 {
     SDL_Rect titleQuad = {static_cast<int>(screenPos.x + mPosition.x),

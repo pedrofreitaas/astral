@@ -36,6 +36,8 @@ public:
     // Called when button is clicked
     void OnClick();
 
+    bool IsInside(const Vector2& pt) const;
+
 private:
     // Callback funtion
     std::function<void()> mOnClick;

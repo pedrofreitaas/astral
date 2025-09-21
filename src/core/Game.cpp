@@ -418,6 +418,14 @@ void Game::ProcessInput()
                 TogglePause();
             }
             break;
+        case SDL_MOUSEBUTTONDOWN:
+            // Handle mouse click for UI screens
+            if (!mUIStack.empty())
+            {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                mUIStack.back()->HandleMouseClick(event.button.button, x, y);
+            }
         }
     }
 

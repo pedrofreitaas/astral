@@ -35,8 +35,8 @@ public:
 	// UIScreen subclasses can override these
 	virtual void Update(float deltaTime);
 	virtual void Draw(class SDL_Renderer *renderer);
-	virtual void ProcessInput(const uint8_t* keys);
 	virtual void HandleKeyPress(int key);
+	virtual void HandleMouseClick(int button, int x, int y);
 
     // Set state to closing
 	void Close();

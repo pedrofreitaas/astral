@@ -84,9 +84,18 @@ void UIScreen::Draw(SDL_Renderer *renderer)
     }
 }
 
-void UIScreen::ProcessInput(const uint8_t* keys)
+void UIScreen::HandleMouseClick(int button, int x, int y)
 {
+    if(button == SDL_BUTTON_LEFT) {
+        Vector2 clickPos(static_cast<float>(x), static_cast<float>(y));
 
+        for (auto b : mButtons) {
+            if (b->IsInside(clickPos - mPos)) {
+                b->OnClick();
+                break; // Assuming only one button can be clicked at a time
+            }
+        }
+    }
 }
 
 void UIScreen::HandleKeyPress(int key)
