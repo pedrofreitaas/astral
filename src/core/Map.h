@@ -5,7 +5,8 @@
 #include <string>
 #include "../libs/Json.h"
 #include "./Tileset.h"
-#include "./Game.h"
+
+class Game;
 
 using json = nlohmann::json;
 
@@ -22,14 +23,16 @@ public:
     Map(class Game* game, std::string jsonPath);
     ~Map();
 
-    void print();
+    void Print();
+    void Draw();
+
 private:
-    std::map<std::string, Tileset> LoadAllAvailableTilesets(const std::string& baseTilesetsPath);
+    std::map<std::string, class Tileset> LoadAllAvailableTilesets(const std::string& baseTilesetsPath);
     std::vector<Layer> mLayers;
 
-    std::map<std::string, Tileset> mTilesets;
+    std::map<std::string, class Tileset> mTilesets;
     int tileWidth, tileHeight;
     int mapWidth, mapHeight;
 
-    Game* mGame;
+    class Game* mGame;
 };

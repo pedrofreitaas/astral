@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <fstream>
 #include "./Map.h"
+#include "./Game.h"
 
 std::map<std::string, Tileset> Map::LoadAllAvailableTilesets(const std::string &baseTilesetsPath)
 {
@@ -16,7 +17,7 @@ std::map<std::string, Tileset> Map::LoadAllAvailableTilesets(const std::string &
 		}
 
 		std::string tilesetPath = entry.path().string();
-		Tileset t(tilesetPath);
+		Tileset t(mGame, tilesetPath);
 
 		if (t.GetName().empty())
 		{
@@ -103,7 +104,7 @@ Map::Map(Game *game, std::string jsonPath)
 
 Map::~Map() {}
 
-void Map::print()
+void Map::Print()
 {
 	SDL_Log("Map class loaded.");
 	SDL_Log("Map Size: %dx%d", mapWidth, mapHeight);
@@ -114,4 +115,10 @@ void Map::print()
 	}
 
 	SDL_Log("Number of Layers: %zu", mLayers.size());
+}
+
+void Map::Draw() {
+	for (const auto &layer : mLayers) {
+		SDL_Log("Layer ID: %d, Size: %dx%d", layer.pos, layer.width, layer.height);
+	}
 }

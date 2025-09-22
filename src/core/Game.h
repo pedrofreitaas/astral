@@ -14,6 +14,8 @@
 #include "../libs/Math.h"
 #include "../libs/Json.h"
 #include "../ui/UICursor.h"
+#include "Map.h"
+#include "Tileset.h"
 
 class Game
 {
@@ -176,5 +178,9 @@ private:
     int ***mSecondLevelLayers;
 
     nlohmann::json mMapJson;
+
+    class Map* mMap;
+
+    void SetMap(const std::string& path);
 };
 

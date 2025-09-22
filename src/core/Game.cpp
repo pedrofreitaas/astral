@@ -31,7 +31,6 @@
 #include "../components/draw/DrawSpriteComponent.h"
 #include "../components/collider/AABBColliderComponent.h"
 #include "../ui/DialogueSystem.h"
-#include "Map.h"
 
 namespace fs = std::filesystem;
 
@@ -44,8 +43,13 @@ Game::Game(int windowWidth, int windowHeight)
       mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr), mGameTimer(0.0f), mGameTimeLimit(0),
       mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu),
       mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero),
-      mBackgroundPosition(Vector2::Zero)
+      mBackgroundPosition(Vector2::Zero), mMap(nullptr)
 {
+}
+
+void Game::SetMap(const std::string &path)
+{
+    mMap = new Map(this, path);
 }
 
 bool Game::Initialize()
@@ -145,13 +149,12 @@ void Game::LoadFirstLevel()
     mMusicHandle = mAudio->PlaySound("MainTheme.ogg", true);
 
     // Set background color
-    mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
     mHUD = new HUD(this, "../assets/Fonts/VT323-Regular.ttf");
 
     mGameTimeLimit = 400;
     mHUD->SetTime(mGameTimeLimit);
-
-    LoadLevel("../assets/Levels/map_1/map_tiled.json", "../assets/Levels/map_1/");
+    
+    SetMap("demo.json");
 
     mPunk = new Punk(this, 1000.0f, -1000.0f);
     mPunk->SetPosition(Vector2(128.0f, 1088.0f));
@@ -482,8 +485,7 @@ void Game::TogglePause()
 
 void Game::UpdateGame()
 {
-    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16))
-        ;
+    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
 
     float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
     if (deltaTime > 0.05f)
@@ -515,13 +517,11 @@ void Game::UpdateGame()
     auto iter = mUIStack.begin();
     while (iter != mUIStack.end())
     {
-        if ((*iter)->GetState() == UIScreen::UIState::Closing)
-        {
+        if ((*iter)->GetState() == UIScreen::UIState::Closing) {
             delete *iter;
             iter = mUIStack.erase(iter);
         }
-        else
-        {
+        else {
             ++iter;
         }
     }
@@ -536,13 +536,13 @@ void Game::UpdateGame()
 
         if (mGamePlayState == GamePlayState::Playing)
         {
-            // Reinsert level time
             UpdateLevelTime(deltaTime);
             if (mPunk)
             {
                 mHUD->UpdateLives(mPunk->Lives());
                 mHUD->UpdateAmmo(mPunk->GetAmmo(), mPunk->GetMaxAmmo());
                 mHUD->UpdateGun(mPunk->GetCurrentWeaponName());
+                mHUD->SetFPS(static_cast<int>(1.0f / deltaTime));
             }
         }
     }
@@ -690,7 +690,8 @@ void Game::GenerateOutput()
             static_cast<int>(mBackgroundPosition.x - mCameraPos.x),
             static_cast<int>(mBackgroundPosition.y - mCameraPos.y),
             static_cast<int>(mBackgroundSize.x),
-            static_cast<int>(mBackgroundSize.y)};
+            static_cast<int>(mBackgroundSize.y)
+        };
 
         SDL_RenderCopy(mRenderer, mBackgroundTexture, nullptr, &dstRect);
     }
@@ -831,6 +832,12 @@ void Game::UnloadScene()
     {
         SDL_DestroyTexture(mBackgroundTexture);
         mBackgroundTexture = nullptr;
+    }
+
+    if (mMap)
+    {
+        delete mMap;
+        mMap = nullptr;
     }
 }
 

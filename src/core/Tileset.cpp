@@ -1,7 +1,22 @@
 #include "./Tileset.h"
 #include <fstream>
 
-Tileset::Tileset(std::string jsonPath)
+void Tileset::LoadTexture() {
+    const std::string basePath = "../assets/Levels/Tiles/";
+
+    const std::string texturePath = basePath + mName + ".png";
+
+    SDL_Texture* texture = mGame->LoadTexture(texturePath);
+
+    if (!texture) {
+        SDL_Log("Failed to load tileset texture: %s", texturePath.c_str());
+        return;
+    }
+
+    mTexture = texture;
+}
+
+Tileset::Tileset(Game* game, std::string jsonPath) : mGame(game)
 {
     std::ifstream file(jsonPath);
     json data = json::parse(file);
@@ -12,30 +27,29 @@ Tileset::Tileset(std::string jsonPath)
     mImageWidth = data["imagewidth"];
     mName = data["name"];
 
-    mTiles = std::vector<Tile>();
+    LoadTexture();
+
+    mTileExtraInfo = std::map<int, TileExtraInfo>();
 
     for (auto& element : data["tiles"].items()) {
-        Tile tile;
-        tile.id = element.value()["id"];
+        TileExtraInfo extInfo;
+        
+        extInfo.id = element.value()["id"];
+        
         if (element.value().contains("objectgroup")) {
-            tile.mObjectGroup = element.value()["objectgroup"];
+            extInfo.mObjectGroup = element.value()["objectgroup"];
         }
-        mTiles.push_back(tile);
+        
+        mTileExtraInfo.insert_or_assign(extInfo.id, std::move(extInfo));
     }
 }
 
 Tileset::~Tileset() {}
 
-void Tileset::print()
+void Tileset::Print()
 {
     SDL_Log("Name: %s\n", mName.c_str());
     SDL_Log("Tile Size: %dx%d\n", mTileWidth, mTileHeight);
     SDL_Log("Image Size: %dx%d\n", mImageWidth, mImageHeight);
-    SDL_Log("Number of Tiles: %zu\n", mTiles.size());
-    for (const auto& tile : mTiles) {
-        SDL_Log("  Tile ID: %d\n", tile.id);
-        if (!tile.mObjectGroup.is_null()) {
-            SDL_Log("    Object Group: %s\n", tile.mObjectGroup.dump().c_str());
-        }
-    }
+    SDL_Log("Number of Extra infos for tiles: %zu\n", mTileExtraInfo.size());
 }

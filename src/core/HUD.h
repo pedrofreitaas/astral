@@ -22,6 +22,7 @@ public:
 
     // Reinsert the HUD elements
     void SetTime(int time);
+    void SetFPS(int fps);
     void UpdateLives(int lives);
     void UpdateAmmo(int ammo, int maxAmmo);
     void UpdateGun(std::string gunName);
@@ -30,11 +31,14 @@ public:
 private:
     // HUD elements
     UIText* mTimeText;
+    UIText* mFPSText;
 
     UIImage* mFrame;
     UIImage* mPunkIcon;
-    std::string mGunName; UIImage* mGunIcon;
+    std::string mGunName; 
+    UIImage* mGunIcon;
     std::vector<UIImage*> mLives;
-    std::vector<UIImage*> mAmmo; std::vector<UIImage*> mAmmoBackground;
+    std::vector<UIImage*> mAmmo; 
+    std::vector<UIImage*> mAmmoBackground;
     UIText* mProjectileText;
 };

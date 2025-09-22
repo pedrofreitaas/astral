@@ -3,10 +3,11 @@
 #include <string>
 #include <SDL.h>
 #include "../libs/Json.h"
+#include "./Game.h"
 #include <string>
 using json = nlohmann::json;
 
-struct Tile {
+struct TileExtraInfo {
     int id;
     json mObjectGroup;
 };
@@ -14,17 +15,22 @@ struct Tile {
 class Tileset
 {
 public:
-    Tileset() : mImageWidth(0), mImageHeight(0), mTileWidth(0), mTileHeight(0) {}
+    Tileset() : mImageWidth(0), mImageHeight(0), mTileWidth(0), mTileHeight(0), mTexture(nullptr) {};
 
-    Tileset(std::string jsonPath);
+    Tileset(class Game* game, std::string jsonPath);
     ~Tileset();
 
-    void print();
+    void Print();
     std::string GetName() const { return mName; }
 
 private:
     int mImageWidth, mImageHeight;
     int mTileWidth, mTileHeight;
     std::string mName;
-    std::vector<Tile> mTiles;
+    std::map<int, TileExtraInfo> mTileExtraInfo;
+
+    class Game* mGame;
+    SDL_Texture* mTexture;
+
+    void LoadTexture();
 };

@@ -11,20 +11,21 @@ SpatialHashing::SpatialHashing(int cellSize, int width, int height)
 {
     int cols = (width + cellSize - 1) / cellSize;
     int rows = (height + cellSize - 1) / cellSize;
-    mGrid.resize(rows, std::vector<std::vector<Actor*>>(cols));
+    mGrid.resize(rows, std::vector<std::vector<Actor *>>(cols));
 }
 
 SpatialHashing::~SpatialHashing()
 {
     // Delete all actors
-    for (auto& row : mGrid)
+    for (auto &row : mGrid)
     {
-        for (auto& cell : row)
+        for (auto &cell : row)
         {
-           while(!cell.empty())
-           {
-               delete cell.back();; // Assuming ownership of actors
-           }
+            while (!cell.empty())
+            {
+                delete cell.back();
+                ; // Assuming ownership of actors
+            }
 
             cell.clear();
         }
@@ -64,7 +65,7 @@ void SpatialHashing::Remove(Actor *collider)
         int col = it->second.second;
 
         // Remove the collider from the grid cell
-        auto& cell = mGrid[row][col];
+        auto &cell = mGrid[row][col];
         cell.erase(std::remove(cell.begin(), cell.end(), collider), cell.end());
 
         // Remove from positions and indices maps
@@ -79,9 +80,9 @@ void SpatialHashing::Reinsert(Actor *actor)
     Insert(actor);
 }
 
-std::vector<Actor*> SpatialHashing::Query(const Vector2& position, const int range) const
+std::vector<Actor *> SpatialHashing::Query(const Vector2 &position, const int range) const
 {
-    std::vector<Actor*> results;
+    std::vector<Actor *> results;
 
     int col = static_cast<int>(position.x / mCellSize);
     int row = static_cast<int>(position.y / mCellSize);
@@ -102,7 +103,7 @@ std::vector<Actor*> SpatialHashing::Query(const Vector2& position, const int ran
                 continue; // Skip out of bounds cells
             }
 
-            const auto& cell = mGrid[r][c];
+            const auto &cell = mGrid[r][c];
             results.insert(results.end(), cell.begin(), cell.end());
         }
     }
@@ -110,12 +111,12 @@ std::vector<Actor*> SpatialHashing::Query(const Vector2& position, const int ran
     return results;
 }
 
-std::vector<AABBColliderComponent *> SpatialHashing::QueryColliders(const Vector2& position, const int range) const
+std::vector<AABBColliderComponent *> SpatialHashing::QueryColliders(const Vector2 &position, const int range) const
 {
-    std::vector<AABBColliderComponent*> results;
+    std::vector<AABBColliderComponent *> results;
 
-    std::vector<Actor*> actors = Query(position, range);
-    for (Actor* actor : actors)
+    std::vector<Actor *> actors = Query(position, range);
+    for (Actor *actor : actors)
     {
         auto collider = actor->GetComponent<AABBColliderComponent>();
         if (collider)
@@ -127,12 +128,12 @@ std::vector<AABBColliderComponent *> SpatialHashing::QueryColliders(const Vector
     return results;
 }
 
-std::vector<Actor*> SpatialHashing::QueryOnCamera(const Vector2& cameraPosition,
-                                                                  const float screenWidth,
-                                                                  const float screenHeight,
-                                                                  const float extraRadius) const
+std::vector<Actor *> SpatialHashing::QueryOnCamera(const Vector2 &cameraPosition,
+                                                   const float screenWidth,
+                                                   const float screenHeight,
+                                                   const float extraRadius) const
 {
-    std::vector<Actor*> results;
+    std::vector<Actor *> results;
 
     // Get the camera vertices
     Vector2 topLeft = Vector2(cameraPosition.x - extraRadius, cameraPosition.y - extraRadius);
@@ -155,7 +156,7 @@ std::vector<Actor*> SpatialHashing::QueryOnCamera(const Vector2& cameraPosition,
     {
         for (int c = startCol; c <= endCol; ++c)
         {
-            const auto& cell = mGrid[r][c];
+            const auto &cell = mGrid[r][c];
             results.insert(results.end(), cell.begin(), cell.end());
         }
     }

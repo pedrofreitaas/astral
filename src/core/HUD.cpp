@@ -9,7 +9,14 @@
 HUD::HUD(class Game* game, const std::string& fontName)
     : UIScreen(game, fontName), mAmmo(), mAmmoBackground(), mGunName("Unkown"), mGunIcon(nullptr)
 {
-    // Initialize HUD elements
+    // FPS
+    mFPSText = AddText(
+        "60", 
+        Vector2(mGame->GetWindowWidth() - 425.0f + CHAR_WIDTH, 35.0f), 
+        Vector2(CHAR_WIDTH * 3, WORD_HEIGHT), 
+        POINT_SIZE, 1024, 
+        Color::White
+    );
 
     // Timer
     AddImage("../assets/Sprites/Hud/frame.png", Vector2(mGame->GetWindowWidth() - 145.0f, 10.0f), Vector2(140.0f, 56.0f));
@@ -33,6 +40,14 @@ HUD::~HUD()
 {
 }
 // Em HUD.cpp
+
+void HUD::SetFPS(int fps)
+{
+    int displayFPS = std::max(0, fps);
+    displayFPS = std::min(999, displayFPS);
+
+    mFPSText->SetText(std::to_string(displayFPS));
+}
 
 void HUD::SetTime(int time)
 {
