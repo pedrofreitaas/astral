@@ -27,6 +27,8 @@ add_executable(${PROJECT_NAME}
         src/core/Game.cpp
         src/components/draw/DrawComponent.cpp
         src/components/draw/DrawComponent.h
+        src/components/draw/DrawTileComponent.cpp
+        src/components/draw/DrawTileComponent.h
         src/components/RigidBodyComponent.cpp
         src/components/RigidBodyComponent.h
         src/components/collider/CircleColliderComponent.cpp

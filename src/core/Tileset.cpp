@@ -1,21 +1,6 @@
 #include "./Tileset.h"
 #include <fstream>
 
-void Tileset::LoadTexture() {
-    const std::string basePath = "../assets/Levels/Tiles/";
-
-    const std::string texturePath = basePath + mName + ".png";
-
-    SDL_Texture* texture = mGame->LoadTexture(texturePath);
-
-    if (!texture) {
-        SDL_Log("Failed to load tileset texture: %s", texturePath.c_str());
-        return;
-    }
-
-    mTexture = texture;
-}
-
 Tileset::Tileset(Game* game, std::string jsonPath) : mGame(game)
 {
     std::ifstream file(jsonPath);
@@ -52,4 +37,19 @@ void Tileset::Print()
     SDL_Log("Tile Size: %dx%d\n", mTileWidth, mTileHeight);
     SDL_Log("Image Size: %dx%d\n", mImageWidth, mImageHeight);
     SDL_Log("Number of Extra infos for tiles: %zu\n", mTileExtraInfo.size());
+}
+
+void Tileset::LoadTexture() {
+    const std::string basePath = "../assets/Levels/Tiles/";
+
+    const std::string texturePath = basePath + mName + ".png";
+
+    SDL_Texture* texture = mGame->LoadTexture(texturePath);
+
+    if (!texture) {
+        SDL_Log("Failed to load tileset texture: %s", texturePath.c_str());
+        return;
+    }
+
+    mTexture = texture;
 }
