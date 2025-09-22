@@ -102,7 +102,10 @@ Map::Map(Game *game, std::string jsonPath)
 	}
 }
 
-Map::~Map() {}
+Map::~Map() {
+	mLayers.clear();
+	mTilesets.clear();
+}
 
 void Map::Print()
 {

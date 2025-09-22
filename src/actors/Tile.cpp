@@ -1,13 +1,9 @@
-//
-// Created by Lucas N. Ferreira on 03/08/23.
-//
-
-#include "Block.h"
+#include "Tile.h"
 #include "../core/Game.h"
 #include "../components/draw/DrawSpriteComponent.h"
 #include "../components/collider/AABBColliderComponent.h"
 
-Block::Block(Game *game, const std::string &texturePath, const DrawLayerPosition &layer)
+Tile::Tile(Game *game, const std::string &texturePath, const DrawLayerPosition &layer)
     : Actor(game)
 {
     bool hasCollision = (layer == DrawLayerPosition::Player);

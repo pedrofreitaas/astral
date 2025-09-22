@@ -1,7 +1,8 @@
 #include "./Tileset.h"
 #include <fstream>
 
-Tileset::Tileset(Game* game, std::string jsonPath) : mGame(game)
+Tileset::Tileset(Game* game, std::string jsonPath) 
+: mGame(game)
 {
     std::ifstream file(jsonPath);
     json data = json::parse(file);
@@ -29,7 +30,13 @@ Tileset::Tileset(Game* game, std::string jsonPath) : mGame(game)
     }
 }
 
-Tileset::~Tileset() {}
+Tileset::~Tileset() {
+    if (!mTexture) {
+        return;
+    }
+
+    SDL_Log("TO-DO look on how to delete texture pointer");
+}
 
 void Tileset::Print()
 {

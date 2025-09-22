@@ -42,8 +42,8 @@ add_executable(${PROJECT_NAME}
         src/components/collider/AABBColliderComponent.h
         src/components/draw/DrawAnimatedComponent.cpp
         src/components/draw/DrawAnimatedComponent.h
-        src/actors/Block.cpp
-        src/actors/Block.h
+        src/actors/Tile.cpp
+        src/actors/Tile.h
         src/actors/Spawner.cpp
         src/actors/Spawner.h
         src/core/AudioSystem.cpp

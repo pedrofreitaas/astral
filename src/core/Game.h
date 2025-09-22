@@ -66,7 +66,6 @@ public:
 
     // Level functions
     void LoadMainMenu();
-    void LoadLevel(const std::string& levelName, const std::string& blocksDir);
 
     std::vector<Actor *> GetNearbyActors(const Vector2& position, const int range = 1);
     std::vector<class AABBColliderComponent *> GetNearbyColliders(const Vector2& position, const int range = 2);
@@ -125,9 +124,6 @@ private:
 
     // HUD functions
     void UpdateLevelTime(float deltaTime);
-
-    // Load the level from a CSV file as a 2D array
-    void BuildLevel(std::string blocksDir);
 
     // Spatial Hashing for collision detection
     class SpatialHashing* mSpatialHashing;

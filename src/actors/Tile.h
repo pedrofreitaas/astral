@@ -8,10 +8,10 @@
 #include "../components/draw/DrawComponent.h"
 #include <string>
 
-class Block : public Actor
+class Tile : public Actor
 {
 public:
-    Block(Game *game, const std::string &texturePath, const DrawLayerPosition &layer);
+    Tile(Game *game, const std::string &texturePath, const DrawLayerPosition &layer);
 
     virtual void OnColision() {};
 };
