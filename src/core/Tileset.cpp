@@ -18,15 +18,19 @@ Tileset::Tileset(Game* game, std::string jsonPath)
     mTileExtraInfo = std::map<int, TileExtraInfo>();
 
     for (auto& element : data["tiles"].items()) {
-        TileExtraInfo extInfo;
-        
-        extInfo.id = element.value()["id"];
-        
-        if (element.value().contains("objectgroup")) {
-            extInfo.mObjectGroup = element.value()["objectgroup"];
+        if (!element.value().contains("objectgroup")) {
+            throw std::runtime_error("Tileset JSON missing objectgroup for tile id.");
         }
+
+        int id = element.value()["id"];
+        int BBOffsetX = element.value()["objectgroup"]["objects"][0]["x"];
+        int BBOffsetY = element.value()["objectgroup"]["objects"][0]["y"];
+        int BBWidth = element.value()["objectgroup"]["objects"][0]["width"];
+        int BBHeight = element.value()["objectgroup"]["objects"][0]["height"];
+
+        TileExtraInfo extInfo(id, BBOffsetX, BBOffsetY, BBWidth, BBHeight);
         
-        mTileExtraInfo.insert_or_assign(extInfo.id, std::move(extInfo));
+        mTileExtraInfo.emplace(extInfo.id, extInfo);
     }
 }
 
@@ -34,8 +38,6 @@ Tileset::~Tileset() {
     if (!mTexture) {
         return;
     }
-
-    SDL_Log("TO-DO look on how to delete texture pointer");
 }
 
 void Tileset::Print()
@@ -53,10 +55,18 @@ void Tileset::LoadTexture() {
 
     SDL_Texture* texture = mGame->LoadTexture(texturePath);
 
+    SDL_Log("Loading tileset texture: %s", texturePath.c_str());
+
     if (!texture) {
-        SDL_Log("Failed to load tileset texture: %s", texturePath.c_str());
-        return;
+        throw std::runtime_error("Failed to load tileset texture: " + texturePath);
     }
 
     mTexture = texture;
+}
+
+Vector2 Tileset::GetGridDims(int localGID) {
+    int tilesPerRow = mImageWidth / mTileWidth;
+    int x = (localGID % tilesPerRow) * mTileWidth;
+    int y = (localGID / tilesPerRow) * mTileHeight;
+    return Vector2(x, y);
 }

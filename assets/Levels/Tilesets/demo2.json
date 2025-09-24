@@ -1,0 +1,15 @@
+{
+    "columns": 17,
+    "image": "TreasureHunters\/Treasure Hunters\/Palm Tree Island\/Sprites\/Terrain\/Terrain (32x32).png",
+    "imageheight": 160,
+    "imagewidth": 544,
+    "margin": 0,
+    "name": "Terrain (32x32)",
+    "spacing": 0,
+    "tilecount": 85,
+    "tiledversion": "1.11.2",
+    "tileheight": 32,
+    "tilewidth": 32,
+    "type": "tileset",
+    "version": "1.10"
+}

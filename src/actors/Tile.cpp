@@ -1,19 +1,42 @@
 #include "Tile.h"
 #include "../core/Game.h"
-#include "../components/draw/DrawSpriteComponent.h"
+#include "../components/draw/DrawTileComponent.h"
 #include "../components/collider/AABBColliderComponent.h"
 
-Tile::Tile(Game *game, const std::string &texturePath, const DrawLayerPosition &layer)
-    : Actor(game)
+Tile::Tile(
+    Game *game, 
+    SDL_Texture *tilesetTexture,
+    int gridX, int gridY,
+    int width, int height,
+    int boundBoxWidth, int boundBoxHeight,
+    int boundBoxOffsetX, int boundBoxOffsetY,
+    const DrawLayerPosition &layer
+) : Actor(game)
 {
-    bool hasCollision = (layer == DrawLayerPosition::Player);
-    
-    new DrawSpriteComponent(this, texturePath, Game::TILE_SIZE, Game::TILE_SIZE, static_cast<int>(layer));
-
-    if (!hasCollision) {
+    if (!tilesetTexture)
+    {
+        throw std::runtime_error("Tileset texture is null");
         return;
     }
 
-    new AABBColliderComponent(this, 0, 0, Game::TILE_SIZE, Game::TILE_SIZE,
-                              ColliderLayer::Blocks, true);
+    new DrawTileComponent(
+        this,
+        tilesetTexture,
+        gridX, gridY,
+        width, height,
+        static_cast<int>(layer)
+    );
+
+    bool hasCollision = (layer == DrawLayerPosition::Player);
+
+    if (!hasCollision)
+        return;
+
+    new AABBColliderComponent(
+        this, 
+        boundBoxOffsetX, boundBoxOffsetY, 
+        width, height,
+        ColliderLayer::Blocks, 
+        true
+    );
 }

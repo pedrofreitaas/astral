@@ -1,7 +1,3 @@
-//
-// Created by Lucas N. Ferreira on 28/09/23.
-//
-
 #pragma once
 
 #include "Actor.h"
@@ -10,8 +6,16 @@
 
 class Tile : public Actor
 {
-public:
-    Tile(Game *game, const std::string &texturePath, const DrawLayerPosition &layer);
+private:
 
-    virtual void OnColision() {};
+public:
+    Tile(
+        Game *game, 
+        SDL_Texture* tilesetTexture, 
+        int gridX, int gridY, 
+        int height, int width,
+        int boundBoxWidth, int boundBoxHeight,
+        int boundBoxOffsetX=0, int boundBoxOffsetY=0,
+        const DrawLayerPosition &layer=DrawLayerPosition::Ground
+    );
 };

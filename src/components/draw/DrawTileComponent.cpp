@@ -15,7 +15,7 @@ DrawTileComponent::DrawTileComponent(
     , mGridX(gridX)
     , mGridY(gridY)
 {
-    if (tilesetTexture) {
+    if (!tilesetTexture) {
         throw std::runtime_error("DrawTileComponent requires a valid tileset texture.");
     }
 
@@ -45,5 +45,5 @@ void DrawTileComponent::Draw(SDL_Renderer *renderer, const Vector3 &modColor)
         mHeight
     };
 
-    SDL_RenderCopyEx(renderer, mTilesetSurface, &srcrect, &dstrect, 0.0f, nullptr, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, mTilesetSurface, nullptr, &dstrect, 0.0f, nullptr, SDL_FLIP_NONE);
 }
