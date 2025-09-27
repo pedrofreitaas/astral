@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.26)
 set(CMAKE_CXX_STANDARD 17)
 
 # Configurando o nome e executável do projeto
-set(PROJECT_NAME "tp4-smb-1-2")
+set(PROJECT_NAME "astral")
 project(${PROJECT_NAME})
 
 # Use PkgConfig to find SDL2 libraries

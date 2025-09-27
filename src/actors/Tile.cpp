@@ -19,6 +19,9 @@ Tile::Tile(
         return;
     }
 
+    mPosition.x = gridX * width;
+    mPosition.y = gridY * height;
+
     new DrawTileComponent(
         this,
         tilesetTexture,

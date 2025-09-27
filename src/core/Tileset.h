@@ -24,8 +24,6 @@ public:
 class Tileset
 {
 public:
-    Tileset() : mImageWidth(0), mImageHeight(0), mTileWidth(0), mTileHeight(0), mTexture(nullptr) {};
-
     Tileset(class Game* game, std::string jsonPath);
     ~Tileset();
 
@@ -35,29 +33,8 @@ public:
 
     Vector2 GetTileDims() const { return Vector2(mTileWidth, mTileHeight); }
     Vector2 GetGridDims(int localGID);
-    Vector2 GetBBOffset(int localID) {
-        const auto& extInfo = mTileExtraInfo.find(localID);
-
-        if (extInfo != mTileExtraInfo.end()) {
-            return Vector2(
-                extInfo->second.BBOffsetX, 
-                extInfo->second.BBOffsetY
-            );
-        }
-        return Vector2(0.0f,0.0f);
-    }
-
-    Vector2 GetBBSize(int localID) {
-        const auto& extInfo = mTileExtraInfo.find(localID);
-
-        if (extInfo != mTileExtraInfo.end()) {
-            return Vector2(
-                extInfo->second.BBWidth, 
-                extInfo->second.BBHeight
-            );
-        }
-        return Vector2(0.0f,0.0f);
-    }
+    Vector2 GetBBOffset(int localID);
+    Vector2 GetBBSize(int localID);
 
 private:
     int mImageWidth, mImageHeight;

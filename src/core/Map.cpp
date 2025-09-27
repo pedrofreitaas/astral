@@ -54,14 +54,14 @@ Map::Map(Game *game, std::string jsonPath)
 	json data = json::parse(file);
 
 	mGame = game;
-
 	tileHeight = data["tileheight"];
 	tileWidth = data["tilewidth"];
 	mapHeight = data["height"];
 	mapWidth = data["width"];
 
-	mTilesets = std::map<std::string, Tileset>();
+	SDL_Log("debug: Map dimensions: %dx%d tiles of size %dx%d", mapWidth, mapHeight, tileWidth, tileHeight);
 
+	mTilesets = std::map<std::string, Tileset>();
 	std::map<std::string, Tileset> allAvailableTilesets = LoadAllAvailableTilesets(baseTilesetsPath);
 	std::map<std::string, int> nameToFirstGID;
 
@@ -88,8 +88,10 @@ Map::Map(Game *game, std::string jsonPath)
 			continue;
 		}
 
+		SDL_Log("Loaded tileset: %s with firstGID: %d", tilesetName.c_str(), firstGID);
+
 		mTilesets.emplace(tilesetName, t);
-		nameToFirstGID.insert_or_assign(tilesetName, std::move(firstGID));
+		nameToFirstGID.emplace(tilesetName, firstGID);
 	}
 
 	mTiles = std::vector<class Tile*>();
