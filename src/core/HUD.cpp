@@ -5,13 +5,15 @@
 HUD::HUD(class Game* game, const std::string& fontName)
     : UIScreen(game, fontName)
 {
+    int width = 64, height = 64;
     // FPS
     mFPSText = AddText(
-        "60", 
-        Vector2(mGame->GetWindowWidth() - 425.0f + CHAR_WIDTH, 35.0f), 
-        Vector2(CHAR_WIDTH * 3, WORD_HEIGHT), 
-        POINT_SIZE, 1024, 
-        Color::Red
+        "fps", 
+        Vector2(mGame->GetWindowWidth()-width, 0.0f), 
+        Vector2(width, height), 
+        POINT_SIZE, 
+        1024, 
+        Color::Blue
     );
 }
 
