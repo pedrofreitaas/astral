@@ -43,7 +43,7 @@ Game::Game(int windowWidth, int windowHeight)
       mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr),
       mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu),
       mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero),
-      mBackgroundPosition(Vector2::Zero), mMap(nullptr)
+      mBackgroundPosition(Vector2::Zero), mMap(nullptr), mBackgroundIsCameraWise(true)
 {
     mRealWindowWidth = windowWidth;
     mRealWindowHeight = windowHeight;
@@ -172,7 +172,8 @@ void Game::LoadFirstLevel()
     SetBackgroundImage(
         "../assets/Levels/Backgrounds/galaxy.png",
         Vector2(0.0f, 0.0f),
-        Vector2(mMap->GetWidth(), mMap->GetHeight()));
+        Vector2(mWindowWidth, mWindowHeight),
+        false);
 
     mPunk = new Punk(this, 1000.0f, -1000.0f);
 
@@ -553,6 +554,11 @@ void Game::GenerateOutput()
     // Draw background texture considering camera position
     if (mBackgroundTexture)
     {
+        if (!mBackgroundIsCameraWise)
+        {
+            mBackgroundPosition.Set(mCameraPos.x, mCameraPos.y);
+        }
+        
         SDL_Rect dstRect = {
             static_cast<int>(mBackgroundPosition.x - mCameraPos.x),
             static_cast<int>(mBackgroundPosition.y - mCameraPos.y),
@@ -617,8 +623,9 @@ void Game::GenerateOutput()
     SDL_RenderPresent(mRenderer);
 }
 
-void Game::SetBackgroundImage(const std::string &texturePath, const Vector2 &position, const Vector2 &size)
-{
+void Game::SetBackgroundImage(
+    const std::string &texturePath, const Vector2 &position, const Vector2 &size, bool isCameraWise
+){
     if (mBackgroundTexture)
     {
         SDL_DestroyTexture(mBackgroundTexture);
@@ -632,8 +639,17 @@ void Game::SetBackgroundImage(const std::string &texturePath, const Vector2 &pos
         SDL_Log("Failed to load background texture: %s", texturePath.c_str());
     }
 
+    mBackgroundIsCameraWise = isCameraWise;
+    
     // Set background position
-    mBackgroundPosition.Set(position.x, position.y);
+    if (mBackgroundIsCameraWise)
+    {
+        mBackgroundPosition.Set(position.x, position.y);
+    }
+    else
+    {
+        mBackgroundPosition.Set(mCameraPos.x, mCameraPos.y);
+    }
 
     // Set background size
     mBackgroundSize.Set(size.x, size.y);

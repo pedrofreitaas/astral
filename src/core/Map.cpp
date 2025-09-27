@@ -63,7 +63,7 @@ Map::Map(Game *game, std::string jsonPath)
 
 	mTilesets = std::map<std::string, Tileset>();
 	std::map<std::string, Tileset> allAvailableTilesets = LoadAllAvailableTilesets(baseTilesetsPath);
-	std::map<std::string, int> nameToFirstGID;
+	std::vector<std::pair<std::string, int>> nameToFirstGID;
 
 	// Load tilesets used in this map
 	for (const auto &tilesetData : data["tilesets"])
@@ -71,6 +71,11 @@ Map::Map(Game *game, std::string jsonPath)
 		std::string tilesetName = tilesetData["source"];
 		int firstGID = tilesetData["firstgid"];
 
+		// Remove directory path and extension from tilesetName
+		size_t lastSlash = tilesetName.find_last_of("/\\");
+		if (lastSlash != std::string::npos) {
+			tilesetName = tilesetName.substr(lastSlash + 1);
+		}
 		tilesetName = tilesetName.substr(0, tilesetName.find_last_of('.'));
 
 		// Tileset t = allAvailableTilesets[tilesetName]; - this line is a major issue
@@ -91,16 +96,18 @@ Map::Map(Game *game, std::string jsonPath)
 		SDL_Log("Loaded tileset: %s with firstGID: %d", tilesetName.c_str(), firstGID);
 
 		mTilesets.emplace(tilesetName, t);
-		nameToFirstGID.emplace(tilesetName, firstGID);
+		nameToFirstGID.push_back(std::pair<std::string, int>(tilesetName, firstGID));
 	}
 
 	mTiles = std::vector<class Tile *>();
 
 	// Iterate through each layer and extract tiles
-	SDL_Log("TO-DO: draw order for tiles implementation");
+	int layerIdx = -1;
 	for (const auto &layerData : data["layers"])
 	{
+		layerIdx++;
 		int tileIdx = -1;
+
 		for (const auto &tileGID : layerData["data"])
 		{
 			tileIdx++;
@@ -112,7 +119,7 @@ Map::Map(Game *game, std::string jsonPath)
 			std::string tilesetName = "";
 			int firstGID = 0;
 
-			for (const auto &pair : nameToFirstGID)
+			for (std::pair<std::string, int> &pair : nameToFirstGID)
 			{
 				if (gid >= pair.second)
 				{
@@ -142,6 +149,12 @@ Map::Map(Game *game, std::string jsonPath)
 			Vector2 bbOffset = currentTileset.GetBBOffset(localID);
 			Vector2 bbSize = currentTileset.GetBBSize(localID);
 
+			DrawLayerPosition layer =
+				(layerIdx == 0) ? static_cast<DrawLayerPosition>(static_cast<int>(DrawLayerPosition::Player) - 10) :
+				(layerIdx == 1) ? DrawLayerPosition::Player :
+				static_cast<DrawLayerPosition>(static_cast<int>(DrawLayerPosition::Player) + 10
+			);
+
 			mTiles.push_back(
 				std::move(
 					new Tile(
@@ -152,7 +165,7 @@ Map::Map(Game *game, std::string jsonPath)
 						tileDims.x, tileDims.y,
 						bbSize.x, bbSize.y,		// boundBox size
 						bbOffset.x, bbOffset.y, // boundBox
-						DrawLayerPosition::Player
+						layer
 					)
 				)
 			);

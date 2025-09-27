@@ -96,7 +96,12 @@ public:
     void ResetGameScene(float transitionTime = .0f);
     void UnloadScene();
 
-    void SetBackgroundImage(const std::string& imagePath, const Vector2 &position = Vector2::Zero, const Vector2& size = Vector2::Zero);
+    void SetBackgroundImage(
+        const std::string& imagePath, 
+        const Vector2 &position = Vector2::Zero, 
+        const Vector2& size = Vector2::Zero,
+        bool isCameraWise = true
+    );
     void TogglePause();
 
     // Game-specific
@@ -167,6 +172,7 @@ private:
     SDL_Texture *mBackgroundTexture;
     Vector2 mBackgroundSize;
     Vector2 mBackgroundPosition;
+    bool mBackgroundIsCameraWise;
 
     class Map* mMap;
 };

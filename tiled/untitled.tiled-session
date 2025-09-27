@@ -1,0 +1,41 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "maps/demo.tmx": {
+            "scale": 0.125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1924,
+                "y": 2300
+            }
+        },
+        "maps/demo_small.tmx": {
+            "scale": 1.6862499999999998,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 230.39288361749448,
+                "y": 239.8813936249074
+            }
+        }
+    },
+    "last.exportedFilePath": "//wsl$/Ubuntu-24.04/home/freitaas/projetos/jogos/astral/assets/Levels/Maps",
+    "last.imagePath": "C:/Users/freit/Downloads/Treasure Hunters/Treasure Hunters/Pirate Ship/Sprites/Tilesets",
+    "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
+    "map.height": 120,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "map.width": 120,
+    "openFiles": [
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "maps/demo.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}

@@ -1,0 +1,14 @@
+{ "columns":19,
+ "image":"C:\/Users\/freit\/Downloads\/Treasure Hunters\/Treasure Hunters\/Pirate Ship\/Sprites\/Tilesets\/Terrain and Back Wall (32x32).png",
+ "imageheight":416,
+ "imagewidth":608,
+ "margin":0,
+ "name":"Terrain and Back Wall (32x32)",
+ "spacing":0,
+ "tilecount":247,
+ "tiledversion":"1.11.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}
