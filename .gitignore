@@ -84,5 +84,3 @@ build/
 .env
 
 .aider*
-
-.vscode
