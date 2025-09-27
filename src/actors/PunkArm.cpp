@@ -27,10 +27,7 @@ std::string PunkArm::ArmConfig()
 
 Vector2 PunkArm::GetTargetPos()
 {
-    int mouseX, mouseY;
-    Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
-    
-    Vector2 target = Vector2(mouseX, mouseY);
+    Vector2 target = mGame->GetLogicalMousePos();
     return target + GetGame()->GetCameraPos();
 }
 

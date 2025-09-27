@@ -84,3 +84,5 @@ build/
 .env
 
 .aider*
+
+teste.cpp

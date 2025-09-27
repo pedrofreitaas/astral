@@ -34,17 +34,21 @@
 
 namespace fs = std::filesystem;
 
-const int CHAR_WIDTH = 16;
-const int WORD_HEIGHT = 20;
+const int CHAR_WIDTH = 6;
+const int WORD_HEIGHT = 8;
 
 Game::Game(int windowWidth, int windowHeight)
     : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true),
-      mWindowWidth(windowWidth), mWindowHeight(windowHeight), mPunk(nullptr), mHUD(nullptr), mBackgroundColor(0, 0, 0),
+      mPunk(nullptr), mHUD(nullptr), mBackgroundColor(0, 0, 0),
       mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr),
       mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu),
       mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero),
-      mBackgroundPosition(Vector2::Zero), mMap(nullptr), mLogicalWindowHeight(0), mLogicalWindowWidth(0)
+      mBackgroundPosition(Vector2::Zero), mMap(nullptr)
 {
+    mRealWindowWidth = windowWidth;
+    mRealWindowHeight = windowHeight;
+    mWindowWidth = 640;
+    mWindowHeight = 360;
 }
 
 void Game::SetMap(const std::string &path)
@@ -63,9 +67,9 @@ bool Game::Initialize()
     mWindow = SDL_CreateWindow(
         "astral",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        mWindowWidth, mWindowHeight,
-        SDL_WINDOW_FULLSCREEN|SDL_WINDOW_ALLOW_HIGHDPI|SDL_WINDOW_BORDERLESS|SDL_WINDOW_ALWAYS_ON_TOP
-    );
+        mRealWindowWidth, mRealWindowHeight,
+        SDL_WINDOW_ALWAYS_ON_TOP);
+
     if (!mWindow)
     {
         SDL_Log("Failed to create window: %s", SDL_GetError());
@@ -76,6 +80,18 @@ bool Game::Initialize()
     if (!mRenderer)
     {
         SDL_Log("Failed to create renderer: %s", SDL_GetError());
+        return false;
+    }
+
+    if (SDL_RenderSetLogicalSize(mRenderer, mWindowWidth, mWindowHeight) != 0)
+    {
+        SDL_Log("Failed to set logical size: %s", SDL_GetError());
+        return false;
+    }
+
+    if (SDL_RenderSetIntegerScale(mRenderer, SDL_FALSE) != 0)
+    {
+        SDL_Log("Failed to set integer scale: %s", SDL_GetError());
         return false;
     }
 
@@ -153,14 +169,10 @@ void Game::LoadFirstLevel()
 
     SetMap("demo.json");
 
-    int w,h;
-    SDL_GetWindowSize(mWindow, &w, &h);
-
     SetBackgroundImage(
-        "../assets/Levels/Backgrounds/galaxy.png", 
-        Vector2(0.0f,0.0f),
-        Vector2(w,h)
-    );
+        "../assets/Levels/Backgrounds/galaxy.png",
+        Vector2(0.0f, 0.0f),
+        Vector2(mMap->GetWidth(), mMap->GetHeight()));
 
     mPunk = new Punk(this, 1000.0f, -1000.0f);
 
@@ -195,11 +207,6 @@ void Game::ChangeScene()
 
     // Set new scene
     mGameScene = mNextScene;
-    mUIStack.front()->AddCursor(
-        "../assets/Sprites/Hud/cursor.png",
-        Vector2(0.0f, 0.0f),
-        Vector2(33.0f, 33.0f),
-        Color::White);
 }
 
 void Game::LoadMainMenu()
@@ -209,13 +216,15 @@ void Game::LoadMainMenu()
     mainMenu->AddBackground(
         "../assets/Sprites/Menu/background.png",
         Vector2(0, 0),
-        Vector2(mWindowWidth, mWindowHeight)
-    );
+        Vector2(mWindowWidth, mWindowHeight));
 
-    const Vector2 playButtonSize = Vector2(230.0f, 55.0f);
+    const Vector2 playButtonSize = Vector2(
+        mWindowWidth / 6.0f,
+        mWindowHeight / 12.0f);
+
     const Vector2 playButtonPos = Vector2(
         mWindowWidth / 2.0f - playButtonSize.x / 2.0f,
-        200.0f);
+        mWindowHeight / 2.0f - playButtonSize.y / 2.0f);
 
     mainMenu->AddButton(
         "Play",
@@ -224,6 +233,12 @@ void Game::LoadMainMenu()
         [this]()
         { SetGameScene(GameScene::Level1); },
         Vector2(CHAR_WIDTH * 4, WORD_HEIGHT));
+
+    mUIStack.front()->AddCursor(
+        "../assets/Sprites/Hud/cursor.png",
+        Vector2(0.0f, 0.0f),
+        Vector2(33.0f, 33.0f),
+        Color::White);
 }
 
 void Game::RunLoop()
@@ -261,13 +276,16 @@ void Game::ProcessInput()
                 TogglePause();
             }
             break;
+
         case SDL_MOUSEBUTTONDOWN:
             // Handle mouse click for UI screens
             if (!mUIStack.empty())
             {
-                int x, y;
-                SDL_GetMouseState(&x, &y);
-                mUIStack.back()->HandleMouseClick(event.button.button, x, y);
+                Vector2 logicalMouseClick = GetLogicalMousePos();
+                mUIStack.back()->HandleMouseClick(
+                    event.button.button,
+                    logicalMouseClick.x,
+                    logicalMouseClick.y);
             }
         }
     }
@@ -413,9 +431,6 @@ void Game::UpdateGame()
     // ---------------------
     if (mGameScene != GameScene::MainMenu)
     {
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
-
         if (mGamePlayState == GamePlayState::Playing)
         {
             mHUD->SetFPS(static_cast<int>(1.0f / deltaTime));
@@ -724,4 +739,13 @@ void Game::Shutdown()
 int Game::GetGameTotalActors()
 {
     return mSpatialHashing->GetTotalActors();
+}
+
+Vector2 Game::GetLogicalMousePos() const
+{
+    float lx, ly;
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+    SDL_RenderWindowToLogical(mRenderer, (float)x, (float)y, &lx, &ly);
+    return Vector2(lx, ly);
 }

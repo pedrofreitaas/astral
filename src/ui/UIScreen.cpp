@@ -76,10 +76,7 @@ void UIScreen::Draw(SDL_Renderer *renderer)
     }
 
     for (auto t : mCursors) {
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
-        Vector2 mousePos(static_cast<float>(mouseX), static_cast<float>(mouseY));
-        
+        Vector2 mousePos = mGame->GetLogicalMousePos();
         t->Draw(renderer, mousePos);
     }
 }

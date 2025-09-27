@@ -109,6 +109,7 @@ public:
     SDL_Renderer* GetRenderer() const { return mRenderer; }
 
     int GetGameTotalActors();
+    Vector2 GetLogicalMousePos() const;
 
 private:
     void ProcessInput();
@@ -139,7 +140,7 @@ private:
 
     // Window properties
     int mWindowWidth, mWindowHeight;
-    int mLogicalWindowWidth, mLogicalWindowHeight;
+    int mRealWindowWidth, mRealWindowHeight;
 
     // Track elapsed time since game start
     Uint32 mTicksCount;
