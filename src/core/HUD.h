@@ -20,25 +20,7 @@ public:
     HUD(class Game* game, const std::string& fontName);
     ~HUD();
 
-    // Reinsert the HUD elements
-    void SetTime(int time);
     void SetFPS(int fps);
-    void UpdateLives(int lives);
-    void UpdateAmmo(int ammo, int maxAmmo);
-    void UpdateGun(std::string gunName);
-    void UpdateMousePosition(int x, int y);
-
 private:
-    // HUD elements
-    UIText* mTimeText;
     UIText* mFPSText;
-
-    UIImage* mFrame;
-    UIImage* mPunkIcon;
-    std::string mGunName; 
-    UIImage* mGunIcon;
-    std::vector<UIImage*> mLives;
-    std::vector<UIImage*> mAmmo; 
-    std::vector<UIImage*> mAmmoBackground;
-    UIText* mProjectileText;
 };

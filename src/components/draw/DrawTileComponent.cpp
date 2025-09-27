@@ -28,8 +28,8 @@ void DrawTileComponent::Draw(SDL_Renderer *renderer, const Vector3 &modColor)
     Vector2 cameraPos = mOwner->GetGame()->GetCameraPos();
 
     SDL_Rect srcrect = {
-        mTilesetPosition.x,
-        mTilesetPosition.y,
+        static_cast<int>(mTilesetPosition.x),
+        static_cast<int>(mTilesetPosition.y),
         mWidth,
         mHeight
     };

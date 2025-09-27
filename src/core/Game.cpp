@@ -40,7 +40,7 @@ const int WORD_HEIGHT = 20;
 Game::Game(int windowWidth, int windowHeight)
     : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true),
       mWindowWidth(windowWidth), mWindowHeight(windowHeight), mPunk(nullptr), mHUD(nullptr), mBackgroundColor(0, 0, 0),
-      mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr), mGameTimer(0.0f), mGameTimeLimit(0),
+      mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr),
       mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu),
       mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero),
       mBackgroundPosition(Vector2::Zero), mMap(nullptr)
@@ -151,9 +151,6 @@ void Game::LoadFirstLevel()
 {
     mHUD = new HUD(this, "../assets/Fonts/VT323-Regular.ttf");
 
-    mGameTimeLimit = 400;
-    mHUD->SetTime(mGameTimeLimit);
-
     SetMap("demo.json");
 
     mPunk = new Punk(this, 1000.0f, -1000.0f);
@@ -174,9 +171,6 @@ void Game::ChangeScene()
 
     // Reset camera position
     mCameraPos.Set(0.0f, 0.0f);
-
-    // Reset game timer
-    mGameTimer = 0.0f;
 
     // Reset gameplay state
     mGamePlayState = GamePlayState::Playing;
@@ -415,14 +409,7 @@ void Game::UpdateGame()
 
         if (mGamePlayState == GamePlayState::Playing)
         {
-            UpdateLevelTime(deltaTime);
-            if (mPunk)
-            {
-                mHUD->UpdateLives(mPunk->Lives());
-                mHUD->UpdateAmmo(mPunk->GetAmmo(), mPunk->GetMaxAmmo());
-                mHUD->UpdateGun(mPunk->GetCurrentWeaponName());
-                mHUD->SetFPS(static_cast<int>(1.0f / deltaTime));
-            }
+            mHUD->SetFPS(static_cast<int>(1.0f / deltaTime));
         }
     }
 
@@ -448,31 +435,6 @@ void Game::UpdateSceneManager(float deltaTime)
         {
             ChangeScene();
             mSceneManagerState = SceneManagerState::None;
-        }
-    }
-}
-
-void Game::UpdateLevelTime(float deltaTime)
-{
-    if (mGamePlayState != GamePlayState::Playing)
-    {
-        return;
-    }
-
-    mGameTimer += deltaTime;
-
-    while (mGameTimer >= 1.0f)
-    {
-        // Subtraímos 1.0f em vez de zerar o timer. Isso mantém a precisão.
-        mGameTimer -= 1.0f;
-        mGameTimeLimit--;
-
-        mHUD->SetTime(std::max(0, mGameTimeLimit));
-        if (mGameTimeLimit <= 0)
-        {
-            mPunk->Kill();
-            SetGamePlayState(GamePlayState::GameOver);
-            break;
         }
     }
 }

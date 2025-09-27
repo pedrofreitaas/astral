@@ -119,14 +119,12 @@ private:
     // Scene Manager
     void UpdateSceneManager(float deltaTime);
     void ChangeScene();
-    SceneManagerState mSceneManagerState;
-    float mSceneManagerTimer;
-
+    void SetMap(const std::string& path);
     void LoadFirstLevel();
 
-    // HUD functions
-    void UpdateLevelTime(float deltaTime);
-
+    SceneManagerState mSceneManagerState;
+    float mSceneManagerTimer;
+    
     // Spatial Hashing for collision detection
     class SpatialHashing* mSpatialHashing;
 
@@ -165,20 +163,10 @@ private:
     class HUD *mHUD;
     SoundHandle mMusicHandle;
 
-    float mGameTimer;
-    int mGameTimeLimit;
-
     SDL_Texture *mBackgroundTexture;
     Vector2 mBackgroundSize;
     Vector2 mBackgroundPosition;
 
-    int ***mFirstLevelLayers;
-    int ***mSecondLevelLayers;
-
-    nlohmann::json mMapJson;
-
     class Map* mMap;
-
-    void SetMap(const std::string& path);
 };
 
