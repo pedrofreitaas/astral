@@ -163,3 +163,8 @@ std::vector<Actor *> SpatialHashing::QueryOnCamera(const Vector2 &cameraPosition
 
     return results;
 }
+
+int SpatialHashing::GetTotalActors() const
+{
+    return mPositions.size();
+}

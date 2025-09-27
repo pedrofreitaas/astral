@@ -32,7 +32,7 @@ public:
     SDL_Texture* GetTexture() const { return mTexture; }
 
     Vector2 GetTileDims() const { return Vector2(mTileWidth, mTileHeight); }
-    Vector2 GetGridDims(int localGID);
+    Vector2 GetTilesetTexturePosition(int localGID);
     Vector2 GetBBOffset(int localID);
     Vector2 GetBBSize(int localID);
 

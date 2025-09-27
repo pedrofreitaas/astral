@@ -23,9 +23,12 @@ public:
 
     std::vector<Actor*> Query(const Vector2& position, const int range = 1) const;
     std::vector<Actor*> QueryOnCamera(const Vector2& cameraPosition,
-                                                      const float screenWidth,
-                                                      const float screenHeight,
-                                                      const float extraRadius = 0.0f) const;
+                                      const float screenWidth,
+                                      const float screenHeight,
+                                      const float extraRadius = 0.0f) const;
+
+   int GetTotalActors() const;
+   
 private:
     int mCellSize;
     int mWidth;

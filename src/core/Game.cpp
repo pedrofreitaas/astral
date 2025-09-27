@@ -60,7 +60,12 @@ bool Game::Initialize()
         return false;
     }
 
-    mWindow = SDL_CreateWindow("astral", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, mWindowWidth, mWindowHeight, 0);
+    mWindow = SDL_CreateWindow(
+        "astral",
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        mWindowWidth, mWindowHeight,
+        SDL_WINDOW_FULLSCREEN|SDL_WINDOW_ALLOW_HIGHDPI|SDL_WINDOW_BORDERLESS|SDL_WINDOW_ALWAYS_ON_TOP
+    );
     if (!mWindow)
     {
         SDL_Log("Failed to create window: %s", SDL_GetError());
@@ -105,7 +110,6 @@ bool Game::Initialize()
     DialogueSystem::Get()->Initialize(this);
     mTicksCount = SDL_GetTicks();
 
-    // Init all game actors
     SetGameScene(GameScene::MainMenu);
 
     SDL_ShowCursor(SDL_DISABLE);
@@ -145,10 +149,6 @@ void Game::ResetGameScene(float transitionTime)
 
 void Game::LoadFirstLevel()
 {
-    // Start Music
-    mMusicHandle = mAudio->PlaySound("MainTheme.ogg", true);
-
-    // Set background color
     mHUD = new HUD(this, "../assets/Fonts/VT323-Regular.ttf");
 
     mGameTimeLimit = 400;
@@ -157,12 +157,14 @@ void Game::LoadFirstLevel()
     SetMap("demo.json");
 
     mPunk = new Punk(this, 1000.0f, -1000.0f);
-    mPunk->SetPosition(Vector2(128.0f, 1088.0f));
 
-    // DialogueSystem::Get()->StartDialogue(
-    //     {"Zoe: ..."},
-    //     [this]() {}
-    // );
+    if (mMap == nullptr)
+    {
+        SDL_Log("Map not set before loading first level");
+        return;
+    }
+
+    mPunk->SetPosition(Vector2(32.0f, mMap->GetHeight() - 64.0f));
 }
 
 void Game::ChangeScene()
@@ -204,7 +206,8 @@ void Game::LoadMainMenu()
     mainMenu->AddBackground(
         "../assets/Sprites/Menu/background.png",
         Vector2(0, 0),
-        Vector2(mWindowWidth, mWindowHeight));
+        Vector2(mWindowWidth, mWindowHeight)
+    );
 
     const Vector2 playButtonSize = Vector2(230.0f, 55.0f);
     const Vector2 playButtonPos = Vector2(
@@ -372,7 +375,6 @@ void Game::UpdateGame()
 
     if (mGamePlayState == GamePlayState::Playing)
     {
-        // Reinsert all actors and pending actors
         UpdateActors(deltaTime);
     }
 
@@ -482,8 +484,8 @@ void Game::UpdateCamera()
 
     float cameraX = mPunk->GetPosition().x - mWindowWidth / 2.0f;
     float cameraY = mPunk->GetPosition().y - mWindowHeight / 2.0f;
-    float maxCameraX = LEVEL_WIDTH * TILE_SIZE - mWindowWidth;
-    float maxCameraY = LEVEL_HEIGHT * TILE_SIZE - mWindowWidth;
+    float maxCameraX = mMap->GetWidth() - mWindowWidth;
+    float maxCameraY = mMap->GetHeight() - mWindowHeight;
 
     mCameraPos.x = std::min(cameraX, maxCameraX);
     mCameraPos.y = std::min(cameraY, maxCameraY);
@@ -495,8 +497,10 @@ void Game::UpdateCamera()
 void Game::UpdateActors(float deltaTime)
 {
     // Get actors on camera
-    std::vector<Actor *> actorsOnCamera =
-        mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
+    std::vector<Actor *> actorsOnCamera = mSpatialHashing->QueryOnCamera(
+        mCameraPos,
+        mWindowWidth,
+        mWindowHeight);
 
     bool isPunkOnCamera = false;
     for (auto actor : actorsOnCamera)
@@ -600,8 +604,7 @@ void Game::GenerateOutput()
         [](const DrawComponent *a, const DrawComponent *b)
         {
             return a->GetDrawOrder() < b->GetDrawOrder();
-        }
-    );
+        });
 
     // Draw all drawables
     for (auto drawable : drawables)
@@ -745,4 +748,9 @@ void Game::Shutdown()
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     SDL_Quit();
+}
+
+int Game::GetGameTotalActors()
+{
+    return mSpatialHashing->GetTotalActors();
 }

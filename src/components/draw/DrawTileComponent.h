@@ -7,11 +7,10 @@
 class DrawTileComponent : public DrawComponent
 {
 public:
-    // (Lower draw order corresponds with further back)
     DrawTileComponent(
         class Actor* owner, 
         SDL_Texture* tilesetTexture,
-        int gridX, int gridY,
+        const Vector2& tilesetPosition,
         int width, int height,
         int drawOrder = 100
     );
@@ -22,8 +21,6 @@ public:
 protected:
     // Map of textures loaded
     SDL_Texture* mTilesetSurface;
-
-    int mGridX, mGridY;
-    int mWidth;
-    int mHeight;
+    Vector2 mTilesetPosition;
+    int mWidth, mHeight;
 };

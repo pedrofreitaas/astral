@@ -54,7 +54,7 @@ void Tileset::Print()
 
 void Tileset::LoadTexture()
 {
-    const std::string basePath = "../assets/Levels/Tiles/";
+    const std::string basePath = "../assets/Levels/Tilesets/Textures/";
 
     const std::string texturePath = basePath + mName + ".png";
 
@@ -70,11 +70,12 @@ void Tileset::LoadTexture()
     mTexture = texture;
 }
 
-Vector2 Tileset::GetGridDims(int localGID)
+Vector2 Tileset::GetTilesetTexturePosition(int localGID)
 {
     int tilesPerRow = mImageWidth / mTileWidth;
     int x = (localGID % tilesPerRow) * mTileWidth;
     int y = (localGID / tilesPerRow) * mTileHeight;
+
     return Vector2(x, y);
 }
 
@@ -88,6 +89,7 @@ Vector2 Tileset::GetBBOffset(int localID)
             extInfo->second.BBOffsetX,
             extInfo->second.BBOffsetY);
     }
+
     return Vector2(0.0f, 0.0f);
 }
 
@@ -101,5 +103,6 @@ Vector2 Tileset::GetBBSize(int localID)
             extInfo->second.BBWidth,
             extInfo->second.BBHeight);
     }
-    return Vector2(0.0f, 0.0f);
+
+    return Vector2(mTileWidth, mTileHeight);
 }

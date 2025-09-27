@@ -10,6 +10,7 @@
 
 const float MAX_SPEED_X = 750.0f;
 const float MAX_SPEED_Y = 750.0f;
+const int GRAVITY = 980;
 
 RigidBodyComponent::RigidBodyComponent(class Actor* owner, float mass, float friction, bool applyGravity, int updateOrder)
         :Component(owner, updateOrder)
@@ -30,7 +31,7 @@ void RigidBodyComponent::ApplyForce(const Vector2 &force) {
 void RigidBodyComponent::Update(float deltaTime)
 {
     // Apply gravity acceleration
-    if(mApplyGravity) SDL_Log("gravity w.i.p.");
+    if(mApplyGravity) ApplyForce(Vector2(0.f, GRAVITY * mMass));
 
     // Apply friction
     if (mApplyFriction) ApplyForce(-mFrictionCoefficient * mVelocity);

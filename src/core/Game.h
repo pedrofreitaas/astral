@@ -108,6 +108,8 @@ public:
     SDL_Window* GetWindow() { return mWindow; }
     SDL_Renderer* GetRenderer() const { return mRenderer; }
 
+    int GetGameTotalActors();
+
 private:
     void ProcessInput();
     void UpdateGame();

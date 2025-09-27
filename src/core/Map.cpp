@@ -54,12 +54,12 @@ Map::Map(Game *game, std::string jsonPath)
 	json data = json::parse(file);
 
 	mGame = game;
-	tileHeight = data["tileheight"];
-	tileWidth = data["tilewidth"];
-	mapHeight = data["height"];
-	mapWidth = data["width"];
-
-	SDL_Log("debug: Map dimensions: %dx%d tiles of size %dx%d", mapWidth, mapHeight, tileWidth, tileHeight);
+	mHeightInTiles = data["height"];
+	mWidthInTiles = data["width"];
+	int tileWidth = data["tilewidth"];
+	int tileHeight = data["tileheight"];
+	mWidth = mWidthInTiles * tileWidth;
+	mHeight = mHeightInTiles * tileHeight;
 
 	mTilesets = std::map<std::string, Tileset>();
 	std::map<std::string, Tileset> allAvailableTilesets = LoadAllAvailableTilesets(baseTilesetsPath);
@@ -94,14 +94,16 @@ Map::Map(Game *game, std::string jsonPath)
 		nameToFirstGID.emplace(tilesetName, firstGID);
 	}
 
-	mTiles = std::vector<class Tile*>();
+	mTiles = std::vector<class Tile *>();
 
 	// Iterate through each layer and extract tiles
 	SDL_Log("TO-DO: draw order for tiles implementation");
 	for (const auto &layerData : data["layers"])
 	{
+		int tileIdx = -1;
 		for (const auto &tileGID : layerData["data"])
 		{
+			tileIdx++;
 			int gid = tileGID.get<int>();
 
 			if (gid == 0)
@@ -128,11 +130,15 @@ Map::Map(Game *game, std::string jsonPath)
 
 			Tileset currentTileset = search->second;
 
-			int localID = gid - firstGID - 1; // -1 because Tiled starts at 1
+			int localID = gid - firstGID;
 
 			SDL_Texture *texture = currentTileset.GetTexture();
-			Vector2 grid = currentTileset.GetGridDims(localID);
 			Vector2 tileDims = currentTileset.GetTileDims();
+			Vector2 worldPosition(
+				tileDims.x * (tileIdx % mWidthInTiles),
+				tileDims.y * std::floor(tileIdx * 1.0f / mWidthInTiles)
+			);
+			Vector2 tilesetPosition = currentTileset.GetTilesetTexturePosition(localID);
 			Vector2 bbOffset = currentTileset.GetBBOffset(localID);
 			Vector2 bbSize = currentTileset.GetBBSize(localID);
 
@@ -141,11 +147,12 @@ Map::Map(Game *game, std::string jsonPath)
 					new Tile(
 						mGame,
 						texture,
-						grid.x, grid.y,			// gridX and Y
-						tileDims.x, tileDims.y, // height and width
+						worldPosition,
+						tilesetPosition,
+						tileDims.x, tileDims.y,
 						bbSize.x, bbSize.y,		// boundBox size
 						bbOffset.x, bbOffset.y, // boundBox
-						DrawLayerPosition::Ground
+						DrawLayerPosition::Player
 					)
 				)
 			);
@@ -162,8 +169,7 @@ Map::~Map()
 void Map::Print()
 {
 	SDL_Log("Map class loaded.");
-	SDL_Log("Map Size: %dx%d", mapWidth, mapHeight);
-	SDL_Log("Tile Size: %dx%d", tileWidth, tileHeight);
+	SDL_Log("Map Size: %dx%d", mWidthInTiles, mHeightInTiles);
 	SDL_Log("Number of Tilesets: %zu", mTilesets.size());
 	for (const auto &pair : mTilesets)
 	{

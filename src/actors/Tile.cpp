@@ -6,7 +6,8 @@
 Tile::Tile(
     Game *game, 
     SDL_Texture *tilesetTexture,
-    int gridX, int gridY,
+    const Vector2 &worldPosition,
+    const Vector2 &tilesetPosition,
     int width, int height,
     int boundBoxWidth, int boundBoxHeight,
     int boundBoxOffsetX, int boundBoxOffsetY,
@@ -19,13 +20,14 @@ Tile::Tile(
         return;
     }
 
-    mPosition.x = gridX * width;
-    mPosition.y = gridY * height;
+    mPosition = worldPosition;
+
+    mGame->Reinsert(this);
 
     new DrawTileComponent(
         this,
         tilesetTexture,
-        gridX, gridY,
+        tilesetPosition,
         width, height,
         static_cast<int>(layer)
     );
@@ -38,7 +40,7 @@ Tile::Tile(
     new AABBColliderComponent(
         this, 
         boundBoxOffsetX, boundBoxOffsetY, 
-        width, height,
+        boundBoxWidth, boundBoxHeight,
         ColliderLayer::Blocks, 
         true
     );

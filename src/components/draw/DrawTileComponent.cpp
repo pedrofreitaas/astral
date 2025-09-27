@@ -5,10 +5,10 @@
 DrawTileComponent::DrawTileComponent(
     class Actor *owner,
     SDL_Texture *tilesetTexture,
-    int gridX, int gridY,
+    const Vector2 &tilesetPosition,
     int width, int height,
     int drawOrder
-) : DrawComponent(owner, drawOrder), mWidth(width), mHeight(height), mGridX(gridX), mGridY(gridY)
+) : DrawComponent(owner, drawOrder), mWidth(width), mHeight(height), mTilesetPosition(tilesetPosition)
 {
     if (!tilesetTexture)
     {
@@ -28,8 +28,8 @@ void DrawTileComponent::Draw(SDL_Renderer *renderer, const Vector3 &modColor)
     Vector2 cameraPos = mOwner->GetGame()->GetCameraPos();
 
     SDL_Rect srcrect = {
-        mGridX * mWidth,
-        mGridY * mHeight,
+        mTilesetPosition.x,
+        mTilesetPosition.y,
         mWidth,
         mHeight
     };
