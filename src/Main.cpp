@@ -17,10 +17,11 @@ int main(int argc, char** argv)
 {
     Game game = Game(SCREEN_WIDTH, SCREEN_HEIGHT);
     bool success = game.Initialize();
-    if (success)
-    {
-        game.RunLoop();
-    }
+
+    if (!success) throw std::runtime_error("Failed to initialize game.");
+
+    game.RunLoop();
+
     game.Shutdown();
     return 0;
 }
