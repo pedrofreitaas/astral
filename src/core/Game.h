@@ -138,8 +138,8 @@ private:
     AudioSystem* mAudio;
 
     // Window properties
-    int mWindowWidth;
-    int mWindowHeight;
+    int mWindowWidth, mWindowHeight;
+    int mLogicalWindowWidth, mLogicalWindowHeight;
 
     // Track elapsed time since game start
     Uint32 mTicksCount;

@@ -43,7 +43,7 @@ Game::Game(int windowWidth, int windowHeight)
       mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr),
       mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu),
       mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero),
-      mBackgroundPosition(Vector2::Zero), mMap(nullptr)
+      mBackgroundPosition(Vector2::Zero), mMap(nullptr), mLogicalWindowHeight(0), mLogicalWindowWidth(0)
 {
 }
 
@@ -152,6 +152,15 @@ void Game::LoadFirstLevel()
     mHUD = new HUD(this, "../assets/Fonts/VT323-Regular.ttf");
 
     SetMap("demo.json");
+
+    int w,h;
+    SDL_GetWindowSize(mWindow, &w, &h);
+
+    SetBackgroundImage(
+        "../assets/Levels/Backgrounds/galaxy.png", 
+        Vector2(0.0f,0.0f),
+        Vector2(w,h)
+    );
 
     mPunk = new Punk(this, 1000.0f, -1000.0f);
 
