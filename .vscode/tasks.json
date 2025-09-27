@@ -28,6 +28,21 @@
         "focus": false,
         "panel": "dedicated"
       }
+    },
+    {
+      "label": "Kill game",
+      "type": "process",
+      "command": "pkill",
+      "args": ["astral"],
+      "windows": {
+        "command": "taskkill",
+        "args": ["/IM", "astral.exe", "/F"]
+      },
+      "presentation": {
+        "reveal": "never",
+        "focus": false,
+        "panel": "dedicated"
+      }
     }
   ]
 }

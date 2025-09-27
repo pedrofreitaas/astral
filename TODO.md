@@ -1,3 +1,0 @@
-- [ ] finished implementing the game MAP
-  - current state: in the LoadMainMenu() function we call the Map just to check if it loads correctly.
-  - next step: implement the Map handle the tiles in the display, and be part of the scenes.
