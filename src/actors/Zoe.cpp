@@ -2,7 +2,6 @@
 #include "Tile.h"
 #include "Projectile.h"
 #include "../core/Game.h"
-#include "../components/draw/DrawSpriteComponent.h"
 #include "../components/draw/DrawAnimatedComponent.h"
 #include "../ui/DialogueSystem.h"
 
@@ -15,17 +14,16 @@ Zoe::Zoe(Game *game, const float forwardSpeed, const float jumpSpeed):
     mColliderComponent = new AABBColliderComponent(this, 14, 20, 18, 28,
                                                    ColliderLayer::Player);
 
-    mDrawComponent = new DrawAnimatedComponent(this,
-                                               "../assets/Sprites/Punk/texture.png",
-                                               "../assets/Sprites/Punk/texture.json",
-                                               static_cast<int>(DrawLayerPosition::Player) + 1);
+    mDrawComponent = new DrawAnimatedComponent(
+        this,
+        "../assets/Sprites/Punk/texture.png",
+        "../assets/Sprites/Punk/texture.json",
+        nullptr,
+        static_cast<int>(DrawLayerPosition::Player) + 1);
 
     mDrawComponent->AddAnimation("idle", {0, 1, 2, 3});
     mDrawComponent->AddAnimation("run", {4, 5, 6, 7, 8, 9, 10});
     mDrawComponent->AddAnimation("dying", {11, 12, 13, 14, 15, 16});
-    mDrawComponent->AddAnimation("shooting_left_arm", {3});
-    mDrawComponent->AddAnimation("shooting_noarm", {17});
-    mDrawComponent->AddAnimation("dash", {18, 19, 20, 21, 22, 23});
 
     mDrawComponent->SetAnimation("idle");
     mDrawComponent->SetAnimFPS(13.0f);

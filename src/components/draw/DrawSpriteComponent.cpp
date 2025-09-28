@@ -10,6 +10,7 @@ DrawSpriteComponent::DrawSpriteComponent(class Actor* owner, const std::string &
         :DrawComponent(owner, drawOrder)
         ,mWidth(width)
         ,mHeight(height)
+        ,mFlip(false)
 {
     mSpriteSheetSurface = mOwner->GetGame()->LoadTexture(texturePath);
 }

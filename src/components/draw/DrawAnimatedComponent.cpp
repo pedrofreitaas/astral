@@ -1,6 +1,3 @@
-//
-// Created by Lucas N. Ferreira on 28/09/23.
-//
 
 #include "DrawAnimatedComponent.h"
 #include "../../actors/Actor.h"
@@ -8,35 +5,42 @@
 #include "../../libs/Json.h"
 #include <fstream>
 
-DrawAnimatedComponent::DrawAnimatedComponent(class Actor* owner, const std::string &spriteSheetPath, const std::string &spriteSheetData, int drawOrder)
-        :DrawSpriteComponent(owner, spriteSheetPath, 0, 0, drawOrder)
+DrawAnimatedComponent::DrawAnimatedComponent(
+    class Actor *owner, 
+    const std::string &spriteSheetPath, 
+    const std::string &spriteSheetData, 
+    std::function<void(std::string animationName)> animationEndCallback,
+    int drawOrder): 
+    DrawComponent(owner, drawOrder), 
+    mSpriteSheetTexture(nullptr), mAnimTimer(0.0f), mAnimFPS(10.0f), 
+    mIsPaused(false), mAnimName(""), mAnimationEndCallback(animationEndCallback)
 {
     LoadSpriteSheet(spriteSheetPath, spriteSheetData);
 }
 
 DrawAnimatedComponent::~DrawAnimatedComponent()
 {
-    DrawSpriteComponent::~DrawSpriteComponent();
+    DrawComponent::~DrawComponent();
 
-    for (const auto& rect : mSpriteSheetData)
+    for (const auto &rect : mSpriteSheetData)
     {
         delete rect;
     }
     mSpriteSheetData.clear();
 }
 
-void DrawAnimatedComponent::LoadSpriteSheet(const std::string& texturePath, const std::string& dataPath)
+void DrawAnimatedComponent::LoadSpriteSheet(const std::string &texturePath, const std::string &dataPath)
 {
     // Load sprite sheet texture
-    mSpriteSheetSurface = mOwner->GetGame()->LoadTexture(texturePath);
+    mSpriteSheetTexture = mOwner->GetGame()->LoadTexture(texturePath);
 
     // Load sprite sheet data
     std::ifstream spriteSheetFile(dataPath);
     nlohmann::json spriteSheetData = nlohmann::json::parse(spriteSheetFile);
 
-    SDL_Rect* rect = nullptr;
-    for(const auto& frame : spriteSheetData["frames"]) {
-
+    SDL_Rect *rect = nullptr;
+    for (const auto &frame : spriteSheetData["frames"])
+    {
         int x = frame["frame"]["x"].get<int>();
         int y = frame["frame"]["y"].get<int>();
         int w = frame["frame"]["w"].get<int>();
@@ -47,30 +51,30 @@ void DrawAnimatedComponent::LoadSpriteSheet(const std::string& texturePath, cons
     }
 }
 
-void DrawAnimatedComponent::Draw(SDL_Renderer* renderer, const Vector3 &modColor)
+void DrawAnimatedComponent::Draw(SDL_Renderer *renderer, const Vector3 &modColor)
 {
-    int spriteIdx = mAnimations[mAnimName][static_cast<int>(mAnimTimer)];
-    SDL_Rect* srcRect = mSpriteSheetData[spriteIdx];
+    int spriteIdx = mAnimations[mAnimName].frames[static_cast<int>(mAnimTimer)];
+    SDL_Rect *srcRect = mSpriteSheetData[spriteIdx];
 
     SDL_Rect dstRect = {
-            static_cast<int>(mOwner->GetPosition().x - mOwner->GetGame()->GetCameraPos().x),
-            static_cast<int>(mOwner->GetPosition().y - mOwner->GetGame()->GetCameraPos().y),
-            srcRect->w,
-            srcRect->h
-    };
+        static_cast<int>(mOwner->GetPosition().x - mOwner->GetGame()->GetCameraPos().x),
+        static_cast<int>(mOwner->GetPosition().y - mOwner->GetGame()->GetCameraPos().y),
+        srcRect->w,
+        srcRect->h};
 
     SDL_RendererFlip flip = SDL_FLIP_NONE;
-    if (mOwner->GetRotation() == Math::Pi) {
+    if (mOwner->GetRotation() == Math::Pi)
+    {
         flip = SDL_FLIP_HORIZONTAL;
     }
 
-    SDL_SetTextureBlendMode(mSpriteSheetSurface, SDL_BLENDMODE_BLEND);
-    SDL_SetTextureColorMod(mSpriteSheetSurface,
+    SDL_SetTextureBlendMode(mSpriteSheetTexture, SDL_BLENDMODE_BLEND);
+    SDL_SetTextureColorMod(mSpriteSheetTexture,
                            static_cast<Uint8>(modColor.x),
                            static_cast<Uint8>(modColor.y),
                            static_cast<Uint8>(modColor.z));
 
-    SDL_RenderCopyEx(renderer, mSpriteSheetSurface, srcRect, &dstRect, mOwner->GetRotation(), nullptr, flip);
+    SDL_RenderCopyEx(renderer, mSpriteSheetTexture, srcRect, &dstRect, mOwner->GetRotation(), nullptr, flip);
 }
 
 void DrawAnimatedComponent::Update(float deltaTime)
@@ -80,21 +84,28 @@ void DrawAnimatedComponent::Update(float deltaTime)
     }
 
     mAnimTimer += mAnimFPS * deltaTime;
-    if (mAnimTimer >= mAnimations[mAnimName].size()) {
-        while (mAnimTimer >= mAnimations[mAnimName].size()) {
-            mAnimTimer -= mAnimations[mAnimName].size();
-        }
+
+    if (mAnimTimer >= mAnimations[mAnimName].frames.size()) {
+        if (mAnimationEndCallback) mAnimationEndCallback(mAnimName);
+
+        do {
+            if (mAnimations[mAnimName].isLoop) {
+                mAnimTimer -= mAnimations[mAnimName].frames.size();
+                continue;
+            }
+
+            mAnimTimer = static_cast<float>(mAnimations[mAnimName].frames.size() - 1);
+        } while (mAnimTimer >= mAnimations[mAnimName].frames.size());
     }
 }
 
-void DrawAnimatedComponent::SetAnimation(const std::string& name)
+void DrawAnimatedComponent::SetAnimation(const std::string &name)
 {
     mAnimName = name;
     Update(0.0f);
 }
 
-void DrawAnimatedComponent::AddAnimation(const std::string& name, const std::vector<int>& spriteNums)
+void DrawAnimatedComponent::AddAnimation(const std::string &name, const std::vector<int> &spriteNums, bool isLoop)
 {
-    mAnimations.emplace(name, spriteNums);
+    mAnimations.emplace(name, std::move(Animation(spriteNums, isLoop)));
 }
-

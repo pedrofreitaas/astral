@@ -19,11 +19,9 @@ public:
     void SetPivot(const Vector2& pivot) { mPivot = pivot; }
 
 protected:
-    // Map of textures loaded
     SDL_Texture* mSpriteSheetSurface;
-
+    Vector2 mPivot{0.5f, 0.5f};
     int mWidth;
     int mHeight;
-    bool mFlip = false;
-    Vector2 mPivot{0.5f, 0.5f};
+    bool mFlip;
 };
