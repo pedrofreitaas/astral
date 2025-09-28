@@ -69,10 +69,7 @@ add_executable(${PROJECT_NAME}
         src/actors/Projectile.cpp
         src/actors/Projectile.h
         src/actors/Item.h
-        src/actors/PunkArm.h
-        src/actors/PunkArm.cpp
-        src/actors/Weapon.h
-        src/actors/Weapon.cpp
+        src/actors/Item.cpp
         src/ui/DialogueSystem.cpp
         src/ui/DialogueSystem.h
         src/core/Tileset.h

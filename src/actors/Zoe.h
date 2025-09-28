@@ -1,9 +1,8 @@
 #pragma once
 #include "Actor.h"
-#include "PunkArm.h"
 #include <SDL.h>
 
-const float DEATH_TIMER = 0.71f; // seconds
+const float DEATH_TIMER = 0.71f;
 
 class Zoe : public Actor
 {
@@ -23,42 +22,26 @@ public:
 
     void FindKey();
     void FindHeart();
-    void FindShotgun();
-
-    void OnShoot(Vector2 &recoilForce);
-
     Vector2 GetCenter() const
     {
         return mColliderComponent->GetCenter();
-    }   
-
-    int GetAmmo();
-    int GetMaxAmmo();
-
-    std::string GetCurrentWeaponName();
+    }
 
 private:
-    static const int POLE_SLIDE_TIME = 1; // Time in seconds to slide down the pole
-
-    void ManageAnimations();
-
     float mForwardSpeed;
-    float mJumpSpeed;
-    float mPoleSlideTimer;
+    float mJumpSpeed;    
     bool mIsRunning;
-    bool mIsOnPole;
-    bool mIsDying; float mDeathTimer;
+    bool mIsDying; 
+    float mDeathTimer;
     bool mFoundKey;
-
-    int mLives = 6;
-    float mInvincibilityTimer = 0.0f;
+    int mLives;
+    float mInvincibilityTimer;
 
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
 
-    class PunkArm* mArm;
-
     void MaintainInbound();
     void TakeDamage();
+    void ManageAnimations();
 };

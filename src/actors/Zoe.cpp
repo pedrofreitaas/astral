@@ -6,8 +6,10 @@
 #include "../components/draw/DrawAnimatedComponent.h"
 #include "../ui/DialogueSystem.h"
 
-Zoe::Zoe(Game *game, const float forwardSpeed, const float jumpSpeed)
-    : Actor(game), mIsRunning(false), mIsOnPole(false), mIsDying(false), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed), mPoleSlideTimer(0.0f), mFoundKey(false), mDeathTimer(0.0f)
+Zoe::Zoe(Game *game, const float forwardSpeed, const float jumpSpeed): 
+    Actor(game), mIsRunning(false),
+    mIsDying(false), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed),
+    mFoundKey(false), mDeathTimer(0.0f), mLives(6), mInvincibilityTimer(0.0f)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f);
     mColliderComponent = new AABBColliderComponent(this, 14, 20, 18, 28,
@@ -27,26 +29,14 @@ Zoe::Zoe(Game *game, const float forwardSpeed, const float jumpSpeed)
 
     mDrawComponent->SetAnimation("idle");
     mDrawComponent->SetAnimFPS(13.0f);
-
-    mArm = new PunkArm(mGame, this, [this](Vector2 &recoilDir)
-                       { OnShoot(recoilDir); });
-}
-
-void Zoe::OnShoot(Vector2 &recoilForce)
-{
-    mRigidBodyComponent->ApplyForce(recoilForce);
 }
 
 void Zoe::OnProcessInput(const uint8_t *state)
 {
-    // if(mGame->GetGamePlayState() != Game::GamePlayState::Playing) return;
     if (mIsDying)
         return;
 
     mIsRunning = false;
-
-    if (mArm->mIsShooting)
-        return;
 
     if (state[SDL_SCANCODE_D])
     {
@@ -71,13 +61,6 @@ void Zoe::OnProcessInput(const uint8_t *state)
     {
         mRigidBodyComponent->ApplyForce(Vector2(0.0f, mForwardSpeed));
         mIsRunning = true;
-    }
-
-    if (state[SDL_SCANCODE_F])
-    {
-        if (mArm->mFoundShotgun == false)
-            return;
-        mArm->ChangeWeapon();
     }
 }
 
@@ -142,15 +125,8 @@ void Zoe::OnUpdate(float deltaTime)
         return;
     }
 
-    mArm->SetPosition(GetPosition());
-
     MaintainInbound();
     ManageAnimations();
-
-    if (mArm->IsAimingRight())
-        SetRotation(0.0f);
-    else if (mArm->IsAimingLeft())
-        SetRotation(Math::Pi);
 
     if (mIsDying)
     {
@@ -173,10 +149,6 @@ void Zoe::ManageAnimations()
     {
         mDrawComponent->SetAnimation("dying");
     }
-    else if (mArm->mIsShooting)
-    {
-        mDrawComponent->SetAnimation(mArm->ArmConfig());
-    }
     else if (mIsRunning)
     {
         mDrawComponent->SetAnimation("run");
@@ -198,9 +170,7 @@ void Zoe::Kill()
     mColliderComponent->SetEnabled(false);
 
     mGame->GetAudio()->StopAllSounds();
-    // mGame->GetAudio()->PlaySound("Dead.wav");
-
-    mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
+    mGame->ResetGameScene(3.5f);
 }
 
 void Zoe::Win(AABBColliderComponent *poleCollider)
@@ -220,8 +190,6 @@ void Zoe::Win(AABBColliderComponent *poleCollider)
 
     // Stop music
     mGame->GetAudio()->StopAllSounds();
-
-    mPoleSlideTimer = POLE_SLIDE_TIME; // Start the pole slide timer
 }
 
 void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
@@ -299,40 +267,4 @@ void Zoe::FindHeart()
         mLives++;
     }
     mGame->GetAudio()->PlaySound("KeyPick.wav");
-}
-
-void Zoe::FindShotgun()
-{
-    mArm->ChangeWeapon();
-    mArm->mFoundShotgun = true;
-    mGame->GetAudio()->PlaySound("KeyPick.wav");
-}
-
-int Zoe::GetAmmo()
-{
-    return mArm->mChosenWeapon->mAmmo;
-}
-
-int Zoe::GetMaxAmmo()
-{
-    return mArm->mChosenWeapon->mMaxAmmo;
-}
-
-std::string Zoe::GetCurrentWeaponName()
-{
-    if (!mArm->mChosenWeapon)
-    {
-        return "Unknown";
-    }
-
-    if (mArm->mChosenWeapon == mArm->mPistol)
-    {
-        return "Pistol";
-    }
-    else if (mArm->mChosenWeapon == mArm->mShotgun)
-    {
-        return "Shotgun";
-    }
-
-    return "Unknown";
 }
