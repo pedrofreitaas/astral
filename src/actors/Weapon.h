@@ -6,7 +6,7 @@
 
 #include <string>
 #include "Actor.h"
-#include "Punk.h"
+#include "Zoe.h"
 #include "PunkArm.h"
 #include "../components/draw/DrawSpriteComponent.h"
 #include "../core/Game.h"

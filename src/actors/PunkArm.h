@@ -7,7 +7,7 @@
 #include <functional>
 #include <string>
 #include "Actor.h"
-#include "Punk.h"
+#include "Zoe.h"
 #include "Weapon.h"
 #include "../components/draw/DrawSpriteComponent.h"
 #include "../core/Game.h"
@@ -17,7 +17,7 @@
 class PunkArm : public Actor
 {
 public:
-    explicit PunkArm(Game *game, class Punk *punk, const std::function<void(Vector2 &recoilForce)> &onShotCallback);
+    explicit PunkArm(Game *game, class Zoe *punk, const std::function<void(Vector2 &recoilForce)> &onShotCallback);
 
     void OnShoot();
 
@@ -25,14 +25,14 @@ public:
     void OnProcessInput(const Uint8 *keyState) override;
     std::string ArmConfig();
 
-    class Punk *GetPunk() const { return mPunk; };
+    class Zoe *GetPunk() const { return mPunk; };
     Vector2 GetTargetPos();
     bool IsAimingRight();
     bool IsAimingLeft();
     bool IsShooting() const { return mIsShooting; }
 
 private:
-    class Punk *mPunk;
+    class Zoe *mPunk;
     class Weapon *mChosenWeapon;
     class Pistol *mPistol; class Shotgun *mShotgun;
     std::function<void(Vector2 &recoilForce)> mOnShotCallback;
@@ -45,7 +45,7 @@ private:
 
     void ChangeWeapon();
 
-    friend class Punk;
+    friend class Zoe;
 
 protected:
     bool mIsShooting;

@@ -22,7 +22,7 @@
 #include "../libs/Json.h"
 #include "../libs/Random.h"
 #include "../actors/Actor.h"
-#include "../actors/Punk.h"
+#include "../actors/Zoe.h"
 #include "../actors/Tile.h"
 #include "../actors/Spawner.h"
 #include "../actors/Item.h"
@@ -175,7 +175,7 @@ void Game::LoadFirstLevel()
         Vector2(mWindowWidth, mWindowHeight),
         false);
 
-    mPunk = new Punk(this, 1000.0f, -1000.0f);
+    mPunk = new Zoe(this, 1000.0f, -1000.0f);
 
     if (mMap == nullptr)
     {
@@ -327,7 +327,7 @@ void Game::ProcessInputActors()
             }
         }
 
-        // If Punk is not on camera, process input for him
+        // If Zoe is not on camera, process input for him
         if (!isPunkoOnCamera && mPunk)
         {
             mPunk->ProcessInput(state);
@@ -355,7 +355,7 @@ void Game::HandleKeyPressActors(const int key, const bool isPressed)
             }
         }
 
-        // If Punk is not on camera, handle key press for him
+        // If Zoe is not on camera, handle key press for him
         if (!isPunkoOnCamera && mPunk)
         {
             mPunk->HandleKeyPress(key, isPressed);
@@ -499,7 +499,7 @@ void Game::UpdateActors(float deltaTime)
         }
     }
 
-    // If Punk is not on camera, update him (player should always be updated)
+    // If Zoe is not on camera, update him (player should always be updated)
     if (!isPunkOnCamera && mPunk)
     {
         mPunk->Update(deltaTime);

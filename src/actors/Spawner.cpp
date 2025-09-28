@@ -4,7 +4,7 @@
 
 #include "Spawner.h"
 #include "../core/Game.h"
-#include "Punk.h"
+#include "Zoe.h"
 
 Spawner::Spawner(Game* game, float spawnDistance, int type)
         :Actor(game)

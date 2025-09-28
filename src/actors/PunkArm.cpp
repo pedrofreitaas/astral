@@ -1,6 +1,6 @@
 #include "PunkArm.h"
 
-PunkArm::PunkArm(Game *game, Punk *punk, const std::function<void(Vector2 &recoilForce)> &onShotCallback)
+PunkArm::PunkArm(Game *game, Zoe *punk, const std::function<void(Vector2 &recoilForce)> &onShotCallback)
     : Actor(game), mPunk(punk), mIsShooting(false),
       mPistol(nullptr), mShotgun(nullptr), mChosenWeapon(nullptr),
       mChangeWeaponCooldown(.5f), mChangeWeaponTimer(.5f)

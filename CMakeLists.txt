@@ -36,8 +36,8 @@ add_executable(${PROJECT_NAME}
         src/libs/Json.h
         src/components/draw/DrawSpriteComponent.cpp
         src/components/draw/DrawSpriteComponent.h
-        src/actors/Punk.cpp
-        src/actors/Punk.h
+        src/actors/Zoe.cpp
+        src/actors/Zoe.h
         src/components/collider/AABBColliderComponent.cpp
         src/components/collider/AABBColliderComponent.h
         src/components/draw/DrawAnimatedComponent.cpp

@@ -1,8 +1,4 @@
-//
-// Created by Lucas N. Ferreira on 03/08/23.
-//
-
-#include "Punk.h"
+#include "Zoe.h"
 #include "Tile.h"
 #include "Projectile.h"
 #include "../core/Game.h"
@@ -10,7 +6,7 @@
 #include "../components/draw/DrawAnimatedComponent.h"
 #include "../ui/DialogueSystem.h"
 
-Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
+Zoe::Zoe(Game *game, const float forwardSpeed, const float jumpSpeed)
     : Actor(game), mIsRunning(false), mIsOnPole(false), mIsDying(false), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed), mPoleSlideTimer(0.0f), mFoundKey(false), mDeathTimer(0.0f)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f);
@@ -36,12 +32,12 @@ Punk::Punk(Game *game, const float forwardSpeed, const float jumpSpeed)
                        { OnShoot(recoilDir); });
 }
 
-void Punk::OnShoot(Vector2 &recoilForce)
+void Zoe::OnShoot(Vector2 &recoilForce)
 {
     mRigidBodyComponent->ApplyForce(recoilForce);
 }
 
-void Punk::OnProcessInput(const uint8_t *state)
+void Zoe::OnProcessInput(const uint8_t *state)
 {
     // if(mGame->GetGamePlayState() != Game::GamePlayState::Playing) return;
     if (mIsDying)
@@ -85,11 +81,11 @@ void Punk::OnProcessInput(const uint8_t *state)
     }
 }
 
-void Punk::OnHandleKeyPress(const int key, const bool isPressed)
+void Zoe::OnHandleKeyPress(const int key, const bool isPressed)
 {
 }
 
-void Punk::TakeDamage()
+void Zoe::TakeDamage()
 {
     if (mIsDying)
         return;
@@ -108,7 +104,7 @@ void Punk::TakeDamage()
     }
 }
 
-void Punk::MaintainInbound()
+void Zoe::MaintainInbound()
 {
     Vector2 cameraPos = GetGame()->GetCameraPos();
     Vector2 getUpperLeftBorder = mColliderComponent->GetMin();
@@ -138,7 +134,7 @@ void Punk::MaintainInbound()
     }
 }
 
-void Punk::OnUpdate(float deltaTime)
+void Zoe::OnUpdate(float deltaTime)
 {
     if (mGame->GetGamePlayState() == Game::GamePlayState::Dialogue)
     {
@@ -171,7 +167,7 @@ void Punk::OnUpdate(float deltaTime)
         mInvincibilityTimer -= deltaTime;
 }
 
-void Punk::ManageAnimations()
+void Zoe::ManageAnimations()
 {
     if (mIsDying)
     {
@@ -191,7 +187,7 @@ void Punk::ManageAnimations()
     }
 }
 
-void Punk::Kill()
+void Zoe::Kill()
 {
     mIsDying = true;
     mGame->SetGamePlayState(Game::GamePlayState::GameOver);
@@ -207,19 +203,19 @@ void Punk::Kill()
     mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
 }
 
-void Punk::Win(AABBColliderComponent *poleCollider)
+void Zoe::Win(AABBColliderComponent *poleCollider)
 {
     mDrawComponent->SetAnimation("win");
     mGame->SetGamePlayState(Game::GamePlayState::LevelComplete);
 
-    // Set Punk velocity to go down
+    // Set Zoe velocity to go down
     mRigidBodyComponent->SetVelocity(Vector2::UnitY * 100.0f); // 100 pixels per second
     mRigidBodyComponent->SetApplyGravity(false);
 
     // Disable collider
     poleCollider->SetEnabled(false);
 
-    // Adjust Punk x position to grab the pole
+    // Adjust Zoe x position to grab the pole
     mPosition.Set(poleCollider->GetOwner()->GetPosition().x + Game::TILE_SIZE / 4.0f, mPosition.y);
 
     // Stop music
@@ -228,7 +224,7 @@ void Punk::Win(AABBColliderComponent *poleCollider)
     mPoleSlideTimer = POLE_SLIDE_TIME; // Start the pole slide timer
 }
 
-void Punk::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
+void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
@@ -249,7 +245,7 @@ void Punk::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *
     }
 }
 
-void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
+void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
@@ -270,7 +266,7 @@ void Punk::OnVerticalCollision(const float minOverlap, AABBColliderComponent *ot
     }
 }
 
-void Punk::FindKey()
+void Zoe::FindKey()
 {
     mFoundKey = true;
     mGame->GetAudio()->PlaySound("KeyPick.wav");
@@ -278,8 +274,8 @@ void Punk::FindKey()
     if (mGame->GetGameScene() == Game::GameScene::Level1)
     {
         DialogueSystem::Get()->StartDialogue(
-            {"Punk: Uma chave! Agora, o que sera que ela abre?",
-             "Punk: Melhor eu dar uma olhada ao redor."},
+            {"Zoe: Uma chave! Agora, o que sera que ela abre?",
+             "Zoe: Melhor eu dar uma olhada ao redor."},
             [this]() {}
         );
     }
@@ -296,7 +292,7 @@ void Punk::FindKey()
     }
 }
 
-void Punk::FindHeart()
+void Zoe::FindHeart()
 {
     if (mLives < 6)
     {
@@ -305,24 +301,24 @@ void Punk::FindHeart()
     mGame->GetAudio()->PlaySound("KeyPick.wav");
 }
 
-void Punk::FindShotgun()
+void Zoe::FindShotgun()
 {
     mArm->ChangeWeapon();
     mArm->mFoundShotgun = true;
     mGame->GetAudio()->PlaySound("KeyPick.wav");
 }
 
-int Punk::GetAmmo()
+int Zoe::GetAmmo()
 {
     return mArm->mChosenWeapon->mAmmo;
 }
 
-int Punk::GetMaxAmmo()
+int Zoe::GetMaxAmmo()
 {
     return mArm->mChosenWeapon->mMaxAmmo;
 }
 
-std::string Punk::GetCurrentWeaponName()
+std::string Zoe::GetCurrentWeaponName()
 {
     if (!mArm->mChosenWeapon)
     {
