@@ -123,6 +123,8 @@ public:
     void PauseCutscene();
     void ResetCutscenes();
 
+    class DialogueSystem* GetDialogueSystem() const { return mDialogueSystem; }
+
 private:
     void ProcessInput();
     void UpdateGame();
@@ -185,5 +187,7 @@ private:
 
     std::map<std::string, Cutscene*> mCutscenes;
     Cutscene* mCurrentCutscene;
+
+    class DialogueSystem* mDialogueSystem;
 };
 

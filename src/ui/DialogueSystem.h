@@ -16,14 +16,12 @@ public:
     void HandleInput(const uint8_t* keyState);
     void Draw(SDL_Renderer* renderer);
     bool IsActive() const { return mIsActive; }
-
-private:
     DialogueSystem();
     ~DialogueSystem();
 
+private:
     void CreateTextTexture();
-
-    static DialogueSystem* sInstance;
+    
     Game* mGame;
     TTF_Font* mFont;
     TTF_Font* mSmallFont;

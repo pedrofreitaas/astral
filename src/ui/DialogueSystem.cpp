@@ -2,17 +2,6 @@
 #include "../core/Game.h"
 #include "UIFont.h"
 
-DialogueSystem* DialogueSystem::sInstance = nullptr;
-
-DialogueSystem* DialogueSystem::Get()
-{
-    if (sInstance == nullptr)
-    {
-        sInstance = new DialogueSystem();
-    }
-    return sInstance;
-}
-
 DialogueSystem::DialogueSystem()
     : mGame(nullptr), mFont(nullptr), mSmallFont(nullptr), mCurrentLine(0), mTextTexture(nullptr),
       mIsActive(false), mContinuePressed(false), mPromptTexture(nullptr)
@@ -42,21 +31,23 @@ DialogueSystem::~DialogueSystem()
 void DialogueSystem::Initialize(Game* game)
 {
     mGame = game;
-    mFont = TTF_OpenFont("../assets/Fonts/SMB.ttf", 16);
+    mFont = TTF_OpenFont("../assets/Fonts/SMB.ttf", 10);
     if (!mFont)
     {
         SDL_Log("Falha ao carregar a fonte para DialogueSystem: %s", TTF_GetError());
     }
 
-    mSmallFont = TTF_OpenFont("../assets/Fonts/SMB.ttf", 10);
+    mSmallFont = TTF_OpenFont("../assets/Fonts/SMB.ttf", 4);
     if (!mSmallFont)
     {
         SDL_Log("Falha ao carregar a fonte pequena para DialogueSystem: %s", TTF_GetError());
     }
 
-    int windowWidth, windowHeight;
-    SDL_GetWindowSize(mGame->GetWindow(), &windowWidth, &windowHeight);
-    mBoxRect = {50, windowHeight - 130, windowWidth - 100, 100};
+    int windowWidth = mGame->GetWindowWidth();
+    int windowHeight = mGame->GetWindowHeight();
+    int mWidth = static_cast<int>(windowWidth * 3/4);
+    int mHeight = static_cast<int>(windowWidth * 1/6);
+    mBoxRect = {windowWidth / 2 - mWidth / 2, windowHeight - mHeight - 10, mWidth, mHeight};
 
     if (mSmallFont)
     {

@@ -48,6 +48,8 @@ Game::Game(int windowWidth, int windowHeight)
     mRealWindowHeight = windowHeight;
     mWindowWidth = 640;
     mWindowHeight = 360;
+
+    mDialogueSystem = new DialogueSystem();
 }
 
 void Game::SetMap(const std::string &path)
@@ -122,15 +124,16 @@ bool Game::Initialize()
     mSpatialHashing = new SpatialHashing(TILE_SIZE * 4.0f,
                                          LEVEL_WIDTH * TILE_SIZE,
                                          LEVEL_HEIGHT * TILE_SIZE);
-    DialogueSystem::Get()->Initialize(this);
     
+    mDialogueSystem->Initialize(this);
+
     SetGameScene(GameScene::MainMenu);
-    
+
     SDL_ShowCursor(SDL_DISABLE);
     SDL_SetRelativeMouseMode(SDL_FALSE);
-    
+
     mTicksCount = SDL_GetTicks();
-    
+
     return true;
 }
 
@@ -145,7 +148,7 @@ void Game::SetGameScene(Game::GameScene scene, float transitionTime)
             mSceneManagerTimer = transitionTime;
             return;
         }
-        
+
         throw std::runtime_error("Invalid scene");
     }
 }
@@ -168,7 +171,12 @@ void Game::LoadFirstLevel()
         false);
 
     mPunk = new Zoe(this, 1000.0f, -1000.0f);
-    mPunk->SetPosition(Vector2(32.0f, mMap->GetHeight() - 64.0f));
+    mPunk->SetPosition(Vector2(32.0f, mMap->GetHeight() - 80.0f));
+
+    GetDialogueSystem()->StartDialogue(
+        {"Zoe: Onde estou..."},
+        [this]() {}
+    );
 }
 
 void Game::ChangeScene()
@@ -247,6 +255,7 @@ void Game::ProcessInput()
         case SDL_QUIT:
             Quit();
             break;
+
         case SDL_KEYDOWN:
             // Handle key press for UI screens
             if (!mUIStack.empty())
@@ -261,6 +270,7 @@ void Game::ProcessInput()
             {
                 TogglePause();
             }
+
             break;
 
         case SDL_MOUSEBUTTONDOWN:
@@ -277,9 +287,9 @@ void Game::ProcessInput()
     }
 
     const Uint8 *keyState = SDL_GetKeyboardState(nullptr);
-    if (DialogueSystem::Get()->IsActive())
+    if (GetDialogueSystem()->IsActive())
     {
-        DialogueSystem::Get()->HandleInput(keyState);
+        GetDialogueSystem()->HandleInput(keyState);
     }
     else
     {
@@ -293,8 +303,8 @@ void Game::ProcessInputActors()
     {
         // Get actors on camera
         std::vector<Actor *> actorsOnCamera = mSpatialHashing->QueryOnCamera(
-            mCameraPos, 
-            mWindowWidth, 
+            mCameraPos,
+            mWindowWidth,
             mWindowHeight);
 
         const Uint8 *state = SDL_GetKeyboardState(nullptr);
@@ -312,8 +322,8 @@ void Game::HandleKeyPressActors(const int key, const bool isPressed)
     {
         // Get actors on camera
         std::vector<Actor *> actorsOnCamera = mSpatialHashing->QueryOnCamera(
-            mCameraPos, 
-            mWindowWidth, 
+            mCameraPos,
+            mWindowWidth,
             mWindowHeight);
 
         for (auto actor : actorsOnCamera)
@@ -518,7 +528,7 @@ void Game::GenerateOutput()
         {
             mBackgroundPosition.Set(mCameraPos.x, mCameraPos.y);
         }
-        
+
         SDL_Rect dstRect = {
             static_cast<int>(mBackgroundPosition.x - mCameraPos.x),
             static_cast<int>(mBackgroundPosition.y - mCameraPos.y),
@@ -577,15 +587,17 @@ void Game::GenerateOutput()
         SDL_Rect rect = {0, 0, mWindowWidth, mWindowHeight};
         SDL_RenderFillRect(mRenderer, &rect);
     }
-    DialogueSystem::Get()->Draw(mRenderer);
+    
+    // draw dialogue system
+    mDialogueSystem->Draw(mRenderer);
 
     // Swap front buffer and back buffer
     SDL_RenderPresent(mRenderer);
 }
 
 void Game::SetBackgroundImage(
-    const std::string &texturePath, const Vector2 &position, const Vector2 &size, bool isCameraWise
-){
+    const std::string &texturePath, const Vector2 &position, const Vector2 &size, bool isCameraWise)
+{
     if (mBackgroundTexture)
     {
         SDL_DestroyTexture(mBackgroundTexture);
@@ -600,7 +612,7 @@ void Game::SetBackgroundImage(
     }
 
     mBackgroundIsCameraWise = isCameraWise;
-    
+
     // Set background position
     if (mBackgroundIsCameraWise)
     {
@@ -734,7 +746,7 @@ void Game::AddCutscene(const std::string &name, std::vector<std::unique_ptr<Step
         delete mCutscenes[name];
     }
 
-    Cutscene* newCutscene = new Cutscene(std::move(steps), onCompleteCallback);
+    Cutscene *newCutscene = new Cutscene(std::move(steps), onCompleteCallback);
     mCutscenes[name] = newCutscene;
 }
 
@@ -748,7 +760,7 @@ void Game::StartCutscene(const std::string &name)
         mCurrentCutscene->Play();
         return;
     }
-    
+
     throw std::runtime_error("Cutscene with name '" + name + "' not found.");
 }
 
@@ -762,11 +774,12 @@ void Game::PauseCutscene()
 }
 void Game::ResetCutscenes()
 {
-    for (auto& pair : mCutscenes) delete pair.second;
-    
+    for (auto &pair : mCutscenes)
+        delete pair.second;
+
     mCutscenes.clear();
     mCurrentCutscene = nullptr;
-    
-    if (mGamePlayState == GamePlayState::PlayingCutscene) 
+
+    if (mGamePlayState == GamePlayState::PlayingCutscene)
         mGamePlayState = GamePlayState::Playing;
 }

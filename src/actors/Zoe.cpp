@@ -42,7 +42,7 @@ void Zoe::OnProcessInput(const uint8_t *state)
         SetRotation(0.0f);
         mIsRunning = true;
     }
-    
+
     if (state[SDL_SCANCODE_A])
     {
         mRigidBodyComponent->ApplyForce(Vector2(-mForwardSpeed, 0.0f));
@@ -240,7 +240,7 @@ void Zoe::FindKey()
 
     if (mGame->GetGameScene() == Game::GameScene::Level1)
     {
-        DialogueSystem::Get()->StartDialogue(
+        mGame->GetDialogueSystem()->StartDialogue(
             {"Zoe: Uma chave! Agora, o que sera que ela abre?",
              "Zoe: Melhor eu dar uma olhada ao redor."},
             [this]() {}
@@ -248,7 +248,7 @@ void Zoe::FindKey()
     }
     else
     {
-        DialogueSystem::Get()->StartDialogue(
+        mGame->GetDialogueSystem()->StartDialogue(
             {"Voz: Voce conseguiu. A ultima chave foi encontrada.",
              "Voz: O caminho se abre em dois. O seu... e o nosso.",
              "Voz: O portal verde oferece o seu lar, a sua paz... ao custo da nossa existencia.",
