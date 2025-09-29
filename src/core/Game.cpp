@@ -37,7 +37,7 @@ const int WORD_HEIGHT = 8;
 
 Game::Game(int windowWidth, int windowHeight)
     : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true),
-      mPunk(nullptr), mHUD(nullptr), mBackgroundColor(0, 0, 0),
+      mZoe(nullptr), mHUD(nullptr), mBackgroundColor(0, 0, 0),
       mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr),
       mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu),
       mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero),
@@ -170,8 +170,8 @@ void Game::LoadFirstLevel()
         Vector2(mWindowWidth, mWindowHeight),
         false);
 
-    mPunk = new Zoe(this, 1000.0f, -1000.0f);
-    mPunk->SetPosition(Vector2(32.0f, mMap->GetHeight() - 80.0f));
+    mZoe = new Zoe(this, 1000.0f, -1000.0f);
+    mZoe->SetPosition(Vector2(32.0f, mMap->GetHeight() - 80.0f));
 
     GetDialogueSystem()->StartDialogue(
         {"Zoe: Onde estou..."},
@@ -436,11 +436,11 @@ void Game::UpdateSceneManager(float deltaTime)
 
 void Game::UpdateCamera()
 {
-    if (!mPunk)
+    if (!mZoe)
         return;
 
-    float cameraX = mPunk->GetPosition().x - mWindowWidth / 2.0f;
-    float cameraY = mPunk->GetPosition().y - mWindowHeight / 2.0f;
+    float cameraX = mZoe->GetPosition().x - mWindowWidth / 2.0f;
+    float cameraY = mZoe->GetPosition().y - mWindowHeight / 2.0f;
     float maxCameraX = mMap->GetWidth() - mWindowWidth;
     float maxCameraY = mMap->GetHeight() - mWindowHeight;
 
@@ -463,16 +463,16 @@ void Game::UpdateActors(float deltaTime)
     for (auto actor : actorsOnCamera)
     {
         actor->Update(deltaTime);
-        if (actor == mPunk)
+        if (actor == mZoe)
         {
             isPunkOnCamera = true;
         }
     }
 
     // If Zoe is not on camera, update him (player should always be updated)
-    if (!isPunkOnCamera && mPunk)
+    if (!isPunkOnCamera && mZoe)
     {
-        mPunk->Update(deltaTime);
+        mZoe->Update(deltaTime);
     }
 
     for (auto actor : actorsOnCamera)
@@ -480,9 +480,9 @@ void Game::UpdateActors(float deltaTime)
         if (actor->GetState() == ActorState::Destroy)
         {
             delete actor;
-            if (actor == mPunk)
+            if (actor == mZoe)
             {
-                mPunk = nullptr;
+                mZoe = nullptr;
             }
         }
     }

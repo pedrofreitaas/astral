@@ -107,7 +107,7 @@ public:
     void TogglePause();
 
     // Game-specific
-    const class Zoe* GetPunk() { return mPunk; }
+    const class Zoe* GetPunk() { return mZoe; }
 
     void SetGamePlayState(GamePlayState state) { mGamePlayState = state; }
     GamePlayState GetGamePlayState() const { return mGamePlayState; }
@@ -173,7 +173,7 @@ private:
     Vector2 mCameraPos;
 
     // Game-specific
-    class Zoe *mPunk;
+    class Zoe *mZoe;
     class Enemy *mEnemy;
     class HUD *mHUD;
     SoundHandle mMusicHandle;
