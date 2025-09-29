@@ -42,6 +42,7 @@ void Zoe::OnProcessInput(const uint8_t *state)
         SetRotation(0.0f);
         mIsRunning = true;
     }
+    
     if (state[SDL_SCANCODE_A])
     {
         mRigidBodyComponent->ApplyForce(Vector2(-mForwardSpeed, 0.0f));

@@ -16,6 +16,7 @@
 #include "../ui/UICursor.h"
 #include "Map.h"
 #include "Tileset.h"
+#include "./Cutscene.h"
 
 class Game
 {
@@ -47,7 +48,8 @@ public:
         GameOver,
         LevelComplete,
         Leaving,
-        Dialogue
+        Dialogue,
+        PlayingCutscene
     };
 
     Game(int windowWidth, int windowHeight);
@@ -116,6 +118,11 @@ public:
     int GetGameTotalActors();
     Vector2 GetLogicalMousePos() const;
 
+    void AddCutscene(const std::string& name, std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback = nullptr);
+    void StartCutscene(const std::string& name);
+    void PauseCutscene();
+    void ResetCutscenes();
+
 private:
     void ProcessInput();
     void UpdateGame();
@@ -175,5 +182,8 @@ private:
     bool mBackgroundIsCameraWise;
 
     class Map* mMap;
+
+    std::map<std::string, Cutscene*> mCutscenes;
+    Cutscene* mCurrentCutscene;
 };
 

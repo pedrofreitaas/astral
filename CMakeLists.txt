@@ -76,6 +76,8 @@ add_executable(${PROJECT_NAME}
         src/core/Tileset.cpp
         src/core/Map.h
         src/core/Map.cpp
+        src/core/Cutscene.h
+        src/core/Cutscene.cpp
 )
 
 # Link libraries using PkgConfig variables

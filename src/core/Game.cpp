@@ -32,8 +32,6 @@
 #include "../components/collider/AABBColliderComponent.h"
 #include "../ui/DialogueSystem.h"
 
-namespace fs = std::filesystem;
-
 const int CHAR_WIDTH = 6;
 const int WORD_HEIGHT = 8;
 
@@ -43,7 +41,8 @@ Game::Game(int windowWidth, int windowHeight)
       mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr),
       mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu),
       mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero),
-      mBackgroundPosition(Vector2::Zero), mMap(nullptr), mBackgroundIsCameraWise(true)
+      mBackgroundPosition(Vector2::Zero), mMap(nullptr), mBackgroundIsCameraWise(true),
+      mCurrentCutscene(nullptr), mCutscenes(), mGamePlayState(GamePlayState::Playing)
 {
     mRealWindowWidth = windowWidth;
     mRealWindowHeight = windowHeight;
@@ -124,19 +123,19 @@ bool Game::Initialize()
                                          LEVEL_WIDTH * TILE_SIZE,
                                          LEVEL_HEIGHT * TILE_SIZE);
     DialogueSystem::Get()->Initialize(this);
-    mTicksCount = SDL_GetTicks();
-
+    
     SetGameScene(GameScene::MainMenu);
-
+    
     SDL_ShowCursor(SDL_DISABLE);
     SDL_SetRelativeMouseMode(SDL_FALSE);
-
+    
+    mTicksCount = SDL_GetTicks();
+    
     return true;
 }
 
 void Game::SetGameScene(Game::GameScene scene, float transitionTime)
 {
-    // Scene Manager FSM: using if/else instead of switch
     if (mSceneManagerState == SceneManagerState::None)
     {
         if (scene == GameScene::MainMenu || scene == GameScene::Level1)
@@ -144,17 +143,10 @@ void Game::SetGameScene(Game::GameScene scene, float transitionTime)
             mNextScene = scene;
             mSceneManagerState = SceneManagerState::Entering;
             mSceneManagerTimer = transitionTime;
-        }
-        else
-        {
-            SDL_Log("Invalid game scene: %d", static_cast<int>(scene));
             return;
         }
-    }
-    else
-    {
-        SDL_Log("Scene Manager is already in a transition state");
-        return;
+        
+        throw std::runtime_error("Invalid scene");
     }
 }
 
@@ -176,13 +168,6 @@ void Game::LoadFirstLevel()
         false);
 
     mPunk = new Zoe(this, 1000.0f, -1000.0f);
-
-    if (mMap == nullptr)
-    {
-        SDL_Log("Map not set before loading first level");
-        return;
-    }
-
     mPunk->SetPosition(Vector2(32.0f, mMap->GetHeight() - 64.0f));
 }
 
@@ -296,10 +281,6 @@ void Game::ProcessInput()
     {
         DialogueSystem::Get()->HandleInput(keyState);
     }
-    // else if (mGamePlayState == GamePlayState::GameOver)
-    // {
-    //     // Não faz nada, efetivamente pausando o input do jogador.
-    // }
     else
     {
         ProcessInputActors();
@@ -311,26 +292,16 @@ void Game::ProcessInputActors()
     if (mGamePlayState == GamePlayState::Playing)
     {
         // Get actors on camera
-        std::vector<Actor *> actorsOnCamera =
-            mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
+        std::vector<Actor *> actorsOnCamera = mSpatialHashing->QueryOnCamera(
+            mCameraPos, 
+            mWindowWidth, 
+            mWindowHeight);
 
         const Uint8 *state = SDL_GetKeyboardState(nullptr);
 
-        bool isPunkoOnCamera = false;
         for (auto actor : actorsOnCamera)
         {
             actor->ProcessInput(state);
-
-            if (actor == mPunk)
-            {
-                isPunkoOnCamera = true;
-            }
-        }
-
-        // If Zoe is not on camera, process input for him
-        if (!isPunkoOnCamera && mPunk)
-        {
-            mPunk->ProcessInput(state);
         }
     }
 }
@@ -340,25 +311,14 @@ void Game::HandleKeyPressActors(const int key, const bool isPressed)
     if (mGamePlayState == GamePlayState::Playing)
     {
         // Get actors on camera
-        std::vector<Actor *> actorsOnCamera =
-            mSpatialHashing->QueryOnCamera(mCameraPos, mWindowWidth, mWindowHeight);
+        std::vector<Actor *> actorsOnCamera = mSpatialHashing->QueryOnCamera(
+            mCameraPos, 
+            mWindowWidth, 
+            mWindowHeight);
 
-        // Handle key press for actors
-        bool isPunkoOnCamera = false;
         for (auto actor : actorsOnCamera)
         {
             actor->HandleKeyPress(key, isPressed);
-
-            if (actor == mPunk)
-            {
-                isPunkoOnCamera = true;
-            }
-        }
-
-        // If Zoe is not on camera, handle key press for him
-        if (!isPunkoOnCamera && mPunk)
-        {
-            mPunk->HandleKeyPress(key, isPressed);
         }
     }
 }
@@ -764,4 +724,49 @@ Vector2 Game::GetLogicalMousePos() const
     SDL_GetMouseState(&x, &y);
     SDL_RenderWindowToLogical(mRenderer, (float)x, (float)y, &lx, &ly);
     return Vector2(lx, ly);
+}
+
+void Game::AddCutscene(const std::string &name, std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback)
+{
+    if (mCutscenes.find(name) != mCutscenes.end())
+    {
+        SDL_Log("Cutscene with name '%s' already exists. Overwriting.", name.c_str());
+        delete mCutscenes[name];
+    }
+
+    Cutscene* newCutscene = new Cutscene(std::move(steps), onCompleteCallback);
+    mCutscenes[name] = newCutscene;
+}
+
+void Game::StartCutscene(const std::string &name)
+{
+    auto iter = mCutscenes.find(name);
+    if (iter != mCutscenes.end())
+    {
+        mCurrentCutscene = iter->second;
+        mGamePlayState = GamePlayState::PlayingCutscene;
+        mCurrentCutscene->Play();
+        return;
+    }
+    
+    throw std::runtime_error("Cutscene with name '" + name + "' not found.");
+}
+
+void Game::PauseCutscene()
+{
+    if (mCurrentCutscene)
+    {
+        mCurrentCutscene->Pause();
+        mGamePlayState = GamePlayState::Paused;
+    }
+}
+void Game::ResetCutscenes()
+{
+    for (auto& pair : mCutscenes) delete pair.second;
+    
+    mCutscenes.clear();
+    mCurrentCutscene = nullptr;
+    
+    if (mGamePlayState == GamePlayState::PlayingCutscene) 
+        mGamePlayState = GamePlayState::Playing;
 }
