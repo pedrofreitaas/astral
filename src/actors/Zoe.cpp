@@ -10,7 +10,7 @@ Zoe::Zoe(Game *game, const float forwardSpeed, const float jumpSpeed):
     mIsDying(false), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed),
     mFoundKey(false), mDeathTimer(0.0f), mLives(6), mInvincibilityTimer(0.0f)
 {
-    mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f);
+    mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 7.0f);
     mColliderComponent = new AABBColliderComponent(this, 14, 20, 18, 28,
                                                    ColliderLayer::Player);
 
@@ -36,6 +36,8 @@ void Zoe::OnProcessInput(const uint8_t *state)
 
     mIsRunning = false;
 
+    if (mRigidBodyComponent->GetVelocity().y != 0.0f) return;
+    
     if (state[SDL_SCANCODE_D])
     {
         mRigidBodyComponent->ApplyForce(Vector2(mForwardSpeed, 0.0f));
@@ -61,10 +63,17 @@ void Zoe::OnProcessInput(const uint8_t *state)
         mRigidBodyComponent->ApplyForce(Vector2(0.0f, mForwardSpeed));
         mIsRunning = true;
     }
+
+    if (state[SDL_SCANCODE_SPACE])
+    {
+        mRigidBodyComponent->ApplyForce(Vector2(0.0f, -100000.0f));
+    }
 }
 
 void Zoe::OnHandleKeyPress(const int key, const bool isPressed)
 {
+    if (mIsDying)
+        return;
 }
 
 void Zoe::TakeDamage()

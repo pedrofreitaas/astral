@@ -10,7 +10,7 @@
 
 const float MAX_SPEED_X = 750.0f;
 const float MAX_SPEED_Y = 750.0f;
-const int GRAVITY = 980;
+const float GRAVITY = 980.0f;
 
 RigidBodyComponent::RigidBodyComponent(class Actor* owner, float mass, float friction, bool applyGravity, int updateOrder)
         :Component(owner, updateOrder)
@@ -31,10 +31,10 @@ void RigidBodyComponent::ApplyForce(const Vector2 &force) {
 void RigidBodyComponent::Update(float deltaTime)
 {
     // Apply gravity acceleration
-    if(mApplyGravity) ApplyForce(Vector2(0.f, GRAVITY * mMass));
+    if(mApplyGravity) ApplyForce(Vector2(0.f, GRAVITY * 1.f/mMass));
 
     // Apply friction
-    if (mApplyFriction) ApplyForce(-mFrictionCoefficient * mVelocity);
+    if (mApplyFriction) ApplyForce(Vector2(-mFrictionCoefficient * mVelocity));
 
     // Euler Integration
     mVelocity += mAcceleration * deltaTime;
@@ -43,11 +43,11 @@ void RigidBodyComponent::Update(float deltaTime)
     mVelocity.x = Math::Clamp<float>(mVelocity.x, -MAX_SPEED_X, MAX_SPEED_X);
     mVelocity.y = Math::Clamp<float>(mVelocity.y, -MAX_SPEED_Y, MAX_SPEED_Y);
 
-    if (Math::NearZero(mVelocity.x, 1.0f)) {
+    if (Math::NearZero(mVelocity.x, 0.1f)) {
         mVelocity.x = 0.f;
     }
 
-    if (Math::NearZero(mVelocity.y, 1.0f)) {
+    if (Math::NearZero(mVelocity.y, 0.1f)) {
         mVelocity.y = 0.f;
     }
 
@@ -67,6 +67,9 @@ void RigidBodyComponent::Update(float deltaTime)
         collider->DetectVertialCollision(this);
     }
 
-    mAcceleration.Set(0.f, 0.f);
+    mAcceleration = mAcceleration * 0.25f;
+    if (mAcceleration.Length() < 0.1f) {
+        mAcceleration = Vector2::Zero;
+    }
 }
 

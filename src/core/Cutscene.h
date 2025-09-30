@@ -32,6 +32,7 @@ public:
     void Play();
     void Pause();
     void Update(float deltaTime);
+    bool IsComplete() const { return mIsComplete; }
 
 private:
     std::vector<std::unique_ptr<Step>> mSteps;

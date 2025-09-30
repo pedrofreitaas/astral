@@ -286,19 +286,13 @@ void Game::ProcessInput()
         }
     }
 
-    const Uint8 *keyState = SDL_GetKeyboardState(nullptr);
-    if (GetDialogueSystem()->IsActive())
-    {
-        GetDialogueSystem()->HandleInput(keyState);
-    }
-    else
-    {
-        ProcessInputActors();
-    }
+    ProcessInputActors();
 }
 
 void Game::ProcessInputActors()
 {
+    const Uint8 *state = SDL_GetKeyboardState(nullptr);
+
     if (mGamePlayState == GamePlayState::Playing)
     {
         // Get actors on camera
@@ -307,12 +301,14 @@ void Game::ProcessInputActors()
             mWindowWidth,
             mWindowHeight);
 
-        const Uint8 *state = SDL_GetKeyboardState(nullptr);
-
         for (auto actor : actorsOnCamera)
         {
             actor->ProcessInput(state);
         }
+    }
+
+    else if (mGamePlayState == GamePlayState::Dialogue) {
+        GetDialogueSystem()->HandleInput(state);
     }
 }
 
@@ -354,8 +350,7 @@ void Game::TogglePause()
 
 void Game::UpdateGame()
 {
-    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16))
-        ;
+    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
 
     float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
     if (deltaTime > 0.05f)
@@ -365,9 +360,17 @@ void Game::UpdateGame()
 
     mTicksCount = SDL_GetTicks();
 
-    if (mGamePlayState == GamePlayState::Playing)
+    if (mGamePlayState == GamePlayState::Playing || mGamePlayState == GamePlayState::PlayingCutscene)
     {
         UpdateActors(deltaTime);
+    }
+
+    if (mGamePlayState == GamePlayState::PlayingCutscene && mCurrentCutscene)
+    {
+        mCurrentCutscene->Update(deltaTime);
+        if (mCurrentCutscene->IsComplete()) {
+            mGamePlayState = GamePlayState::Playing;
+        }
     }
 
     // Reinsert audio system
@@ -397,9 +400,6 @@ void Game::UpdateGame()
         }
     }
 
-    // ---------------------
-    // Game Specific Updates
-    // ---------------------
     if (mGameScene != GameScene::MainMenu)
     {
         if (mGamePlayState == GamePlayState::Playing)
@@ -409,7 +409,7 @@ void Game::UpdateGame()
     }
 
     UpdateSceneManager(deltaTime);
-    UpdateCamera();
+    UpdateCamera();  
 }
 
 void Game::UpdateSceneManager(float deltaTime)
