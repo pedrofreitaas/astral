@@ -66,7 +66,7 @@ void Zoe::OnProcessInput(const uint8_t *state)
 
     if (state[SDL_SCANCODE_SPACE])
     {
-        mRigidBodyComponent->ApplyForce(Vector2(0.0f, -100000.0f));
+        mRigidBodyComponent->ApplyForce(Vector2(0.0f, -20000.0f));
     }
 }
 
