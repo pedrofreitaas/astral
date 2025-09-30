@@ -29,4 +29,7 @@ private:
     std::map<std::string, class Tileset> mTilesets;
 
     std::map<std::string, class Tileset> LoadAllAvailableTilesets(const std::string& baseTilesetsPath);
+    std::vector<std::pair<std::string, int>> LoadTilsetsUsedInMap(const json &data, const std::string &baseTilesetsPath, std::map<std::string, Tileset> &allAvailableTilesets);
+    void LoadObjectsLayer(const json& layerData, int layerIdx);
+    void LoadTilesLayer(std::vector<std::pair<std::string, int>> &nameToFirstGID, const json &layerData, int layerIdx);
 };

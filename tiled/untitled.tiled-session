@@ -3,28 +3,28 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "maps/demo.tmx",
+    "activeFile": "",
     "expandedProjectPaths": [
     ],
-    "file.lastUsedOpenFilter": "All Files (*)",
+    "file.lastUsedOpenFilter": "Todos os Ficheiros (*)",
     "fileStates": {
         "C:/Users/freit/Downloads/Treasure Hunters/Treasure Hunters/Pirate Ship/Sprites/Tilesets/Platforms (32x32).tsx": {
             "scaleInDock": 1
         },
         "maps/demo.tmx": {
             "scale": 0.5,
-            "selectedLayer": 3,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 802,
-                "y": 1537
+                "x": 677,
+                "y": 1529
             }
         },
         "maps/demo_small.tmx": {
             "scale": 1.6862499999999998,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 240.17790956263906,
-                "y": 239.8813936249074
+                "x": 239.8813936249074,
+                "y": 403.5581912527799
             }
         },
         "tilesets/Platforms (32x32).tsx": {
@@ -36,25 +36,21 @@
             "scaleInEditor": 1
         }
     },
-    "last.exportedFilePath": "//wsl$/Ubuntu-24.04/home/freitaas/projetos/jogos/astral/assets/Levels/Maps",
+    "last.exportedFilePath": "//wsl.localhost/Ubuntu-22.04/home/freitaas/projects/jogos/astral/assets/Levels/Maps",
     "last.imagePath": "tilesets",
     "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
     "map.height": 120,
-    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedExportFilter": "Arquivos de mapa JSON (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "map.width": 120,
     "openFiles": [
-        "tilesets/Terrain and Back Wall (32x32).tsx",
-        "tilesets/Platforms (32x32).tsx",
-        "maps/demo_small.tmx",
-        "maps/demo.tmx"
     ],
     "project": "untitled.tiled-project",
     "recentFiles": [
-        "tilesets/Terrain and Back Wall (32x32).tsx",
-        "tilesets/Platforms (32x32).tsx",
         "maps/demo_small.tmx",
-        "maps/demo.tmx"
+        "maps/demo.tmx",
+        "tilesets/Terrain and Back Wall (32x32).tsx",
+        "tilesets/Platforms (32x32).tsx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }
