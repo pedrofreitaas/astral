@@ -20,6 +20,7 @@ RigidBodyComponent::RigidBodyComponent(class Actor* owner, float mass, float fri
         ,mFrictionCoefficient(friction)
         ,mVelocity(Vector2::Zero)
         ,mAcceleration(Vector2::Zero)
+        ,mIsOnGround(false)
 {
 
 }
@@ -64,12 +65,10 @@ void RigidBodyComponent::Update(float deltaTime)
                                 mOwner->GetPosition().y + mVelocity.y * deltaTime));
 
     if (collider) {
-        collider->DetectVertialCollision(this);
+        float t = collider->DetectVerticalCollision(this);
+        mIsOnGround = t > 0.0f;
     }
 
-    mAcceleration = mAcceleration * 0.25f;
-    if (mAcceleration.Length() < 0.1f) {
-        mAcceleration = Vector2::Zero;
-    }
+    mAcceleration = Vector2::Zero;
 }
 

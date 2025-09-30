@@ -92,7 +92,7 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
     return 0.0f;
 }
 
-float AABBColliderComponent::DetectVertialCollision(RigidBodyComponent *rigidBody)
+float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBody)
 {
     if (mIsStatic || !mIsEnabled)
         return false;

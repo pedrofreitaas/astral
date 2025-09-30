@@ -25,6 +25,7 @@ public:
     void SetApplyFriction(const bool applyFriction) { mApplyFriction = applyFriction;  }
 
     void ApplyForce(const Vector2 &force);
+    bool GetOnGround() { return mIsOnGround; }
 
 private:
     bool mApplyGravity;
@@ -33,7 +34,7 @@ private:
     // Physical properties
     float mFrictionCoefficient;
     float mMass;
-    float m;
+    bool mIsOnGround;
 
     Vector2 mVelocity;
     Vector2 mAcceleration;
