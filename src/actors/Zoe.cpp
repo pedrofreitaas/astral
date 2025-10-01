@@ -41,27 +41,11 @@ void Zoe::OnProcessInput(const uint8_t *state)
     if (state[SDL_SCANCODE_D])
     {
         mRigidBodyComponent->ApplyForce(Vector2(mForwardSpeed, 0.0f));
-        SetRotation(0.0f);
-        mIsRunning = true;
     }
 
     if (state[SDL_SCANCODE_A])
     {
         mRigidBodyComponent->ApplyForce(Vector2(-mForwardSpeed, 0.0f));
-        SetRotation(Math::Pi);
-        mIsRunning = true;
-    }
-
-    if (state[SDL_SCANCODE_W])
-    {
-        mRigidBodyComponent->ApplyForce(Vector2(0.0f, -mForwardSpeed));
-        mIsRunning = true;
-    }
-
-    if (state[SDL_SCANCODE_S])
-    {
-        mRigidBodyComponent->ApplyForce(Vector2(0.0f, mForwardSpeed));
-        mIsRunning = true;
     }
 
     if (state[SDL_SCANCODE_SPACE])
@@ -131,6 +115,16 @@ void Zoe::OnUpdate(float deltaTime)
     {
         mDrawComponent->SetAnimation("idle");
         return;
+    }
+
+    mIsRunning = mRigidBodyComponent->GetVelocity().x != 0.0f && mRigidBodyComponent->GetOnGround();
+    
+    if (mRigidBodyComponent->GetVelocity().x > 0.0f) {
+        SetRotation(0.0f);
+    }
+
+    else if (mRigidBodyComponent->GetVelocity().x < 0.0f) {
+        SetRotation(Math::Pi);
     }
 
     MaintainInbound();

@@ -124,7 +124,7 @@ bool Game::Initialize()
     mSpatialHashing = new SpatialHashing(TILE_SIZE * 4.0f,
                                          LEVEL_WIDTH * TILE_SIZE,
                                          LEVEL_HEIGHT * TILE_SIZE);
-    
+
     mDialogueSystem->Initialize(this);
 
     SetGameScene(GameScene::MainMenu);
@@ -173,10 +173,24 @@ void Game::LoadFirstLevel()
     mZoe = new Zoe(this, 1000.0f, -1000.0f);
     mZoe->SetPosition(Vector2(32.0f, mMap->GetHeight() - 80.0f));
 
-    GetDialogueSystem()->StartDialogue(
-        {"Zoe: Onde estou..."},
-        [this]() {}
-    );
+    std::vector<std::unique_ptr<Step>> steps;
+    steps.push_back(std::make_unique<MoveStep>(this, mZoe, Vector2(96.0f, mZoe->GetPosition().y), 100.0f));
+    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
+    steps.push_back(std::make_unique<MoveStep>(this, mZoe, Vector2(94.0f, mZoe->GetPosition().y), 20.0f));
+    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
+    steps.push_back(std::make_unique<MoveStep>(this, mZoe, Vector2(98.0f, mZoe->GetPosition().y), 20.0f));
+    steps.push_back(std::make_unique<WaitStep>(this, 1.5f));
+
+    AddCutscene("Intro",
+                std::move(steps),
+                [this]()
+                {
+                    GetDialogueSystem()->StartDialogue(
+                        {"Zoe: Onde estou..."},
+                        [this]() {});
+                });
+
+    StartCutscene("Intro");
 }
 
 void Game::ChangeScene()
@@ -307,7 +321,8 @@ void Game::ProcessInputActors()
         }
     }
 
-    else if (mGamePlayState == GamePlayState::Dialogue) {
+    else if (mGamePlayState == GamePlayState::Dialogue)
+    {
         GetDialogueSystem()->HandleInput(state);
     }
 }
@@ -350,7 +365,8 @@ void Game::TogglePause()
 
 void Game::UpdateGame()
 {
-    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
+    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16))
+        ;
 
     float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
     if (deltaTime > 0.05f)
@@ -368,9 +384,6 @@ void Game::UpdateGame()
     if (mGamePlayState == GamePlayState::PlayingCutscene && mCurrentCutscene)
     {
         mCurrentCutscene->Update(deltaTime);
-        if (mCurrentCutscene->IsComplete()) {
-            mGamePlayState = GamePlayState::Playing;
-        }
     }
 
     // Reinsert audio system
@@ -409,7 +422,7 @@ void Game::UpdateGame()
     }
 
     UpdateSceneManager(deltaTime);
-    UpdateCamera();  
+    UpdateCamera();
 }
 
 void Game::UpdateSceneManager(float deltaTime)
@@ -587,7 +600,7 @@ void Game::GenerateOutput()
         SDL_Rect rect = {0, 0, mWindowWidth, mWindowHeight};
         SDL_RenderFillRect(mRenderer, &rect);
     }
-    
+
     // draw dialogue system
     mDialogueSystem->Draw(mRenderer);
 
@@ -746,8 +759,8 @@ void Game::AddCutscene(const std::string &name, std::vector<std::unique_ptr<Step
         delete mCutscenes[name];
     }
 
-    Cutscene *newCutscene = new Cutscene(std::move(steps), onCompleteCallback);
-    mCutscenes[name] = newCutscene;
+    Cutscene *newCutscene = new Cutscene(std::move(steps), onCompleteCallback, this);
+    mCutscenes.emplace(name, std::move(newCutscene));
 }
 
 void Game::StartCutscene(const std::string &name)
