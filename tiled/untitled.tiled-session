@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "maps/demo.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "Todos os Ficheiros (*)",
@@ -12,11 +12,11 @@
             "scaleInDock": 1
         },
         "maps/demo.tmx": {
-            "scale": 0.5,
+            "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 677,
-                "y": 1529
+                "x": 441.66666666666663,
+                "y": 1719
             }
         },
         "maps/demo_small.tmx": {
@@ -44,11 +44,12 @@
     "map.lastUsedFormat": "tmx",
     "map.width": 120,
     "openFiles": [
+        "maps/demo.tmx"
     ],
     "project": "untitled.tiled-project",
     "recentFiles": [
-        "maps/demo_small.tmx",
         "maps/demo.tmx",
+        "maps/demo_small.tmx",
         "tilesets/Terrain and Back Wall (32x32).tsx",
         "tilesets/Platforms (32x32).tsx"
     ],
