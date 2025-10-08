@@ -6,14 +6,10 @@ class Star : public Actor
 {
 public:
     explicit Star(Game* game);
-
-    Vector2 GetCenter() const
-    {
-        return mColliderComponent->GetCenter();
-    }
+    void OnUpdate(float deltaTime) override;
+    void ManageState();
 
 private:
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;
-    class AABBColliderComponent* mColliderComponent;
 };
