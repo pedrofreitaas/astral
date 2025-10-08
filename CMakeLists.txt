@@ -44,6 +44,8 @@ add_executable(${PROJECT_NAME}
         src/components/draw/DrawAnimatedComponent.h
         src/actors/Tile.cpp
         src/actors/Tile.h
+        src/actors/Star.cpp
+        src/actors/Star.h
         src/actors/Spawner.cpp
         src/actors/Spawner.h
         src/core/AudioSystem.cpp

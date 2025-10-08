@@ -25,6 +25,8 @@ public:
         return mColliderComponent->GetCenter();
     }
 
+    void ManageState();
+
 private:
     float mForwardSpeed;
     float mJumpSpeed;   

@@ -109,6 +109,49 @@ void Zoe::MaintainInbound()
     }
 }
 
+void Zoe::ManageState()
+{
+    switch (mBehaviorState)
+    {
+        case BehaviorState::Dying:
+            break;
+        
+        case BehaviorState::Jumping:
+            if (mRigidBodyComponent->GetOnGround())
+            {
+                mBehaviorState = BehaviorState::Idle;
+            }
+            break;
+
+        case BehaviorState::Moving:
+            if (mRigidBodyComponent->GetOnGround() && std::abs(mRigidBodyComponent->GetVelocity().x) < 0.1f)
+            {
+                mBehaviorState = BehaviorState::Idle;
+            }
+            if (!mRigidBodyComponent->GetOnGround())
+            {
+                mBehaviorState = BehaviorState::Jumping;
+            }    
+
+            break;
+
+        case BehaviorState::Idle:
+            if (!mRigidBodyComponent->GetOnGround())
+            {
+                mBehaviorState = BehaviorState::Jumping;
+            }
+            else if (std::abs(mRigidBodyComponent->GetVelocity().x) > 0.1f)
+            {
+                mBehaviorState = BehaviorState::Moving;
+            }
+            break;
+
+        default:
+            mBehaviorState = BehaviorState::Idle;
+            break;
+    }
+}
+
 void Zoe::OnUpdate(float deltaTime)
 {
     if (mGame->GetGamePlayState() == Game::GamePlayState::Dialogue)
@@ -117,8 +160,7 @@ void Zoe::OnUpdate(float deltaTime)
         return;
     }
 
-    if (mRigidBodyComponent->GetVelocity().x != 0.0f && mRigidBodyComponent->GetOnGround())
-        mBehaviorState = BehaviorState::Moving;
+    ManageState();
 
     if (mRigidBodyComponent->GetVelocity().x > 0.0f)
     {

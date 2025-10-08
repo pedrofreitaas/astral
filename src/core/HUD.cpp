@@ -6,7 +6,6 @@ HUD::HUD(class Game* game, const std::string& fontName)
     : UIScreen(game, fontName)
 {
     int width = 64, height = 64;
-    // FPS
     mFPSText = AddText(
         "fps", 
         Vector2(mGame->GetWindowWidth()-width, 0.0f), 
@@ -24,5 +23,11 @@ HUD::~HUD()
 void HUD::SetFPS(int fps)
 {
     int displayFPS = std::max(0, std::min(999, fps));
+    mFPSText->SetText(std::to_string(displayFPS));
+}
+
+void HUD::SetFPS(float fps)
+{
+    float displayFPS = std::max(0.f, std::min(999.f, fps));
     mFPSText->SetText(std::to_string(displayFPS));
 }

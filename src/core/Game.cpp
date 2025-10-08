@@ -365,8 +365,7 @@ void Game::TogglePause()
 
 void Game::UpdateGame()
 {
-    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16))
-        ;
+    // while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16)); // Cap at 60 fps
 
     float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
     if (deltaTime > 0.05f)
