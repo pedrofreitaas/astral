@@ -44,11 +44,11 @@ void RigidBodyComponent::Update(float deltaTime)
     mVelocity.x = Math::Clamp<float>(mVelocity.x, -MAX_SPEED_X, MAX_SPEED_X);
     mVelocity.y = Math::Clamp<float>(mVelocity.y, -MAX_SPEED_Y, MAX_SPEED_Y);
 
-    if (Math::NearZero(mVelocity.x, 0.1f)) {
+    if (Math::NearZero(mVelocity.x, 10.f)) {
         mVelocity.x = 0.f;
     }
 
-    if (Math::NearZero(mVelocity.y, 0.1f)) {
+    if (Math::NearZero(mVelocity.y, 10.f)) {
         mVelocity.y = 0.f;
     }
 

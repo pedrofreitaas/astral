@@ -17,6 +17,7 @@ Actor::Actor(Game* game)
         , mRotation(0.0f)
         , mGame(game)
         , mIsOnGround(false)
+        , mBehaviorState(BehaviorState::Idle)
 {
     mGame->AddActor(this);
 }

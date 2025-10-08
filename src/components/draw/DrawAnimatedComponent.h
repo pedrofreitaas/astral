@@ -41,6 +41,7 @@ public:
 
     // Add an animation of the corresponding name to the animation map
     void AddAnimation(const std::string& name, const std::vector<int>& images, bool isLoop=true);
+    void AddAnimation(const std::string& name, int begin, int end, bool isLoop=true);
 
 private:
     std::vector<SDL_Rect*> mSpriteSheetData;

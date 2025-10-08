@@ -17,11 +17,9 @@ public:
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
 
     void Kill() override;
-    void Win(AABBColliderComponent *poleCollider);
     int Lives() { return mLives; }
-
-    void FindKey();
     void FindHeart();
+    
     Vector2 GetCenter() const
     {
         return mColliderComponent->GetCenter();
@@ -29,11 +27,8 @@ public:
 
 private:
     float mForwardSpeed;
-    float mJumpSpeed;    
-    bool mIsRunning;
-    bool mIsDying; 
+    float mJumpSpeed;   
     float mDeathTimer;
-    bool mFoundKey;
     int mLives;
     float mInvincibilityTimer;
 

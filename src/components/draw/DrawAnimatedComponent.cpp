@@ -38,16 +38,33 @@ void DrawAnimatedComponent::LoadSpriteSheet(const std::string &texturePath, cons
     std::ifstream spriteSheetFile(dataPath);
     nlohmann::json spriteSheetData = nlohmann::json::parse(spriteSheetFile);
 
-    SDL_Rect *rect = nullptr;
+    std::vector<std::pair<std::string, SDL_Rect*>> rects;
+    rects.reserve(spriteSheetData["frames"].size());
+
     for (const auto &frame : spriteSheetData["frames"])
     {
         int x = frame["frame"]["x"].get<int>();
         int y = frame["frame"]["y"].get<int>();
         int w = frame["frame"]["w"].get<int>();
         int h = frame["frame"]["h"].get<int>();
-        rect = new SDL_Rect({x, y, w, h});
+        std::string fileName = frame["filename"].get<std::string>();
 
-        mSpriteSheetData.emplace_back(rect);
+        SDL_Rect *r = new SDL_Rect{ x, y, w, h };
+        rects.emplace_back(fileName, r);
+    }
+
+    // Sort by filename (lexicographically)
+    std::sort(rects.begin(), rects.end(),
+              [](const std::pair<std::string, SDL_Rect*> &a,
+                 const std::pair<std::string, SDL_Rect*> &b) {
+                  return a.first < b.first;
+              });
+
+    // Move sorted rect pointers into mSpriteSheetData
+    mSpriteSheetData.reserve(rects.size());
+    for (auto &p : rects)
+    {
+        mSpriteSheetData.emplace_back(p.second);
     }
 }
 
@@ -109,3 +126,13 @@ void DrawAnimatedComponent::AddAnimation(const std::string &name, const std::vec
 {
     mAnimations.emplace(name, std::move(Animation(spriteNums, isLoop)));
 }
+
+void DrawAnimatedComponent::AddAnimation(const std::string &name, int begin, int end, bool isLoop)
+{
+    std::vector<int> spriteNums;
+    for (int i = begin; i <= end; ++i) {
+        spriteNums.emplace_back(i);
+    }
+    mAnimations.emplace(name, std::move(Animation(spriteNums, isLoop)));
+}
+

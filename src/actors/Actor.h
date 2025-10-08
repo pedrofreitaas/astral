@@ -19,6 +19,16 @@ enum class ActorState
     Destroy
 };
 
+enum class BehaviorState // For AI behaviors/animations
+{
+    Idle,
+    Moving,
+    Attacking,
+    Stunned,
+    Jumping,
+    Dying
+};
+
 class Actor
 {
 public:
@@ -103,6 +113,7 @@ protected:
 
     // Actor's state
     ActorState mState;
+    BehaviorState mBehaviorState;
 
     // Transform
     Vector2 mPosition;

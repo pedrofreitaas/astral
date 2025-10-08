@@ -5,39 +5,41 @@
 #include "../components/draw/DrawAnimatedComponent.h"
 #include "../ui/DialogueSystem.h"
 
-Zoe::Zoe(Game *game, const float forwardSpeed, const float jumpSpeed): 
-    Actor(game), mIsRunning(false),
-    mIsDying(false), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed),
-    mFoundKey(false), mDeathTimer(0.0f), mLives(6), mInvincibilityTimer(0.0f)
+Zoe::Zoe(Game *game, const float forwardSpeed, const float jumpSpeed) : Actor(game), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed),
+                                                                        mDeathTimer(DEATH_TIMER), mLives(6), mInvincibilityTimer(0.0f)
 {
-    mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 7.0f);
+    mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 10.0f);
     mColliderComponent = new AABBColliderComponent(this, 14, 20, 18, 28,
                                                    ColliderLayer::Player);
 
     mDrawComponent = new DrawAnimatedComponent(
         this,
-        "../assets/Sprites/Punk/texture.png",
-        "../assets/Sprites/Punk/texture.json",
+        "../assets/Sprites/Zoe/texture.png",
+        "../assets/Sprites/Zoe/texture.json",
         nullptr,
         static_cast<int>(DrawLayerPosition::Player) + 1);
 
-    mDrawComponent->AddAnimation("idle", {0, 1, 2, 3});
-    mDrawComponent->AddAnimation("run", {4, 5, 6, 7, 8, 9, 10});
-    mDrawComponent->AddAnimation("dying", {11, 12, 13, 14, 15, 16});
+    mDrawComponent->AddAnimation("idle", 0, 8);
+    mDrawComponent->AddAnimation("crush", 10, 17);
+    mDrawComponent->AddAnimation("blink", 19, 21);
+    mDrawComponent->AddAnimation("jump", 23, 25);
+    mDrawComponent->AddAnimation("run", 27, 32);
+    mDrawComponent->AddAnimation("hurt", {34});
 
     mDrawComponent->SetAnimation("idle");
-    mDrawComponent->SetAnimFPS(13.0f);
+    mDrawComponent->SetAnimFPS(10.0f);
 }
 
 void Zoe::OnProcessInput(const uint8_t *state)
 {
-    if (mIsDying)
+    if (mBehaviorState == BehaviorState::Dying)
         return;
 
-    mIsRunning = false;
+    mBehaviorState = BehaviorState::Idle;
 
-    if (!mRigidBodyComponent->GetOnGround()) return;
-    
+    if (!mRigidBodyComponent->GetOnGround())
+        return;
+
     if (state[SDL_SCANCODE_D])
     {
         mRigidBodyComponent->ApplyForce(Vector2(mForwardSpeed, 0.0f));
@@ -56,13 +58,13 @@ void Zoe::OnProcessInput(const uint8_t *state)
 
 void Zoe::OnHandleKeyPress(const int key, const bool isPressed)
 {
-    if (mIsDying)
+    if (mBehaviorState == BehaviorState::Dying)
         return;
 }
 
 void Zoe::TakeDamage()
 {
-    if (mIsDying)
+    if (mBehaviorState == BehaviorState::Dying)
         return;
 
     if (mInvincibilityTimer > 0.0f)
@@ -73,9 +75,7 @@ void Zoe::TakeDamage()
 
     if (mLives <= 0)
     {
-        mIsDying = true;
-        mDrawComponent->SetAnimFPS(8.0f);
-        mDeathTimer = DEATH_TIMER;
+        mBehaviorState = BehaviorState::Dying;
     }
 }
 
@@ -117,20 +117,23 @@ void Zoe::OnUpdate(float deltaTime)
         return;
     }
 
-    mIsRunning = mRigidBodyComponent->GetVelocity().x != 0.0f && mRigidBodyComponent->GetOnGround();
-    
-    if (mRigidBodyComponent->GetVelocity().x > 0.0f) {
+    if (mRigidBodyComponent->GetVelocity().x != 0.0f && mRigidBodyComponent->GetOnGround())
+        mBehaviorState = BehaviorState::Moving;
+
+    if (mRigidBodyComponent->GetVelocity().x > 0.0f)
+    {
         SetRotation(0.0f);
     }
 
-    else if (mRigidBodyComponent->GetVelocity().x < 0.0f) {
+    else if (mRigidBodyComponent->GetVelocity().x < 0.0f)
+    {
         SetRotation(Math::Pi);
     }
 
     MaintainInbound();
     ManageAnimations();
 
-    if (mIsDying)
+    if (mBehaviorState == BehaviorState::Dying)
     {
         mDeathTimer -= deltaTime;
 
@@ -147,51 +150,32 @@ void Zoe::OnUpdate(float deltaTime)
 
 void Zoe::ManageAnimations()
 {
-    if (mIsDying)
+    switch (mBehaviorState)
     {
-        mDrawComponent->SetAnimation("dying");
-    }
-    else if (mIsRunning)
-    {
-        mDrawComponent->SetAnimation("run");
-    }
-    else if (!mIsRunning)
-    {
+    case BehaviorState::Idle:
         mDrawComponent->SetAnimation("idle");
+        break;
+    case BehaviorState::Moving:
+        mDrawComponent->SetAnimation("run");
+        break;
+    case BehaviorState::Jumping:
+        mDrawComponent->SetAnimation("jump");
+        break;
+    case BehaviorState::Dying:
+        mDrawComponent->SetAnimation("dying");
+        break;
+    default:
+        break;
     }
 }
 
 void Zoe::Kill()
 {
-    mIsDying = true;
+    mBehaviorState = BehaviorState::Dying;
     mGame->SetGamePlayState(Game::GamePlayState::GameOver);
-    mDrawComponent->SetAnimation("dying");
 
-    // Disable collider and rigid body
     mRigidBodyComponent->SetEnabled(false);
     mColliderComponent->SetEnabled(false);
-
-    mGame->GetAudio()->StopAllSounds();
-    mGame->ResetGameScene(3.5f);
-}
-
-void Zoe::Win(AABBColliderComponent *poleCollider)
-{
-    mDrawComponent->SetAnimation("win");
-    mGame->SetGamePlayState(Game::GamePlayState::LevelComplete);
-
-    // Set Zoe velocity to go down
-    mRigidBodyComponent->SetVelocity(Vector2::UnitY * 100.0f); // 100 pixels per second
-    mRigidBodyComponent->SetApplyGravity(false);
-
-    // Disable collider
-    poleCollider->SetEnabled(false);
-
-    // Adjust Zoe x position to grab the pole
-    mPosition.Set(poleCollider->GetOwner()->GetPosition().x + Game::TILE_SIZE / 4.0f, mPosition.y);
-
-    // Stop music
-    mGame->GetAudio()->StopAllSounds();
 }
 
 void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
@@ -233,32 +217,6 @@ void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *oth
     if (other->GetLayer() == ColliderLayer::Item)
     {
         other->GetOwner()->OnCollision();
-    }
-}
-
-void Zoe::FindKey()
-{
-    mFoundKey = true;
-    mGame->GetAudio()->PlaySound("KeyPick.wav");
-
-    if (mGame->GetGameScene() == Game::GameScene::Level1)
-    {
-        mGame->GetDialogueSystem()->StartDialogue(
-            {"Zoe: Uma chave! Agora, o que sera que ela abre?",
-             "Zoe: Melhor eu dar uma olhada ao redor."},
-            [this]() {}
-        );
-    }
-    else
-    {
-        mGame->GetDialogueSystem()->StartDialogue(
-            {"Voz: Voce conseguiu. A ultima chave foi encontrada.",
-             "Voz: O caminho se abre em dois. O seu... e o nosso.",
-             "Voz: O portal verde oferece o seu lar, a sua paz... ao custo da nossa existencia.",
-             "Voz: O portal roxo vai te manter aqui, como o novo guardiao, para nos salvar.",
-             "Voz: A escolha e sua, Viajante do Eter."},
-            [this](){}
-        );
     }
 }
 
