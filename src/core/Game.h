@@ -107,7 +107,7 @@ public:
     void TogglePause();
 
     // Game-specific
-    const class Zoe* GetPunk() { return mZoe; }
+    const class Zoe* GetZoe() { return mZoe; }
 
     void SetGamePlayState(GamePlayState state) { mGamePlayState = state; }
     GamePlayState GetGamePlayState() const { return mGamePlayState; }

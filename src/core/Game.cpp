@@ -180,6 +180,10 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
     steps.push_back(std::make_unique<MoveStep>(this, mZoe, Vector2(98.0f, mZoe->GetPosition().y), 20.0f));
     steps.push_back(std::make_unique<WaitStep>(this, 1.5f));
+    steps.push_back(std::make_unique<SpawnStep>(
+        this, 
+        SpawnStep::ActorType::Star, 
+        Vector2(mWindowWidth / 2.0f, mMap->GetHeight() - mWindowHeight / 2.0f)));
 
     AddCutscene("Intro",
                 std::move(steps),

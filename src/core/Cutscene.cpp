@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include "Cutscene.h"
 #include "Game.h"
+#include "../actors/Star.h"
 
 MoveStep::MoveStep(class Game* game, Actor* targetActor, const Vector2& targetPos, float speed)
     : Step(game), mTargetPos(targetPos), mSpeed(speed), mTargetActor(targetActor)
@@ -47,6 +48,30 @@ void MoveStep::Update(float deltaTime) {
         rb->SetVelocity(Vector2::Zero);
         mTargetActor->SetPosition(mTargetPos);
         SetComplete();
+    }
+}
+
+SpawnStep::SpawnStep(class Game* game, ActorType actorType, const Vector2& position)
+    : Step(game), mActorType(actorType), mPosition(position)
+{
+}
+
+void SpawnStep::Update(float deltaTime) {
+    if (GetIsComplete()) return;
+
+    Actor* newActor = nullptr;
+
+    if (mActorType == ActorType::Star) {
+        newActor = new Star(mGame);
+    }
+
+    if (newActor) {
+        newActor->SetPosition(mPosition);
+        SetComplete();
+    }
+    else {
+        throw std::runtime_error("SpawnStep failed to create actor of type: " + 
+                                  std::to_string(static_cast<int>(mActorType)));
     }
 }
 

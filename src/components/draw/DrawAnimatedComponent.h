@@ -43,6 +43,10 @@ public:
     void AddAnimation(const std::string& name, const std::vector<int>& images, bool isLoop=true);
     void AddAnimation(const std::string& name, int begin, int end, bool isLoop=true);
 
+    void Scale(int scale) {
+        mScaleFactor = scale;
+    };
+
 private:
     std::vector<SDL_Rect*> mSpriteSheetData;
     std::unordered_map<std::string, class Animation> mAnimations;
@@ -52,6 +56,7 @@ private:
     float mAnimTimer;
     float mAnimFPS;
     bool mIsPaused;
+    int mScaleFactor;
 
     void LoadSpriteSheet(const std::string& texturePath, const std::string& dataPath);
 };

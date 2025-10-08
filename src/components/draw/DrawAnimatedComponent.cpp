@@ -13,7 +13,8 @@ DrawAnimatedComponent::DrawAnimatedComponent(
     int drawOrder): 
     DrawComponent(owner, drawOrder), 
     mSpriteSheetTexture(nullptr), mAnimTimer(0.0f), mAnimFPS(10.0f), 
-    mIsPaused(false), mAnimName(""), mAnimationEndCallback(animationEndCallback)
+    mIsPaused(false), mAnimName(""), mAnimationEndCallback(animationEndCallback),
+    mScaleFactor(1.0f)
 {
     LoadSpriteSheet(spriteSheetPath, spriteSheetData);
 }
@@ -76,8 +77,8 @@ void DrawAnimatedComponent::Draw(SDL_Renderer *renderer, const Vector3 &modColor
     SDL_Rect dstRect = {
         static_cast<int>(mOwner->GetPosition().x - mOwner->GetGame()->GetCameraPos().x),
         static_cast<int>(mOwner->GetPosition().y - mOwner->GetGame()->GetCameraPos().y),
-        srcRect->w,
-        srcRect->h};
+        srcRect->w * mScaleFactor,
+        srcRect->h * mScaleFactor};
 
     SDL_RendererFlip flip = SDL_FLIP_NONE;
     if (mOwner->GetRotation() == Math::Pi)

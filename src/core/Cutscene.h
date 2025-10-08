@@ -20,8 +20,6 @@ public:
 
 protected:
     void SetComplete(bool v = true) { mIsComplete = v; }
-
-private:
     bool mIsComplete = false;
     Game *mGame;
 };
@@ -34,6 +32,19 @@ private:
     Vector2 mTargetPos;
     float mSpeed;
     Actor* mTargetActor;
+};
+
+class SpawnStep : public Step {
+public:
+    enum class ActorType {
+        Star,
+        // Add other actor types here as needed
+    };
+    SpawnStep(class Game* game, ActorType actorType, const Vector2& position);
+    void Update(float deltaTime) override;
+private:
+    ActorType mActorType;
+    Vector2 mPosition;
 };
 
 class WaitStep : public Step {

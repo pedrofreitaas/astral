@@ -1,6 +1,7 @@
 #include "./Star.h"
 #include "../core/Game.h"
 #include "../components/draw/DrawAnimatedComponent.h"
+#include "./Zoe.h"
 
 Star::Star(Game *game) : 
     Actor(game)
@@ -16,12 +17,35 @@ Star::Star(Game *game) :
         nullptr,
         static_cast<int>(DrawLayerPosition::Player) + 1);
 
-    mDrawComponent->AddAnimation("twinkle", {1});
+    mDrawComponent->AddAnimation("twinkle", {0});
     mDrawComponent->SetAnimation("twinkle");
     mDrawComponent->SetAnimFPS(1.0f);
+    mDrawComponent->Scale(3);
+}
+
+void Star::ManageState()
+{
+    const Zoe* zoe = mGame->GetZoe();
+
+    if (!zoe)
+        return;
+
+    Vector2 toZoe = zoe->GetPosition() - GetPosition();
+    float distanceToZoe = toZoe.Length();
+
+    switch (mBehaviorState)
+    {
+        case BehaviorState::Fleeing:
+            break;
+        case BehaviorState::Provoking:
+            break;
+        default:
+            mBehaviorState = BehaviorState::Idle;    
+            break;
+    }
 }
 
 void Star::OnUpdate(float deltaTime)
 {
-    // Stars don't do anything for now
+    ManageState();
 }

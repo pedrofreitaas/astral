@@ -15,7 +15,7 @@ Spawner::Spawner(Game* game, float spawnDistance, int type)
 
 void Spawner::OnUpdate(float deltaTime)
 {
-    auto *punk = mGame->GetPunk();
+    auto *punk = mGame->GetZoe();
 
     if (punk == nullptr) return;
 
