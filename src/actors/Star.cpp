@@ -21,26 +21,21 @@ Star::Star(Game *game) :
     mDrawComponent->SetAnimation("twinkle");
     mDrawComponent->SetAnimFPS(1.0f);
     mDrawComponent->Scale(3);
+
+    mColliderComponent = new AABBColliderComponent(
+        this, 0, 0, 33, 33,
+        ColliderLayer::Player
+    );
+
+    mGame->SetStar(this);
 }
 
 void Star::ManageState()
 {
-    const Zoe* zoe = mGame->GetZoe();
-
-    if (!zoe)
-        return;
-
-    Vector2 toZoe = zoe->GetPosition() - GetPosition();
-    float distanceToZoe = toZoe.Length();
-
     switch (mBehaviorState)
     {
-        case BehaviorState::Fleeing:
-            break;
-        case BehaviorState::Provoking:
-            break;
         default:
-            mBehaviorState = BehaviorState::Idle;    
+            mBehaviorState = BehaviorState::Idle;           
             break;
     }
 }

@@ -31,6 +31,7 @@
 #include "../components/draw/DrawSpriteComponent.h"
 #include "../components/collider/AABBColliderComponent.h"
 #include "../ui/DialogueSystem.h"
+#include "../actors/Star.h"
 
 const int CHAR_WIDTH = 6;
 const int WORD_HEIGHT = 8;
@@ -170,7 +171,7 @@ void Game::LoadFirstLevel()
         Vector2(mWindowWidth, mWindowHeight),
         false);
 
-    mZoe = new Zoe(this, 1000.0f, -1000.0f);
+    mZoe = new Zoe(this, 1500.0f);
     mZoe->SetPosition(Vector2(32.0f, mMap->GetHeight() - 80.0f));
 
     std::vector<std::unique_ptr<Step>> steps;
@@ -183,7 +184,13 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<SpawnStep>(
         this, 
         SpawnStep::ActorType::Star, 
-        Vector2(mWindowWidth / 2.0f, mMap->GetHeight() - mWindowHeight / 2.0f)));
+        Vector2(0.0f, mMap->GetHeight() - mWindowHeight / 2.0f)));
+    steps.push_back(std::make_unique<MoveStep>(
+        this, 
+        [this]() { return GetStar(); },
+        Vector2(mWindowWidth / 2.0f, mMap->GetHeight() - mWindowHeight / 2.0f), 
+        250.0f
+    ));
 
     AddCutscene("Intro",
                 std::move(steps),

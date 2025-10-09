@@ -5,8 +5,9 @@
 #include "../components/draw/DrawAnimatedComponent.h"
 #include "../ui/DialogueSystem.h"
 
-Zoe::Zoe(Game *game, const float forwardSpeed, const float jumpSpeed) : Actor(game), mForwardSpeed(forwardSpeed), mJumpSpeed(jumpSpeed),
-                                                                        mDeathTimer(DEATH_TIMER), mLives(6), mInvincibilityTimer(0.0f)
+Zoe::Zoe(Game *game, const float forwardSpeed): 
+    Actor(game), mForwardSpeed(forwardSpeed),
+    mDeathTimer(DEATH_TIMER), mLives(6), mInvincibilityTimer(0.0f)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 10.0f);
     mColliderComponent = new AABBColliderComponent(this, 14, 20, 18, 28,

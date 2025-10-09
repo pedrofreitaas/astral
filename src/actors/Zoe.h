@@ -7,7 +7,7 @@ const float DEATH_TIMER = 0.71f;
 class Zoe : public Actor
 {
 public:
-    explicit Zoe(Game* game, float forwardSpeed = 1500.0f, float jumpSpeed = -750.0f);
+    explicit Zoe(Game* game, float forwardSpeed = 1500.0f);
 
     void OnProcessInput(const Uint8* keyState) override;
     void OnUpdate(float deltaTime) override;
@@ -29,7 +29,6 @@ public:
 
 private:
     float mForwardSpeed;
-    float mJumpSpeed;   
     float mDeathTimer;
     int mLives;
     float mInvincibilityTimer;

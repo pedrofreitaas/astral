@@ -124,6 +124,8 @@ public:
     void ResetCutscenes();
 
     class DialogueSystem* GetDialogueSystem() const { return mDialogueSystem; }
+    void SetStar(class Star* star) { mStar = star; };
+    class Star* GetStar() { return mStar; };
 
 private:
     void ProcessInput();
@@ -174,6 +176,7 @@ private:
 
     // Game-specific
     class Zoe *mZoe;
+    class Star *mStar;
     class Enemy *mEnemy;
     class HUD *mHUD;
     SoundHandle mMusicHandle;

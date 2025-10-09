@@ -12,4 +12,5 @@ public:
 private:
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;
+    class AABBColliderComponent* mColliderComponent;
 };

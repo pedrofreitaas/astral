@@ -6,19 +6,23 @@
 #include "../actors/Star.h"
 
 MoveStep::MoveStep(class Game* game, Actor* targetActor, const Vector2& targetPos, float speed)
-    : Step(game), mTargetPos(targetPos), mSpeed(speed), mTargetActor(targetActor)
+    : Step(game), mTargetPos(targetPos), mSpeed(speed)
 {
-    if (!mTargetActor) {
-        throw std::invalid_argument("MoveStep requires a valid target Actor");
-    }
-
-    if (mTargetActor->GetComponent<RigidBodyComponent>() == nullptr) {
+    mGetTargetActor = [targetActor]() { return targetActor; };
+    
+    if (mGetTargetActor()->GetComponent<RigidBodyComponent>() == nullptr) {
         throw std::invalid_argument("MoveStep requires the target Actor to have a RigidBodyComponent");
     }
 }
 
 void MoveStep::Update(float deltaTime) {
     if (GetIsComplete()) return;
+
+    Actor* mTargetActor = mGetTargetActor();
+
+    if (!mTargetActor) {
+        throw std::runtime_error("MoveStep target Actor is null");
+    }
 
     RigidBodyComponent* rb = mTargetActor->GetComponent<RigidBodyComponent>();
     if (!rb) {

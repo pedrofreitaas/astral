@@ -26,12 +26,15 @@ protected:
 
 class MoveStep : public Step {
 public:
+    MoveStep(class Game* game, std::function<Actor*()> targetActorFunc, const Vector2& targetPos, float speed):
+        Step(game), mTargetPos(targetPos), mSpeed(speed), mGetTargetActor(std::move(targetActorFunc)) {};
+
     MoveStep(class Game* game, Actor* targetActor, const Vector2& targetPos, float speed);
     void Update(float deltaTime) override;
 private:
-    Vector2 mTargetPos;
     float mSpeed;
-    Actor* mTargetActor;
+    Vector2 mTargetPos;
+    std::function<Actor*()> mGetTargetActor;
 };
 
 class SpawnStep : public Step {
