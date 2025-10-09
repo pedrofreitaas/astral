@@ -123,7 +123,7 @@ public:
     void PauseCutscene();
     void ResetCutscenes();
 
-    class DialogueSystem* GetDialogueSystem() const { return mDialogueSystem; }
+    class DialogueSystem* GetDialogueSystem() { return mDialogueSystem; }
     void SetStar(class Star* star) { mStar = star; };
     class Star* GetStar() { return mStar; };
 

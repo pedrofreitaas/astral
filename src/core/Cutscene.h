@@ -65,6 +65,14 @@ private:
     float mElapsed;
 };
 
+class DialogueStep : public Step {
+public:
+    DialogueStep(class Game* game, std::vector<std::string>& messages) : Step(game), mMessages(messages) {}
+    void Update(float deltaTime) override;
+private:
+    std::vector<std::string> mMessages;
+};
+
 class Cutscene {
 public:
     enum class State { Playing, Paused };

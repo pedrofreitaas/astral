@@ -4,6 +4,7 @@
 #include "Cutscene.h"
 #include "Game.h"
 #include "../actors/Star.h"
+#include "../ui/DialogueSystem.h"
 
 MoveStep::MoveStep(class Game* game, Actor* targetActor, const Vector2& targetPos, float speed)
     : Step(game), mTargetPos(targetPos), mSpeed(speed)
@@ -77,6 +78,17 @@ void SpawnStep::Update(float deltaTime) {
         throw std::runtime_error("SpawnStep failed to create actor of type: " + 
                                   std::to_string(static_cast<int>(mActorType)));
     }
+}
+
+void DialogueStep::Update(float deltaTime) {
+    if (GetIsComplete()) return;
+
+    mGame->GetDialogueSystem()->StartDialogue(
+        mMessages, 
+        [this]() {
+            SetComplete();
+        }
+    );
 }
 
 Cutscene::Cutscene(std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback, Game* game)

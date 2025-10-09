@@ -34,6 +34,16 @@ void Star::ManageState()
 {
     switch (mBehaviorState)
     {
+        case BehaviorState::Idle:
+            if (mRigidBodyComponent->GetVelocity().Length() > 0.1f)
+                mBehaviorState = BehaviorState::Moving;
+            break;
+        
+        case BehaviorState::Moving:
+            if (mRigidBodyComponent->GetVelocity().Length() < 0.1f)
+                mBehaviorState = BehaviorState::Idle;
+            break;
+        
         default:
             mBehaviorState = BehaviorState::Idle;           
             break;
@@ -43,4 +53,9 @@ void Star::ManageState()
 void Star::OnUpdate(float deltaTime)
 {
     ManageState();
+
+    if (mBehaviorState == BehaviorState::Moving)
+    {
+        SetRotation(GetRotation() + deltaTime*300);
+    }
 }

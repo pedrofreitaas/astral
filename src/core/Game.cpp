@@ -191,15 +191,19 @@ void Game::LoadFirstLevel()
         Vector2(mWindowWidth / 2.0f, mMap->GetHeight() - mWindowHeight / 2.0f), 
         250.0f
     ));
+    std::vector<std::string> dialogue = {
+        "Zoe: O que... o que é isso?",
+        "Zoe: Uma estrela? Mas como ela foi parar aqui?",
+        "Zoe: Eu preciso descobrir onde estou e como voltar para casa.",
+        "Zoe: Talvez essa estrela possa me ajudar.",
+        "Zoe: Vou segui-la e ver onde ela me leva.",
+        "Zoe: Espero que eu consiga encontrar uma saída deste lugar estranho.",
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, dialogue));
 
     AddCutscene("Intro",
                 std::move(steps),
-                [this]()
-                {
-                    GetDialogueSystem()->StartDialogue(
-                        {"Zoe: Onde estou..."},
-                        [this]() {});
-                });
+                [this](){});
 
     StartCutscene("Intro");
 }
