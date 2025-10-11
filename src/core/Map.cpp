@@ -108,7 +108,38 @@ void Map::LoadTilesLayer(std::vector<std::pair<std::string, int>> &nameToFirstGI
 
 void Map::LoadObjectsLayer(const json &layerData, int layerIdx)
 {
-	SDL_Log("TO-DO load objects layer...");
+	int objectIdx = -1;
+	for (const auto &obj : layerData["objects"])
+	{
+		objectIdx++;
+		int id = obj["id"].get<int>();
+		int x = obj["x"].get<int>();
+		int y = obj["y"].get<int>();
+		int width = obj["width"].get<int>();
+		int height = obj["height"].get<int>();
+		std::string ev, function_name;
+
+		for (const auto &prop : obj["properties"])
+		{
+			std::string propName = prop["name"].get<std::string>();
+			std::string propValue = prop["value"].get<std::string>(); 
+			
+			if (propName == "event")
+				ev = propValue;
+			else if (propName == "function_name")
+				function_name = propValue;
+		}
+
+		MapObject *mapObject = new MapObject(
+			mGame,
+			id,
+			ev,
+			function_name,
+			Vector2(x, y),
+			Vector2(width, height));
+
+		mMapObjects.push_back(mapObject);
+	}
 }
 
 std::vector<std::pair<std::string, int>> Map::LoadTilsetsUsedInMap(const json &data, const std::string &baseTilesetsPath, std::map<std::string, Tileset> &allAvailableTilesets)
@@ -173,13 +204,12 @@ Map::Map(Game *game, std::string jsonPath)
 	mTilesets = std::map<std::string, Tileset>();
 	std::map<std::string, Tileset> allAvailableTilesets = LoadAllAvailableTilesets(baseTilesetsPath);
 	std::vector<std::pair<std::string, int>> nameToFirstGID = LoadTilsetsUsedInMap(
-		data, 
-		baseTilesetsPath, 
+		data,
+		baseTilesetsPath,
 		allAvailableTilesets);
 
 	mTiles = std::vector<class Tile *>();
 
-	// Iterate through each layer and extract tiles
 	int layerIdx = -1;
 	for (const auto &layerData : data["layers"])
 	{

@@ -13,30 +13,17 @@
 enum class ColliderLayer
 {
     Player,
-    Enemy,
     Blocks,
-    Pole,
-    Bricks,
-    EnemyProjectile,
-    PlayerProjectile,
-    Portal,
-    Portal2,
+    Objects,
     Item
 };
 
 class AABBColliderComponent : public Component
 {
 public:
-    // Collider ignore map
-    const std::map<ColliderLayer, const std::set<ColliderLayer>> ColliderIgnoreMap = {
-        {ColliderLayer::Player, { ColliderLayer::Portal, ColliderLayer::PlayerProjectile, ColliderLayer::Item }},
-        {ColliderLayer::Enemy,  { ColliderLayer::EnemyProjectile }},
-        {ColliderLayer::Blocks, { ColliderLayer::Blocks }},
-        {ColliderLayer::Pole, {}}
-    };
-
     AABBColliderComponent(class Actor* owner, int dx, int dy, int w, int h,
-                                ColliderLayer layer, bool isStatic = false, int updateOrder = 10);
+                                ColliderLayer layer, bool isStatic = false, 
+                                int updateOrder = 10, bool isTangible = true);
     ~AABBColliderComponent() override;
 
     bool Intersect(const AABBColliderComponent& b) const;
@@ -56,6 +43,7 @@ public:
     Vector2 GetOffset() const { return mOffset; }
     void SetOffset(const Vector2& offset) { mOffset = offset; }
     ColliderLayer GetLayer() const { return mLayer; }
+    bool IsTangible() const { return mIsTangible; }
 
 private:
     float GetMinVerticalOverlap(AABBColliderComponent* b) const;
@@ -67,7 +55,7 @@ private:
     Vector2 mOffset;
     int mWidth;
     int mHeight;
-    bool mIsStatic;
+    bool mIsStatic, mIsTangible;
 
     ColliderLayer mLayer;
 };

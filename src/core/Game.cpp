@@ -163,7 +163,7 @@ void Game::LoadFirstLevel()
 {
     mHUD = new HUD(this, "../assets/Fonts/VT323-Regular.ttf");
 
-    SetMap("demo.json");
+    SetMap("demo_test.json");
 
     SetBackgroundImage(
         "../assets/Levels/Backgrounds/galaxy.png",
@@ -486,18 +486,18 @@ void Game::UpdateActors(float deltaTime)
         mWindowWidth,
         mWindowHeight);
 
-    bool isPunkOnCamera = false;
+    bool isZoeOnCamera = false;
     for (auto actor : actorsOnCamera)
     {
         actor->Update(deltaTime);
         if (actor == mZoe)
         {
-            isPunkOnCamera = true;
+            isZoeOnCamera = true;
         }
     }
 
     // If Zoe is not on camera, update him (player should always be updated)
-    if (!isPunkOnCamera && mZoe)
+    if (!isZoeOnCamera && mZoe)
     {
         mZoe->Update(deltaTime);
     }

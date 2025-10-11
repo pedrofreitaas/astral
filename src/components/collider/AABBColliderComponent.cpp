@@ -8,15 +8,15 @@
 #include <algorithm>
 
 AABBColliderComponent::AABBColliderComponent(class Actor *owner, int dx, int dy, int w, int h,
-                                             ColliderLayer layer, bool isStatic, int updateOrder)
-    : Component(owner, updateOrder), mOffset(Vector2((float)dx, (float)dy)), mIsStatic(isStatic), mWidth(w), mHeight(h), mLayer(layer)
+                                             ColliderLayer layer, bool isStatic, int updateOrder,
+                                             bool isTangible)
+    : Component(owner, updateOrder), mOffset(Vector2((float)dx, (float)dy)), 
+    mIsStatic(isStatic), mWidth(w), mHeight(h), mLayer(layer), mIsTangible(isTangible)
 {
-    //    mOwner->GetGame()->AddCollider(this);
 }
 
 AABBColliderComponent::~AABBColliderComponent()
 {
-    //    mOwner->GetGame()->RemoveCollider(this);
 }
 
 Vector2 AABBColliderComponent::GetMin() const
@@ -42,8 +42,8 @@ bool AABBColliderComponent::Intersect(const AABBColliderComponent &b) const
 
 float AABBColliderComponent::GetMinVerticalOverlap(AABBColliderComponent *b) const
 {
-    float top = GetMin().y - b->GetMax().y;  // Top
-    float down = GetMax().y - b->GetMin().y; // Down
+    float top = GetMin().y - b->GetMax().y;
+    float down = GetMax().y - b->GetMin().y;
 
     return (Math::Abs(top) < Math::Abs(down)) ? top : down;
 }
@@ -76,10 +76,7 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
         {
             float overlap = GetMinHorizontalOverlap(collider);
 
-            // Check if the collider is in the same layer or if it should be ignored
-            if (ColliderIgnoreMap.at(mLayer)
-                .find(collider->GetLayer()) == ColliderIgnoreMap.at(mLayer).end())
-            {
+            if (collider->IsTangible()) {
                 ResolveHorizontalCollisions(rigidBody, overlap);
             }
 
@@ -111,11 +108,8 @@ float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBo
         if (Intersect(*collider))
         {
             float overlap = GetMinVerticalOverlap(collider);
-
-            // Check if the collider is in the same layer or if it should be ignored
-            if (ColliderIgnoreMap.at(mLayer)
-                .find(collider->GetLayer()) == ColliderIgnoreMap.at(mLayer).end())
-            {
+            
+            if (collider->IsTangible()) {
                 ResolveVerticalCollisions(rigidBody, overlap);
             }
 
@@ -136,13 +130,13 @@ void AABBColliderComponent::ResolveHorizontalCollisions(RigidBodyComponent *rigi
 
 void AABBColliderComponent::ResolveVerticalCollisions(RigidBodyComponent *rigidBody, const float minYOverlap)
 {
-    mOwner->SetPosition(mOwner->GetPosition() - Vector2(0.0f, minYOverlap));
-    rigidBody->SetVelocity(Vector2(rigidBody->GetVelocity().x, 0.f));
-
     if (minYOverlap > .0f)
     {
         mOwner->SetOnGround();
     }
+
+    mOwner->SetPosition(mOwner->GetPosition() - Vector2(0.0f, minYOverlap));
+    rigidBody->SetVelocity(Vector2(rigidBody->GetVelocity().x, 0.f));
 }
 
 bool AABBColliderComponent::IsOnCamera()

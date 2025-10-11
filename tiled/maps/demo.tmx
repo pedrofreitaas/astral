@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="3">
  <editorsettings>
-  <export target="../../assets/Levels/Maps/demo_test.tmj" format="json"/>
+  <export target="../../assets/Levels/Maps/demo_test.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/Terrain and Back Wall (32x32).tsx"/>
  <tileset firstgid="248" source="../tilesets/Platforms (32x32).tsx"/>
@@ -198,6 +198,11 @@
 </data>
  </layer>
  <objectgroup id="5" name="objects">
-  <object id="1" x="1558" y="1618" width="350" height="260"/>
+  <object id="1" x="182" y="1626" width="350" height="260">
+   <properties>
+    <property name="event" value="in"/>
+    <property name="function_name" value="log"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

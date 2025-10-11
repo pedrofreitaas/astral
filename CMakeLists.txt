@@ -46,6 +46,8 @@ add_executable(${PROJECT_NAME}
         src/actors/Tile.h
         src/actors/Star.cpp
         src/actors/Star.h
+        src/actors/MapObject.h
+        src/actors/MapObject.cpp
         src/actors/Spawner.cpp
         src/actors/Spawner.h
         src/core/AudioSystem.cpp

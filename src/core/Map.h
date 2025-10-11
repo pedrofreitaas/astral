@@ -5,6 +5,7 @@
 #include <string>
 #include "../libs/Json.h"
 #include "./Tileset.h"
+#include "../actors/MapObject.h"
 #include "../actors/Tile.h"
 
 class Game;
@@ -26,6 +27,7 @@ private:
     int mWidthInTiles, mHeightInTiles;
     int mWidth, mHeight;
     std::vector<class Tile*> mTiles;
+    std::vector<class MapObject*> mMapObjects;
     std::map<std::string, class Tileset> mTilesets;
 
     std::map<std::string, class Tileset> LoadAllAvailableTilesets(const std::string& baseTilesetsPath);

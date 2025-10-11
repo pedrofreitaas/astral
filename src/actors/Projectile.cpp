@@ -64,7 +64,6 @@ bool Projectile::LineIntersectsAABB(const Vector2& p1, const Vector2& p2, AABBCo
     return false;
 }
 
-
 void Projectile::OnUpdate(float deltaTime)
 {
     Vector2 oldPos = mPreviousPosition;
@@ -75,8 +74,7 @@ void Projectile::OnUpdate(float deltaTime)
 
     for (auto collider : colliders)
     {
-        if (collider->GetLayer() == ColliderLayer::Blocks ||
-            collider->GetLayer() == ColliderLayer::Bricks)
+        if (collider->GetLayer() == ColliderLayer::Blocks)
         {
             if (LineIntersectsAABB(oldPos, newPos, collider))
             {
@@ -99,7 +97,7 @@ void Projectile::OnUpdate(float deltaTime)
 
 void Projectile::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    if (other->GetLayer() == ColliderLayer::Blocks || other->GetLayer() == ColliderLayer::Bricks)
+    if (other->GetLayer() == ColliderLayer::Blocks || other->GetLayer() == ColliderLayer::Blocks)
     {
         SetState(ActorState::Destroy);
     }
@@ -109,7 +107,7 @@ void Projectile::OnVerticalCollision(const float minOverlap, AABBColliderCompone
 {
     //Vector2 currentPos = GetPosition();
 
-    if (other->GetLayer() == ColliderLayer::Blocks || other->GetLayer() == ColliderLayer::Bricks) {
+    if (other->GetLayer() == ColliderLayer::Blocks || other->GetLayer() == ColliderLayer::Blocks) {
         SetState(ActorState::Destroy);
     }
 }

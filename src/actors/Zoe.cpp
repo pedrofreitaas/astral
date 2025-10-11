@@ -223,44 +223,10 @@ void Zoe::Kill()
 
 void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    if (other->GetLayer() == ColliderLayer::Enemy)
-    {
-        TakeDamage();
-        return;
-    }
-
-    if (other->GetLayer() == ColliderLayer::EnemyProjectile)
-    {
-        TakeDamage();
-        other->GetOwner()->SetState(ActorState::Destroy);
-        return;
-    }
-
-    if (other->GetLayer() == ColliderLayer::Item)
-    {
-        other->GetOwner()->OnCollision();
-    }
 }
 
 void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    if (other->GetLayer() == ColliderLayer::Enemy)
-    {
-        TakeDamage();
-        return;
-    }
-
-    if (other->GetLayer() == ColliderLayer::EnemyProjectile)
-    {
-        TakeDamage();
-        other->GetOwner()->SetState(ActorState::Destroy);
-        return;
-    }
-
-    if (other->GetLayer() == ColliderLayer::Item)
-    {
-        other->GetOwner()->OnCollision();
-    }
 }
 
 void Zoe::FindHeart()
