@@ -18,7 +18,8 @@ public:
 
     int mID;
     std::string mEvent, mFunctioNName;
-    AABBColliderComponent *mCollider;
+    AABBColliderComponent *mColliderComponent;
+    RigidBodyComponent *mRigidBodyComponent; // only to check collision
     bool mIsPlayerInside, mWasPlayerInside;
     std::function<void()> mFunction;
 };

@@ -24,10 +24,14 @@ MapObject::MapObject(Game *game, int inId, const std::string &ev, const std::str
 
     SetPosition(pos);
 
-    mCollider = new AABBColliderComponent(
+    mRigidBodyComponent = new RigidBodyComponent(this, 0.0f, 0.0f);
+    mRigidBodyComponent->SetApplyGravity(false);
+    mRigidBodyComponent->SetApplyFriction(false);
+
+    mColliderComponent = new AABBColliderComponent(
         this, 0, 0, size.x, size.y,
         ColliderLayer::Objects,
-        true, 10, false);
+        false, 10);
 }
 
 void MapObject::OnUpdate(float deltaTime)
@@ -58,7 +62,7 @@ void MapObject::OnVerticalCollision(const float minOverlap, AABBColliderComponen
 }
 
 void MapObject::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
-{
+{    
     if (other->GetLayer() == ColliderLayer::Player) {
         mIsPlayerInside = true;
     }

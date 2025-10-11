@@ -43,7 +43,8 @@ Game::Game(int windowWidth, int windowHeight)
       mSceneManagerTimer(0.0f), mSceneManagerState(SceneManagerState::None), mGameScene(GameScene::MainMenu),
       mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero),
       mBackgroundPosition(Vector2::Zero), mMap(nullptr), mBackgroundIsCameraWise(true),
-      mCurrentCutscene(nullptr), mCutscenes(), mGamePlayState(GamePlayState::Playing)
+      mCurrentCutscene(nullptr), mCutscenes(), mGamePlayState(GamePlayState::Playing),
+      mDebugMode(false)
 {
     mRealWindowWidth = windowWidth;
     mRealWindowHeight = windowHeight;
@@ -286,6 +287,16 @@ void Game::ProcessInput()
             break;
 
         case SDL_KEYDOWN:
+            // if clicks G, activate debug mode
+            if (event.key.keysym.sym == SDLK_g && event.key.repeat == 0)
+            {
+                mDebugMode = !mDebugMode;
+                if (mDebugMode)
+                    std::cout << "Debug mode activated" << std::endl;
+                else
+                    std::cout << "Debug mode deactivated" << std::endl;
+            }
+
             // Handle key press for UI screens
             if (!mUIStack.empty())
             {
@@ -380,7 +391,7 @@ void Game::TogglePause()
 
 void Game::UpdateGame()
 {
-    // while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16)); // Cap at 60 fps
+    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16)); // Cap at 60 fps
 
     float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
     if (deltaTime > 0.05f)
@@ -617,6 +628,33 @@ void Game::GenerateOutput()
 
     // draw dialogue system
     mDialogueSystem->Draw(mRenderer);
+
+    if (!mDebugMode) {
+        // Swap front buffer and back buffer
+        SDL_RenderPresent(mRenderer);
+        return;
+    }
+
+    // draw collider boxes only if the player has collider
+    for (auto actor : actorsOnCamera)
+    {
+        std::vector<AABBColliderComponent *> colliders = actor->GetComponents<AABBColliderComponent>();
+        for (auto collider : colliders)
+        {
+            if (collider)
+            {
+                SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
+                Vector2 min = collider->GetMin();
+                Vector2 max = collider->GetMax();
+                SDL_Rect rect = {
+                    static_cast<int>(min.x - mCameraPos.x),
+                    static_cast<int>(min.y - mCameraPos.y),
+                    static_cast<int>(max.x - min.x),
+                    static_cast<int>(max.y - min.y)};
+                SDL_RenderDrawRect(mRenderer, &rect);
+            }
+        }
+    }
 
     // Swap front buffer and back buffer
     SDL_RenderPresent(mRenderer);

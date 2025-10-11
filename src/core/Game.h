@@ -139,6 +139,8 @@ private:
     void SetMap(const std::string& path);
     void LoadFirstLevel();
 
+    bool mDebugMode;
+
     SceneManagerState mSceneManagerState;
     float mSceneManagerTimer;
     

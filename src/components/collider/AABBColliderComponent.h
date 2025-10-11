@@ -22,16 +22,13 @@ class AABBColliderComponent : public Component
 {
 public:
     AABBColliderComponent(class Actor* owner, int dx, int dy, int w, int h,
-                                ColliderLayer layer, bool isStatic = false, 
-                                int updateOrder = 10, bool isTangible = true);
+                                ColliderLayer layer,  bool isTangible = true, int updateOrder = 10);
     ~AABBColliderComponent() override;
 
     bool Intersect(const AABBColliderComponent& b) const;
 
     float DetectHorizontalCollision(RigidBodyComponent *rigidBody);
     float DetectVerticalCollision(RigidBodyComponent *rigidBody);
-
-    void SetStatic(bool isStatic) { mIsStatic = isStatic; }
 
     bool IsOnCamera();
 
@@ -55,7 +52,7 @@ private:
     Vector2 mOffset;
     int mWidth;
     int mHeight;
-    bool mIsStatic, mIsTangible;
+    bool mIsTangible;
 
     ColliderLayer mLayer;
 };

@@ -10,7 +10,7 @@ Zoe::Zoe(Game *game, const float forwardSpeed):
     mDeathTimer(DEATH_TIMER), mLives(6), mInvincibilityTimer(0.0f)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 10.0f);
-    mColliderComponent = new AABBColliderComponent(this, 14, 20, 18, 28,
+    mColliderComponent = new AABBColliderComponent(this, 25, 20, 15, 28,
                                                    ColliderLayer::Player);
 
     mDrawComponent = new DrawAnimatedComponent(

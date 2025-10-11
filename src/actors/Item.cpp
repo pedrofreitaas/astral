@@ -17,7 +17,7 @@ Item::Item(Game *game,
     new AABBColliderComponent(this,
                               0, 0,
                               sizeX, sizeY,
-                              ColliderLayer::Item, true);
+                              ColliderLayer::Item);
 }
 
 void Item::OnCollision() {

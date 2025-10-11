@@ -221,14 +221,14 @@
          "name":"objects",
          "objects":[
                 {
-                 "height":260,
+                 "height":70,
                  "id":1,
                  "name":"",
                  "properties":[
                         {
                          "name":"event",
                          "type":"string",
-                         "value":"in"
+                         "value":"enter"
                         }, 
                         {
                          "name":"function_name",
@@ -238,9 +238,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":350,
-                 "x":182,
-                 "y":1626
+                 "width":80.6666666666667,
+                 "x":305.333333333333,
+                 "y":1827.33333333333
                 }],
          "opacity":1,
          "type":"objectgroup",

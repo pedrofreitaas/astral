@@ -8,10 +8,9 @@
 #include <algorithm>
 
 AABBColliderComponent::AABBColliderComponent(class Actor *owner, int dx, int dy, int w, int h,
-                                             ColliderLayer layer, bool isStatic, int updateOrder,
-                                             bool isTangible)
+                                             ColliderLayer layer, bool isTangible, int updateOrder)
     : Component(owner, updateOrder), mOffset(Vector2((float)dx, (float)dy)), 
-    mIsStatic(isStatic), mWidth(w), mHeight(h), mLayer(layer), mIsTangible(isTangible)
+    mWidth(w), mHeight(h), mLayer(layer), mIsTangible(isTangible)
 {
 }
 
@@ -58,7 +57,7 @@ float AABBColliderComponent::GetMinHorizontalOverlap(AABBColliderComponent *b) c
 
 float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigidBody)
 {
-    if (mIsStatic || !mIsEnabled)
+    if (!mIsEnabled)
         return false;
 
     // Use spatial hashing to get nearby colliders
@@ -76,13 +75,13 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
         {
             float overlap = GetMinHorizontalOverlap(collider);
 
-            if (collider->IsTangible()) {
+            if (collider->IsTangible() && mIsTangible) {
                 ResolveHorizontalCollisions(rigidBody, overlap);
+                mOwner->OnHorizontalCollision(overlap, collider);
+                return overlap;
             }
-
+            
             mOwner->OnHorizontalCollision(overlap, collider);
-
-            return overlap;
         }
     }
 
@@ -91,7 +90,7 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
 
 float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBody)
 {
-    if (mIsStatic || !mIsEnabled)
+    if (!mIsEnabled)
         return false;
 
     // Use spatial hashing to get nearby colliders
@@ -109,16 +108,16 @@ float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBo
         {
             float overlap = GetMinVerticalOverlap(collider);
             
-            if (collider->IsTangible()) {
+            if (collider->IsTangible() && mIsTangible) {
                 ResolveVerticalCollisions(rigidBody, overlap);
+                mOwner->OnVerticalCollision(overlap, collider);
+                return overlap;
             }
 
             mOwner->OnVerticalCollision(overlap, collider);
-
-            return overlap;
         }
     }
-
+    
     return 0.0f;
 }
 
@@ -130,11 +129,6 @@ void AABBColliderComponent::ResolveHorizontalCollisions(RigidBodyComponent *rigi
 
 void AABBColliderComponent::ResolveVerticalCollisions(RigidBodyComponent *rigidBody, const float minYOverlap)
 {
-    if (minYOverlap > .0f)
-    {
-        mOwner->SetOnGround();
-    }
-
     mOwner->SetPosition(mOwner->GetPosition() - Vector2(0.0f, minYOverlap));
     rigidBody->SetVelocity(Vector2(rigidBody->GetVelocity().x, 0.f));
 }

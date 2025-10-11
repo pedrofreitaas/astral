@@ -41,7 +41,6 @@ Tile::Tile(
         this, 
         boundBoxOffsetX, boundBoxOffsetY, 
         boundBoxWidth, boundBoxHeight,
-        ColliderLayer::Blocks, 
-        true
+        ColliderLayer::Blocks
     );
 }

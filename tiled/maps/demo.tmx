@@ -198,9 +198,9 @@
 </data>
  </layer>
  <objectgroup id="5" name="objects">
-  <object id="1" x="182" y="1626" width="350" height="260">
+  <object id="1" x="305.333" y="1827.33" width="80.6667" height="70">
    <properties>
-    <property name="event" value="in"/>
+    <property name="event" value="enter"/>
     <property name="function_name" value="log"/>
    </properties>
   </object>
