@@ -164,7 +164,7 @@ void Game::LoadFirstLevel()
 {
     mHUD = new HUD(this, "../assets/Fonts/VT323-Regular.ttf");
 
-    SetMap("demo_test.json");
+    SetMap("demo.json");
 
     SetBackgroundImage(
         "../assets/Levels/Backgrounds/galaxy.png",
@@ -626,8 +626,15 @@ void Game::GenerateOutput()
         SDL_RenderFillRect(mRenderer, &rect);
     }
 
-    // draw dialogue system
+    SDL_RenderSetLogicalSize(mRenderer, mRealWindowWidth, mRealWindowHeight);
+
+    // draw dialogue system without scaling to avoid blurriness
     mDialogueSystem->Draw(mRenderer);
+
+    if (SDL_RenderSetLogicalSize(mRenderer, mWindowWidth, mWindowHeight) != 0)
+    {
+        throw std::runtime_error("Failed to set logical size: " + std::string(SDL_GetError()));
+    }
 
     if (!mDebugMode) {
         // Swap front buffer and back buffer
@@ -661,7 +668,8 @@ void Game::GenerateOutput()
 }
 
 void Game::SetBackgroundImage(
-    const std::string &texturePath, const Vector2 &position, const Vector2 &size, bool isCameraWise)
+    const std::string &texturePath, const Vector2 &position, 
+    const Vector2 &size, bool isCameraWise)
 {
     if (mBackgroundTexture)
     {
@@ -837,6 +845,7 @@ void Game::PauseCutscene()
         mGamePlayState = GamePlayState::Paused;
     }
 }
+
 void Game::ResetCutscenes()
 {
     for (auto &pair : mCutscenes)

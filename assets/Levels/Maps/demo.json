@@ -221,15 +221,26 @@
          "name":"objects",
          "objects":[
                 {
-                 "height":260,
+                 "height":70,
                  "id":1,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"event",
+                         "type":"string",
+                         "value":"enter"
+                        }, 
+                        {
+                         "name":"function_name",
+                         "type":"string",
+                         "value":"log"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":350,
-                 "x":1558,
-                 "y":1618
+                 "width":80.6666666666667,
+                 "x":305.333333333333,
+                 "y":1827.33333333333
                 }],
          "opacity":1,
          "type":"objectgroup",

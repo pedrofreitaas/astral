@@ -31,20 +31,20 @@ DialogueSystem::~DialogueSystem()
 void DialogueSystem::Initialize(Game* game)
 {
     mGame = game;
-    mFont = TTF_OpenFont("../assets/Fonts/SMB.ttf", 10);
+    mFont = TTF_OpenFont("../assets/Fonts/SMB.ttf", 24);
     if (!mFont)
     {
         SDL_Log("Falha ao carregar a fonte para DialogueSystem: %s", TTF_GetError());
     }
 
-    mSmallFont = TTF_OpenFont("../assets/Fonts/SMB.ttf", 4);
+    mSmallFont = TTF_OpenFont("../assets/Fonts/SMB.ttf", 16);
     if (!mSmallFont)
     {
         SDL_Log("Falha ao carregar a fonte pequena para DialogueSystem: %s", TTF_GetError());
     }
 
-    int windowWidth = mGame->GetWindowWidth();
-    int windowHeight = mGame->GetWindowHeight();
+    int windowWidth = mGame->GetRealWindowWidth();
+    int windowHeight = mGame->GetRealWindowHeight();
     int mWidth = static_cast<int>(windowWidth * 3/4);
     int mHeight = static_cast<int>(windowWidth * 1/6);
     mBoxRect = {windowWidth / 2 - mWidth / 2, windowHeight - mHeight - 10, mWidth, mHeight};

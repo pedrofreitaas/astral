@@ -90,6 +90,9 @@ public:
     int GetWindowWidth() const { return mWindowWidth; }
     int GetWindowHeight() const { return mWindowHeight; }
 
+    int GetRealWindowWidth() const { return mRealWindowWidth; }
+    int GetRealWindowHeight() const { return mRealWindowHeight; }
+
     // Loading functions
     class UIFont* LoadFont(const std::string& fileName);
     SDL_Texture* LoadTexture(const std::string& texturePath);
