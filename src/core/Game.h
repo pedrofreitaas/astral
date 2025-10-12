@@ -77,6 +77,7 @@ public:
     // Camera functions
     Vector2& GetCameraPos() { return mCameraPos; };
     void SetCameraPos(const Vector2& position) { mCameraPos = position; };
+    bool ActorOnCamera(Actor* actor);
 
     // Audio functions
     class AudioSystem* GetAudio() { return mAudio; }

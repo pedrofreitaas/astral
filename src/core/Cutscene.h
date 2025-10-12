@@ -24,6 +24,19 @@ protected:
     Game *mGame;
 };
 
+class SpawnStep : public Step {
+public:
+    enum class ActorType {
+        Star,
+        // Add other actor types here as needed
+    };
+    SpawnStep(class Game* game, ActorType actorType, const Vector2& position);
+    void Update(float deltaTime) override;
+private:
+    ActorType mActorType;
+    Vector2 mPosition;
+};
+
 class MoveStep : public Step {
 public:
     MoveStep(class Game* game, std::function<Actor*()> targetActorFunc, const Vector2& targetPos, float speed):
@@ -37,17 +50,25 @@ private:
     std::function<Actor*()> mGetTargetActor;
 };
 
-class SpawnStep : public Step {
+class UnspawnStep : public Step {
 public:
-    enum class ActorType {
-        Star,
-        // Add other actor types here as needed
-    };
-    SpawnStep(class Game* game, ActorType actorType, const Vector2& position);
-    void Update(float deltaTime) override;
+    UnspawnStep(class Game* game, std::function<Actor*()> targetActorFunc) : Step(game), mGetTargetActor(std::move(targetActorFunc)) {}
+    UnspawnStep(class Game* game, Actor* targetActor): Step(game) {
+        mGetTargetActor = [targetActor]() { return targetActor; };
+    }
+    void Update(float deltaTime) override {
+        if (GetIsComplete()) return;
+
+        Actor* targetActor = mGetTargetActor();
+        if (targetActor) {
+            targetActor->SetState(ActorState::Destroy);
+            SetComplete();
+        } else {
+            throw std::runtime_error("UnspawnStep target Actor is null");
+        }
+    }
 private:
-    ActorType mActorType;
-    Vector2 mPosition;
+    std::function<Actor*()> mGetTargetActor;
 };
 
 class WaitStep : public Step {

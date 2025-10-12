@@ -2,9 +2,9 @@
 #include "../core/Game.h"
 #include "UIFont.h"
 
-DialogueSystem::DialogueSystem()
+DialogueSystem::DialogueSystem(Game::GamePlayState currentGameState)
     : mGame(nullptr), mFont(nullptr), mSmallFont(nullptr), mCurrentLine(0), mTextTexture(nullptr),
-      mIsActive(false), mContinuePressed(false), mPromptTexture(nullptr)
+      mIsActive(false), mContinuePressed(false), mPromptTexture(nullptr), mPreviousGameState(currentGameState)
 {
 }
 
@@ -73,6 +73,7 @@ void DialogueSystem::StartDialogue(const std::vector<std::string>& lines, std::f
     mIsActive = true;
     mContinuePressed = true;
 
+    mPreviousGameState = mGame->GetGamePlayState();
     mGame->SetGamePlayState(Game::GamePlayState::Dialogue);
 
     CreateTextTexture();
@@ -97,7 +98,7 @@ void DialogueSystem::HandleInput(const uint8_t* keyState)
                 
                 if (mOnComplete)
                 {
-                    mGame->SetGamePlayState(Game::GamePlayState::Playing);
+                    mGame->SetGamePlayState(mPreviousGameState);
                     mOnComplete();
                 }
             }

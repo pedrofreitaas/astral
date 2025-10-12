@@ -3,6 +3,7 @@
 #include <string>
 #include <functional>
 #include <SDL_ttf.h>
+#include "../core/Game.h"
 
 class Game;
 struct SDL_Renderer;
@@ -10,14 +11,14 @@ struct SDL_Renderer;
 class DialogueSystem
 {
 public:
+    DialogueSystem(Game::GamePlayState currentGameState);
+    ~DialogueSystem();
     static DialogueSystem* Get();
     void Initialize(Game* game);
     void StartDialogue(const std::vector<std::string>& lines, std::function<void()> onComplete);
     void HandleInput(const uint8_t* keyState);
     void Draw(SDL_Renderer* renderer);
     bool IsActive() const { return mIsActive; }
-    DialogueSystem();
-    ~DialogueSystem();
 
 private:
     void CreateTextTexture();
@@ -36,6 +37,8 @@ private:
 
     SDL_Texture* mPromptTexture;
     SDL_Rect mPromptRect;
+
+    Game::GamePlayState mPreviousGameState;
 
     bool mIsActive;
     bool mContinuePressed;

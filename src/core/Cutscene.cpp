@@ -54,6 +54,12 @@ void MoveStep::Update(float deltaTime) {
         mTargetActor->SetPosition(mTargetPos);
         SetComplete();
     }
+
+    // check if movement resulted in getting out of the camera
+    if (!mGame->ActorOnCamera(mTargetActor)) {
+        rb->SetVelocity(Vector2::Zero);
+        SetComplete();
+    }
 }
 
 SpawnStep::SpawnStep(class Game* game, ActorType actorType, const Vector2& position)

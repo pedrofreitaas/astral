@@ -51,7 +51,7 @@ Game::Game(int windowWidth, int windowHeight)
     mWindowWidth = 640;
     mWindowHeight = 360;
 
-    mDialogueSystem = new DialogueSystem();
+    mDialogueSystem = new DialogueSystem(mGamePlayState);
 }
 
 void Game::SetMap(const std::string &path)
@@ -193,14 +193,22 @@ void Game::LoadFirstLevel()
         250.0f
     ));
     std::vector<std::string> dialogue = {
-        "Zoe: O que... o que é isso?",
-        "Zoe: Uma estrela? Mas como ela foi parar aqui?",
-        "Zoe: Eu preciso descobrir onde estou e como voltar para casa.",
-        "Zoe: Talvez essa estrela possa me ajudar.",
-        "Zoe: Vou segui-la e ver onde ela me leva.",
-        "Zoe: Espero que eu consiga encontrar uma saída deste lugar estranho.",
+        "Zoe: O que... o que e isso?",
+        "Zoe: Uma estrela? Mas como ela foi parar aqui?"
     };
     steps.push_back(std::make_unique<DialogueStep>(this, dialogue));
+    steps.push_back(std::make_unique<MoveStep>(
+        this, 
+        [this]() { return GetStar(); },
+        Vector2(mWindowWidth * 1.5f, mMap->GetHeight() - mWindowHeight * 1.2f), 
+        320.0f
+    ));
+    std::vector<std::string> dialogue2 = {
+        "Zoe: Espere! Volte aqui!",
+        "Zoe: Onde sera que ela foi? Preciso saber se ela está me levando para algum lugar..."
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, dialogue2));
+    steps.push_back(std::make_unique<UnspawnStep>(this, [this]() { return GetStar(); }));
 
     AddCutscene("Intro",
                 std::move(steps),
@@ -851,4 +859,21 @@ void Game::ResetCutscenes()
 
     if (mGamePlayState == GamePlayState::PlayingCutscene)
         mGamePlayState = GamePlayState::Playing;
+}
+
+bool Game::ActorOnCamera(Actor* actor) {
+    if (!actor) return false;
+
+    Vector2 actorPos = actor->GetPosition();
+
+    // Check if actor's bounding box intersects with camera's bounding box
+    if (actorPos.x < mCameraPos.x || // Actor is to the left of camera
+        actorPos.x > mCameraPos.x + mWindowWidth || // Actor is to the right of camera
+        actorPos.y < mCameraPos.y || // Actor is above camera
+        actorPos.y > mCameraPos.y + mWindowHeight) // Actor is below camera
+    {
+        return false; // No intersection
+    }
+
+    return true; // Intersection exists
 }
