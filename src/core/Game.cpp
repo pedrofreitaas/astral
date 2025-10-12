@@ -24,7 +24,6 @@
 #include "../actors/Actor.h"
 #include "../actors/Zoe.h"
 #include "../actors/Tile.h"
-#include "../actors/Spawner.h"
 #include "../actors/Item.h"
 #include "../ui/UIScreen.h"
 #include "../components/draw/DrawComponent.h"

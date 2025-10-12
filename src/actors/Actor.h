@@ -129,6 +129,8 @@ protected:
     // Game specific
     bool mIsOnGround;
 
+    Vector2 GetCenter() const;
+
 private:
     friend class Component;
 
