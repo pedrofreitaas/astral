@@ -26,8 +26,6 @@ public:
                                       const float screenWidth,
                                       const float screenHeight,
                                       const float extraRadius = 0.0f) const;
-
-   int GetTotalActors() const;
    
 private:
     int mCellSize;

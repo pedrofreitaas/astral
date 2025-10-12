@@ -13,10 +13,10 @@
         },
         "maps/demo.tmx": {
             "scale": 1.5,
-            "selectedLayer": 1,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 442,
-                "y": 1719
+                "x": 374.66666666666663,
+                "y": 1813.6666666666665
             }
         },
         "maps/demo_small.tmx": {
@@ -49,10 +49,10 @@
     "project": "untitled.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "tilesets/Platforms (32x32).tsx",
         "maps/demo.tmx",
         "maps/demo_small.tmx",
-        "tilesets/Terrain and Back Wall (32x32).tsx",
-        "tilesets/Platforms (32x32).tsx"
+        "tilesets/Terrain and Back Wall (32x32).tsx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

@@ -797,11 +797,6 @@ void Game::Shutdown()
     SDL_Quit();
 }
 
-int Game::GetGameTotalActors()
-{
-    return mSpatialHashing->GetTotalActors();
-}
-
 Vector2 Game::GetLogicalMousePos() const
 {
     float lx, ly;

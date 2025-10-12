@@ -36,10 +36,10 @@ SpatialHashing::~SpatialHashing()
     mCellIndices.clear();
 }
 
-void SpatialHashing::Insert(Actor *collider)
+void SpatialHashing::Insert(Actor *actor)
 {
     // Compute positions for each vertex of the collider
-    Vector2 position = collider->GetPosition();
+    Vector2 position = actor->GetPosition();
 
     int col = static_cast<int>(position.x / mCellSize);
     int row = static_cast<int>(position.y / mCellSize);
@@ -51,14 +51,14 @@ void SpatialHashing::Insert(Actor *collider)
     }
 
     // Insert collider into the grid cell
-    mGrid[row][col].push_back(collider);
-    mPositions[collider] = position;
-    mCellIndices[collider] = std::make_pair(row, col);
+    mGrid[row][col].push_back(actor);
+    mPositions[actor] = position;
+    mCellIndices[actor] = std::make_pair(row, col);
 }
 
-void SpatialHashing::Remove(Actor *collider)
+void SpatialHashing::Remove(Actor *actor)
 {
-    auto it = mCellIndices.find(collider);
+    auto it = mCellIndices.find(actor);
     if (it != mCellIndices.end())
     {
         int row = it->second.first;
@@ -66,10 +66,10 @@ void SpatialHashing::Remove(Actor *collider)
 
         // Remove the collider from the grid cell
         auto &cell = mGrid[row][col];
-        cell.erase(std::remove(cell.begin(), cell.end(), collider), cell.end());
+        cell.erase(std::remove(cell.begin(), cell.end(), actor), cell.end());
 
         // Remove from positions and indices maps
-        mPositions.erase(collider);
+        mPositions.erase(actor);
         mCellIndices.erase(it);
     }
 }
@@ -162,9 +162,4 @@ std::vector<Actor *> SpatialHashing::QueryOnCamera(const Vector2 &cameraPosition
     }
 
     return results;
-}
-
-int SpatialHashing::GetTotalActors() const
-{
-    return mPositions.size();
 }
