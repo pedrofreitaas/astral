@@ -1,0 +1,665 @@
+{
+  "frames": [
+    {
+      "filename": "zod00.png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod01.png",
+      "frame": {
+        "x": 47,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod02.png",
+      "frame": {
+        "x": 94,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod03.png",
+      "frame": {
+        "x": 141,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod04.png",
+      "frame": {
+        "x": 188,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod05.png",
+      "frame": {
+        "x": 235,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod06.png",
+      "frame": {
+        "x": 282,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod07.png",
+      "frame": {
+        "x": 329,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod08.png",
+      "frame": {
+        "x": 376,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod09.png",
+      "frame": {
+        "x": 423,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod10.png",
+      "frame": {
+        "x": 470,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod11.png",
+      "frame": {
+        "x": 517,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod12.png",
+      "frame": {
+        "x": 564,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod13.png",
+      "frame": {
+        "x": 611,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod14.png",
+      "frame": {
+        "x": 658,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod15.png",
+      "frame": {
+        "x": 705,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod16.png",
+      "frame": {
+        "x": 752,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod17.png",
+      "frame": {
+        "x": 799,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod18.png",
+      "frame": {
+        "x": 846,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod19.png",
+      "frame": {
+        "x": 893,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod20.png",
+      "frame": {
+        "x": 940,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod21.png",
+      "frame": {
+        "x": 987,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod22.png",
+      "frame": {
+        "x": 1034,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod23.png",
+      "frame": {
+        "x": 1081,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod24.png",
+      "frame": {
+        "x": 1128,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "zod25.png",
+      "frame": {
+        "x": 1175,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 47,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 47,
+        "h": 26
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "texture.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1222,
+      "h": 26
+    },
+    "scale": 1
+  }
+}

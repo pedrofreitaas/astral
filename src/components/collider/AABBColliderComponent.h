@@ -13,6 +13,7 @@
 enum class ColliderLayer
 {
     Player,
+    Enemy,
     Blocks,
     Objects,
     Item

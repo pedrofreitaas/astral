@@ -12,6 +12,7 @@ enum class DrawLayerPosition
 {
     Ground = 0,
     Player = 100,
+    Enemy = 101,
     DetailsTop = 150,
     DetailsDown = 50,
     Sky = 200

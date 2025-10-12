@@ -31,6 +31,7 @@
 #include "../components/collider/AABBColliderComponent.h"
 #include "../ui/DialogueSystem.h"
 #include "../actors/Star.h"
+#include "../actors/Enemy.h"
 
 const int CHAR_WIDTH = 6;
 const int WORD_HEIGHT = 8;
@@ -173,6 +174,7 @@ void Game::LoadFirstLevel()
 
     mZoe = new Zoe(this, 1500.0f);
     mZoe->SetPosition(Vector2(32.0f, mMap->GetHeight() - 80.0f));
+    new Enemy(this, 1500.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
 
     std::vector<std::unique_ptr<Step>> steps;
     steps.push_back(std::make_unique<MoveStep>(this, mZoe, Vector2(96.0f, mZoe->GetPosition().y), 100.0f));
