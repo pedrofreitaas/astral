@@ -27,6 +27,8 @@ public:
     void ApplyForce(const Vector2 &force);
     bool GetOnGround() { return mIsOnGround; }
 
+    float GetVerticalForce(int totalBlocks);
+
 private:
     bool mApplyGravity;
     bool mApplyFriction;

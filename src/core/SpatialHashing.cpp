@@ -163,3 +163,5 @@ std::vector<Actor *> SpatialHashing::QueryOnCamera(const Vector2 &cameraPosition
 
     return results;
 }
+
+

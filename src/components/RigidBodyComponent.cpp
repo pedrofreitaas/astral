@@ -32,10 +32,10 @@ void RigidBodyComponent::ApplyForce(const Vector2 &force) {
 void RigidBodyComponent::Update(float deltaTime)
 {
     // Apply gravity acceleration
-    if(mApplyGravity) ApplyForce(Vector2(0.f, GRAVITY * 1.f/mMass));
+    if(mApplyGravity) ApplyForce(Vector2(0.f, GRAVITY));
 
     // Apply friction
-    if (mApplyFriction && mVelocity.y == 0.0f) ApplyForce(Vector2(-mFrictionCoefficient * mVelocity));
+    if (mApplyFriction && mIsOnGround) ApplyForce(Vector2(-mFrictionCoefficient * mVelocity));
 
     // Euler Integration
     mVelocity += mAcceleration * deltaTime;
@@ -72,3 +72,12 @@ void RigidBodyComponent::Update(float deltaTime)
     mAcceleration = Vector2::Zero;
 }
 
+float RigidBodyComponent::GetVerticalForce(int totalBlocks) {
+    const float height = totalBlocks * Game::TILE_SIZE;
+    const float v0 = std::sqrt(2.0f * GRAVITY * height);
+    const float dt = mOwner->GetGame()->GetPrevDeltaTime();
+
+    const float a_total = (v0 / dt) + GRAVITY;
+
+    return -mMass * a_total;
+}

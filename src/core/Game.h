@@ -127,7 +127,9 @@ public:
     void PauseCutscene();
     void ResetCutscenes();
 
+    float GetPrevDeltaTime() const { return mPrevDeltaTime; }
     class DialogueSystem* GetDialogueSystem() { return mDialogueSystem; }
+    
     void SetStar(class Star* star) { mStar = star; };
     class Star* GetStar() { return mStar; };
 
@@ -166,6 +168,7 @@ private:
 
     // Track elapsed time since game start
     Uint32 mTicksCount;
+    float mPrevDeltaTime;
 
     // Track actors state
     bool mIsRunning;
