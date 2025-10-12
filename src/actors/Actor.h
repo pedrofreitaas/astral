@@ -21,8 +21,11 @@ enum class ActorState
 
 enum class BehaviorState // For AI behaviors/animations
 {
+    Asleep,
+    Waking,
     Idle,
     Moving,
+    Charging,
     Attacking,
     Stunned,
     Jumping,
