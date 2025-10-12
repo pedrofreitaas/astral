@@ -48,8 +48,8 @@ add_executable(${PROJECT_NAME}
         src/actors/Star.h
         src/actors/MapObject.h
         src/actors/MapObject.cpp
-        src/actors/Spawner.cpp
-        src/actors/Spawner.h
+        src/actors/Enemy.cpp
+        src/actors/Enemy.h
         src/core/AudioSystem.cpp
         src/core/AudioSystem.h
         src/ui/UIScreen.h
