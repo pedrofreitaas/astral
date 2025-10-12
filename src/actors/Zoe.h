@@ -19,12 +19,6 @@ public:
     void Kill() override;
     int Lives() { return mLives; }
     void FindHeart();
-    
-    Vector2 GetCenter() const
-    {
-        return mColliderComponent->GetCenter();
-    }
-
     void ManageState();
 
 private:

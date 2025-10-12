@@ -130,3 +130,13 @@ bool Actor::IsVisibleOnCamera() const
     return (mPosition.x >= cameraPosition.x && mPosition.x <= cameraPosition.x + screenWidth &&
             mPosition.y >= cameraPosition.y && mPosition.y <= cameraPosition.y + screenHeight);
 }
+
+Vector2 Actor::GetCenter() const
+{
+    auto collider = GetComponent<AABBColliderComponent>();
+    
+    if (collider)
+        return collider->GetCenter();
+    else
+        return mPosition;
+}
