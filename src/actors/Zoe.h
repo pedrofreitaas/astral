@@ -31,7 +31,6 @@ private:
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
 
-    void MaintainInbound();
     void TakeDamage();
     void ManageAnimations();
 };

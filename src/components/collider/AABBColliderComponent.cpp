@@ -144,3 +144,31 @@ bool AABBColliderComponent::IsOnCamera()
             min.y < cameraPos.y + mOwner->GetGame()->GetWindowHeight() &&
             max.y > cameraPos.y);
 }
+
+void AABBColliderComponent::MaintainInbound()
+{
+    Vector2 cameraPos = mOwner->GetGame()->GetCameraPos();
+    Vector2 getUpperLeftBorder = GetMin();
+    Vector2 getBottomRightBorder = GetMax();
+    Vector2 offset = GetOffset();
+    int maxXBoundary = cameraPos.x + mOwner->GetGame()->GetWindowWidth();
+    int maxYBoundary = cameraPos.y + mOwner->GetGame()->GetWindowHeight();
+
+    if (getUpperLeftBorder.x < 0)
+    {
+        mOwner->SetPosition(Vector2(-offset.x, mOwner->GetPosition().y));
+    }
+    else if (getBottomRightBorder.x > maxXBoundary)
+    {
+        mOwner->SetPosition(Vector2(maxXBoundary - mWidth - offset.x, mOwner->GetPosition().y));
+    }
+
+    if (getUpperLeftBorder.y < 0)
+    {
+        mOwner->SetPosition(Vector2(mOwner->GetPosition().x, -offset.y));
+    }
+    else if (getBottomRightBorder.y > maxYBoundary)
+    {
+        mOwner->SetPosition(Vector2(mOwner->GetPosition().x, maxYBoundary - mHeight - offset.y));
+    }
+}

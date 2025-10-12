@@ -53,7 +53,7 @@ void Zoe::OnProcessInput(const uint8_t *state)
 
     if (state[SDL_SCANCODE_SPACE])
     {
-        float jumpForce = mRigidBodyComponent->GetVerticalForce(5); 
+        float jumpForce = mRigidBodyComponent->GetVerticalForce(3); 
         SDL_Log("%f", jumpForce);
         mRigidBodyComponent->ApplyForce(Vector2(0.f, jumpForce));
     }
@@ -79,36 +79,6 @@ void Zoe::TakeDamage()
     if (mLives <= 0)
     {
         mBehaviorState = BehaviorState::Dying;
-    }
-}
-
-void Zoe::MaintainInbound()
-{
-    Vector2 cameraPos = GetGame()->GetCameraPos();
-    Vector2 getUpperLeftBorder = mColliderComponent->GetMin();
-    Vector2 getBottomRightBorder = mColliderComponent->GetMax();
-    Vector2 offset = mColliderComponent->GetOffset();
-    int mWidth = mColliderComponent->GetWidth();
-    int mHeight = mColliderComponent->GetHeight();
-    int maxXBoundary = cameraPos.x + GetGame()->GetWindowWidth();
-    int maxYBoundary = cameraPos.y + GetGame()->GetWindowHeight();
-
-    if (getUpperLeftBorder.x < 0)
-    {
-        SetPosition(Vector2(-offset.x, GetPosition().y));
-    }
-    else if (getBottomRightBorder.x > maxXBoundary)
-    {
-        SetPosition(Vector2(maxXBoundary - mWidth - offset.x, GetPosition().y));
-    }
-
-    if (getUpperLeftBorder.y < 0)
-    {
-        SetPosition(Vector2(GetPosition().x, -offset.y));
-    }
-    else if (getBottomRightBorder.y > maxYBoundary)
-    {
-        SetPosition(Vector2(GetPosition().x, maxYBoundary - mHeight - offset.y));
     }
 }
 
@@ -175,7 +145,7 @@ void Zoe::OnUpdate(float deltaTime)
         SetRotation(Math::Pi);
     }
 
-    MaintainInbound();
+    mColliderComponent->MaintainInbound();
     ManageAnimations();
 
     if (mBehaviorState == BehaviorState::Dying)

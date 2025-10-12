@@ -43,6 +43,8 @@ public:
     ColliderLayer GetLayer() const { return mLayer; }
     bool IsTangible() const { return mIsTangible; }
 
+    void MaintainInbound();
+
 private:
     float GetMinVerticalOverlap(AABBColliderComponent* b) const;
     float GetMinHorizontalOverlap(AABBColliderComponent* b) const;
