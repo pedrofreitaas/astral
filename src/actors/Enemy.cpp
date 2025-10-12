@@ -28,7 +28,6 @@ Enemy::Enemy(Game* game, float forwardSpeed, const Vector2& position)
 void Enemy::OnUpdate(float deltaTime)
 {
     ManageState();
-    MaintainInbound();
     ManageAnimations();
 }
 
@@ -41,10 +40,6 @@ void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent* o
 }
 
 void Enemy::ManageState()
-{
-}
-
-void Enemy::MaintainInbound()
 {
 }
 
