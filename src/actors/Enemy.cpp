@@ -67,21 +67,14 @@ void Enemy::ManageState()
         else if (mRigidBodyComponent->GetVelocity().x < 0.f)
             SetRotation(Math::Pi);
 
-        if (PlayerOnSight())
-        {
-            mBehaviorState = BehaviorState::Charging;
-            SDL_Log("Player on sight! Charging!");
-        }
-
+        if (PlayerOnSight()) mBehaviorState = BehaviorState::Charging;
         break;
     }
+
     case BehaviorState::Charging:
-        if (!PlayerOnSight())
-        {
-            mBehaviorState = BehaviorState::Moving;
-            SDL_Log("En lost sight! Moving!");
-        }
+        if (!PlayerOnSight()) mBehaviorState = BehaviorState::Moving;
         break;
+
     default:
         mBehaviorState = BehaviorState::Asleep;
         break;
@@ -111,14 +104,18 @@ void Enemy::ManageAnimations()
         break;
     case BehaviorState::Waking:
         mDrawComponent->SetAnimation("waking");
+        mDrawComponent->SetAnimFPS(1.5f);
         break;
     case BehaviorState::Idle:
         mDrawComponent->SetAnimation("idle");
         break;
     case BehaviorState::Moving:
         mDrawComponent->SetAnimation("moving");
+        mDrawComponent->SetAnimFPS(6.f);
         break;
     case BehaviorState::Charging:
+        mDrawComponent->SetAnimation("charging");
+        mDrawComponent->SetAnimFPS(10.f);
         break;
     default:
         mDrawComponent->SetAnimation("asleep");
@@ -157,7 +154,7 @@ bool Enemy::PlayerOnSight()
         return false;
 
     Vector2 lineOfSightStart = GetCenter();
-    
+
     float dir = GetRotation() == 0.f ? 1.f : -1.f;
     Vector2 lineOfSightEnd = lineOfSightStart + Vector2(100.f * dir, 0.f);
 
