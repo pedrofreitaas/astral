@@ -35,6 +35,8 @@ public:
         return -1;
     }
 
+    bool GetApplyGravity() const { return mApplyGravity; }
+
 private:
     bool mApplyGravity;
     bool mApplyFriction;
