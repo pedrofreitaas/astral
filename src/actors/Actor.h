@@ -108,6 +108,7 @@ public:
     virtual void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other);
     virtual void OnCollision() {};
     virtual void Kill();
+    Vector2 GetCenter() const;
 
 protected:
     class Game* mGame;
@@ -131,8 +132,6 @@ protected:
 
     // Game specific
     bool mIsOnGround;
-
-    Vector2 GetCenter() const;
 
 private:
     friend class Component;
