@@ -184,36 +184,35 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<MoveStep>(this, mZoe, Vector2(98.0f, mZoe->GetPosition().y), 20.0f));
     steps.push_back(std::make_unique<WaitStep>(this, 1.5f));
     steps.push_back(std::make_unique<SpawnStep>(
-        this, 
-        SpawnStep::ActorType::Star, 
+        this,
+        SpawnStep::ActorType::Star,
         Vector2(0.0f, mMap->GetHeight() - mWindowHeight / 2.0f)));
     steps.push_back(std::make_unique<MoveStep>(
-        this, 
-        [this]() { return GetStar(); },
-        Vector2(mWindowWidth / 2.0f, mMap->GetHeight() - mWindowHeight / 2.0f), 
-        250.0f
-    ));
+        this,
+        [this]()
+        { return GetStar(); },
+        Vector2(mWindowWidth / 2.0f, mMap->GetHeight() - mWindowHeight / 2.0f),
+        250.0f));
     std::vector<std::string> dialogue = {
         "Zoe: O que... o que e isso?",
-        "Zoe: Uma estrela? Mas como ela foi parar aqui?"
-    };
+        "Zoe: Uma estrela? Mas como ela foi parar aqui?"};
     steps.push_back(std::make_unique<DialogueStep>(this, dialogue));
     steps.push_back(std::make_unique<MoveStep>(
-        this, 
-        [this]() { return GetStar(); },
-        Vector2(mWindowWidth * 1.5f, mMap->GetHeight() - mWindowHeight * 1.2f), 
-        320.0f
-    ));
+        this,
+        [this]()
+        { return GetStar(); },
+        Vector2(mWindowWidth * 1.5f, mMap->GetHeight() - mWindowHeight * 1.2f),
+        320.0f));
     std::vector<std::string> dialogue2 = {
         "Zoe: Espere! Volte aqui!",
-        "Zoe: Onde sera que ela foi? Preciso saber se ela está me levando para algum lugar..."
-    };
+        "Zoe: Onde sera que ela foi? Preciso saber se ela está me levando para algum lugar..."};
     steps.push_back(std::make_unique<DialogueStep>(this, dialogue2));
-    steps.push_back(std::make_unique<UnspawnStep>(this, [this]() { return GetStar(); }));
+    steps.push_back(std::make_unique<UnspawnStep>(this, [this]()
+                                                  { return GetStar(); }));
 
     AddCutscene("Intro",
                 std::move(steps),
-                [this](){});
+                [this]() {});
 
     StartCutscene("Intro");
 }
@@ -400,7 +399,8 @@ void Game::TogglePause()
 
 void Game::UpdateGame()
 {
-    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16)); // Cap at 60 fps
+    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16))
+        ; // Cap at 60 fps
 
     float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
     if (deltaTime > 0.05f)
@@ -647,7 +647,8 @@ void Game::GenerateOutput()
         throw std::runtime_error("Failed to set logical size: " + std::string(SDL_GetError()));
     }
 
-    if (!mDebugMode) {
+    if (!mDebugMode)
+    {
         // Swap front buffer and back buffer
         SDL_RenderPresent(mRenderer);
         return;
@@ -679,7 +680,7 @@ void Game::GenerateOutput()
 }
 
 void Game::SetBackgroundImage(
-    const std::string &texturePath, const Vector2 &position, 
+    const std::string &texturePath, const Vector2 &position,
     const Vector2 &size, bool isCameraWise)
 {
     if (mBackgroundTexture)
@@ -864,19 +865,35 @@ void Game::ResetCutscenes()
         mGamePlayState = GamePlayState::Playing;
 }
 
-bool Game::ActorOnCamera(Actor* actor) {
-    if (!actor) return false;
+bool Game::ActorOnCamera(Actor *actor)
+{
+    if (!actor)
+        return false;
 
     Vector2 actorPos = actor->GetPosition();
 
     // Check if actor's bounding box intersects with camera's bounding box
-    if (actorPos.x < mCameraPos.x || // Actor is to the left of camera
+    if (actorPos.x < mCameraPos.x ||                // Actor is to the left of camera
         actorPos.x > mCameraPos.x + mWindowWidth || // Actor is to the right of camera
-        actorPos.y < mCameraPos.y || // Actor is above camera
-        actorPos.y > mCameraPos.y + mWindowHeight) // Actor is below camera
+        actorPos.y < mCameraPos.y ||                // Actor is above camera
+        actorPos.y > mCameraPos.y + mWindowHeight)  // Actor is below camera
     {
         return false; // No intersection
     }
 
     return true; // Intersection exists
+}
+
+int Game::GetMapWidth()
+{
+    if (mMap == nullptr)
+        return 0.f;
+    return mMap->GetWidth();
+}
+
+int Game::GetMapHeight()
+{
+    if (mMap == nullptr)
+        return 0.f;
+    return mMap->GetHeight();
 }
