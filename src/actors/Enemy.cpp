@@ -1,11 +1,12 @@
 #include "Enemy.h"
 #include "../core/Game.h"
+#include "../components/draw/DrawAnimatedComponent.h"
+#include "../components/ai/AIMovementComponent.h"
 #include "Zoe.h"
 #include "Actor.h"
-#include "../components/draw/DrawAnimatedComponent.h"
 
 Enemy::Enemy(Game *game, float forwardSpeed, const Vector2 &position, float fowardSpeed)
-    : Actor(game), mFowardSpeed(fowardSpeed)
+    : Actor(game)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f);
     mColliderComponent = new AABBColliderComponent(
@@ -18,8 +19,10 @@ Enemy::Enemy(Game *game, float forwardSpeed, const Vector2 &position, float fowa
         this,
         "../assets/Sprites/Enemies/Zod/texture.png",
         "../assets/Sprites/Enemies/Zod/texture.json",
-        std::bind(&Enemy::AnimationEndCallback, this, std::placeholders::_1),
+        std::bind(&Enemy::AnimationEndCallback, this, std::placeholders::_1), // could use a lambda here too
         static_cast<int>(DrawLayerPosition::Enemy) + 1);
+    
+    mAIMovementComponent = new AIMovementComponent(this, fowardSpeed, .01f);
 
     mDrawComponent->AddAnimation("asleep", {0});
     mDrawComponent->AddAnimation("waking", 1, 2);
@@ -61,7 +64,6 @@ void Enemy::ManageState()
         break;
     case BehaviorState::Moving:
     {
-        mRigidBodyComponent->ApplyForce(Vector2(mFowardSpeed, 0.0f));
         if (mRigidBodyComponent->GetVelocity().x > 0.f)
             SetRotation(0.f);
         else if (mRigidBodyComponent->GetVelocity().x < 0.f)
@@ -104,7 +106,7 @@ void Enemy::ManageAnimations()
         break;
     case BehaviorState::Waking:
         mDrawComponent->SetAnimation("waking");
-        mDrawComponent->SetAnimFPS(1.5f);
+        mDrawComponent->SetAnimFPS(3.f);
         break;
     case BehaviorState::Idle:
         mDrawComponent->SetAnimation("idle");
@@ -138,7 +140,7 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent 
 {
     if (other->GetLayer() == ColliderLayer::Blocks)
     {
-        mFowardSpeed *= -1;
+        mAIMovementComponent->SetFowardSpeed(-mAIMovementComponent->GetFowardSpeed());
     }
 }
 

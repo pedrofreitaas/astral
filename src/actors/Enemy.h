@@ -17,8 +17,7 @@ private:
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
-
-    float mFowardSpeed;
+    class AIMovementComponent* mAIMovementComponent;
 
     void ManageAnimations();
     void TakeDamage();
