@@ -29,6 +29,12 @@ public:
 
     float GetVerticalForce(int totalBlocks);
 
+    int SpeedHDir() {
+        if (mVelocity.x == 0) return 0;
+        if (mVelocity.x > 0) return 1;
+        return -1;
+    }
+
 private:
     bool mApplyGravity;
     bool mApplyFriction;
