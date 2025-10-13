@@ -199,20 +199,26 @@ void AABBColliderComponent::MaintainInMap()
     }
 }
 
-bool AABBColliderComponent::IsSegmentIntersecting(const Vector2& start, const Vector2& end)
+bool AABBColliderComponent::IsSegmentIntersecting(const Vector2& a, const Vector2& b)
 {
-    Vector2 boxMin = GetMin();
-    Vector2 boxMax = GetMax();
+    // choose number of sample points proportional to segment length
+    float length = (b - a).Length();
+    const int minPoints = 4;
+    const int maxPoints = 500;
+    const float density = 0.5f;
+    int totalPoints = (int)std::ceil(length * density);
+    totalPoints = std::max(minPoints, std::min(maxPoints, totalPoints));
 
-    float tmin = (boxMin.x - start.x) / (end.x - start.x);
-    float tmax = (boxMax.x - start.x) / (end.x - start.x);
-
-    if (tmin > tmax) std::swap(tmin, tmax);
-
-    float tymin = (boxMin.y - start.y) / (end.y - start.y);
-    float tymax = (boxMax.y - start.y) / (end.y - start.y);
-    
-    if (tymin > tymax) std::swap(tymin, tymax);
-    
-    return (tmin < tymax && tymin < tmax);
+    // get points along the segment
+    for (int i = 0; i <= totalPoints; i++)
+    {
+        float t = (float)i / (float)totalPoints;
+        Vector2 point = Vector2::Lerp(a, b, t);
+        if (point.x >= GetMin().x && point.x <= GetMax().x &&
+            point.y >= GetMin().y && point.y <= GetMax().y)
+        {
+            return true;
+        }
+    }
+    return false;
 }
