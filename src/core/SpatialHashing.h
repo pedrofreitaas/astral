@@ -26,6 +26,10 @@ public:
                                       const float screenWidth,
                                       const float screenHeight,
                                       const float extraRadius = 0.0f) const;
+
+    std::vector<Vector2> GetPath(
+        Actor *targetActor, const Vector2& end
+    ) const;
    
 private:
     int mCellSize;

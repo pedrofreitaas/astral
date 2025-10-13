@@ -647,6 +647,21 @@ void Game::GenerateOutput()
         throw std::runtime_error("Failed to set logical size: " + std::string(SDL_GetError()));
     }
 
+    if (mEnemy && mZoe) {
+        std::vector<Vector2> path = mSpatialHashing->GetPath(mZoe, mEnemy->GetCenter());
+
+        // draw each point in path with lines
+        for (size_t i = 1; i < path.size(); i++) {
+            SDL_SetRenderDrawColor(mRenderer, 0, 255, 0, 255);
+            SDL_RenderDrawLine(
+                mRenderer,
+                static_cast<int>(path[i - 1].x - mCameraPos.x),
+                static_cast<int>(path[i - 1].y - mCameraPos.y),
+                static_cast<int>(path[i].x - mCameraPos.x),
+                static_cast<int>(path[i].y - mCameraPos.y));
+        }
+    }
+
     if (!mDebugMode)
     {
         // Swap front buffer and back buffer

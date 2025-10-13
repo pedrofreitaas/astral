@@ -164,4 +164,24 @@ std::vector<Actor *> SpatialHashing::QueryOnCamera(const Vector2 &cameraPosition
     return results;
 }
 
+std::vector<Vector2> SpatialHashing::GetPath(
+    Actor *targetActor, const Vector2& end
+) const {
+    RigidBodyComponent* rb = targetActor->GetComponent<RigidBodyComponent>();
+    AABBColliderComponent* collider = targetActor->GetComponent<AABBColliderComponent>();
 
+    if (!rb || !collider) {
+        SDL_Log("SpatialHashing::GetPath: Actor missing RigidBody or Collider component.");
+        return {};
+    }
+
+    bool gravityApplies = rb->GetApplyGravity();
+
+    return {
+        targetActor->GetCenter(),
+        Vector2::Lerp(targetActor->GetCenter(), end, 0.25f),
+        Vector2::Lerp(targetActor->GetCenter(), end, 0.5f),
+        Vector2::Lerp(targetActor->GetCenter(), end, 0.75f),
+        end
+    };
+}
