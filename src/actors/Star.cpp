@@ -22,10 +22,10 @@ Star::Star(Game *game) :
     mDrawComponent->SetAnimFPS(1.0f);
     mDrawComponent->Scale(3);
 
-    mColliderComponent = new AABBColliderComponent(
+    mColliderComponent = nullptr; /* new AABBColliderComponent(
         this, 0, 0, 33, 33,
         ColliderLayer::Player
-    );
+    ); */
 
     mGame->SetStar(this);
 }

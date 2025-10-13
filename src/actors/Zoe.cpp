@@ -145,7 +145,7 @@ void Zoe::OnUpdate(float deltaTime)
         SetRotation(Math::Pi);
     }
 
-    mColliderComponent->MaintainInbound();
+    mColliderComponent->MaintainInCamera();
     ManageAnimations();
 
     if (mBehaviorState == BehaviorState::Dying)
