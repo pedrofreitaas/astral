@@ -73,6 +73,9 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
 
         if (Intersect(*collider))
         {
+            if (GetLayer() == ColliderLayer::Enemy)
+                SDL_Log("Enemy collided with something hor");
+
             float overlap = GetMinHorizontalOverlap(collider);
 
             if (collider->IsTangible() && mIsTangible) {
@@ -105,7 +108,7 @@ float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBo
             continue;
 
         if (Intersect(*collider))
-        {
+        {            
             float overlap = GetMinVerticalOverlap(collider);
             
             if (collider->IsTangible() && mIsTangible) {
@@ -145,7 +148,7 @@ bool AABBColliderComponent::IsOnCamera()
             max.y > cameraPos.y);
 }
 
-void AABBColliderComponent::MaintainInbound()
+void AABBColliderComponent::MaintainInCamera()
 {
     Vector2 cameraPos = mOwner->GetGame()->GetCameraPos();
     Vector2 getUpperLeftBorder = GetMin();
@@ -170,5 +173,31 @@ void AABBColliderComponent::MaintainInbound()
     else if (getBottomRightBorder.y > maxYBoundary)
     {
         mOwner->SetPosition(Vector2(mOwner->GetPosition().x, maxYBoundary - mHeight - offset.y));
+    }
+}
+
+void AABBColliderComponent::MaintainInMap()
+{
+    int maxXBoundary = mOwner->GetGame()->GetMapWidth();
+    int maxYBoundary = mOwner->GetGame()->GetMapHeight();
+    Vector2 getUpperLeftBorder = GetMin();
+    Vector2 getBottomRightBorder = GetMax();
+
+    if (getUpperLeftBorder.x < 0)
+    {
+        mOwner->SetPosition(Vector2(0, mOwner->GetPosition().y));
+    }
+    else if (getBottomRightBorder.x > maxXBoundary)
+    {
+        mOwner->SetPosition(Vector2(maxXBoundary - mWidth, mOwner->GetPosition().y));
+    }
+
+    if (getUpperLeftBorder.y < 0)
+    {
+        mOwner->SetPosition(Vector2(mOwner->GetPosition().x, 0));
+    }
+    else if (getBottomRightBorder.y > maxYBoundary)
+    {
+        mOwner->SetPosition(Vector2(mOwner->GetPosition().x, maxYBoundary - mHeight));
     }
 }
