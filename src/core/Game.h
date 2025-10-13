@@ -10,6 +10,7 @@
 #include <SDL.h>
 #include <vector>
 #include <unordered_map>
+#include <chrono>
 #include "AudioSystem.h"
 #include "../libs/Math.h"
 #include "../libs/Json.h"
@@ -17,6 +18,21 @@
 #include "Map.h"
 #include "Tileset.h"
 #include "./Cutscene.h"
+
+template <typename F>
+auto TimeCheckerWrapper(F&& func) {
+    auto start = std::chrono::high_resolution_clock::now();
+    if constexpr (std::is_void_v<std::invoke_result_t<F>>) {
+        func();
+        SDL_Log("Time: %.3f ms", std::chrono::duration<float, std::milli>(
+            std::chrono::high_resolution_clock::now() - start).count());
+    } else {
+        auto r = func();
+        SDL_Log("Time: %.3f ms", std::chrono::duration<float, std::milli>(
+            std::chrono::high_resolution_clock::now() - start).count());
+        return r;
+    }
+}
 
 class Game
 {

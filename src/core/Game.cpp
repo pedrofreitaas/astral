@@ -44,7 +44,7 @@ Game::Game(int windowWidth, int windowHeight)
       mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero),
       mBackgroundPosition(Vector2::Zero), mMap(nullptr), mBackgroundIsCameraWise(true),
       mCurrentCutscene(nullptr), mCutscenes(), mGamePlayState(GamePlayState::Playing),
-      mDebugMode(false), mPrevDeltaTime(0.0f)
+      mDebugMode(false), mPrevDeltaTime(0.0f), mEnemy(nullptr), mStar(nullptr)
 {
     mRealWindowWidth = windowWidth;
     mRealWindowHeight = windowHeight;
@@ -174,7 +174,7 @@ void Game::LoadFirstLevel()
 
     mZoe = new Zoe(this, 1500.0f);
     mZoe->SetPosition(Vector2(32.0f, mMap->GetHeight() - 80.0f));
-    new Enemy(this, 1500.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
+    mEnemy = new Enemy(this, 1500.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
 
     std::vector<std::unique_ptr<Step>> steps;
     steps.push_back(std::make_unique<MoveStep>(this, mZoe, Vector2(96.0f, mZoe->GetPosition().y), 100.0f));
