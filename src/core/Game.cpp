@@ -647,6 +647,8 @@ void Game::GenerateOutput()
         throw std::runtime_error("Failed to set logical size: " + std::string(SDL_GetError()));
     }
 
+    mSpatialHashing->Draw(mRenderer, mCameraPos, mWindowWidth, mWindowHeight);
+
     if (mEnemy && mZoe) {
         std::vector<Vector2> path = mSpatialHashing->GetPath(mZoe, mEnemy->GetCenter());
 

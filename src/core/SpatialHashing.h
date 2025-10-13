@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <SDL.h>
 #include "../libs/Math.h"
 #include "../actors/Actor.h"
 
@@ -30,6 +31,8 @@ public:
     std::vector<Vector2> GetPath(
         Actor *targetActor, const Vector2& end
     ) const;
+
+    void Draw(SDL_Renderer *renderer, const Vector2& cameraPosition, float screenWidth, float screenHeight);
    
 private:
     int mCellSize;

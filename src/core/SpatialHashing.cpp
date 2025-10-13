@@ -177,6 +177,9 @@ std::vector<Vector2> SpatialHashing::GetPath(
 
     bool gravityApplies = rb->GetApplyGravity();
 
+    // implement A* from target actor center to end position
+    // taking into account the collider size and gravity if applies
+
     return {
         targetActor->GetCenter(),
         Vector2::Lerp(targetActor->GetCenter(), end, 0.25f),
@@ -184,4 +187,26 @@ std::vector<Vector2> SpatialHashing::GetPath(
         Vector2::Lerp(targetActor->GetCenter(), end, 0.75f),
         end
     };
+}
+
+void SpatialHashing::Draw(SDL_Renderer *renderer, const Vector2& cameraPosition, float screenWidth, float screenHeight) {
+    // Draw grid lines
+    SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
+
+    int cols = (mWidth + mCellSize - 1) / mCellSize;
+    int rows = (mHeight + mCellSize - 1) / mCellSize;
+
+    for (int c = 0; c <= cols; ++c) {
+        int x = c * mCellSize - static_cast<int>(cameraPosition.x);
+        if (x >= 0 && x <= screenWidth) {
+            SDL_RenderDrawLine(renderer, x, 0, x, static_cast<int>(screenHeight));
+        }
+    }
+
+    for (int r = 0; r <= rows; ++r) {
+        int y = r * mCellSize - static_cast<int>(cameraPosition.y);
+        if (y >= 0 && y <= screenHeight) {
+            SDL_RenderDrawLine(renderer, 0, y, static_cast<int>(screenWidth), y);
+        }
+    }
 }
