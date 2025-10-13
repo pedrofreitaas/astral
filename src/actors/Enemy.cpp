@@ -66,8 +66,22 @@ void Enemy::ManageState()
             SetRotation(0.f);
         else if (mRigidBodyComponent->GetVelocity().x < 0.f)
             SetRotation(Math::Pi);
+
+        if (PlayerOnSight())
+        {
+            mBehaviorState = BehaviorState::Charging;
+            SDL_Log("Player on sight! Charging!");
+        }
+
         break;
     }
+    case BehaviorState::Charging:
+        if (!PlayerOnSight())
+        {
+            mBehaviorState = BehaviorState::Moving;
+            SDL_Log("En lost sight! Moving!");
+        }
+        break;
     default:
         mBehaviorState = BehaviorState::Asleep;
         break;
@@ -77,6 +91,12 @@ void Enemy::ManageState()
 void Enemy::AnimationEndCallback(std::string animationName)
 {
     if (animationName == "waking")
+    {
+        mBehaviorState = BehaviorState::Moving;
+        return;
+    }
+
+    if (animationName == "charging")
     {
         mBehaviorState = BehaviorState::Moving;
     }
@@ -97,6 +117,8 @@ void Enemy::ManageAnimations()
         break;
     case BehaviorState::Moving:
         mDrawComponent->SetAnimation("moving");
+        break;
+    case BehaviorState::Charging:
         break;
     default:
         mDrawComponent->SetAnimation("asleep");
@@ -125,4 +147,26 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent 
 
 void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
+}
+
+bool Enemy::PlayerOnSight()
+{
+    auto zoe = GetGame()->GetZoe();
+
+    if (zoe == nullptr)
+        return false;
+
+    Vector2 lineOfSightStart = GetCenter();
+    
+    float dir = GetRotation() == 0.f ? 1.f : -1.f;
+    Vector2 lineOfSightEnd = lineOfSightStart + Vector2(100.f * dir, 0.f);
+
+    auto zoeCollider = zoe->GetComponent<AABBColliderComponent>();
+
+    if (zoeCollider == nullptr)
+        return false;
+
+    bool isIntersecting = zoeCollider->IsSegmentIntersecting(lineOfSightStart, lineOfSightEnd);
+
+    return isIntersecting;
 }

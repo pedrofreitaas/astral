@@ -23,4 +23,6 @@ private:
     void ManageAnimations();
     void TakeDamage();
     void AnimationEndCallback(std::string animationName);
+
+    bool PlayerOnSight();
 };
