@@ -4,8 +4,8 @@
 #include "Actor.h"
 #include "../components/draw/DrawAnimatedComponent.h"
 
-Enemy::Enemy(Game *game, float forwardSpeed, const Vector2 &position)
-    : Actor(game)
+Enemy::Enemy(Game *game, float forwardSpeed, const Vector2 &position, float fowardSpeed)
+    : Actor(game), mFowardSpeed(fowardSpeed)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f);
     mColliderComponent = new AABBColliderComponent(
@@ -38,11 +38,12 @@ Enemy::Enemy(Game *game, float forwardSpeed, const Vector2 &position)
 void Enemy::ManageState()
 {
     auto zoe = GetGame()->GetZoe();
-    if (!zoe) return;
+    if (!zoe)
+        return;
 
     float distanceToZoe = (zoe->GetPosition() - GetPosition()).Length();
 
-    if (distanceToZoe > 250.f)
+    if (distanceToZoe > 450.f)
     {
         mBehaviorState = BehaviorState::Asleep;
         return;
@@ -58,9 +59,13 @@ void Enemy::ManageState()
         break;
     case BehaviorState::Idle:
         break;
-    case BehaviorState::Moving: {
-        int speedSign = (mRigidBodyComponent->GetVelocity().x >= 0) ? 1 : -1;
-        mRigidBodyComponent->ApplyForce(Vector2(1000.f * speedSign, 0.0f));
+    case BehaviorState::Moving:
+    {
+        mRigidBodyComponent->ApplyForce(Vector2(mFowardSpeed, 0.0f));
+        if (mRigidBodyComponent->GetVelocity().x > 0.f)
+            SetRotation(0.f);
+        else if (mRigidBodyComponent->GetVelocity().x < 0.f)
+            SetRotation(Math::Pi);
         break;
     }
     default:
@@ -103,6 +108,7 @@ void Enemy::OnUpdate(float deltaTime)
 {
     ManageState();
     ManageAnimations();
+    mColliderComponent->MaintainInMap();
 }
 
 void Enemy::TakeDamage()
@@ -111,13 +117,9 @@ void Enemy::TakeDamage()
 
 void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    SDL_Log("Enemy collided with something");
-
     if (other->GetLayer() == ColliderLayer::Blocks)
     {
-        SDL_Log("Enemy collided with block, reversing direction");
-        mRigidBodyComponent->SetVelocity(
-            Vector2(-mRigidBodyComponent->GetVelocity().x, mRigidBodyComponent->GetVelocity().y));
+        mFowardSpeed *= -1;
     }
 }
 
