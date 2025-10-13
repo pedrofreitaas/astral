@@ -73,9 +73,6 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
 
         if (Intersect(*collider))
         {
-            if (GetLayer() == ColliderLayer::Enemy)
-                SDL_Log("Enemy collided with something hor");
-
             float overlap = GetMinHorizontalOverlap(collider);
 
             if (collider->IsTangible() && mIsTangible) {
@@ -200,4 +197,22 @@ void AABBColliderComponent::MaintainInMap()
     {
         mOwner->SetPosition(Vector2(mOwner->GetPosition().x, maxYBoundary - mHeight));
     }
+}
+
+bool AABBColliderComponent::IsSegmentIntersecting(const Vector2& start, const Vector2& end)
+{
+    Vector2 boxMin = GetMin();
+    Vector2 boxMax = GetMax();
+
+    float tmin = (boxMin.x - start.x) / (end.x - start.x);
+    float tmax = (boxMax.x - start.x) / (end.x - start.x);
+
+    if (tmin > tmax) std::swap(tmin, tmax);
+
+    float tymin = (boxMin.y - start.y) / (end.y - start.y);
+    float tymax = (boxMax.y - start.y) / (end.y - start.y);
+    
+    if (tymin > tymax) std::swap(tymin, tymax);
+    
+    return (tmin < tymax && tymin < tmax);
 }

@@ -45,6 +45,7 @@ public:
 
     void MaintainInCamera();
     void MaintainInMap();
+    bool IsSegmentIntersecting(const Vector2& start, const Vector2& end);
 
 private:
     float GetMinVerticalOverlap(AABBColliderComponent* b) const;
