@@ -109,6 +109,7 @@ public:
     virtual void OnCollision() {};
     virtual void Kill();
     Vector2 GetCenter() const;
+    BehaviorState GetBehaviorState() const { return mBehaviorState; }
 
 protected:
     class Game* mGame;
