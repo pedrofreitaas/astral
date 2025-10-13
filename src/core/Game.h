@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------
 // From Game Programming in C++ by Sanjay Madhav
 // Copyright (C) 2017 Sanjay Madhav. All rights reserved.
-// 
+//
 // Released under the BSD License
 // See LICENSE in root directory for full details.
 // ----------------------------------------------------------------
@@ -61,31 +61,31 @@ public:
 
     // Actor functions
     void UpdateActors(float deltaTime);
-    void AddActor(class Actor* actor);
-    void RemoveActor(class Actor* actor);
+    void AddActor(class Actor *actor);
+    void RemoveActor(class Actor *actor);
     void ProcessInputActors();
     void HandleKeyPressActors(const int key, const bool isPressed);
 
     // Level functions
     void LoadMainMenu();
 
-    std::vector<Actor *> GetNearbyActors(const Vector2& position, const int range = 1);
-    std::vector<class AABBColliderComponent *> GetNearbyColliders(const Vector2& position, const int range = 2);
+    std::vector<Actor *> GetNearbyActors(const Vector2 &position, const int range = 1);
+    std::vector<class AABBColliderComponent *> GetNearbyColliders(const Vector2 &position, const int range = 2);
 
-    void Reinsert(Actor* actor);
+    void Reinsert(Actor *actor);
 
     // Camera functions
-    Vector2& GetCameraPos() { return mCameraPos; };
-    void SetCameraPos(const Vector2& position) { mCameraPos = position; };
-    bool ActorOnCamera(Actor* actor);
+    Vector2 &GetCameraPos() { return mCameraPos; };
+    void SetCameraPos(const Vector2 &position) { mCameraPos = position; };
+    bool ActorOnCamera(Actor *actor);
 
     // Audio functions
-    class AudioSystem* GetAudio() { return mAudio; }
+    class AudioSystem *GetAudio() { return mAudio; }
 
     // UI functions
-    void PushUI(class UIScreen* screen) { mUIStack.emplace_back(screen);}
-    void PopUI() { mUIStack.pop_back();}
-    const std::vector<class UIScreen*>& GetUIStack() { return mUIStack; }
+    void PushUI(class UIScreen *screen) { mUIStack.emplace_back(screen); }
+    void PopUI() { mUIStack.pop_back(); }
+    const std::vector<class UIScreen *> &GetUIStack() { return mUIStack; }
 
     // Window functions
     int GetWindowWidth() const { return mWindowWidth; }
@@ -95,43 +95,45 @@ public:
     int GetRealWindowHeight() const { return mRealWindowHeight; }
 
     // Loading functions
-    class UIFont* LoadFont(const std::string& fileName);
-    SDL_Texture* LoadTexture(const std::string& texturePath);
+    class UIFont *LoadFont(const std::string &fileName);
+    SDL_Texture *LoadTexture(const std::string &texturePath);
 
     void SetGameScene(GameScene scene, float transitionTime = .0f);
     void ResetGameScene(float transitionTime = .0f);
     void UnloadScene();
 
     void SetBackgroundImage(
-        const std::string& imagePath, 
-        const Vector2 &position = Vector2::Zero, 
-        const Vector2& size = Vector2::Zero,
-        bool isCameraWise = true
-    );
+        const std::string &imagePath,
+        const Vector2 &position = Vector2::Zero,
+        const Vector2 &size = Vector2::Zero,
+        bool isCameraWise = true);
     void TogglePause();
 
     // Game-specific
-    const class Zoe* GetZoe() { return mZoe; }
+    const class Zoe *GetZoe() { return mZoe; }
 
     void SetGamePlayState(GamePlayState state) { mGamePlayState = state; }
     GamePlayState GetGamePlayState() const { return mGamePlayState; }
     GameScene GetGameScene() const { return mGameScene; }
-    SDL_Window* GetWindow() { return mWindow; }
-    SDL_Renderer* GetRenderer() const { return mRenderer; }
+    SDL_Window *GetWindow() { return mWindow; }
+    SDL_Renderer *GetRenderer() const { return mRenderer; }
 
     int GetGameTotalActors();
     Vector2 GetLogicalMousePos() const;
 
-    void AddCutscene(const std::string& name, std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback = nullptr);
-    void StartCutscene(const std::string& name);
+    void AddCutscene(const std::string &name, std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback = nullptr);
+    void StartCutscene(const std::string &name);
     void PauseCutscene();
     void ResetCutscenes();
 
     float GetPrevDeltaTime() const { return mPrevDeltaTime; }
-    class DialogueSystem* GetDialogueSystem() { return mDialogueSystem; }
-    
-    void SetStar(class Star* star) { mStar = star; };
-    class Star* GetStar() { return mStar; };
+    class DialogueSystem *GetDialogueSystem() { return mDialogueSystem; }
+
+    void SetStar(class Star *star) { mStar = star; };
+    class Star *GetStar() { return mStar; };
+
+    int GetMapWidth();
+    int GetMapHeight();
 
 private:
     void ProcessInput();
@@ -142,25 +144,25 @@ private:
     // Scene Manager
     void UpdateSceneManager(float deltaTime);
     void ChangeScene();
-    void SetMap(const std::string& path);
+    void SetMap(const std::string &path);
     void LoadFirstLevel();
 
     bool mDebugMode;
 
     SceneManagerState mSceneManagerState;
     float mSceneManagerTimer;
-    
+
     // Spatial Hashing for collision detection
-    class SpatialHashing* mSpatialHashing;
+    class SpatialHashing *mSpatialHashing;
 
     // All the UI elements
-    std::vector<class UIScreen*> mUIStack;
-    std::unordered_map<std::string, class UIFont*> mFonts;
+    std::vector<class UIScreen *> mUIStack;
+    std::unordered_map<std::string, class UIFont *> mFonts;
 
     // SDL stuff
-    SDL_Window* mWindow;
-    SDL_Renderer* mRenderer;
-    AudioSystem* mAudio;
+    SDL_Window *mWindow;
+    SDL_Renderer *mRenderer;
+    AudioSystem *mAudio;
 
     // Window properties
     int mWindowWidth, mWindowHeight;
@@ -195,11 +197,10 @@ private:
     Vector2 mBackgroundPosition;
     bool mBackgroundIsCameraWise;
 
-    class Map* mMap;
+    class Map *mMap;
 
-    std::map<std::string, Cutscene*> mCutscenes;
-    Cutscene* mCurrentCutscene;
+    std::map<std::string, Cutscene *> mCutscenes;
+    Cutscene *mCurrentCutscene;
 
-    class DialogueSystem* mDialogueSystem;
+    class DialogueSystem *mDialogueSystem;
 };
-
