@@ -41,6 +41,8 @@ void AIMovementComponent::Act(float deltaTime)
     switch (mMovementState)
     {
     case MovementState::Wandering:
+        if (!rb->GetOnGround()) break;
+        
         if (mInteligence >= .5f) rb->ApplyForce(Vector2(mFowardSpeed, 0.f));
         else rb->ApplyForce(Vector2(-mFowardSpeed, 0.f));
 
