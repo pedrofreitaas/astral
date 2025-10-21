@@ -123,7 +123,7 @@ bool Game::Initialize()
 
     // Initialize game systems
     mAudio = new AudioSystem();
-    mSpatialHashing = new SpatialHashing(TILE_SIZE * 4.0f,
+    mSpatialHashing = new SpatialHashing(TILE_SIZE,
                                          LEVEL_WIDTH * TILE_SIZE,
                                          LEVEL_HEIGHT * TILE_SIZE);
 
@@ -229,7 +229,7 @@ void Game::ChangeScene()
     mGamePlayState = GamePlayState::Playing;
 
     // Reset scene manager state
-    mSpatialHashing = new SpatialHashing(TILE_SIZE * 4.0f, LEVEL_WIDTH * TILE_SIZE, LEVEL_HEIGHT * TILE_SIZE);
+    mSpatialHashing = new SpatialHashing(TILE_SIZE, LEVEL_WIDTH * TILE_SIZE, LEVEL_HEIGHT * TILE_SIZE);
 
     // Scene Manager FSM: using if/else instead of switch
     if (mNextScene == GameScene::MainMenu)
@@ -647,14 +647,12 @@ void Game::GenerateOutput()
         throw std::runtime_error("Failed to set logical size: " + std::string(SDL_GetError()));
     }
 
-    mSpatialHashing->Draw(mRenderer, mCameraPos, mWindowWidth, mWindowHeight);
-
     if (mEnemy && mZoe) {
-        std::vector<Vector2> path = mSpatialHashing->GetPath(mZoe, mEnemy->GetCenter());
+        std::vector<Vector2> path = mSpatialHashing->GetPath(mEnemy, mZoe->GetCenter());
 
         // draw each point in path with lines
         for (size_t i = 1; i < path.size(); i++) {
-            SDL_SetRenderDrawColor(mRenderer, 0, 255, 0, 255);
+            SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
             SDL_RenderDrawLine(
                 mRenderer,
                 static_cast<int>(path[i - 1].x - mCameraPos.x),
@@ -670,6 +668,8 @@ void Game::GenerateOutput()
         SDL_RenderPresent(mRenderer);
         return;
     }
+
+    mSpatialHashing->Draw(mRenderer, mCameraPos, mWindowWidth, mWindowHeight);
 
     // draw collider boxes only if the player has collider
     for (auto actor : actorsOnCamera)

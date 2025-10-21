@@ -7,8 +7,36 @@
 #include <vector>
 #include <unordered_map>
 #include <SDL.h>
+#include <queue>
+#include <unordered_map>
+#include <cmath>
+#include <algorithm>
+#include <utility>
 #include "../libs/Math.h"
 #include "../actors/Actor.h"
+
+struct Cell {
+    int row, col;
+    bool operator==(const Cell& o) const { return row == o.row && col == o.col; }
+};
+
+struct CellHash {
+    size_t operator()(const Cell& c) const { return c.row * 10000 + c.col; }
+};
+
+struct Node {
+    Cell pos;
+    float f, g;
+    bool operator>(const Node& o) const { return f > o.f; }
+};
+
+enum class CellType // only considers tiles
+{
+    Empty, //blank
+    Tile, //red
+    Platform, //green
+    Corner //orange
+};
 
 class SpatialHashing
 {
@@ -34,13 +62,20 @@ public:
 
     void Draw(SDL_Renderer *renderer, const Vector2& cameraPosition, float screenWidth, float screenHeight);
    
+    bool isEmptyCell(int row, int col);
+    bool isTileCell(int row, int col);
+    bool isPlaformCell(int row, int col);
+    bool isCornerCel(int row, int col);
+
 private:
     int mCellSize;
     int mWidth;
     int mHeight;
 
+    std::vector<std::vector<CellType>> mCellTypes; // 2D grid of cell types
     std::vector<std::vector<std::vector<Actor*> >> mGrid; // 2D grid of colliders
     std::unordered_map<Actor*, Vector2> mPositions; // Maps collider to its position
     std::unordered_map<Actor*, std::pair<int, int>> mCellIndices; // Maps collider to its grid cell indices
 
+    std::vector<Cell> findPath(const std::vector<std::vector<CellType>>& grid, Cell start, Cell end, int maxJumpHeight=4) const;
 };
