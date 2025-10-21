@@ -17,7 +17,7 @@ pkg_check_modules(SDL2_MIXER REQUIRED SDL2_mixer)
 
 add_executable(${PROJECT_NAME}
         src/Main.cpp
-        src/libs/Math.h        
+        src/libs/Math.h
         src/libs/Math.cpp
         src/libs/Random.h
         src/libs/Random.cpp
