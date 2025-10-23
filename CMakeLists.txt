@@ -84,6 +84,7 @@ add_executable(${PROJECT_NAME}
         src/core/Map.cpp
         src/core/Cutscene.h
         src/core/Cutscene.cpp
+        src/core/Steps.cpp
 )
 
 # Link libraries using PkgConfig variables
