@@ -22,6 +22,8 @@ public:
     void Draw(SDL_Renderer* renderer);
     void Update(float deltaTime);
     bool IsActive() const { return mIsActive; }
+    void SetLineDuration(float duration) { mLineDuration = duration; }
+    float GetLineDuration() const { return mLineDuration; }
 
 private:
     void CreateTextTexture();
@@ -29,6 +31,7 @@ private:
     void SetSpeakerName(const std::string& name);
     void SetSpeakerOffset(const Vector2& offset) { mSpeakerOffset = offset; }
     void SetTextOffset(const Vector2& offset) { mTextOffset = offset; }
+    void AdvanceDialogue();
     
     Game* mGame;
     TTF_Font* mFont;
@@ -55,4 +58,6 @@ private:
 
     bool mIsActive;
     bool mContinuePressed;
+    float mLineTimer;
+    float mLineDuration;
 };

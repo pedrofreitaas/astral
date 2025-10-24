@@ -105,7 +105,7 @@ void DialogueStep::Update(float deltaTime)
     if (GetIsComplete())
         return;
 
-    if (mSpeaker != "")
+    if (!mSpeaker.empty())
     {
         mGame->GetDialogueSystem()->StartDialogueWithSpeaker(
             mSpeaker,
@@ -115,11 +115,13 @@ void DialogueStep::Update(float deltaTime)
                 SetComplete();
             });
     }
-
-    mGame->GetDialogueSystem()->StartDialogue(
-        mMessages,
-        [this]()
-        {
-            SetComplete();
-        });
+    else
+    {
+        mGame->GetDialogueSystem()->StartDialogue(
+            mMessages,
+            [this]()
+            {
+                SetComplete();
+            });
+    }
 }

@@ -5,7 +5,8 @@
 DialogueSystem::DialogueSystem(Game::GamePlayState currentGameState)
     : mGame(nullptr), mFont(nullptr), mSmallFont(nullptr), mCurrentLine(0), mTextTexture(nullptr),
       mIsActive(false), mContinuePressed(false), mPromptTexture(nullptr), mPreviousGameState(currentGameState),
-      mSpeakerName(""), mSpeakerTexture(nullptr), mSpeakerOffset(-5.0f, -10.0f), mTextOffset(0.0f, 0.0f)
+      mSpeakerName(""), mSpeakerTexture(nullptr), mSpeakerOffset(-5.0f, -10.0f), mTextOffset(0.0f, 0.0f),
+      mLineTimer(0.0f), mLineDuration(5.0f)
 {
 }
 
@@ -80,6 +81,7 @@ void DialogueSystem::StartDialogue(const std::vector<std::string>& lines, std::f
     mCurrentLine = 0;
     mIsActive = true;
     mContinuePressed = true;
+    mLineTimer = 0.0f;
 
     mPreviousGameState = mGame->GetGamePlayState();
     mGame->SetGamePlayState(Game::GamePlayState::Dialogue);
@@ -119,22 +121,7 @@ void DialogueSystem::HandleInput(const uint8_t* keyState)
         if (!mContinuePressed)
         {
             mContinuePressed = true;
-            mCurrentLine++;
-
-            if (mCurrentLine >= mLines.size())
-            {
-                mIsActive = false;
-                
-                if (mOnComplete)
-                {
-                    mGame->SetGamePlayState(mPreviousGameState);
-                    mOnComplete();
-                }
-            }
-            else
-            {
-                CreateTextTexture();
-            }
+            AdvanceDialogue();
         }
     }
     else
@@ -153,6 +140,24 @@ void DialogueSystem::Draw(SDL_Renderer* renderer)
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(renderer, &mBoxRect);
+
+    // Draw the timer progress bar
+    if (mLineDuration > 0.0f)
+    {
+        float progress = 1.0f - (mLineTimer / mLineDuration);
+        int barWidth = static_cast<int>((mBoxRect.w - 40) * progress);
+        if (barWidth > 0)
+        {
+            SDL_Rect progressBar = {
+                mBoxRect.x + 20,
+                mBoxRect.y - 10, // Position above the dialogue box
+                barWidth,
+                5
+            };
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            SDL_RenderFillRect(renderer, &progressBar);
+        }
+    }
 
     // Draw speaker box only if speaker name is not empty
     if (mSpeakerTexture && !mSpeakerName.empty())
@@ -173,6 +178,8 @@ void DialogueSystem::Draw(SDL_Renderer* renderer)
     {
         SDL_RenderCopy(renderer, mTextTexture, nullptr, &mTextRect);
     }
+    
+    // Move prompt above the dialogue box
     if (mPromptTexture)
     {
         SDL_RenderCopy(renderer, mPromptTexture, nullptr, &mPromptRect);
@@ -239,5 +246,35 @@ void DialogueSystem::SetSpeakerName(const std::string& name)
 
 void DialogueSystem::Update(float deltaTime)
 {
-    // Currently no time-based updates needed
+    if (!mIsActive) return;
+
+    // Update the timer
+    mLineTimer += deltaTime;
+    
+    // Check if the timer has reached the line duration
+    if (mLineTimer >= mLineDuration)
+    {
+        AdvanceDialogue();
+    }
+}
+
+void DialogueSystem::AdvanceDialogue()
+{
+    mLineTimer = 0.0f;
+    mCurrentLine++;
+
+    if (mCurrentLine >= mLines.size())
+    {
+        mIsActive = false;
+        
+        if (mOnComplete)
+        {
+            mGame->SetGamePlayState(mPreviousGameState);
+            mOnComplete();
+        }
+    }
+    else
+    {
+        CreateTextTexture();
+    }
 }
