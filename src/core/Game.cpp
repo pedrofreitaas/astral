@@ -464,12 +464,9 @@ void Game::UpdateGame()
         }
     }
 
-    if (mGameScene != GameScene::MainMenu)
+    if (mGameScene != GameScene::MainMenu && mGamePlayState == GamePlayState::Playing)
     {
-        if (mGamePlayState == GamePlayState::Playing)
-        {
-            mHUD->SetFPS(static_cast<int>(1.0f / deltaTime));
-        }
+        mHUD->SetFPS(static_cast<int>(1.0f / deltaTime));
     }
 
     UpdateSceneManager(deltaTime);
