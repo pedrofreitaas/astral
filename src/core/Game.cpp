@@ -35,6 +35,8 @@
 
 const int CHAR_WIDTH = 6;
 const int WORD_HEIGHT = 8;
+const std::string FONT_PATH_INTER = "../assets/Fonts/Inter.ttf";
+const std::string FONT_PATH_SMB = "../assets/Fonts/SMB.ttf";
 
 Game::Game(int windowWidth, int windowHeight)
     : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true),
@@ -162,7 +164,7 @@ void Game::ResetGameScene(float transitionTime)
 
 void Game::LoadFirstLevel()
 {
-    mHUD = new HUD(this, "../assets/Fonts/VT323-Regular.ttf");
+    mHUD = new HUD(this, FONT_PATH_INTER);
 
     SetMap("demo.json");
 
@@ -253,12 +255,20 @@ void Game::ChangeScene()
 
 void Game::LoadMainMenu()
 {
-    UIScreen *mainMenu = new UIScreen(this, "../assets/Fonts/VT323-Regular.ttf");
+    UIScreen *mainMenu = new UIScreen(this, FONT_PATH_SMB);
 
     mainMenu->AddBackground(
         "../assets/Sprites/Menu/background.png",
         Vector2(0, 0),
         Vector2(mWindowWidth, mWindowHeight));
+
+    mainMenu->AddText(
+        "Astral",
+        Vector2(mWindowWidth / 2.0f - 100.0f, mWindowHeight / 4.0f),
+        Vector2(200.0f, 50.0f),
+        40,
+        1024,
+        Vector3(255.0f, 255.0f, 255.0f));
 
     const Vector2 playButtonSize = Vector2(
         mWindowWidth / 6.0f,
