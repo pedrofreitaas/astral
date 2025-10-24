@@ -31,8 +31,11 @@ void RigidBodyComponent::ApplyForce(const Vector2 &force) {
 
 void RigidBodyComponent::Update(float deltaTime)
 {
+    bool sceneAppliesGravity = mOwner->GetGame()->GetApplyGravityScene();
+    bool applyGravity = mApplyGravity && sceneAppliesGravity;
+    
     // Apply gravity acceleration
-    if(mApplyGravity) ApplyForce(Vector2(0.f, GRAVITY));
+    if(applyGravity) ApplyForce(Vector2(0.f, GRAVITY));
 
     // Apply friction
     if (mApplyFriction && mIsOnGround) ApplyForce(Vector2(-mFrictionCoefficient * mVelocity));
@@ -66,7 +69,7 @@ void RigidBodyComponent::Update(float deltaTime)
 
     if (collider) {
         float t = collider->DetectVerticalCollision(this);
-        mIsOnGround = t > 0.0f;
+        mIsOnGround = applyGravity ? (t > 0.0f) : true;
     }
 
     mAcceleration = Vector2::Zero;

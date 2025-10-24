@@ -41,10 +41,12 @@ public:
     static const int LEVEL_HEIGHT = 60;
     static const int TILE_SIZE = 32;
     static const int TRANSITION_TIME = 1;
+    static const bool APPLY_GRAVITY_SCENE_DEFAULT = true;
 
     enum class GameScene
     {
         MainMenu,
+        Bedroom,
         Level1,
     };
 
@@ -83,6 +85,8 @@ public:
 
     // Level functions
     void LoadMainMenu();
+    void LoadBedroom();
+    void LoadFirstLevel();
 
     std::vector<Actor *> GetNearbyActors(const Vector2 &position, const int range = 1);
     std::vector<class AABBColliderComponent *> GetNearbyColliders(const Vector2 &position, const int range = 2);
@@ -114,6 +118,12 @@ public:
     SDL_Texture *LoadTexture(const std::string &texturePath);
 
     void SetGameScene(GameScene scene, float transitionTime = .0f);
+    void SetApplyGravityScene(bool applyGravity) {
+        mApplyGravityScene = applyGravity;
+    };
+    bool GetApplyGravityScene() const {
+        return mApplyGravityScene;
+    };
     void ResetGameScene(float transitionTime = .0f);
     void UnloadScene();
 
@@ -160,12 +170,12 @@ private:
     void UpdateSceneManager(float deltaTime);
     void ChangeScene();
     void SetMap(const std::string &path);
-    void LoadFirstLevel();
 
     bool mDebugMode;
 
     SceneManagerState mSceneManagerState;
     float mSceneManagerTimer;
+    bool mApplyGravityScene;
 
     // Spatial Hashing for collision detection
     class SpatialHashing *mSpatialHashing;

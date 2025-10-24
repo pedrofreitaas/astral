@@ -51,6 +51,16 @@ void Zoe::OnProcessInput(const uint8_t *state)
         mRigidBodyComponent->ApplyForce(Vector2(-mForwardSpeed, 0.0f));
     }
 
+    if (state[SDL_SCANCODE_S])
+    {
+        mRigidBodyComponent->ApplyForce(Vector2(0.f, mForwardSpeed));
+    }
+
+    if (state[SDL_SCANCODE_W])
+    {
+        mRigidBodyComponent->ApplyForce(Vector2(0.f, -mForwardSpeed));
+    }
+
     if (state[SDL_SCANCODE_SPACE])
     {
         float jumpForce = mRigidBodyComponent->GetVerticalForce(3); 
