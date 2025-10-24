@@ -262,13 +262,12 @@ void Game::LoadMainMenu()
         Vector2(0, 0),
         Vector2(mWindowWidth, mWindowHeight));
 
-    mainMenu->AddText(
-        "Astral",
-        Vector2(mWindowWidth / 2.0f - 100.0f, mWindowHeight / 4.0f),
-        Vector2(200.0f, 50.0f),
-        40,
-        1024,
-        Vector3(255.0f, 255.0f, 255.0f));
+    Vector2 titleSize = Vector2(255.f, 92.f);
+    mainMenu->AddImage(
+        "../assets/Sprites/Menu/title.png",
+        Vector2(mWindowWidth / 2.0f - titleSize.x / 2.0f, mWindowHeight * .1f),
+        titleSize
+    );
 
     const Vector2 playButtonSize = Vector2(
         mWindowWidth / 6.0f,
