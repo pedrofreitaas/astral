@@ -183,6 +183,13 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
     steps.push_back(std::make_unique<MoveStep>(this, mZoe, Vector2(98.0f, mZoe->GetPosition().y), 20.0f));
     steps.push_back(std::make_unique<WaitStep>(this, 1.5f));
+
+    std::vector<std::string> dialogue = {
+        "O que... o que e isso?",
+        "Onde estou? Parece que estou no espaco.",
+        "Mas algo esta errado, eu sou uma pessoa comum, eu nao deveria estar aqui."};
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
     steps.push_back(std::make_unique<SpawnStep>(
         this,
         SpawnStep::ActorType::Star,
@@ -193,20 +200,23 @@ void Game::LoadFirstLevel()
         { return GetStar(); },
         Vector2(mWindowWidth / 2.0f, mMap->GetHeight() - mWindowHeight / 2.0f),
         250.0f));
-    std::vector<std::string> dialogue = {
-        "Zoe: O que... o que e isso?",
-        "Zoe: Uma estrela? Mas como ela foi parar aqui?"};
-    steps.push_back(std::make_unique<DialogueStep>(this, dialogue));
+
+    dialogue = {
+        "Uma estrela? Ela parece estar indo para algum lugar?",
+        "Nao tenho outra opcao, tenho que seguir essa estrela."};
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this]()
         { return GetStar(); },
         Vector2(mWindowWidth * 1.5f, mMap->GetHeight() - mWindowHeight * 1.2f),
         320.0f));
-    std::vector<std::string> dialogue2 = {
-        "Zoe: Espere! Volte aqui!",
-        "Zoe: Onde sera que ela foi? Preciso saber se ela está me levando para algum lugar..."};
-    steps.push_back(std::make_unique<DialogueStep>(this, dialogue2));
+    
+    dialogue = {
+        "Espere! Volte aqui!",
+        "Onde sera que ela foi? Preciso saber se ela esta me levando para algum lugar..."};
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
     steps.push_back(std::make_unique<UnspawnStep>(this, [this]()
                                                   { return GetStar(); }));
 
@@ -420,8 +430,8 @@ void Game::UpdateGame()
         mCurrentCutscene->Update(deltaTime);
     }
 
-    // Reinsert audio system
     mAudio->Update(deltaTime);
+    GetDialogueSystem()->Update(deltaTime);
 
     // Reinsert UI screens
     for (auto ui : mUIStack)

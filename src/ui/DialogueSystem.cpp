@@ -4,7 +4,8 @@
 
 DialogueSystem::DialogueSystem(Game::GamePlayState currentGameState)
     : mGame(nullptr), mFont(nullptr), mSmallFont(nullptr), mCurrentLine(0), mTextTexture(nullptr),
-      mIsActive(false), mContinuePressed(false), mPromptTexture(nullptr), mPreviousGameState(currentGameState)
+      mIsActive(false), mContinuePressed(false), mPromptTexture(nullptr), mPreviousGameState(currentGameState),
+      mSpeakerName(""), mSpeakerTexture(nullptr), mSpeakerOffset(-5.0f, -10.0f), mTextOffset(0.0f, 0.0f)
 {
 }
 
@@ -25,6 +26,10 @@ DialogueSystem::~DialogueSystem()
     if (mPromptTexture)
     {
         SDL_DestroyTexture(mPromptTexture);
+    }
+    if (mSpeakerTexture)
+    {
+        SDL_DestroyTexture(mSpeakerTexture);
     }
 }
 
@@ -61,6 +66,9 @@ void DialogueSystem::Initialize(Game* game)
             SDL_FreeSurface(surface);
         }
     }
+
+    // Create initial speaker texture (empty)
+    CreateSpeakerTexture();
 }
 
 void DialogueSystem::StartDialogue(const std::vector<std::string>& lines, std::function<void()> onComplete)
@@ -79,6 +87,27 @@ void DialogueSystem::StartDialogue(const std::vector<std::string>& lines, std::f
     CreateTextTexture();
     mPromptRect.x = mBoxRect.x + mBoxRect.w - mPromptRect.w - 20;
     mPromptRect.y = mBoxRect.y + mBoxRect.h - mPromptRect.h - 15;
+    
+    // Position speaker box in upper-left corner of dialogue box with offset
+    mSpeakerRect.x = mBoxRect.x + 10 + static_cast<int>(mSpeakerOffset.x);
+    mSpeakerRect.y = mBoxRect.y - mSpeakerRect.h / 2 + static_cast<int>(mSpeakerOffset.y);
+}
+
+void DialogueSystem::StartDialogueWithSpeaker(const std::string& speaker, const std::vector<std::string>& lines, std::function<void()> onComplete)
+{
+    // Set the speaker name
+    SetSpeakerName(speaker);
+    
+    // Start the dialogue normally
+    StartDialogue(lines, [this, onComplete]() {
+        // Reset speaker to empty when dialogue completes
+        SetSpeakerName("");
+        // Call the original onComplete callback
+        if (onComplete)
+        {
+            onComplete();
+        }
+    });
 }
 
 void DialogueSystem::HandleInput(const uint8_t* keyState)
@@ -125,6 +154,21 @@ void DialogueSystem::Draw(SDL_Renderer* renderer)
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(renderer, &mBoxRect);
 
+    // Draw speaker box only if speaker name is not empty
+    if (mSpeakerTexture && !mSpeakerName.empty())
+    {
+        // Draw background for speaker
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 200);
+        SDL_Rect speakerBgRect = {mSpeakerRect.x - 5, mSpeakerRect.y - 5, 
+                                  mSpeakerRect.w + 10, mSpeakerRect.h + 10};
+        SDL_RenderFillRect(renderer, &speakerBgRect);
+        
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderDrawRect(renderer, &speakerBgRect);
+        
+        SDL_RenderCopy(renderer, mSpeakerTexture, nullptr, &mSpeakerRect);
+    }
+
     if (mTextTexture)
     {
         SDL_RenderCopy(renderer, mTextTexture, nullptr, &mTextRect);
@@ -147,7 +191,53 @@ void DialogueSystem::CreateTextTexture()
     if (surface)
     {
         mTextTexture = SDL_CreateTextureFromSurface(mGame->GetRenderer(), surface);
-        mTextRect = {mBoxRect.x + 20, mBoxRect.y + 20, surface->w, surface->h};
+        mTextRect = {mBoxRect.x + 20 + static_cast<int>(mTextOffset.x), 
+                     mBoxRect.y + 20 + static_cast<int>(mTextOffset.y), 
+                     surface->w, surface->h};
         SDL_FreeSurface(surface);
     }
+}
+
+void DialogueSystem::CreateSpeakerTexture()
+{
+    if (mSpeakerTexture)
+    {
+        SDL_DestroyTexture(mSpeakerTexture);
+        mSpeakerTexture = nullptr;
+    }
+
+    // Only create texture if speaker name is not empty
+    if (!mSpeakerName.empty())
+    {
+        SDL_Color white = {255, 255, 255, 255};
+        SDL_Surface* surface = TTF_RenderText_Blended(mFont, mSpeakerName.c_str(), white);
+        if (surface)
+        {
+            mSpeakerTexture = SDL_CreateTextureFromSurface(mGame->GetRenderer(), surface);
+            mSpeakerRect.w = surface->w;
+            mSpeakerRect.h = surface->h;
+            SDL_FreeSurface(surface);
+        }
+    }
+}
+
+void DialogueSystem::SetSpeakerName(const std::string& name)
+{
+    if (mSpeakerName != name)
+    {
+        mSpeakerName = name;
+        CreateSpeakerTexture();
+        
+        // Reposition the speaker box if the dialogue is active and name is not empty
+        if (mIsActive && !mSpeakerName.empty())
+        {
+            mSpeakerRect.x = mBoxRect.x + 10 + static_cast<int>(mSpeakerOffset.x);
+            mSpeakerRect.y = mBoxRect.y - mSpeakerRect.h / 2 + static_cast<int>(mSpeakerOffset.y);
+        }
+    }
+}
+
+void DialogueSystem::Update(float deltaTime)
+{
+    // Currently no time-based updates needed
 }

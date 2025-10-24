@@ -88,10 +88,14 @@ private:
 
 class DialogueStep : public Step {
 public:
-    DialogueStep(class Game* game, std::vector<std::string>& messages) : Step(game), mMessages(messages) {}
+    DialogueStep(class Game* game, std::vector<std::string>& messages) 
+        : Step(game), mMessages(messages), mSpeaker("") {}
+    DialogueStep(class Game* game, const std::string& speaker, std::vector<std::string>& messages) 
+        : Step(game), mMessages(messages), mSpeaker(speaker) {}
     void Update(float deltaTime) override;
 private:
     std::vector<std::string> mMessages;
+    std::string mSpeaker;
 };
 
 class Cutscene {
