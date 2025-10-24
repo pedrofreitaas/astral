@@ -213,7 +213,7 @@ void Game::LoadFirstLevel()
         { return GetStar(); },
         Vector2(mWindowWidth * 1.5f, mMap->GetHeight() - mWindowHeight * 1.2f),
         320.0f));
-    
+
     dialogue = {
         "Espere! Volte aqui!",
         "Onde sera que ela foi? Preciso saber se ela esta me levando para algum lugar..."};
@@ -266,8 +266,7 @@ void Game::LoadMainMenu()
     mainMenu->AddImage(
         "../assets/Sprites/Menu/title.png",
         Vector2(mWindowWidth / 2.0f - titleSize.x / 2.0f, mWindowHeight * .1f),
-        titleSize
-    );
+        titleSize);
 
     const Vector2 playButtonSize = Vector2(
         mWindowWidth / 6.0f,
@@ -399,20 +398,19 @@ void Game::HandleKeyPressActors(const int key, const bool isPressed)
 
 void Game::TogglePause()
 {
-    if (mGameScene != GameScene::MainMenu)
+    if (mGameScene == GameScene::MainMenu)
+        return;
+
+    if (mGamePlayState == GamePlayState::Playing)
     {
-        if (mGamePlayState == GamePlayState::Playing)
-        {
-            mGamePlayState = GamePlayState::Paused;
-            // mAudio->PlaySound("Coin.wav");
-            mAudio->PauseSound(mMusicHandle);
-        }
-        else if (mGamePlayState == GamePlayState::Paused)
-        {
-            mGamePlayState = GamePlayState::Playing;
-            // mAudio->PlaySound("Coin.wav");
-            mAudio->ResumeSound(mMusicHandle);
-        }
+        mGamePlayState = GamePlayState::Paused;
+        mAudio->PauseSound(mMusicHandle);
+    }
+
+    else if (mGamePlayState == GamePlayState::Paused)
+    {
+        mGamePlayState = GamePlayState::Playing;
+        mAudio->ResumeSound(mMusicHandle);
     }
 }
 
@@ -666,11 +664,13 @@ void Game::GenerateOutput()
         throw std::runtime_error("Failed to set logical size: " + std::string(SDL_GetError()));
     }
 
-    if (mEnemy && mZoe) {
+    if (mEnemy && mZoe)
+    {
         std::vector<Vector2> path = mSpatialHashing->GetPath(mEnemy, mZoe->GetCenter());
 
         // draw each point in path with lines
-        for (size_t i = 1; i < path.size(); i++) {
+        for (size_t i = 1; i < path.size(); i++)
+        {
             SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
             SDL_RenderDrawLine(
                 mRenderer,
