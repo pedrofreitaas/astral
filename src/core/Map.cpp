@@ -118,6 +118,7 @@ void Map::LoadObjectsLayer(const json &layerData, int layerIdx)
 		int width = obj["width"].get<int>();
 		int height = obj["height"].get<int>();
 		std::string ev, function_name;
+		json parameters = json::object();
 
 		for (const auto &prop : obj["properties"])
 		{
@@ -128,6 +129,9 @@ void Map::LoadObjectsLayer(const json &layerData, int layerIdx)
 				ev = propValue;
 			else if (propName == "function_name")
 				function_name = propValue;
+			// every other property goes into parameters json
+			else
+				parameters[propName] = propValue;
 		}
 
 		MapObject *mapObject = new MapObject(
@@ -136,7 +140,8 @@ void Map::LoadObjectsLayer(const json &layerData, int layerIdx)
 			ev,
 			function_name,
 			Vector2(x, y),
-			Vector2(width, height));
+			Vector2(width, height),
+			parameters);
 
 		mMapObjects.push_back(mapObject);
 	}
