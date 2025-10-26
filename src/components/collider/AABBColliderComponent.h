@@ -16,7 +16,8 @@ enum class ColliderLayer
     Enemy,
     Blocks,
     Objects,
-    Item
+    Item,
+    Portal
 };
 
 class AABBColliderComponent : public Component

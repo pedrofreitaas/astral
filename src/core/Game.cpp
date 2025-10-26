@@ -32,6 +32,7 @@
 #include "../ui/DialogueSystem.h"
 #include "../actors/Star.h"
 #include "../actors/Enemy.h"
+#include "../actors/Portal.h"
 
 const int CHAR_WIDTH = 6;
 const int WORD_HEIGHT = 8;
@@ -407,7 +408,8 @@ void Game::UpdateCamera()
     float maxCameraX = mMap->GetWidth() - mWindowWidth;
     float maxCameraY = mMap->GetHeight() - mWindowHeight;
 
-    if (!mMaintainCameraInMap) {
+    if (!mMaintainCameraInMap)
+    {
         mCameraPos.x = cameraX;
         mCameraPos.y = cameraY;
 
@@ -914,7 +916,8 @@ void Game::LoadBedroom()
 
     AddCutscene("enterBedroomPortal",
                 std::move(steps),
-                [this]() {
+                [this]()
+                {
                     this->SetGameScene(GameScene::BedroomPortal);
                 });
 }
@@ -933,12 +936,49 @@ void Game::LoadBedroomPortal()
     mZoe = new Zoe(this, 1500.0f);
     mZoe->SetPosition(Vector2(10.0f, 32.0f));
 
+    auto portal = new Portal(this, Vector2(0.f, 72.f) + mMap->GetCenter());
+
     std::vector<std::unique_ptr<Step>> steps;
-    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
+    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this]()
+        { return GetZoe(); },
+        [this]()
+        { return GetZoe()->GetCenter() + Vector2(-10.f, 0.f); },
+        20.f));
+    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this]()
+        { return GetZoe(); },
+        [this]()
+        { return GetZoe()->GetCenter() + Vector2(10.f, 0.f); },
+        20.f));
+    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
+    std::vector<std::string> dialogue = {
+        "Pai? Mae? Cade voces?",
+        "O que e isso no meio do quarto?",
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this]()
+        { return GetZoe(); },
+        [this, portal]()
+        { return portal->GetCenter(); },
+        120.0f,
+        true));
+    steps.push_back(std::make_unique<UnspawnStep>(
+        this, 
+        [this]()
+        { return this->GetZoe(); }));
 
     AddCutscene("portalSuck",
                 std::move(steps),
-                [this]() {
+                [this]()
+                {
                     this->SetGameScene(GameScene::Level1);
                 });
 }
@@ -956,7 +996,7 @@ void Game::LoadFirstLevel()
         Vector2(0.0f, 0.0f),
         Vector2(mWindowWidth, mWindowHeight),
         false);
-    
+
     mEnemy = new Enemy(this, 1500.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
 
     mZoe = new Zoe(this, 1500.0f);
@@ -964,26 +1004,32 @@ void Game::LoadFirstLevel()
 
     std::vector<std::unique_ptr<Step>> steps;
     steps.push_back(std::make_unique<MoveStep>(
-        this, 
-        [this](){ return GetZoe(); },
-        [this](){
-            return Vector2(96.0f, GetZoe()->GetPosition().y);
+        this,
+        [this]()
+        { return GetZoe(); },
+        [this]()
+        {
+            return Vector2(GetZoe()->GetCenter().x+64.f, GetZoe()->GetCenter().y);
         },
         100.0f));
     steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
     steps.push_back(std::make_unique<MoveStep>(
-        this, 
-        [this](){ return GetZoe(); },
-        [this](){
-            return Vector2(94.0f, GetZoe()->GetPosition().y);
+        this,
+        [this]()
+        { return GetZoe(); },
+        [this]()
+        {
+            return Vector2(GetZoe()->GetCenter().x-2.f, GetZoe()->GetCenter().y);
         },
         20.0f));
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
     steps.push_back(std::make_unique<MoveStep>(
-        this, 
-        [this](){ return GetZoe(); },
-        [this](){
-            return Vector2(98.0f, GetZoe()->GetPosition().y);
+        this,
+        [this]()
+        { return GetZoe(); },
+        [this]()
+        {
+            return Vector2(GetZoe()->GetCenter().x+4.f, GetZoe()->GetCenter().y);
         },
         20.0f));
     steps.push_back(std::make_unique<WaitStep>(this, 1.5f));
@@ -1023,8 +1069,9 @@ void Game::LoadFirstLevel()
         "Onde sera que ela foi? Preciso saber se ela esta me levando para algum lugar..."};
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
-    steps.push_back(std::make_unique<UnspawnStep>(this, [this]()
-                                                  { return GetStar(); }));
+    steps.push_back(std::make_unique<UnspawnStep>(
+        this, [this]()
+        { return GetStar(); }));
 
     AddCutscene("Intro",
                 std::move(steps),
