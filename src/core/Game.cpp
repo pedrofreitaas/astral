@@ -878,11 +878,10 @@ void Game::LoadBedroom()
     mZoe->SetPosition(Vector2(32.0f, 80.0f));
 
     std::vector<std::unique_ptr<Step>> steps;
-    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
     std::vector<std::string> dialogue = {
-        "Acho que eu deveria ver como Papai e Mamae estao..."};
+        "Hoje e dia de visitar a Vovo, Papai e Mamae ja devem estar se arrumando.",
+        "Acho que eu deveria ver como eles estao..."};
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
-    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
 
     AddCutscene("leave_bedroom",
                 std::move(steps),
@@ -892,7 +891,7 @@ void Game::LoadBedroom()
 
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
     dialogue = {
-        "Hoje é dia de visitar a Vovó, Papai e Mamae já devem estar se arrumando."};
+        "Sera que eles estao bravos porque acordei tarde?"};
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
     steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
 
@@ -920,14 +919,15 @@ void Game::LoadBedroomPortal()
     AddCutscene("portalSuck",
                 std::move(steps),
                 [this]() {
-                    // this->SetGameScene(GameScene::Level1);
-                    SDL_Log("Transition to Level 1 would happen here.");
+                    this->SetGameScene(GameScene::Level1);
                 });
 }
 
 void Game::LoadFirstLevel()
 {
     mHUD = new HUD(this, FONT_PATH_INTER);
+
+    SetApplyGravityScene(true);
 
     SetMap("demo.json");
 
@@ -955,17 +955,17 @@ void Game::LoadFirstLevel()
         this, 
         [this](){ return GetZoe(); },
         [this](){
-            return Vector2(96.0f, GetZoe()->GetPosition().y - 50.0f);
+            return Vector2(94.0f, GetZoe()->GetPosition().y);
         },
-        80.0f));
+        20.0f));
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
     steps.push_back(std::make_unique<MoveStep>(
         this, 
         [this](){ return GetZoe(); },
         [this](){
-            return Vector2(96.0f, GetZoe()->GetPosition().y + 50.0f);
+            return Vector2(98.0f, GetZoe()->GetPosition().y);
         },
-        80.0f));
+        20.0f));
     steps.push_back(std::make_unique<WaitStep>(this, 1.5f));
 
     std::vector<std::string> dialogue = {
@@ -988,7 +988,7 @@ void Game::LoadFirstLevel()
 
     dialogue = {
         "Uma estrela? Ela parece estar indo para algum lugar?",
-        "Nao tenho outra opcao, tenho que seguir essa estrela."};
+        "Nao tenho outra opcao, tenho que segui-la."};
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
     steps.push_back(std::make_unique<MoveStep>(
         this,

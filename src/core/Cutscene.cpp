@@ -33,8 +33,7 @@ void Cutscene::RemoveStep(Step& step) {
 
 void Cutscene::Play()  { 
     if (mSteps.empty()) {
-        SDL_Log("Cannot play an empty cutscene");
-        return;
+        throw std::runtime_error("Cannot play a cutscene with no steps.");
     }
     
     mState = State::Playing;
