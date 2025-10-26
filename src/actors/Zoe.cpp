@@ -41,25 +41,17 @@ void Zoe::OnProcessInput(const uint8_t *state)
     if (!mRigidBodyComponent->GetOnGround())
         return;
 
-    if (state[SDL_SCANCODE_D])
-    {
-        mRigidBodyComponent->ApplyForce(Vector2(mForwardSpeed, 0.0f));
+    Vector2 movementForce = Vector2(
+        state[SDL_SCANCODE_D] - state[SDL_SCANCODE_A],
+        state[SDL_SCANCODE_S] - state[SDL_SCANCODE_W]
+    );
+
+    float lengthSq = movementForce.LengthSq();
+    if (lengthSq > 0.0f) {
+        movementForce *= 1/(Math::Sqrt(lengthSq));
     }
 
-    if (state[SDL_SCANCODE_A])
-    {
-        mRigidBodyComponent->ApplyForce(Vector2(-mForwardSpeed, 0.0f));
-    }
-
-    if (state[SDL_SCANCODE_S])
-    {
-        mRigidBodyComponent->ApplyForce(Vector2(0.f, mForwardSpeed));
-    }
-
-    if (state[SDL_SCANCODE_W])
-    {
-        mRigidBodyComponent->ApplyForce(Vector2(0.f, -mForwardSpeed));
-    }
+    mRigidBodyComponent->ApplyForce(movementForce*mForwardSpeed);
 
     if (state[SDL_SCANCODE_SPACE] && mGame->GetApplyGravityScene())
     {
@@ -157,7 +149,7 @@ void Zoe::OnUpdate(float deltaTime)
         SetRotation(Math::Pi);
     }
 
-    mColliderComponent->MaintainInCamera();
+    mColliderComponent->MaintainInMap();
     ManageAnimations();
 
     if (mBehaviorState == BehaviorState::Dying)
