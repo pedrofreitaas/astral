@@ -4,7 +4,7 @@
   <export target="../../assets/Levels/Maps/bedroom.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/Terrain and Back Wall (32x32).tsx"/>
- <tileset firstgid="248" source="bedroom.tsx"/>
+ <tileset firstgid="248" source="../tilesets/bedroom.tsx"/>
  <layer id="3" name="behind_player" width="15" height="10">
   <data encoding="csv">
 0,0,267,0,0,0,0,0,0,267,0,0,267,0,0,

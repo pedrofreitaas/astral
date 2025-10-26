@@ -4,7 +4,7 @@
   <export target="../../assets/Levels/Maps/bedroomPortal.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/Terrain and Back Wall (32x32).tsx"/>
- <tileset firstgid="248" source="bedroom.tsx"/>
+ <tileset firstgid="248" source="../tilesets/bedroom.tsx"/>
  <layer id="3" name="behind_player" width="6" height="10">
   <data encoding="csv">
 0,267,0,0,0,0,
@@ -48,7 +48,7 @@
 </data>
  </layer>
  <objectgroup id="4" name="objects">
-  <object id="3" x="48" y="130.5" width="84.5" height="40">
+  <object id="3" x="57.5" y="144" width="84.5" height="40">
    <properties>
     <property name="cutscene_name" value="portalSuck"/>
     <property name="event" value="enter"/>

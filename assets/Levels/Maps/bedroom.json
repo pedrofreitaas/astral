@@ -71,7 +71,7 @@
          "name":"objects",
          "objects":[
                 {
-                 "height":106.663491660317,
+                 "height":106.663,
                  "id":1,
                  "name":"",
                  "properties":[
@@ -93,12 +93,12 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":40.1331385996105,
-                 "x":204.126957920583,
-                 "y":168.803318939971
+                 "width":40.1331,
+                 "x":204.127,
+                 "y":168.803
                 }, 
                 {
-                 "height":106.663491660317,
+                 "height":106.663,
                  "id":5,
                  "name":"",
                  "properties":[
@@ -120,9 +120,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":16.7998052662772,
-                 "x":460.793624587249,
-                 "y":58.8033189399712
+                 "width":16.7998,
+                 "x":460.794,
+                 "y":58.8033
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -143,7 +143,7 @@
         }, 
         {
          "firstgid":248,
-         "source":"..\/..\/..\/tiled\/maps\/bedroom.tsx"
+         "source":"..\/..\/..\/tiled\/tilesets\/bedroom.tsx"
         }],
  "tilewidth":32,
  "type":"map",
