@@ -46,7 +46,8 @@ Game::Game(int windowWidth, int windowHeight)
       mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero),
       mBackgroundPosition(Vector2::Zero), mMap(nullptr), mBackgroundIsCameraWise(true),
       mCurrentCutscene(nullptr), mCutscenes(), mGamePlayState(GamePlayState::Playing),
-      mDebugMode(false), mPrevDeltaTime(0.0f), mEnemy(nullptr), mStar(nullptr), mApplyGravityScene(true)
+      mDebugMode(false), mPrevDeltaTime(0.0f), mEnemy(nullptr), mStar(nullptr), mApplyGravityScene(true),
+      mCameraCenter(CameraCenter::Zoe), mMaintainCameraInMap(true), mCameraCenterPos(Vector2::Zero)
 {
     mRealWindowWidth = windowWidth;
     mRealWindowHeight = windowHeight;
@@ -163,6 +164,8 @@ void Game::ChangeScene()
 
     // Reset camera position
     mCameraPos.Set(0.0f, 0.0f);
+    SetMaintainCameraInMap(true);
+    SetCameraCenterToZoe();
 
     // Reset gameplay state
     mGamePlayState = GamePlayState::Playing;
@@ -394,13 +397,24 @@ void Game::UpdateSceneManager(float deltaTime)
 
 void Game::UpdateCamera()
 {
-    if (!mZoe)
+    if (mCameraCenter == CameraCenter::Zoe && !mZoe)
         return;
 
-    float cameraX = mZoe->GetPosition().x - mWindowWidth / 2.0f;
-    float cameraY = mZoe->GetPosition().y - mWindowHeight / 2.0f;
+    Vector2 center = (mCameraCenter == CameraCenter::Zoe) ? mZoe->GetPosition() : mCameraCenterPos;
+
+    float cameraX = center.x - mWindowWidth / 2.0f;
+    float cameraY = center.y - mWindowHeight / 2.0f;
     float maxCameraX = mMap->GetWidth() - mWindowWidth;
     float maxCameraY = mMap->GetHeight() - mWindowHeight;
+
+    if (!mMaintainCameraInMap) {
+        mCameraPos.x = cameraX;
+        mCameraPos.y = cameraY;
+
+        mCameraPos.x = mCameraPos.x;
+        mCameraPos.y = mCameraPos.y;
+        return;
+    };
 
     mCameraPos.x = std::min(cameraX, maxCameraX);
     mCameraPos.y = std::min(cameraY, maxCameraY);
@@ -872,6 +886,9 @@ void Game::LoadBedroom()
 
     SetMap("bedroom.json");
 
+    SetCameraCenter(mMap->GetCenter());
+    SetMaintainCameraInMap(false);
+
     SetApplyGravityScene(false);
 
     mZoe = new Zoe(this, 1500.0f);
@@ -907,6 +924,9 @@ void Game::LoadBedroomPortal()
     mHUD = new HUD(this, FONT_PATH_INTER);
 
     SetMap("bedroomPortal.json");
+
+    SetCameraCenter(mMap->GetCenter());
+    SetMaintainCameraInMap(false);
 
     SetApplyGravityScene(false);
 

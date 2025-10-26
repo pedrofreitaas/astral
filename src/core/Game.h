@@ -51,6 +51,12 @@ public:
         Level1,
     };
 
+    enum class CameraCenter
+    {
+        Zoe,
+        Point
+    };
+
     enum class SceneManagerState
     {
         None,
@@ -163,6 +169,18 @@ public:
     int GetMapHeight();
 
 private:
+    void SetCameraCenterToZoe() {
+        mCameraCenter = CameraCenter::Zoe;
+        mCameraCenterPos = Vector2::Zero;
+    }
+    void SetCameraCenter(const Vector2& newCenter) {
+        mCameraCenter = CameraCenter::Point;
+        mCameraCenterPos = newCenter;
+    }
+    void SetMaintainCameraInMap(bool newValue) {
+        mMaintainCameraInMap = newValue;
+    }
+
     void ProcessInput();
     void UpdateGame();
     void UpdateCamera();
@@ -230,4 +248,8 @@ private:
     Cutscene *mCurrentCutscene;
 
     class DialogueSystem *mDialogueSystem;
+
+    CameraCenter mCameraCenter;
+    Vector2 mCameraCenterPos;
+    bool mMaintainCameraInMap;
 };

@@ -7,6 +7,7 @@
 #include "./Tileset.h"
 #include "../actors/MapObject.h"
 #include "../actors/Tile.h"
+#include "../libs/Math.h"
 
 class Game;
 
@@ -21,6 +22,7 @@ public:
     void Print();
     int GetWidth() const { return mWidth; }
     int GetHeight() const { return mHeight; }
+    Vector2 GetCenter() const { return Vector2(mWidth, mHeight)*.5f; }
 
 private:
     class Game* mGame;
