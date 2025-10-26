@@ -45,7 +45,8 @@ public:
         class Game* game, 
         std::function<Actor*()> targetActorFunc,
         std::function<Vector2()> getTargetPosFunc, 
-        float speed);
+        float speed,
+        bool spin=false);
 
     void Update(float deltaTime) override;
     void PreUpdate() override;
@@ -54,6 +55,8 @@ private:
     std::function<Actor*()> mGetTargetActor;
     std::function<Vector2()> mGetTargetPos;
     Vector2 mTargetPos;
+    bool mSpin;
+    float mSpinAngle;
 };
 
 class UnspawnStep : public Step {
