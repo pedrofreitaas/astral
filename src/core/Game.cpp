@@ -929,7 +929,7 @@ void Game::LoadFirstLevel()
 
     SetApplyGravityScene(true);
 
-    SetMap("demo.json");
+    SetMap("level1.json");
 
     SetBackgroundImage(
         "../assets/Levels/Backgrounds/galaxy.png",
