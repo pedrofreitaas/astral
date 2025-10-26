@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.1-99-gec89c545" orientation="orthogonal" renderorder="right-down" width="6" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="4">
+ <editorsettings>
+  <export target="../../assets/Levels/Maps/bedroomPortal.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" source="../tilesets/Terrain and Back Wall (32x32).tsx"/>
+ <tileset firstgid="248" source="bedroom.tsx"/>
+ <layer id="3" name="behind_player" width="6" height="10">
+  <data encoding="csv">
+0,267,0,0,0,0,
+280,285,284,284,280,0,
+280,280,280,280,280,0,
+280,280,280,280,280,0,
+280,280,280,280,280,0,
+280,280,280,280,280,0,
+280,280,280,280,280,0,
+280,280,280,280,280,0,
+280,280,280,280,280,0,
+280,280,280,280,280,0
+</data>
+ </layer>
+ <layer id="2" name="blocks" width="6" height="10">
+  <data encoding="csv">
+267,322,267,267,267,41,
+283,311,382,383,339,41,
+0,327,397,398,355,41,
+0,0,413,414,0,41,
+250,254,0,0,0,41,
+41,270,0,0,0,41,
+41,270,0,0,0,41,
+41,270,0,0,337,41,
+41,271,250,250,353,41,
+41,41,41,41,41,41
+</data>
+ </layer>
+ <layer id="1" name="above_player" width="6" height="10">
+  <data encoding="csv">
+251,251,251,251,256,0,
+0,401,0,0,265,0,
+0,0,386,0,265,0,
+0,0,0,0,265,0,
+0,0,0,0,265,0,
+0,0,0,0,265,0,
+0,0,0,0,265,0,
+0,0,0,0,265,0,
+0,0,0,0,272,0,
+0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="4" name="objects">
+  <object id="3" x="48" y="130.5" width="84.5" height="40">
+   <properties>
+    <property name="cutscene_name" value="portalSuck"/>
+    <property name="event" value="enter"/>
+    <property name="function_name" value="play_cutscene"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

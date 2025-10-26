@@ -1,12 +1,4 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"demo.json"
-        }
-    },
  "height":60,
  "infinite":false,
  "layers":[
@@ -260,7 +252,7 @@
  "nextobjectid":3,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.11.2",
+ "tiledversion":"1.11.1-99-gec89c545",
  "tileheight":32,
  "tilesets":[
         {

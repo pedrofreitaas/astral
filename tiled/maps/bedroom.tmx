@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.1-99-gec89c545" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="6">
+ <editorsettings>
+  <export target="../../assets/Levels/Maps/bedroom.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" source="../tilesets/Terrain and Back Wall (32x32).tsx"/>
+ <tileset firstgid="248" source="bedroom.tsx"/>
+ <layer id="3" name="behind_player" width="15" height="10">
+  <data encoding="csv">
+0,0,267,0,0,0,0,0,0,267,0,0,267,0,0,
+0,283,283,283,283,280,280,283,280,280,280,284,283,280,280,
+0,280,280,280,280,41,41,280,280,280,280,280,280,280,280,
+0,280,280,280,280,280,280,280,280,280,280,280,280,280,280,
+0,280,280,280,280,280,280,280,280,280,280,280,280,280,280,
+0,280,280,280,280,280,280,280,280,280,280,280,280,280,280,
+0,280,280,280,280,280,280,280,280,280,280,280,280,280,280,
+0,280,280,280,280,280,280,280,280,280,280,280,280,280,280,
+0,280,280,280,280,280,280,280,280,280,280,280,280,280,280,
+0,280,280,280,280,280,280,280,280,280,280,280,280,280,280
+</data>
+ </layer>
+ <layer id="2" name="blocks" width="15" height="10">
+  <data encoding="csv">
+41,267,322,267,267,41,41,267,267,328,267,267,304,267,267,
+41,283,381,384,283,41,41,347,283,283,283,348,320,283,283,
+41,0,397,400,265,250,250,363,0,0,0,364,0,0,0,
+41,0,413,0,265,267,267,270,0,0,0,0,0,0,0,
+41,0,0,0,265,283,284,270,0,0,0,0,0,249,250,
+41,0,0,0,0,0,0,0,0,0,0,390,391,265,41,
+41,0,308,356,310,0,0,0,0,343,0,0,0,0,41,
+41,373,324,325,326,357,0,0,0,359,434,435,436,265,41,
+41,250,340,341,342,250,250,250,250,250,250,250,250,378,41,
+41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
+</data>
+ </layer>
+ <layer id="1" name="above_player" width="15" height="10">
+  <data encoding="csv">
+0,255,251,251,256,0,0,255,251,251,251,251,251,251,251,
+0,270,0,0,265,0,0,270,333,333,332,0,0,0,0,
+0,270,0,0,0,0,0,270,0,0,0,0,0,0,0,
+0,270,0,0,0,369,370,0,0,0,0,0,0,0,0,
+0,270,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,270,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,270,0,309,0,0,0,0,0,385,418,419,420,265,0,
+0,270,0,387,0,0,0,0,0,0,0,0,0,0,0,
+0,270,250,250,250,0,0,0,0,0,0,0,0,272,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="4" name="objects">
+  <object id="1" x="204.127" y="168.803" width="40.1331" height="106.663">
+   <properties>
+    <property name="cutscene_name" value="leave_bedroom"/>
+    <property name="event" value="enter"/>
+    <property name="function_name" value="play_cutscene"/>
+   </properties>
+  </object>
+  <object id="5" x="460.794" y="58.8033" width="16.7998" height="106.663">
+   <properties>
+    <property name="cutscene_name" value="enterBedroomPortal"/>
+    <property name="event" value="enter"/>
+    <property name="function_name" value="play_cutscene"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
