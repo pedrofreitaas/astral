@@ -61,7 +61,7 @@ void Zoe::OnProcessInput(const uint8_t *state)
         mRigidBodyComponent->ApplyForce(Vector2(0.f, -mForwardSpeed));
     }
 
-    if (state[SDL_SCANCODE_SPACE])
+    if (state[SDL_SCANCODE_SPACE] && mGame->GetApplyGravityScene())
     {
         float jumpForce = mRigidBodyComponent->GetVerticalForce(3); 
         mRigidBodyComponent->ApplyForce(Vector2(0.f, jumpForce));
