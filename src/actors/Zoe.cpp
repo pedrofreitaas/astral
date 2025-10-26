@@ -122,7 +122,10 @@ void Zoe::ManageState()
             {
                 mBehaviorState = BehaviorState::Jumping;
             }
-            else if (std::abs(mRigidBodyComponent->GetVelocity().x) > 0.1f)
+            else if (
+                std::abs(mRigidBodyComponent->GetVelocity().x) > 0.1f ||
+                std::abs(mRigidBodyComponent->GetVelocity().y) > 0.1f && !mGame->GetApplyGravityScene()
+            )
             {
                 mBehaviorState = BehaviorState::Moving;
             }
