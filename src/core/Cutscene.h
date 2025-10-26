@@ -14,6 +14,7 @@ public:
     explicit Step(class Game* game) : mGame(game) {}
     virtual ~Step() = default;
     virtual void Update(float deltaTime) = 0;
+    virtual void PreUpdate() = 0;
 
     bool operator==(const Step& other) const { return this == &other; }
     bool GetIsComplete() const { return mIsComplete; }
@@ -32,6 +33,7 @@ public:
     };
     SpawnStep(class Game* game, ActorType actorType, const Vector2& position);
     void Update(float deltaTime) override;
+    void PreUpdate() override {};
 private:
     ActorType mActorType;
     Vector2 mPosition;
@@ -39,15 +41,19 @@ private:
 
 class MoveStep : public Step {
 public:
-    MoveStep(class Game* game, std::function<Actor*()> targetActorFunc, const Vector2& targetPos, float speed):
-        Step(game), mTargetPos(targetPos), mSpeed(speed), mGetTargetActor(std::move(targetActorFunc)) {};
+    MoveStep(
+        class Game* game, 
+        std::function<Actor*()> targetActorFunc,
+        std::function<Vector2()> getTargetPosFunc, 
+        float speed);
 
-    MoveStep(class Game* game, Actor* targetActor, const Vector2& targetPos, float speed);
     void Update(float deltaTime) override;
+    void PreUpdate() override;
 private:
     float mSpeed;
-    Vector2 mTargetPos;
     std::function<Actor*()> mGetTargetActor;
+    std::function<Vector2()> mGetTargetPos;
+    Vector2 mTargetPos;
 };
 
 class UnspawnStep : public Step {
@@ -67,6 +73,7 @@ public:
             throw std::runtime_error("UnspawnStep target Actor is null");
         }
     }
+    void PreUpdate() override {};
 private:
     std::function<Actor*()> mGetTargetActor;
 };
@@ -81,6 +88,7 @@ public:
             SetComplete();
         }
     }
+    void PreUpdate() override {};
 private:
     float mDuration;
     float mElapsed;
@@ -92,7 +100,9 @@ public:
         : Step(game), mMessages(messages), mSpeaker("") {}
     DialogueStep(class Game* game, const std::string& speaker, std::vector<std::string>& messages) 
         : Step(game), mMessages(messages), mSpeaker(speaker) {}
+    
     void Update(float deltaTime) override;
+    void PreUpdate() override {};
 private:
     std::vector<std::string> mMessages;
     std::string mSpeaker;

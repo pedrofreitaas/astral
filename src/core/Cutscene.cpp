@@ -32,7 +32,13 @@ void Cutscene::RemoveStep(Step& step) {
 }
 
 void Cutscene::Play()  { 
-    mState = State::Playing; 
+    if (mSteps.empty()) {
+        SDL_Log("Cannot play an empty cutscene");
+        return;
+    }
+    
+    mState = State::Playing;
+    mSteps[mCurrentStepIdx]->PreUpdate();
 }
 
 void Cutscene::Pause() { 
@@ -56,6 +62,9 @@ void Cutscene::Update(float deltaTime) {
             mGame->SetGamePlayState(Game::GamePlayState::Playing);
             mIsComplete = true;
             if (mOnCompleteCallback) mOnCompleteCallback();
+            return;
         }
+
+        mSteps[mCurrentStepIdx]->PreUpdate();
     }
 }

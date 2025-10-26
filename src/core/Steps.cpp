@@ -6,16 +6,23 @@
 #include "../actors/Star.h"
 #include "../ui/DialogueSystem.h"
 
-MoveStep::MoveStep(class Game *game, Actor *targetActor, const Vector2 &targetPos, float speed)
-    : Step(game), mTargetPos(targetPos), mSpeed(speed)
+MoveStep::MoveStep(
+    class Game* game, 
+    std::function<Actor*()> targetActorFunc,
+    std::function<Vector2()> getTargetPosFunc,
+    float speed)
+    : 
+    Step(game), mSpeed(speed), 
+    mGetTargetActor(std::move(targetActorFunc)), 
+    mGetTargetPos(std::move(getTargetPosFunc)),
+    mTargetPos(Vector2::Zero)
 {
-    mGetTargetActor = [targetActor]()
-    { return targetActor; };
+}
 
-    if (mGetTargetActor()->GetComponent<RigidBodyComponent>() == nullptr)
-    {
-        throw std::invalid_argument("MoveStep requires the target Actor to have a RigidBodyComponent");
-    }
+void MoveStep::PreUpdate()
+{
+    mTargetPos = mGetTargetPos();
+    SDL_Log("MoveStep PreUpdate: target position set to (%f, %f)", mTargetPos.x, mTargetPos.y);
 }
 
 void MoveStep::Update(float deltaTime)
@@ -24,6 +31,7 @@ void MoveStep::Update(float deltaTime)
         return;
 
     Actor *mTargetActor = mGetTargetActor();
+    Vector2 targetPos = mTargetPos;
 
     if (!mTargetActor)
     {
@@ -36,14 +44,14 @@ void MoveStep::Update(float deltaTime)
         throw std::runtime_error("MoveStep target Actor lost its RigidBodyComponent");
     }
 
-    Vector2 toTarget = mTargetPos - mTargetActor->GetPosition();
+    Vector2 toTarget = targetPos - mTargetActor->GetPosition();
     float distanceToTarget = toTarget.Length();
 
     if (distanceToTarget < 1e-3f)
     {
         // Close enough to target
         rb->SetVelocity(Vector2::Zero);
-        mTargetActor->SetPosition(mTargetPos);
+        mTargetActor->SetPosition(targetPos);
         SetComplete();
         return;
     }
@@ -59,7 +67,7 @@ void MoveStep::Update(float deltaTime)
     {
         // Snap to target and complete step
         rb->SetVelocity(Vector2::Zero);
-        mTargetActor->SetPosition(mTargetPos);
+        mTargetActor->SetPosition(targetPos);
         SetComplete();
     }
 
