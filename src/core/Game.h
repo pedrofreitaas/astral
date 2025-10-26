@@ -47,6 +47,7 @@ public:
     {
         MainMenu,
         Bedroom,
+        BedroomPortal,
         Level1,
     };
 
@@ -86,6 +87,7 @@ public:
     // Level functions
     void LoadMainMenu();
     void LoadBedroom();
+    void LoadBedroomPortal();
     void LoadFirstLevel();
 
     std::vector<Actor *> GetNearbyActors(const Vector2 &position, const int range = 1);
@@ -135,7 +137,7 @@ public:
     void TogglePause();
 
     // Game-specific
-    const class Zoe *GetZoe() { return mZoe; }
+    class Zoe *GetZoe() { return mZoe; }
 
     void SetGamePlayState(GamePlayState state) { mGamePlayState = state; }
     GamePlayState GetGamePlayState() const { return mGamePlayState; }

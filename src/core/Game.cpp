@@ -177,6 +177,8 @@ void Game::ChangeScene()
         LoadMainMenu();
     else if (mNextScene == GameScene::Bedroom)
         LoadBedroom();
+    else if (mNextScene == GameScene::BedroomPortal)
+        LoadBedroomPortal();
     else if (mNextScene == GameScene::Level1)
         LoadFirstLevel();
 
@@ -868,12 +870,59 @@ void Game::LoadBedroom()
 {
     mHUD = new HUD(this, FONT_PATH_INTER);
 
-    SetMap("demo.json");
+    SetMap("bedroom.json");
 
     SetApplyGravityScene(false);
 
     mZoe = new Zoe(this, 1500.0f);
-    mZoe->SetPosition(Vector2(32.0f, mMap->GetHeight() - 80.0f));
+    mZoe->SetPosition(Vector2(32.0f, 80.0f));
+
+    std::vector<std::unique_ptr<Step>> steps;
+    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
+    std::vector<std::string> dialogue = {
+        "Acho que eu deveria ver como Papai e Mamae estao..."};
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
+
+    AddCutscene("leave_bedroom",
+                std::move(steps),
+                [this]() {});
+
+    steps.clear();
+
+    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
+    dialogue = {
+        "Hoje é dia de visitar a Vovó, Papai e Mamae já devem estar se arrumando."};
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
+
+    AddCutscene("enterBedroomPortal",
+                std::move(steps),
+                [this]() {
+                    this->SetGameScene(GameScene::BedroomPortal);
+                });
+}
+
+void Game::LoadBedroomPortal()
+{
+    mHUD = new HUD(this, FONT_PATH_INTER);
+
+    SetMap("bedroomPortal.json");
+
+    SetApplyGravityScene(false);
+
+    mZoe = new Zoe(this, 1500.0f);
+    mZoe->SetPosition(Vector2(10.0f, 32.0f));
+
+    std::vector<std::unique_ptr<Step>> steps;
+    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
+
+    AddCutscene("portalSuck",
+                std::move(steps),
+                [this]() {
+                    // this->SetGameScene(GameScene::Level1);
+                    SDL_Log("Transition to Level 1 would happen here.");
+                });
 }
 
 void Game::LoadFirstLevel()
@@ -887,17 +936,36 @@ void Game::LoadFirstLevel()
         Vector2(0.0f, 0.0f),
         Vector2(mWindowWidth, mWindowHeight),
         false);
+    
+    mEnemy = new Enemy(this, 1500.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
 
     mZoe = new Zoe(this, 1500.0f);
     mZoe->SetPosition(Vector2(32.0f, mMap->GetHeight() - 80.0f));
-    mEnemy = new Enemy(this, 1500.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
 
     std::vector<std::unique_ptr<Step>> steps;
-    steps.push_back(std::make_unique<MoveStep>(this, mZoe, Vector2(96.0f, mZoe->GetPosition().y), 100.0f));
+    steps.push_back(std::make_unique<MoveStep>(
+        this, 
+        [this](){ return GetZoe(); },
+        [this](){
+            return Vector2(96.0f, GetZoe()->GetPosition().y);
+        },
+        100.0f));
     steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
-    steps.push_back(std::make_unique<MoveStep>(this, mZoe, Vector2(94.0f, mZoe->GetPosition().y), 20.0f));
+    steps.push_back(std::make_unique<MoveStep>(
+        this, 
+        [this](){ return GetZoe(); },
+        [this](){
+            return Vector2(96.0f, GetZoe()->GetPosition().y - 50.0f);
+        },
+        80.0f));
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
-    steps.push_back(std::make_unique<MoveStep>(this, mZoe, Vector2(98.0f, mZoe->GetPosition().y), 20.0f));
+    steps.push_back(std::make_unique<MoveStep>(
+        this, 
+        [this](){ return GetZoe(); },
+        [this](){
+            return Vector2(96.0f, GetZoe()->GetPosition().y + 50.0f);
+        },
+        80.0f));
     steps.push_back(std::make_unique<WaitStep>(this, 1.5f));
 
     std::vector<std::string> dialogue = {
@@ -914,7 +982,8 @@ void Game::LoadFirstLevel()
         this,
         [this]()
         { return GetStar(); },
-        Vector2(mWindowWidth / 2.0f, mMap->GetHeight() - mWindowHeight / 2.0f),
+        [this]()
+        { return Vector2(mWindowWidth / 2.0f, mMap->GetHeight() - mWindowHeight / 2.0f); },
         250.0f));
 
     dialogue = {
@@ -925,7 +994,8 @@ void Game::LoadFirstLevel()
         this,
         [this]()
         { return GetStar(); },
-        Vector2(mWindowWidth * 1.5f, mMap->GetHeight() - mWindowHeight * 1.2f),
+        [this]()
+        { return Vector2(mWindowWidth * 1.5f, mMap->GetHeight() - mWindowHeight * 1.2f); },
         320.0f));
 
     dialogue = {
