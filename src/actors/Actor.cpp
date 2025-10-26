@@ -39,6 +39,12 @@ void Actor::SetPosition(const Vector2& pos)
     mGame->Reinsert(this);
 }
 
+void Actor::SetCenter(const Vector2& pos)
+{
+    mPosition = pos - GetCenter()*.5f;
+    mGame->Reinsert(this);
+}
+
 void Actor::Update(float deltaTime)
 {
     if (mState == ActorState::Active)
