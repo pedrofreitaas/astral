@@ -10,28 +10,19 @@ MoveStep::MoveStep(
     class Game* game, 
     std::function<Actor*()> targetActorFunc,
     std::function<Vector2()> getTargetPosFunc,
-    float speed)
+    float speed, bool spin)
     : 
     Step(game), mSpeed(speed), 
     mGetTargetActor(std::move(targetActorFunc)), 
     mGetTargetPos(std::move(getTargetPosFunc)),
-    mTargetPos(Vector2::Zero)
+    mTargetPos(Vector2::Zero), mSpinAngle(0.0f), mSpin(spin)
 {
 }
 
 void MoveStep::PreUpdate()
 {
     mTargetPos = mGetTargetPos();
-    SDL_Log("MoveStep PreUpdate: target position set to (%f, %f)", mTargetPos.x, mTargetPos.y);
-}
-
-void MoveStep::Update(float deltaTime)
-{
-    if (GetIsComplete())
-        return;
-
     Actor *mTargetActor = mGetTargetActor();
-    Vector2 targetPos = mTargetPos;
 
     if (!mTargetActor)
     {
@@ -43,34 +34,54 @@ void MoveStep::Update(float deltaTime)
     {
         throw std::runtime_error("MoveStep target Actor lost its RigidBodyComponent");
     }
+}
 
-    Vector2 toTarget = targetPos - mTargetActor->GetPosition();
+void MoveStep::Update(float deltaTime)
+{
+    if (GetIsComplete())
+        return;
+    
+    Actor *mTargetActor = mGetTargetActor();    
+    RigidBodyComponent *rb = mTargetActor->GetComponent<RigidBodyComponent>();
+    
+    // Get the center position of the actor
+    Vector2 actorCenterOffset = mTargetActor->GetCenter() - mTargetActor->GetPosition();
+    Vector2 actorCenter = mTargetActor->GetCenter();
+    
+    Vector2 toTarget = mTargetPos - actorCenter;
     float distanceToTarget = toTarget.Length();
-
+    
     if (distanceToTarget < 1e-3f)
     {
         // Close enough to target
         rb->SetVelocity(Vector2::Zero);
-        mTargetActor->SetPosition(targetPos);
+        mTargetActor->SetPosition(mTargetPos - actorCenterOffset);
         SetComplete();
         return;
+    }
+
+    if (mSpin)
+    {
+        mSpinAngle += 360.f * deltaTime;
+        if (mSpinAngle >= 360.f)
+            mSpinAngle -= 360.f;
+        mTargetActor->SetRotation(mSpinAngle);
     }
 
     Vector2 direction = toTarget;
     direction.Normalize();
     Vector2 desiredVelocity = direction * mSpeed;
-
     rb->SetVelocity(desiredVelocity);
-
+    
     // Check if we would overshoot the target in this frame
     if (distanceToTarget < desiredVelocity.Length() * deltaTime)
     {
         // Snap to target and complete step
         rb->SetVelocity(Vector2::Zero);
-        mTargetActor->SetPosition(targetPos);
+        mTargetActor->SetPosition(mTargetPos - actorCenterOffset);
         SetComplete();
     }
-
+    
     // check if movement resulted in getting out of the camera
     if (!mGame->ActorOnCamera(mTargetActor))
     {
