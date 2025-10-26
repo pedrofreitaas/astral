@@ -52,6 +52,8 @@ add_executable(${PROJECT_NAME}
         src/actors/MapObject.cpp
         src/actors/Enemy.cpp
         src/actors/Enemy.h
+        src/actors/Portal.cpp
+        src/actors/Portal.h
         src/core/AudioSystem.cpp
         src/core/AudioSystem.h
         src/ui/UIScreen.h
