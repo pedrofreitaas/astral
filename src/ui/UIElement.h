@@ -22,9 +22,12 @@ public:
     void SetColor(const Vector3 &color) { mColor = color; }
 
     virtual void Draw(SDL_Renderer* renderer, const Vector2 &screenPos) {};
+    bool IsEnabled() const { return mIsEnabled; }
+    void SetEnabled(bool enabled) { mIsEnabled = enabled; }
 
 protected:
     Vector2 mPosition;
     Vector2 mSize;
     Vector3 mColor;
+    bool mIsEnabled;
 };

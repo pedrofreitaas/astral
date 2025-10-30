@@ -14,10 +14,25 @@ HUD::HUD(class Game* game, const std::string& fontName)
         1024, 
         Color::Blue
     );
+    mFPSText->SetEnabled(false);
 }
 
 HUD::~HUD()
 {
+}
+
+void HUD::HandleKeyPress(int key)
+{
+    // Handle key press events
+    if (key == SDLK_f)
+    {
+        mFPSText->SetEnabled(!mFPSText->IsEnabled());
+    }
+}
+
+void HUD::HandleMouseClick(int button, int x, int y)
+{
+
 }
 
 void HUD::SetFPS(int fps)

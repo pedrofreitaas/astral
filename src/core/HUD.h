@@ -18,6 +18,10 @@ public:
 
     void SetFPS(int fps);
     void SetFPS(float fps);
+
+    void HandleKeyPress(int key) override;
+	void HandleMouseClick(int button, int x, int y) override;
+
 private:
     UIText* mFPSText;
 };

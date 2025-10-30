@@ -8,6 +8,7 @@ UIElement::UIElement(const Vector2 &pos, const Vector2 &size, const Vector3 &col
         :mPosition(pos)
         ,mSize(size)
         ,mColor(color)
+        ,mIsEnabled(true)
 {
 
 }

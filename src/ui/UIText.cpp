@@ -36,6 +36,9 @@ void UIText::SetText(const std::string &text)
 
 void UIText::Draw(SDL_Renderer *renderer, const Vector2 &screenPos)
 {
+    if(!mIsEnabled || !mTextTexture)
+        return;
+    
     SDL_Rect titleQuad = {static_cast<int>(screenPos.x + mPosition.x),
                           static_cast<int>(screenPos.y + mPosition.y),
                           static_cast<int>(mSize.x),
