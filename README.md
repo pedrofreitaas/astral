@@ -4,11 +4,6 @@
 
 ## 📖T.O.C.
 - [🗣️About](#🗣️about)
-- [🎨Artistic declaration](#🎨artistic-declaration)
-- [🎮Gameplay](#🎮gameplay)
-- [🖼️Art](#🖼️art)
-- [🔊Sounds](#🔊sounds)
-- [💻Development](#💻development)
 
 ## 🗣️About
 ###### [📖t.o.c.](#📖toc)
@@ -50,17 +45,3 @@ Unlock elemental abilities like:
 Astral is designed for casual gamers and indie fans, offering a cosmic adventure full of surprises, creative powers, and a dash of mystery.
 
 ##### [[🤖 Eter's github repo]](https://github.com/eduardamendes2410/Jogos-TpFinal_)
-
-## 🎨Artistic declaration
-###### [📖t.o.c.](#📖toc)
-## 🎮Gameplay
-###### [📖t.o.c.](#📖toc)
-## 🖼️Art
-###### [📖t.o.c.](#📖toc)
-### Art credits
-Many of the assets used in this game were created by other artists, and I would like to give them the proper credits:
-- [Penzilla Design](https://penzilla.itch.io/): Main character sprites.
-## 🔊Sounds
-###### [📖t.o.c.](#📖toc)
-## 💻Development
-###### [📖t.o.c.](#📖toc)
