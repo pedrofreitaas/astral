@@ -68,6 +68,7 @@
         "span": "cpp",
         "variant": "cpp",
         "charconv": "cpp",
-        "format": "cpp"
+        "format": "cpp",
+        "coroutine": "cpp"
     }
 }
