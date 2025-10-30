@@ -44,18 +44,13 @@ void Enemy::ManageState()
     if (!zoe)
         return;
 
-    float distanceToZoe = (zoe->GetPosition() - GetPosition()).Length();
-
-    if (distanceToZoe > 450.f)
-    {
-        mBehaviorState = BehaviorState::Asleep;
-        return;
-    }
+    bool isInFov = PlayerOnFov();
+    float distanceToZoe = (zoe->GetPosition() - GetPosition()).LengthSq();
 
     switch (mBehaviorState)
     {
     case BehaviorState::Asleep:
-        if (distanceToZoe < 200.0f)
+        if (distanceToZoe < 200.0f*200.f)
             mBehaviorState = BehaviorState::Waking;
         break;
     case BehaviorState::Waking:
@@ -69,10 +64,11 @@ void Enemy::ManageState()
         else if (mRigidBodyComponent->GetVelocity().x < 0.f)
             SetRotation(Math::Pi);
 
+        // if (!isInFov) mAIMovementComponent->SeekPlayer();
         if (PlayerOnSight()) mBehaviorState = BehaviorState::Charging;
+        
         break;
     }
-
     case BehaviorState::Charging:
         if (!PlayerOnSight()) mBehaviorState = BehaviorState::Moving;
         break;
@@ -168,4 +164,30 @@ bool Enemy::PlayerOnSight()
     bool isIntersecting = zoeCollider->IsSegmentIntersecting(lineOfSightStart, lineOfSightEnd);
 
     return isIntersecting;
+}
+
+bool Enemy::PlayerOnFov()
+{
+    auto zoe = GetGame()->GetZoe();
+
+    if (zoe == nullptr)
+        return false;
+
+    Vector2 toZoe = zoe->GetPosition() - GetPosition();
+    
+    const float maxDist = 400.f;
+    const float minDist = 20.f;
+    if (toZoe.LengthSq() > maxDist * maxDist) return false;
+    if (toZoe.LengthSq() < minDist * minDist) return true;
+
+    toZoe.Normalize();
+
+    Vector2 forward = GetForward();
+
+    float dot = Vector2::Dot(forward, toZoe);
+    float angle = Math::Acos(dot);
+
+    const float fovAngle = Math::Pi / 4.f; // 45 degrees field of view
+
+    return angle < fovAngle;
 }

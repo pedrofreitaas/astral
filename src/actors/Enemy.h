@@ -24,4 +24,5 @@ private:
     void AnimationEndCallback(std::string animationName);
 
     bool PlayerOnSight();
+    bool PlayerOnFov();
 };
