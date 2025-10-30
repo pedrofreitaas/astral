@@ -25,6 +25,7 @@ add_executable(${PROJECT_NAME}
         src/components/Component.cpp
         src/core/Game.h
         src/core/Game.cpp
+        src/core/ScenesLoading.cpp
         src/components/draw/DrawComponent.cpp
         src/components/draw/DrawComponent.h
         src/components/draw/DrawTileComponent.cpp

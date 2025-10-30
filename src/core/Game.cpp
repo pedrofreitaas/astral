@@ -34,11 +34,6 @@
 #include "../actors/Enemy.h"
 #include "../actors/Portal.h"
 
-const int CHAR_WIDTH = 6;
-const int WORD_HEIGHT = 8;
-const std::string FONT_PATH_INTER = "../assets/Fonts/Inter.ttf";
-const std::string FONT_PATH_SMB = "../assets/Fonts/SMB.ttf";
-
 Game::Game(int windowWidth, int windowHeight)
     : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true),
       mZoe(nullptr), mHUD(nullptr), mBackgroundColor(0, 0, 0),
@@ -143,14 +138,15 @@ bool Game::Initialize()
     return true;
 }
 
-void Game::SetGameScene(Game::GameScene scene, float transitionTime)
+// Scene Management:
+
+void Game::SetGameScene(Game::GameScene scene, float sceneLeftTime)
 {
-    if (mSceneManagerState == SceneManagerState::None)
-    {
-        mNextScene = scene;
-        mSceneManagerState = SceneManagerState::Entering;
-        mSceneManagerTimer = transitionTime;
-    }
+    if (mSceneManagerState != SceneManagerState::None) return;
+
+    mNextScene = scene;
+    mSceneManagerState = SceneManagerState::Entering;
+    mSceneManagerTimer = sceneLeftTime;
 }
 
 void Game::ResetGameScene(float transitionTime)
@@ -189,6 +185,56 @@ void Game::ChangeScene()
     // Set new scene
     mGameScene = mNextScene;
 }
+
+void Game::UpdateSceneManager(float deltaTime)
+{
+    if (mSceneManagerState == SceneManagerState::Entering)
+    {
+        mSceneManagerTimer -= deltaTime;
+        if (mSceneManagerTimer <= 0.0f)
+        {
+            mSceneManagerTimer = 0.f;
+            mSceneManagerState = SceneManagerState::Active;
+        }
+    }
+    else if (mSceneManagerState == SceneManagerState::Active)
+    {
+        mSceneManagerTimer += deltaTime;
+        if (mSceneManagerTimer >= TRANSITION_TIME_BETWEEM_SCENES)
+        {
+            ChangeScene();
+            mSceneManagerState = SceneManagerState::None;
+        }
+    }
+}
+
+void Game::UnloadScene()
+{
+    // Delete actors
+    delete mSpatialHashing;
+
+    // Delete UI screens
+    for (auto ui : mUIStack)
+    {
+        delete ui;
+    }
+    mUIStack.clear();
+
+    // Delete background texture
+    if (mBackgroundTexture)
+    {
+        SDL_DestroyTexture(mBackgroundTexture);
+        mBackgroundTexture = nullptr;
+    }
+
+    if (mMap)
+    {
+        delete mMap;
+        mMap = nullptr;
+    }
+}
+
+// 
 
 void Game::RunLoop()
 {
@@ -373,28 +419,6 @@ void Game::UpdateGame()
     UpdateCamera();
 
     mPrevDeltaTime = deltaTime;
-}
-
-void Game::UpdateSceneManager(float deltaTime)
-{
-    if (mSceneManagerState == SceneManagerState::Entering)
-    {
-        mSceneManagerTimer -= deltaTime;
-        if (mSceneManagerTimer <= 0.0f)
-        {
-            mSceneManagerTimer = TRANSITION_TIME;
-            mSceneManagerState = SceneManagerState::Active;
-        }
-    }
-    else if (mSceneManagerState == SceneManagerState::Active)
-    {
-        mSceneManagerTimer -= deltaTime;
-        if (mSceneManagerTimer <= 0.0f)
-        {
-            ChangeScene();
-            mSceneManagerState = SceneManagerState::None;
-        }
-    }
 }
 
 void Game::UpdateCamera()
@@ -597,7 +621,9 @@ void Game::GenerateOutput()
     // Draw transition rect above everything
     if (mSceneManagerState == SceneManagerState::Active)
     {
-        SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
+        Uint8 alpha = static_cast<Uint8>((mSceneManagerTimer / TRANSITION_TIME_BETWEEM_SCENES) * 255);
+        SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, alpha);
+
         SDL_Rect rect = {0, 0, mWindowWidth, mWindowHeight};
         SDL_RenderFillRect(mRenderer, &rect);
     }
@@ -687,32 +713,6 @@ UIFont *Game::LoadFont(const std::string &fileName)
             font = nullptr;
         }
         return font;
-    }
-}
-
-void Game::UnloadScene()
-{
-    // Delete actors
-    delete mSpatialHashing;
-
-    // Delete UI screens
-    for (auto ui : mUIStack)
-    {
-        delete ui;
-    }
-    mUIStack.clear();
-
-    // Delete background texture
-    if (mBackgroundTexture)
-    {
-        SDL_DestroyTexture(mBackgroundTexture);
-        mBackgroundTexture = nullptr;
-    }
-
-    if (mMap)
-    {
-        delete mMap;
-        mMap = nullptr;
     }
 }
 
@@ -828,242 +828,4 @@ int Game::GetMapHeight()
     if (mMap == nullptr)
         return 0.f;
     return mMap->GetHeight();
-}
-
-// scenes
-
-void Game::LoadMainMenu()
-{
-    UIScreen *mainMenu = new UIScreen(this, FONT_PATH_SMB);
-
-    mainMenu->AddBackground(
-        "../assets/Sprites/Menu/background.png",
-        Vector2(0, 0),
-        Vector2(mWindowWidth, mWindowHeight));
-
-    Vector2 titleSize = Vector2(255.f, 92.f);
-    mainMenu->AddImage(
-        "../assets/Sprites/Menu/title.png",
-        Vector2(mWindowWidth / 2.0f - titleSize.x / 2.0f, mWindowHeight * .1f),
-        titleSize);
-
-    const Vector2 playButtonSize = Vector2(
-        mWindowWidth / 6.0f,
-        mWindowHeight / 12.0f);
-
-    const Vector2 playButtonPos = Vector2(
-        mWindowWidth / 2.0f - playButtonSize.x / 2.0f,
-        mWindowHeight / 2.0f - playButtonSize.y / 2.0f);
-
-    mainMenu->AddButton(
-        "Play",
-        playButtonPos,
-        playButtonSize,
-        [this]()
-        { SetGameScene(GameScene::Bedroom); },
-        Vector2(CHAR_WIDTH * 4, WORD_HEIGHT));
-
-    mUIStack.front()->AddCursor(
-        "../assets/Sprites/Hud/cursor.png",
-        Vector2(0.0f, 0.0f),
-        Vector2(33.0f, 33.0f),
-        Color::White);
-}
-
-void Game::LoadBedroom()
-{
-    mHUD = new HUD(this, FONT_PATH_INTER);
-
-    SetMap("bedroom.json");
-
-    SetCameraCenter(mMap->GetCenter());
-    SetMaintainCameraInMap(false);
-
-    SetApplyGravityScene(false);
-
-    mZoe = new Zoe(this, 1500.0f);
-    mZoe->SetPosition(Vector2(32.0f, 80.0f));
-
-    std::vector<std::unique_ptr<Step>> steps;
-    std::vector<std::string> dialogue = {
-        "Hoje e dia de visitar a Vovo, Papai e Mamae ja devem estar se arrumando.",
-        "Acho que eu deveria ver como eles estao..."};
-    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
-
-    AddCutscene("leave_bedroom",
-                std::move(steps),
-                [this]() {});
-
-    steps.clear();
-
-    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
-    dialogue = {
-        "Sera que eles estao bravos porque acordei tarde?"};
-    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
-    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
-
-    AddCutscene("enterBedroomPortal",
-                std::move(steps),
-                [this]()
-                {
-                    this->SetGameScene(GameScene::BedroomPortal);
-                });
-}
-
-void Game::LoadBedroomPortal()
-{
-    mHUD = new HUD(this, FONT_PATH_INTER);
-
-    SetMap("bedroomPortal.json");
-
-    SetCameraCenter(mMap->GetCenter());
-    SetMaintainCameraInMap(false);
-
-    SetApplyGravityScene(false);
-
-    mZoe = new Zoe(this, 1500.0f);
-    mZoe->SetPosition(Vector2(10.0f, 32.0f));
-
-    auto portal = new Portal(this, Vector2(0.f, 72.f) + mMap->GetCenter());
-
-    std::vector<std::unique_ptr<Step>> steps;
-    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
-    steps.push_back(std::make_unique<MoveStep>(
-        this,
-        [this]()
-        { return GetZoe(); },
-        [this]()
-        { return GetZoe()->GetCenter() + Vector2(-10.f, 0.f); },
-        20.f));
-    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
-    steps.push_back(std::make_unique<MoveStep>(
-        this,
-        [this]()
-        { return GetZoe(); },
-        [this]()
-        { return GetZoe()->GetCenter() + Vector2(10.f, 0.f); },
-        20.f));
-    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
-    std::vector<std::string> dialogue = {
-        "Pai? Mae? Cade voces?",
-        "O que e isso no meio do quarto?",
-    };
-    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
-    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
-    steps.push_back(std::make_unique<MoveStep>(
-        this,
-        [this]()
-        { return GetZoe(); },
-        [this, portal]()
-        { return portal->GetCenter(); },
-        120.0f,
-        true));
-    steps.push_back(std::make_unique<UnspawnStep>(
-        this, 
-        [this]()
-        { return this->GetZoe(); }));
-
-    AddCutscene("portalSuck",
-                std::move(steps),
-                [this]()
-                {
-                    this->SetGameScene(GameScene::Level1);
-                });
-}
-
-void Game::LoadFirstLevel()
-{
-    mHUD = new HUD(this, FONT_PATH_INTER);
-
-    SetApplyGravityScene(true);
-
-    SetMap("level1.json");
-
-    SetBackgroundImage(
-        "../assets/Levels/Backgrounds/galaxy.png",
-        Vector2(0.0f, 0.0f),
-        Vector2(mWindowWidth, mWindowHeight),
-        false);
-
-    mEnemy = new Enemy(this, 1500.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
-
-    mZoe = new Zoe(this, 1500.0f);
-    mZoe->SetPosition(Vector2(32.0f, mMap->GetHeight() - 80.0f));
-
-    std::vector<std::unique_ptr<Step>> steps;
-    steps.push_back(std::make_unique<MoveStep>(
-        this,
-        [this]()
-        { return GetZoe(); },
-        [this]()
-        {
-            return Vector2(GetZoe()->GetCenter().x+64.f, GetZoe()->GetCenter().y);
-        },
-        100.0f));
-    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
-    steps.push_back(std::make_unique<MoveStep>(
-        this,
-        [this]()
-        { return GetZoe(); },
-        [this]()
-        {
-            return Vector2(GetZoe()->GetCenter().x-2.f, GetZoe()->GetCenter().y);
-        },
-        20.0f));
-    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
-    steps.push_back(std::make_unique<MoveStep>(
-        this,
-        [this]()
-        { return GetZoe(); },
-        [this]()
-        {
-            return Vector2(GetZoe()->GetCenter().x+4.f, GetZoe()->GetCenter().y);
-        },
-        20.0f));
-    steps.push_back(std::make_unique<WaitStep>(this, 1.5f));
-
-    std::vector<std::string> dialogue = {
-        "O que... o que e isso?",
-        "Onde estou? Parece que estou no espaco.",
-        "Mas algo esta errado, eu sou uma pessoa comum, eu nao deveria estar aqui."};
-    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
-
-    steps.push_back(std::make_unique<SpawnStep>(
-        this,
-        SpawnStep::ActorType::Star,
-        Vector2(0.0f, mMap->GetHeight() - mWindowHeight / 2.0f)));
-    steps.push_back(std::make_unique<MoveStep>(
-        this,
-        [this]()
-        { return GetStar(); },
-        [this]()
-        { return Vector2(mWindowWidth / 2.0f, mMap->GetHeight() - mWindowHeight / 2.0f); },
-        250.0f));
-
-    dialogue = {
-        "Uma estrela? Ela parece estar indo para algum lugar?",
-        "Nao tenho outra opcao, tenho que segui-la."};
-    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
-    steps.push_back(std::make_unique<MoveStep>(
-        this,
-        [this]()
-        { return GetStar(); },
-        [this]()
-        { return Vector2(mWindowWidth * 1.5f, mMap->GetHeight() - mWindowHeight * 1.2f); },
-        320.0f));
-
-    dialogue = {
-        "Espere! Volte aqui!",
-        "Onde sera que ela foi? Preciso saber se ela esta me levando para algum lugar..."};
-    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
-
-    steps.push_back(std::make_unique<UnspawnStep>(
-        this, [this]()
-        { return GetStar(); }));
-
-    AddCutscene("Intro",
-                std::move(steps),
-                [this]() {});
-
-    StartCutscene("Intro");
 }
