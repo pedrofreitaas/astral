@@ -94,8 +94,8 @@
                  "type":"",
                  "visible":true,
                  "width":84.5,
-                 "x":48,
-                 "y":114.5
+                 "x":57.5,
+                 "y":144
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -116,7 +116,7 @@
         }, 
         {
          "firstgid":248,
-         "source":"..\/..\/..\/tiled\/maps\/bedroom.tsx"
+         "source":"..\/..\/..\/tiled\/tilesets\/bedroom.tsx"
         }],
  "tilewidth":32,
  "type":"map",
