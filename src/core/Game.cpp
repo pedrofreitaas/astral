@@ -337,6 +337,7 @@ void Game::UpdateGame()
     }
 
     mAudio->Update(deltaTime);
+    
     GetDialogueSystem()->Update(deltaTime);
 
     // Reinsert UI screens
@@ -363,7 +364,7 @@ void Game::UpdateGame()
         }
     }
 
-    if (mGameScene != GameScene::MainMenu && mGamePlayState == GamePlayState::Playing)
+    if (mGameScene != GameScene::MainMenu)
     {
         mHUD->SetFPS(static_cast<int>(1.0f / deltaTime));
     }
@@ -487,6 +488,35 @@ std::vector<AABBColliderComponent *> Game::GetNearbyColliders(const Vector2 &pos
     return mSpatialHashing->QueryColliders(position, range);
 }
 
+void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
+{
+    mSpatialHashing->Draw(mRenderer, mCameraPos, mWindowWidth, mWindowHeight);
+
+    // draw collider boxes only if the player has collider
+    for (auto actor : actorsOnCamera)
+    {
+        std::vector<AABBColliderComponent *> colliders = actor->GetComponents<AABBColliderComponent>();
+        for (auto collider : colliders)
+        {
+            if (collider)
+            {
+                SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
+                Vector2 min = collider->GetMin();
+                Vector2 max = collider->GetMax();
+                SDL_Rect rect = {
+                    static_cast<int>(min.x - mCameraPos.x),
+                    static_cast<int>(min.y - mCameraPos.y),
+                    static_cast<int>(max.x - min.x),
+                    static_cast<int>(max.y - min.y)};
+                SDL_RenderDrawRect(mRenderer, &rect);
+            }
+        }
+    }
+
+    // Swap front buffer and back buffer
+    SDL_RenderPresent(mRenderer);
+}
+
 void Game::GenerateOutput()
 {
     // Clear frame with background color
@@ -554,14 +584,6 @@ void Game::GenerateOutput()
         ui->Draw(mRenderer);
     }
 
-    // Draw transition rect
-    if (mSceneManagerState == SceneManagerState::Active)
-    {
-        SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
-        SDL_Rect rect = {0, 0, mWindowWidth, mWindowHeight};
-        SDL_RenderFillRect(mRenderer, &rect);
-    }
-
     SDL_RenderSetLogicalSize(mRenderer, mRealWindowWidth, mRealWindowHeight);
 
     // draw dialogue system without scaling to avoid blurriness
@@ -572,55 +594,21 @@ void Game::GenerateOutput()
         throw std::runtime_error("Failed to set logical size: " + std::string(SDL_GetError()));
     }
 
-    if (mEnemy && mZoe)
+    // Draw transition rect above everything
+    if (mSceneManagerState == SceneManagerState::Active)
     {
-        std::vector<Vector2> path = mSpatialHashing->GetPath(mEnemy, mZoe->GetCenter());
-
-        // draw each point in path with lines
-        for (size_t i = 1; i < path.size(); i++)
-        {
-            SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
-            SDL_RenderDrawLine(
-                mRenderer,
-                static_cast<int>(path[i - 1].x - mCameraPos.x),
-                static_cast<int>(path[i - 1].y - mCameraPos.y),
-                static_cast<int>(path[i].x - mCameraPos.x),
-                static_cast<int>(path[i].y - mCameraPos.y));
-        }
+        SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
+        SDL_Rect rect = {0, 0, mWindowWidth, mWindowHeight};
+        SDL_RenderFillRect(mRenderer, &rect);
     }
 
     if (!mDebugMode)
     {
-        // Swap front buffer and back buffer
         SDL_RenderPresent(mRenderer);
         return;
     }
 
-    mSpatialHashing->Draw(mRenderer, mCameraPos, mWindowWidth, mWindowHeight);
-
-    // draw collider boxes only if the player has collider
-    for (auto actor : actorsOnCamera)
-    {
-        std::vector<AABBColliderComponent *> colliders = actor->GetComponents<AABBColliderComponent>();
-        for (auto collider : colliders)
-        {
-            if (collider)
-            {
-                SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
-                Vector2 min = collider->GetMin();
-                Vector2 max = collider->GetMax();
-                SDL_Rect rect = {
-                    static_cast<int>(min.x - mCameraPos.x),
-                    static_cast<int>(min.y - mCameraPos.y),
-                    static_cast<int>(max.x - min.x),
-                    static_cast<int>(max.y - min.y)};
-                SDL_RenderDrawRect(mRenderer, &rect);
-            }
-        }
-    }
-
-    // Swap front buffer and back buffer
-    SDL_RenderPresent(mRenderer);
+    DrawDebugInfo(actorsOnCamera);
 }
 
 void Game::SetBackgroundImage(

@@ -168,6 +168,8 @@ public:
     int GetMapWidth();
     int GetMapHeight();
 
+    class SpatialHashing *GetSpatialHashing() { return mSpatialHashing; }
+
 private:
     void SetCameraCenterToZoe() {
         mCameraCenter = CameraCenter::Zoe;
@@ -252,4 +254,6 @@ private:
     CameraCenter mCameraCenter;
     Vector2 mCameraCenterPos;
     bool mMaintainCameraInMap;
+
+    void DrawDebugInfo(std::vector<class Actor *> &actorsOnCamera);
 };
