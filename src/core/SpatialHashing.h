@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <cmath>
 #include <algorithm>
+#include <functional>
 #include <utility>
 #include "../libs/Math.h"
 #include "../actors/Actor.h"
@@ -57,7 +58,7 @@ public:
                                       const float extraRadius = 0.0f) const;
 
     std::vector<SDL_Rect> GetPath(
-        Actor *targetActor, const Vector2& end
+        Actor *targetActor, const Vector2& end, bool canFly = false
     ) const;
 
     void Draw(SDL_Renderer *renderer, const Vector2& cameraPosition, float screenWidth, float screenHeight);
@@ -77,5 +78,12 @@ private:
     std::unordered_map<Actor*, Vector2> mPositions; // Maps collider to its position
     std::unordered_map<Actor*, std::pair<int, int>> mCellIndices; // Maps collider to its grid cell indices
 
-    std::vector<Cell> findPath(const std::vector<std::vector<CellType>>& grid, Cell start, Cell end, int maxJumpHeight=4) const;
+    std::vector<Cell> findPath(
+        const std::vector<std::vector<CellType>>& grid, 
+        Cell start, Cell end,
+        std::function<float(int row, int col)> getCellCost,
+        std::function<bool(int row, int col)> isValid,
+        std::function<int(Cell, Cell)> heuristic,
+        int maxJumpHeight=4
+    ) const;
 };

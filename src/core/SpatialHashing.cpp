@@ -92,7 +92,7 @@ void SpatialHashing::Remove(Actor *actor)
     // Remove from positions and indices maps
     mPositions.erase(actor);
     mCellIndices.erase(it);
-    
+
     if (mCellTypes[row][col] == CellType::Tile && !isTileCell(row, col)) // if it was a tile cell, but it's no longer.
     {
         if (row <= 1)
@@ -103,14 +103,14 @@ void SpatialHashing::Remove(Actor *actor)
 
         mCellTypes[row - 1][col] = CellType::Empty;
 
-        if (col > 1 && mCellTypes[row-1][col-1] == CellType::Corner && !isCornerCel(row-1, col-1))
+        if (col > 1 && mCellTypes[row - 1][col - 1] == CellType::Corner && !isCornerCel(row - 1, col - 1))
         {
             mCellTypes[row - 1][col - 1] = CellType::Empty;
         }
 
-        if (col < mGrid[0].size() && mCellTypes[row-1][col+1] == CellType::Corner && !isCornerCel(row-1, col+1))
+        if (col < mGrid[0].size() && mCellTypes[row - 1][col + 1] == CellType::Corner && !isCornerCel(row - 1, col + 1))
         {
-            mCellTypes[row-1][col+1] = CellType::Empty;
+            mCellTypes[row - 1][col + 1] = CellType::Empty;
         }
     }
 }
@@ -206,77 +206,71 @@ std::vector<Actor *> SpatialHashing::QueryOnCamera(const Vector2 &cameraPosition
 }
 
 std::vector<Cell> SpatialHashing::findPath(
-    const std::vector<std::vector<CellType>>& grid, 
-    Cell start, 
-    Cell end, 
-    int maxJumpHeight
-) const {
-    auto heuristic = [&](Cell a, Cell b) {
-        return std::abs(a.row - b.row) + std::abs(a.col - b.col); // manhattan distance
-    };
-    
-    auto isValid = [&](int r, int c) {
-        return r >= 0 && r < grid.size() && c >= 0 && c < grid[0].size() 
-               && (grid[c][r] != CellType::Tile); // (grid limits + tile) ignore
-    };
-    
-    auto getCellCost = [&](int r, int c) {
-        CellType type = grid[c][r];
-        if (type == CellType::Platform) return 1.0f;
-        if (type == CellType::Corner) return 1.5f;
-        return 4.0f; // Empty
-    };
-    
+    const std::vector<std::vector<CellType>> &grid,
+    Cell start,
+    Cell end,
+    std::function<float(int row, int col)> getCellCost,
+    std::function<bool(int row, int col)> isValid,
+    std::function<int(Cell, Cell)> heuristic,
+    int maxJumpHeight) const
+{
     std::priority_queue<Node, std::vector<Node>, std::greater<Node>> open; // min-heap
-    std::unordered_map<Cell, Cell, CellHash> cameFrom; // rebuild path
-    std::unordered_map<Cell, float, CellHash> gScore; // cost from start to cell
-    std::unordered_map<Cell, int, CellHash> upwardCount; // upward steps taken to reach cell before last platform node
-    
+    std::unordered_map<Cell, Cell, CellHash> cameFrom;                     // rebuild path
+    std::unordered_map<Cell, float, CellHash> gScore;                      // cost from start to cell
+    std::unordered_map<Cell, int, CellHash> upwardCount;                   // upward steps taken to reach cell before last platform node
+
     open.push({start, (float)heuristic(start, end), 0});
     gScore[start] = 0;
     upwardCount[start] = 0;
-    
-    int dirs[4][2] = {{0,-1}, {0,1}, {-1,0}, {1,0}}; 
-    std::vector<Vector2> directions = {
-        Vector2(0, -1), Vector2(0, 1), Vector2(-1, 0), Vector2(1, 0)
-    }; // up, down, left, right (don't allow diagonal)
 
-    Node curr; bool reachedGoal = false;
-    while (!open.empty()) {
+    int dirs[4][2] = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
+    std::vector<Vector2> directions = {
+        Vector2(0, -1), Vector2(0, 1), Vector2(-1, 0), Vector2(1, 0)}; // up, down, left, right (don't allow diagonal)
+
+    Node curr;
+    bool reachedGoal = false;
+    while (!open.empty())
+    {
         curr = open.top();
         open.pop();
-        
-        if (curr.pos == end) { // reached goal
+
+        if (curr.pos == end)
+        { // reached goal
             reachedGoal = true;
             break;
         }
-        
+
         // explore neighbors
-        for (auto dir: directions) {
+        for (auto dir : directions)
+        {
             int newRow = curr.pos.row + dir.x;
             int newCol = curr.pos.col + dir.y;
 
-            if (!isValid(newRow, newCol)) continue;
-            
+            if (!isValid(newRow, newCol))
+                continue;
+
             Cell neighbor = {newRow, newCol};
             int cellUpwardsSteps = upwardCount[curr.pos];
             bool movingUp = (dir.y == -1);
-            
-            if (movingUp) {
+
+            if (movingUp)
+            {
                 cellUpwardsSteps++;
-                if (cellUpwardsSteps > maxJumpHeight) continue; // exceeded max jump height, ignore
-            } 
-            
-            else if (grid[newCol][newRow] == CellType::Platform) { // reset upwards count on landing (platform)
+                if (cellUpwardsSteps > maxJumpHeight)
+                    continue; // exceeded max jump height, ignore
+            }
+
+            else if (grid[newCol][newRow] == CellType::Platform)
+            { // reset upwards count on landing (platform)
                 cellUpwardsSteps = 0;
             }
-            
+
             float newG = curr.g + getCellCost(newRow, newCol); // gScore for the cell
-            
+
             if (!gScore.count(neighbor) || // first time see
                 newG < gScore[neighbor] || // better gScore
-                (newG == gScore[neighbor] && 
-                cellUpwardsSteps < upwardCount[neighbor])) // reduced upwards steps to reach cell
+                (newG == gScore[neighbor] &&
+                 cellUpwardsSteps < upwardCount[neighbor])) // reduced upwards steps to reach cell
             {
                 gScore[neighbor] = newG;
                 upwardCount[neighbor] = cellUpwardsSteps;
@@ -286,13 +280,15 @@ std::vector<Cell> SpatialHashing::findPath(
         }
     }
 
-    if (!reachedGoal) {
+    if (!reachedGoal)
+    {
         return {}; // no path found
     }
 
     std::vector<Cell> path;
     Cell c = end;
-    while (!(c == start)) {
+    while (!(c == start))
+    {
         path.push_back(c);
         c = cameFrom[c];
     }
@@ -302,7 +298,7 @@ std::vector<Cell> SpatialHashing::findPath(
 }
 
 std::vector<SDL_Rect> SpatialHashing::GetPath(
-    Actor *targetActor, const Vector2 &end) const
+    Actor *targetActor, const Vector2 &end, bool canFly) const
 {
     RigidBodyComponent *rb = targetActor->GetComponent<RigidBodyComponent>();
 
@@ -317,18 +313,45 @@ std::vector<SDL_Rect> SpatialHashing::GetPath(
     Cell start = {static_cast<int>(actorPos.x / mCellSize), static_cast<int>(actorPos.y / mCellSize)};
     Cell endCell = {static_cast<int>(end.x / mCellSize), static_cast<int>(end.y / mCellSize)};
 
-    std::vector<Cell> cells = findPath(mCellTypes, start, endCell, 3);
+    auto heuristic = [&](Cell a, Cell b)
+    {
+        return std::abs(a.row - b.row) + std::abs(a.col - b.col); // manhattan distance
+    };
+
+    auto isValid = [&](int r, int c)
+    {
+        return r >= 0 && r < mCellTypes.size() && 
+        c >= 0 && c < mCellTypes[0].size() && 
+        (mCellTypes[c][r] != CellType::Tile); // (grid limits + tile) ignore
+    };
+
+    auto getCellCost = [&](int r, int c)
+    {
+        if (canFly) return 1.f;
+        
+        CellType type = mCellTypes[c][r];
+        if (type == CellType::Platform)
+            return 1.0f;
+        if (type == CellType::Corner)
+            return 1.5f;
+        return 4.0f; // Empty
+    };
+
+    std::vector<Cell> cells = findPath(
+        mCellTypes, 
+        start, endCell, 
+        getCellCost, isValid, heuristic, 3);
 
     // easier to visualize when drawing SDL_Rects, and to calc reached node
     std::vector<SDL_Rect> nodeRects;
 
-    for (auto cell : cells) {        
+    for (auto cell : cells)
+    {
         SDL_Rect rect = {
             cell.row * mCellSize,
             cell.col * mCellSize,
             mCellSize,
-            mCellSize
-        };
+            mCellSize};
         nodeRects.push_back(rect);
     }
 
