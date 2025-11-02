@@ -222,3 +222,14 @@ bool AABBColliderComponent::IsSegmentIntersecting(const Vector2& a, const Vector
     }
     return false;
 }
+
+bool AABBColliderComponent::IsCollidingRect(const SDL_Rect& rect) const
+{
+    Vector2 min = GetMin();
+    Vector2 max = GetMax();
+
+    return (min.x < rect.x + rect.w &&
+            max.x > rect.x &&
+            min.y < rect.y + rect.h &&
+            max.y > rect.y);
+}

@@ -9,6 +9,7 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <SDL.h>
 
 enum class ColliderLayer
 {
@@ -47,6 +48,8 @@ public:
     void MaintainInCamera();
     void MaintainInMap();
     bool IsSegmentIntersecting(const Vector2& start, const Vector2& end);
+
+    bool IsCollidingRect(const SDL_Rect& rect) const;
 
 private:
     float GetMinVerticalOverlap(AABBColliderComponent* b) const;
