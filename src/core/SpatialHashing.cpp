@@ -281,7 +281,7 @@ std::vector<Cell> SpatialHashing::findPath(const std::vector<std::vector<CellTyp
     return {};
 }
 
-std::vector<Vector2> SpatialHashing::GetPath(
+std::vector<SDL_Rect> SpatialHashing::GetPath(
     Actor *targetActor, const Vector2 &end) const
 {
     RigidBodyComponent *rb = targetActor->GetComponent<RigidBodyComponent>();
@@ -301,16 +301,19 @@ std::vector<Vector2> SpatialHashing::GetPath(
     const auto& cellTypes = mCellTypes;
 
     std::vector<Cell> cells = findPath(cellTypes, start, endCell);
-    std::vector<Vector2> positions;
+    std::vector<SDL_Rect> nodeRects;
 
-    for (auto cell : cells) {
-        positions.push_back(
-            Vector2(
-                cell.row * mCellSize + mCellSize/2.f, 
-                cell.col * mCellSize + mCellSize/2.f));
+    for (auto cell : cells) {        
+        SDL_Rect rect = {
+            cell.row * mCellSize,
+            cell.col * mCellSize,
+            mCellSize,
+            mCellSize
+        };
+        nodeRects.push_back(rect);
     }
 
-    return positions;
+    return nodeRects;
 }
 
 void SpatialHashing::Draw(SDL_Renderer *renderer, const Vector2 &cameraPosition, float screenWidth, float screenHeight)

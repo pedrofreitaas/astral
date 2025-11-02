@@ -56,7 +56,7 @@ public:
                                       const float screenHeight,
                                       const float extraRadius = 0.0f) const;
 
-    std::vector<Vector2> GetPath(
+    std::vector<SDL_Rect> GetPath(
         Actor *targetActor, const Vector2& end
     ) const;
 
