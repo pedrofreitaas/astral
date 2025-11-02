@@ -44,14 +44,13 @@ void Enemy::ManageState()
     if (!zoe)
         return;
 
-    bool isInFov = PlayerOnFov();
-    float distanceToZoe = (zoe->GetPosition() - GetPosition()).LengthSq();
+    bool playerInFov = PlayerOnFov();
+    float distanceSQToZoe = (zoe->GetPosition() - GetPosition()).LengthSq();
 
     switch (mBehaviorState)
     {
     case BehaviorState::Asleep:
-        if (distanceToZoe < 200.0f*200.f)
-            mBehaviorState = BehaviorState::Waking;
+        if (distanceSQToZoe < 40000.f) mBehaviorState = BehaviorState::Waking;
         break;
     case BehaviorState::Waking:
         break;
@@ -64,8 +63,20 @@ void Enemy::ManageState()
         else if (mRigidBodyComponent->GetVelocity().x < 0.f)
             SetRotation(Math::Pi);
 
-        // if (!isInFov) mAIMovementComponent->SeekPlayer();
-        if (PlayerOnSight()) mBehaviorState = BehaviorState::Charging;
+        // movement component takes care of moving.
+        mAIMovementComponent->LogState();
+
+        if (PlayerOnSight()) {
+            mBehaviorState = BehaviorState::Charging;
+            break;
+        }
+
+        if (playerInFov && 
+            mAIMovementComponent->GetMovementState() != MovementState::FollowingPath)
+        {
+            SDL_Log("Enemy::ManageState: Player in FOV, seeking...");
+            mAIMovementComponent->SeekPlayer();
+        }
         
         break;
     }
@@ -190,4 +201,9 @@ bool Enemy::PlayerOnFov()
     const float fovAngle = Math::Pi / 4.f; // 45 degrees field of view
 
     return angle < fovAngle;
+}
+
+std::vector<Vector2> Enemy::GetPath() const
+{
+    return mAIMovementComponent->GetPath();
 }
