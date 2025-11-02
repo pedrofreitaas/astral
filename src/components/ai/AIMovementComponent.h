@@ -66,4 +66,7 @@ private:
     std::vector<SDL_Rect> mPath;
     float mPathTimer;
     float mPathTolerance;
+
+    void FollowPathFlier();
+    void FollowPathWalker();
 };
