@@ -55,6 +55,8 @@ add_executable(${PROJECT_NAME}
         src/actors/Enemy.h
         src/actors/enemies/Zod.cpp
         src/actors/enemies/Zod.h
+        src/actors/enemies/Sith.cpp
+        src/actors/enemies/Sith.h
         src/actors/Portal.cpp
         src/actors/Portal.h
         src/core/AudioSystem.cpp
