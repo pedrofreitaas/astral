@@ -23,7 +23,8 @@
 #include "../components/collider/AABBColliderComponent.h"
 #include "../ui/DialogueSystem.h"
 #include "../actors/Star.h"
-#include "../actors/Enemy.h"
+#include "../actors/enemies/Zod.h"
+#include "../actors/enemies/Sith.h"
 #include "../actors/Portal.h"
 
 void Game::LoadMainMenu()
@@ -179,7 +180,11 @@ void Game::LoadFirstLevel()
         Vector2(mWindowWidth, mWindowHeight),
         false);
 
-    mEnemy = new Enemy(this, 1500.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
+    Enemy* en = new Zod(this, 1500.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
+    mEnemies.push_back(en);
+
+    en = new Sith(this, 1200.0f, Vector2(200.0f, mMap->GetHeight() - 320.0f));
+    mEnemies.push_back(en);
 
     mZoe = new Zoe(this, 1500.0f);
     mZoe->SetPosition(Vector2(32.0f, mMap->GetHeight() - 80.0f));
