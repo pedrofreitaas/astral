@@ -205,16 +205,19 @@ std::vector<Actor *> SpatialHashing::QueryOnCamera(const Vector2 &cameraPosition
     return results;
 }
 
-std::vector<Cell> SpatialHashing::findPath(const std::vector<std::vector<CellType>>& grid, Cell start, Cell end, int maxJumpHeight) const {
-    int rows = grid.size(), cols = grid[0].size();
-    
+std::vector<Cell> SpatialHashing::findPath(
+    const std::vector<std::vector<CellType>>& grid, 
+    Cell start, 
+    Cell end, 
+    int maxJumpHeight
+) const {
     auto heuristic = [&](Cell a, Cell b) {
-        return std::abs(a.row - b.row) + std::abs(a.col - b.col);
+        return std::abs(a.row - b.row) + std::abs(a.col - b.col); // manhattan distance
     };
     
     auto isValid = [&](int r, int c) {
-        return r >= 0 && r < rows && c >= 0 && c < cols 
-               && (grid[c][r] != CellType::Tile);
+        return r >= 0 && r < grid.size() && c >= 0 && c < grid[0].size() 
+               && (grid[c][r] != CellType::Tile); // (grid limits + tile) ignore
     };
     
     auto getCellCost = [&](int r, int c) {
@@ -224,61 +227,78 @@ std::vector<Cell> SpatialHashing::findPath(const std::vector<std::vector<CellTyp
         return 4.0f; // Empty
     };
     
-    std::priority_queue<Node, std::vector<Node>, std::greater<Node>> open;
-    std::unordered_map<Cell, Cell, CellHash> cameFrom;
-    std::unordered_map<Cell, float, CellHash> gScore;
-    std::unordered_map<Cell, int, CellHash> upwardCount;
+    std::priority_queue<Node, std::vector<Node>, std::greater<Node>> open; // min-heap
+    std::unordered_map<Cell, Cell, CellHash> cameFrom; // rebuild path
+    std::unordered_map<Cell, float, CellHash> gScore; // cost from start to cell
+    std::unordered_map<Cell, int, CellHash> upwardCount; // upward steps taken to reach cell before last platform node
     
     open.push({start, (float)heuristic(start, end), 0});
     gScore[start] = 0;
     upwardCount[start] = 0;
     
-    int dirs[4][2] = {{0,-1}, {0,1}, {-1,0}, {1,0}};
-    
+    int dirs[4][2] = {{0,-1}, {0,1}, {-1,0}, {1,0}}; 
+    std::vector<Vector2> directions = {
+        Vector2(0, -1), Vector2(0, 1), Vector2(-1, 0), Vector2(1, 0)
+    }; // up, down, left, right (don't allow diagonal)
+
+    Node curr; bool reachedGoal = false;
     while (!open.empty()) {
-        Node curr = open.top();
+        curr = open.top();
         open.pop();
         
-        if (curr.pos == end) {
-            std::vector<Cell> path;
-            Cell c = end;
-            while (!(c == start)) {
-                path.push_back(c);
-                c = cameFrom[c];
-            }
-            path.push_back(start);
-            std::reverse(path.begin(), path.end());
-            return path;
+        if (curr.pos == end) { // reached goal
+            reachedGoal = true;
+            break;
         }
         
-        for (int i = 0; i < 4; i++) {
-            int nr = curr.pos.row + dirs[i][0], nc = curr.pos.col + dirs[i][1];
-            if (!isValid(nr, nc)) continue;
+        // explore neighbors
+        for (auto dir: directions) {
+            int newRow = curr.pos.row + dir.x;
+            int newCol = curr.pos.col + dir.y;
+
+            if (!isValid(newRow, newCol)) continue;
             
-            Cell neighbor = {nr, nc};
-            int newUpwardSteps = upwardCount[curr.pos];
-            bool movingUp = (dirs[i][1] == -1);
+            Cell neighbor = {newRow, newCol};
+            int cellUpwardsSteps = upwardCount[curr.pos];
+            bool movingUp = (dir.y == -1);
             
             if (movingUp) {
-                newUpwardSteps++;
-                if (newUpwardSteps > maxJumpHeight) continue;
-            } else if (grid[nc][nr] == CellType::Platform) {
-                newUpwardSteps = 0;
+                cellUpwardsSteps++;
+                if (cellUpwardsSteps > maxJumpHeight) continue; // exceeded max jump height, ignore
+            } 
+            
+            else if (grid[newCol][newRow] == CellType::Platform) { // reset upwards count on landing (platform)
+                cellUpwardsSteps = 0;
             }
             
-            float newG = curr.g + getCellCost(nr, nc);
+            float newG = curr.g + getCellCost(newRow, newCol); // gScore for the cell
             
-            if (!gScore.count(neighbor) || newG < gScore[neighbor] || 
-                (newG == gScore[neighbor] && newUpwardSteps < upwardCount[neighbor])) {
+            if (!gScore.count(neighbor) || // first time see
+                newG < gScore[neighbor] || // better gScore
+                (newG == gScore[neighbor] && 
+                cellUpwardsSteps < upwardCount[neighbor])) // reduced upwards steps to reach cell
+            {
                 gScore[neighbor] = newG;
-                upwardCount[neighbor] = newUpwardSteps;
+                upwardCount[neighbor] = cellUpwardsSteps;
                 cameFrom[neighbor] = curr.pos;
                 open.push({neighbor, newG + heuristic(neighbor, end), newG});
             }
         }
     }
-    
-    return {};
+
+    if (!reachedGoal) {
+        return {}; // no path found
+    }
+
+    std::vector<Cell> path;
+    Cell c = end;
+    while (!(c == start)) {
+        path.push_back(c);
+        c = cameFrom[c];
+    }
+    path.push_back(start);
+    std::reverse(path.begin(), path.end());
+    return path;
 }
 
 std::vector<SDL_Rect> SpatialHashing::GetPath(
@@ -292,15 +312,14 @@ std::vector<SDL_Rect> SpatialHashing::GetPath(
         return {};
     }
 
-    bool gravityApplies = rb->GetApplyGravity();
     Vector2 actorPos = targetActor->GetCenter();
 
     Cell start = {static_cast<int>(actorPos.x / mCellSize), static_cast<int>(actorPos.y / mCellSize)};
     Cell endCell = {static_cast<int>(end.x / mCellSize), static_cast<int>(end.y / mCellSize)};
 
-    const auto& cellTypes = mCellTypes;
+    std::vector<Cell> cells = findPath(mCellTypes, start, endCell, 3);
 
-    std::vector<Cell> cells = findPath(cellTypes, start, endCell);
+    // easier to visualize when drawing SDL_Rects, and to calc reached node
     std::vector<SDL_Rect> nodeRects;
 
     for (auto cell : cells) {        
