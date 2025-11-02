@@ -535,6 +535,23 @@ void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
                 SDL_RenderDrawRect(mRenderer, &rect);
             }
         }
+    
+        // check actor type if it's enemy
+        if (auto enemy = dynamic_cast<Enemy *>(actor))
+        {
+            SDL_SetRenderDrawColor(mRenderer, 114, 16, 199, 255);
+            std::vector<SDL_Rect> path = enemy->GetPath();
+
+            while (path.size() > 0)
+            {
+                SDL_Rect rect = path.back();
+                rect.x -= static_cast<int>(mCameraPos.x);
+                rect.y -= static_cast<int>(mCameraPos.y);
+                SDL_RenderDrawRect(mRenderer, &rect);
+                path.pop_back();
+            }
+        }
+
     }
 
     // Swap front buffer and back buffer
