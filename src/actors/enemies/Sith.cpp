@@ -21,8 +21,8 @@ Sith::Sith(Game* game, float forwardSpeed, const Vector2& position)
         "../assets/Sprites/Enemies/Sith/texture.json",
         std::bind(&Sith::AnimationEndCallback, this, std::placeholders::_1), // could use a lambda here too
         static_cast<int>(DrawLayerPosition::Enemy) + 1);
-    
-    mAIMovementComponent = new AIMovementComponent(this, forwardSpeed, 3, 10.f, .01f);
+
+    mAIMovementComponent = new AIMovementComponent(this, forwardSpeed, 3, TypeOfMovement::Flier, 10.f, .01f);
 
     mDrawComponent->AddAnimation("moving", 28, 35);
 
@@ -87,10 +87,6 @@ void Sith::AnimationEndCallback(std::string animationName)
 {
 }
 
-void Sith::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
-{
-}
-
 void Sith::ManageAnimations()
 {
     switch (mBehaviorState)
@@ -107,4 +103,19 @@ void Sith::ManageAnimations()
 
 void Sith::TakeDamage()
 {
+}
+
+void Sith::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
+{
+    if (other->GetLayer() == ColliderLayer::Blocks)
+    {
+        mAIMovementComponent->SetFowardSpeed(-mAIMovementComponent->GetFowardSpeed());
+    }
+}
+
+void Sith::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
+{
+    if (other->GetLayer() == ColliderLayer::Blocks)
+    {
+    }
 }

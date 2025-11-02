@@ -7,6 +7,12 @@
 #include "../collider/AABBColliderComponent.h"
 #include "../../libs/Math.h"
 
+enum class TypeOfMovement
+{
+    Walker,
+    Flier
+};
+
 enum class MovementState
 {
     Wandering,
@@ -19,7 +25,8 @@ class AIMovementComponent : public Component
 {
 public:
     AIMovementComponent(
-        class Actor* owner, float fowardSpeed, int jumpForceInBlocks, 
+        class Actor* owner, float fowardSpeed, 
+        int jumpForceInBlocks, TypeOfMovement typeOfMovement=TypeOfMovement::Walker,
         float pathTolerance=10.f, float craziness=.05f);
     ~AIMovementComponent() override = default;
 
@@ -57,6 +64,9 @@ private:
         return mOwner->GetComponent<AABBColliderComponent>();
     }
 
+    SDL_Rect* GetTarget();
+
+    TypeOfMovement mTypeOfMovement;
     MovementState mMovementState;
     MovementState mPreviousMovementState;
     int mJumpForceInBlocks;

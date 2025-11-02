@@ -22,7 +22,13 @@ Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
         std::bind(&Zod::AnimationEndCallback, this, std::placeholders::_1), // could use a lambda here too
         static_cast<int>(DrawLayerPosition::Enemy) + 1);
     
-    mAIMovementComponent = new AIMovementComponent(this, forwardSpeed, 3, 10.f, .01f);
+    mAIMovementComponent = new AIMovementComponent(
+        this, 
+        forwardSpeed, 
+        3, 
+        TypeOfMovement::Walker, 
+        10.f, 
+        .01f);
 
     mDrawComponent->AddAnimation("asleep", {0});
     mDrawComponent->AddAnimation("waking", 1, 2);

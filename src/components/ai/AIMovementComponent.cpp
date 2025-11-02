@@ -9,12 +9,13 @@ const float MIN_CRAZINESS = 0.f;
 
 AIMovementComponent::AIMovementComponent(
     class Actor *owner, float fowardSpeed,
-    int jumpForceInBlocks, float pathTolerance, float craziness)
+    int jumpForceInBlocks, TypeOfMovement typeOfMovement,
+    float pathTolerance, float craziness)
     : Component(owner), mMovementState(MovementState::Wandering),
       mPreviousMovementState(MovementState::Wandering),
       mJumpForceInBlocks(jumpForceInBlocks), mInteligence(0.0f),
       mCraziness(craziness), mFowardSpeed(fowardSpeed),
-      mPathTolerance(pathTolerance)
+      mPathTolerance(pathTolerance), mTypeOfMovement(typeOfMovement)
 {
     if (mCraziness > MAX_CRAZINESS)
         mCraziness = MAX_CRAZINESS;
@@ -28,19 +29,6 @@ void AIMovementComponent::Sense(float deltaTime)
 
 void AIMovementComponent::Plan(float deltaTime)
 {
-    switch (GetMovementState())
-    {
-    case MovementState::Wandering:
-        break; // no planning
-    case MovementState::Jumping:
-        break; // no planning
-    case MovementState::FollowingPath:
-        break;
-    case MovementState::FollowingPathJumping:
-        break;
-    default:
-        break;
-    }
 }
 
 void AIMovementComponent::FollowPathFlier()
@@ -207,8 +195,10 @@ void AIMovementComponent::Act(float deltaTime)
 
     case MovementState::FollowingPath:
     {
-        if(rb->GetApplyGravity()) FollowPathWalker();
-        else FollowPathFlier();
+        if(mTypeOfMovement == TypeOfMovement::Walker) 
+            FollowPathWalker();
+        else 
+            FollowPathFlier();
 
         break;
     }
@@ -225,9 +215,8 @@ void AIMovementComponent::Jump(bool isFollowingPath)
     if (!rb)
         return;
 
-    if (rb->GetOnGround() && rb->GetApplyGravity())
+    if (rb->GetOnGround() && mTypeOfMovement == TypeOfMovement::Walker)
     {
-        SDL_Log("AIMovementComponent::Jump: Jumping!");
         float xSpeed = rb->GetVelocity().x;
         float yForce = rb->GetVerticalForce(mJumpForceInBlocks);
         rb->ApplyForce(Vector2(xSpeed, yForce));
@@ -285,19 +274,19 @@ void AIMovementComponent::SeekPlayer()
     if (MovementState::FollowingPath == GetMovementState())
         return;
 
-    SetMovementState(MovementState::FollowingPath);
-
     Vector2 targetCenter = mOwner->GetGame()->GetZoe()->GetCenter();
     SpatialHashing *sh = mOwner->GetGame()->GetSpatialHashing();
-    mPath = sh->GetPath(mOwner, targetCenter);
+    mPath = sh->GetPath(
+        mOwner, 
+        targetCenter, 
+        mTypeOfMovement == TypeOfMovement::Flier);
 
     if (mPath.empty())
     {
-        SDL_Log("AIMovementComponent::SeekPlayer: No path found to player.");
-        SetMovementState(MovementState::Wandering);
         return;
     }
 
+    SetMovementState(MovementState::FollowingPath);
     mPathTimer = mPathTolerance;
 }
 
