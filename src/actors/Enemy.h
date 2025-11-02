@@ -6,24 +6,22 @@
 class Enemy : public Actor
 {
 public:
-    explicit Enemy(Game* game, float forwardSpeed, const Vector2& position, float fowardSpeed=1000.f);
+    explicit Enemy(Game* game, float forwardSpeed, const Vector2& position);
 
     void OnUpdate(float deltaTime) override;
-    void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
-    void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
-    void ManageState();
+    virtual void ManageState() = 0;
     std::vector<SDL_Rect> GetPath() const;
 
-private:
+protected:
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
     class AIMovementComponent* mAIMovementComponent;
 
-    void ManageAnimations();
-    void TakeDamage();
-    void AnimationEndCallback(std::string animationName);
+    virtual void ManageAnimations() = 0;
+    virtual void TakeDamage() = 0;
+    virtual void AnimationEndCallback(std::string animationName) = 0;
 
-    bool PlayerOnSight();
-    bool PlayerOnFov();
+    bool PlayerOnSight(float distance=100.f);
+    bool PlayerOnFov(float minDistance=20.f, float maxDistance=400.f);
 };
