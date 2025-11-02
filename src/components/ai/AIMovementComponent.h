@@ -16,12 +16,25 @@ enum class MovementState
 
 class AIMovementComponent : public Component
 {
+    float mPathTolerance = 3.f;
+
 public:
     AIMovementComponent(class Actor* owner, float fowardSpeed, float craziness=.05f);
     ~AIMovementComponent() override = default;
 
     void SetFowardSpeed(float speed) { mFowardSpeed = speed; }
     float GetFowardSpeed() const { return mFowardSpeed; }
+    void SeekPlayer();
+
+    MovementState GetMovementState() const { return mMovementState; }
+    void SetMovementState(MovementState state) { 
+        mPreviousMovementState = mMovementState; 
+        mMovementState = state; 
+        LogState();
+    }
+    void LogState();
+
+    std::vector<Vector2> GetPath() const { return mPath; }
 
 private:
     void Sense(float deltaTime);
@@ -44,7 +57,11 @@ private:
     }
 
     MovementState mMovementState;
+    MovementState mPreviousMovementState;
     int mJumpForceInBlocks;
     float mInteligence, mCraziness;
     float mFowardSpeed;
+
+    std::vector<Vector2> mPath;
+    float mPathTimer;
 };
