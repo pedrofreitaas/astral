@@ -34,7 +34,7 @@ public:
     }
     void LogState();
 
-    std::vector<Vector2> GetPath() const { return mPath; }
+    std::vector<SDL_Rect> GetPath() const { return mPath; }
 
 private:
     void Sense(float deltaTime);
@@ -62,6 +62,6 @@ private:
     float mInteligence, mCraziness;
     float mFowardSpeed;
 
-    std::vector<Vector2> mPath;
+    std::vector<SDL_Rect> mPath;
     float mPathTimer;
 };

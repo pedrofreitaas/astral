@@ -38,8 +38,11 @@ void AIMovementComponent::Plan(float deltaTime)
 void AIMovementComponent::Act(float deltaTime)
 {
     RigidBodyComponent* rb = GetOwnerRigidBody();
+    AABBColliderComponent* collider = GetOwnerCollider();
 
-    if (!rb) return;
+    if (!collider || !rb) {
+        throw std::runtime_error("AIMovementComponent::Act: Owner missing RigidBodyComponent or AABBColliderComponent");
+    }
 
     switch (GetMovementState())
     {
@@ -61,16 +64,34 @@ void AIMovementComponent::Act(float deltaTime)
         break;
     
     case MovementState::FollowingPath: {
-        if (mPath.empty()) {
+        if (!rb->GetOnGround()) break;
+
+        int currentIdx = -1;
+        
+        for (size_t i = 0; i < mPath.size(); ++i) {
+            if (collider->IsCollidingRect(mPath[i])) {
+                currentIdx = i;
+                break;
+            }
+        }
+
+        SDL_Rect target;
+        if (currentIdx == -1) {
+            target = mPath[0]; // need to do this more intelligently in the future.
+        } else if (currentIdx + 1 < static_cast<int>(mPath.size())) {
+            target = mPath[currentIdx + 1];
+        } else {
+            // Reached the end of the path
             SetMovementState(MovementState::Wandering);
+            mPath.clear();
             break;
         }
 
-        if (!rb->GetOnGround()) break;
-
+        Vector2 targetPos = Vector2(
+            static_cast<float>(target.x + target.w / 2),
+            static_cast<float>(target.y + target.h / 2)
+        );
         Vector2 ownerCenter = mOwner->GetCenter();
-        Vector2 targetPos = mPath.front();
-
         Vector2 toTarget = targetPos - ownerCenter;
 
         float jumpThreshold = Game::TILE_SIZE * 0.75f;
@@ -79,8 +100,7 @@ void AIMovementComponent::Act(float deltaTime)
 
         toTarget.Normalize();
 
-        if (distanceToTarget < 8.f) {
-            mPath.erase(mPath.begin());
+        if (collider->IsCollidingRect(target)){
             mPathTimer = AIMovementComponent::mPathTolerance;
         }
 
@@ -93,8 +113,12 @@ void AIMovementComponent::Act(float deltaTime)
             break;
         }
 
-        if (mPath.size() > 1) {
-            Vector2 nextTarget = mPath[1];
+        if (currentIdx + 2 < static_cast<int>(mPath.size())) {
+            SDL_Rect nextRect = mPath[currentIdx + 2];
+            Vector2 nextTarget = Vector2(
+                static_cast<float>(nextRect.x + nextRect.w / 2),
+                static_cast<float>(nextRect.y + nextRect.h / 2)
+            );
             Vector2 toNextTargetFromTarget = nextTarget - targetPos;
             Vector2 toNextTarget = nextTarget - ownerCenter;
             

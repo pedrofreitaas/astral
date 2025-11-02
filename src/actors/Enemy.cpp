@@ -203,7 +203,7 @@ bool Enemy::PlayerOnFov()
     return angle < fovAngle;
 }
 
-std::vector<Vector2> Enemy::GetPath() const
+std::vector<SDL_Rect> Enemy::GetPath() const
 {
     return mAIMovementComponent->GetPath();
 }

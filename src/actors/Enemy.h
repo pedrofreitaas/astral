@@ -12,7 +12,7 @@ public:
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void ManageState();
-    std::vector<Vector2> GetPath() const;
+    std::vector<SDL_Rect> GetPath() const;
 
 private:
     class RigidBodyComponent* mRigidBodyComponent;
