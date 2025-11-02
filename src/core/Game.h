@@ -239,7 +239,7 @@ private:
     // Game-specific
     class Zoe *mZoe;
     class Star *mStar;
-    class Enemy *mEnemy;
+    std::vector<class Enemy *> mEnemies;
     class HUD *mHUD;
     SoundHandle mMusicHandle;
 

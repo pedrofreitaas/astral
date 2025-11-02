@@ -42,7 +42,7 @@ Game::Game(int windowWidth, int windowHeight)
       mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero),
       mBackgroundPosition(Vector2::Zero), mMap(nullptr), mBackgroundIsCameraWise(true),
       mCurrentCutscene(nullptr), mCutscenes(), mGamePlayState(GamePlayState::Playing),
-      mDebugMode(false), mPrevDeltaTime(0.0f), mEnemy(nullptr), mStar(nullptr), mApplyGravityScene(true),
+      mDebugMode(false), mPrevDeltaTime(0.0f), mEnemies(), mStar(nullptr), mApplyGravityScene(true),
       mCameraCenter(CameraCenter::Zoe), mMaintainCameraInMap(true), mCameraCenterPos(Vector2::Zero)
 {
     mRealWindowWidth = windowWidth;
