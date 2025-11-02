@@ -7,10 +7,14 @@
 const float MAX_CRAZINESS = 1.f;
 const float MIN_CRAZINESS = 0.f;
 
-AIMovementComponent::AIMovementComponent(class Actor* owner, float fowardSpeed, float craziness)
+AIMovementComponent::AIMovementComponent(
+    class Actor* owner, float fowardSpeed,
+    int jumpForceInBlocks,  float pathTolerance, float craziness)
     : Component(owner), mMovementState(MovementState::Wandering), 
       mPreviousMovementState(MovementState::Wandering),
-      mJumpForceInBlocks(3), mInteligence(0.0f), mCraziness(craziness), mFowardSpeed(fowardSpeed)
+      mJumpForceInBlocks(jumpForceInBlocks), mInteligence(0.0f), 
+      mCraziness(craziness), mFowardSpeed(fowardSpeed),
+      mPathTolerance(pathTolerance)
 {
     if (mCraziness > MAX_CRAZINESS) mCraziness = MAX_CRAZINESS;
     if (mCraziness < MIN_CRAZINESS) mCraziness = MIN_CRAZINESS;
@@ -29,6 +33,8 @@ void AIMovementComponent::Plan(float deltaTime)
     case MovementState::Jumping:
         break; // no planning
     case MovementState::FollowingPath:
+        break;
+    case MovementState::FollowingPathJumping:
         break;
     default:
         break;
@@ -60,6 +66,13 @@ void AIMovementComponent::Act(float deltaTime)
         if (rb->GetOnGround())
         {
             SetMovementState(mPreviousMovementState);
+        }
+        break;
+
+    case MovementState::FollowingPathJumping:
+        if (rb->GetOnGround())
+        {
+            SetMovementState(MovementState::FollowingPath);
         }
         break;
     
@@ -100,16 +113,12 @@ void AIMovementComponent::Act(float deltaTime)
 
         toTarget.Normalize();
 
-        if (collider->IsCollidingRect(target)){
-            mPathTimer = AIMovementComponent::mPathTolerance;
-        }
-
         Vector2 desiredVelocity = toTarget * mFowardSpeed;
         rb->ApplyForce(Vector2(desiredVelocity.x, 0.f));
 
         if (-toTarget.y > jumpThreshold)
         {
-            Jump();
+            Jump(true);
             break;
         }
 
@@ -125,13 +134,14 @@ void AIMovementComponent::Act(float deltaTime)
             if (-toNextTargetFromTarget.y > jumpThreshold && 
                 Math::Abs(toNextTarget.x) < Game::TILE_SIZE * .8f)
             {
-                Jump();
+                Jump(true);
                 break;
             }
         }
 
         break;
     }
+    
     default:
         SetMovementState(MovementState::Wandering);
         break;
@@ -139,7 +149,7 @@ void AIMovementComponent::Act(float deltaTime)
         
 }
 
-void AIMovementComponent::Jump()
+void AIMovementComponent::Jump(bool isFollowingPath)
 {   
     RigidBodyComponent* rb = GetOwnerRigidBody();
     if (!rb) return;
@@ -149,7 +159,8 @@ void AIMovementComponent::Jump()
         float xSpeed = rb->GetVelocity().x;
         float yForce = rb->GetVerticalForce(mJumpForceInBlocks);
         rb->ApplyForce(Vector2(xSpeed, yForce));
-        SetMovementState(MovementState::Jumping);
+        SetMovementState(
+            isFollowingPath ? MovementState::FollowingPathJumping : MovementState::Jumping);
     }
 }
 
@@ -178,9 +189,11 @@ void AIMovementComponent::Update(float deltaTime)
 
     if (CrazyDecision()) mInteligence = Math::RandRange(0.f, 1.f);
 
-    if (GetMovementState() == MovementState::FollowingPath)
+    if (GetMovementState() == MovementState::FollowingPath ||
+        GetMovementState() == MovementState::FollowingPathJumping)
     {
         mPathTimer -= deltaTime;
+        SDL_Log("AIMovementComponent::Update: Path timer: %f", mPathTimer);
         if (mPathTimer <= 0.f)
         {
             SDL_Log("AIMovementComponent::Update: Path timer expired, abandoning path.");
@@ -205,7 +218,14 @@ void AIMovementComponent::SeekPlayer()
     SpatialHashing* sh = mOwner->GetGame()->GetSpatialHashing();
     mPath = sh->GetPath(mOwner, targetCenter);
 
-    mPathTimer = AIMovementComponent::mPathTolerance;
+    if (mPath.empty())
+    {
+        SDL_Log("AIMovementComponent::SeekPlayer: No path found to player.");
+        SetMovementState(MovementState::Wandering);
+        return;
+    }
+
+    mPathTimer = mPathTolerance;
 }
 
 void AIMovementComponent::LogState()
@@ -217,6 +237,9 @@ void AIMovementComponent::LogState()
         break;
     case MovementState::Jumping:
         SDL_Log("AIMovementComponent::LogState: Jumping");
+        break;
+    case MovementState::FollowingPathJumping:
+        SDL_Log("AIMovementComponent::LogState: FollowingPathJumping");
         break;
     case MovementState::FollowingPath:
         SDL_Log("AIMovementComponent::LogState: FollowingPath");

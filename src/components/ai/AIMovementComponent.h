@@ -11,15 +11,16 @@ enum class MovementState
 {
     Wandering,
     Jumping,
-    FollowingPath
+    FollowingPath,
+    FollowingPathJumping
 };
 
 class AIMovementComponent : public Component
 {
-    float mPathTolerance = 3.f;
-
 public:
-    AIMovementComponent(class Actor* owner, float fowardSpeed, float craziness=.05f);
+    AIMovementComponent(
+        class Actor* owner, float fowardSpeed, int jumpForceInBlocks, 
+        float pathTolerance=10.f, float craziness=.05f);
     ~AIMovementComponent() override = default;
 
     void SetFowardSpeed(float speed) { mFowardSpeed = speed; }
@@ -44,7 +45,7 @@ private:
     bool CrazyDecision();
     bool CrazyDecision(float modifier);
 
-    void Jump();
+    void Jump(bool isFollowingPath = false);
 
     void Update(float deltaTime) override;
 
@@ -64,4 +65,5 @@ private:
 
     std::vector<SDL_Rect> mPath;
     float mPathTimer;
+    float mPathTolerance;
 };
