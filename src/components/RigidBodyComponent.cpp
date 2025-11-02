@@ -82,5 +82,5 @@ float RigidBodyComponent::GetVerticalForce(int totalBlocks) {
 
     const float a_total = (v0 / dt) + GRAVITY;
 
-    return -mMass * a_total;
+    return -mMass * a_total - 250.f; // small extra force to counter minor losses
 }
