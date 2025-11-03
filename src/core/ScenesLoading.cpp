@@ -55,7 +55,7 @@ void Game::LoadMainMenu()
         playButtonPos,
         playButtonSize,
         [this]()
-        { SetGameScene(GameScene::Bedroom); },
+        { SetGameScene( /*GameScene::Bedroom */ GameScene::Level1); },
         Vector2(CHAR_WIDTH * 4, WORD_HEIGHT));
 
     mUIStack.front()->AddCursor(
@@ -180,7 +180,7 @@ void Game::LoadFirstLevel()
         Vector2(mWindowWidth, mWindowHeight),
         false);
 
-    Enemy* en = new Zod(this, 1500.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
+    Enemy* en = new Zod(this, 1800.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
     mEnemies.push_back(en);
 
     en = new Sith(this, 1200.0f, Vector2(200.0f, mMap->GetHeight() - 320.0f));
@@ -264,5 +264,5 @@ void Game::LoadFirstLevel()
                 std::move(steps),
                 [this]() {});
 
-    StartCutscene("Intro");
+    // StartCutscene("Intro");
 }
