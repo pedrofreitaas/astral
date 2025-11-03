@@ -31,6 +31,56 @@ void AIMovementComponent::Plan(float deltaTime)
 {
 }
 
+int AIMovementComponent::GetTargetIndex()
+{
+    AABBColliderComponent *collider = GetOwnerCollider();
+
+    if (mPath.empty() || !collider)
+        return -1;
+
+    int currentIdx = -1;
+    for (size_t i = 0; i < mPath.size(); ++i)
+    {
+        if (collider->IsCollidingRect(mPath[i]))
+        {
+            currentIdx = i;
+            break;
+        }
+    }
+    
+    // npc not on path, let's find the closest rect in path, and set as target.
+    if (currentIdx == -1) 
+    {
+        int closestRectIdx = -1;
+        float closestDistSq = std::numeric_limits<float>::max();
+        Vector2 ownerCenter = mOwner->GetCenter();
+
+        for (size_t i = 0; i < mPath.size(); ++i)
+        {
+            SDL_Rect rect = mPath[i];
+            Vector2 rectCenter = Vector2(
+                static_cast<float>(rect.x + rect.w / 2),
+                static_cast<float>(rect.y + rect.h / 2));
+            float distSq = (rectCenter - ownerCenter).LengthSq();
+            if (distSq < closestDistSq)
+            {
+                closestDistSq = distSq;
+                closestRectIdx = static_cast<int>(i);
+            }
+        }
+
+        return closestRectIdx;
+    }
+    
+    // npc on path, follow to next rect in path.
+    if (currentIdx + 1 < static_cast<int>(mPath.size())) 
+    {
+        return currentIdx + 1;
+    }
+
+    return mPath.size() - 1;
+}
+
 void AIMovementComponent::FollowPathFlier()
 {
     AABBColliderComponent *collider = GetOwnerCollider();
@@ -86,70 +136,54 @@ void AIMovementComponent::FollowPathWalker()
     if (!rb->GetOnGround())
         return;
 
-    int currentIdx = -1;
+    int targetIndex = GetTargetIndex();
 
-    for (size_t i = 0; i < mPath.size(); ++i)
-    {
-        if (collider->IsCollidingRect(mPath[i]))
-        {
-            currentIdx = i;
-            break;
-        }
+    if (targetIndex == -1) {
+        mPath.clear();
+        SetMovementState(MovementState::Wandering);
+        return;
     }
 
-    SDL_Rect target;
-    if (currentIdx == -1)
+    // npc reached end the last rect, end of path.
+    if (targetIndex >= static_cast<int>(mPath.size()) - 1)
     {
-        target = mPath[0]; // need to do this more intelligently in the future.
-    }
-    else if (currentIdx + 1 < static_cast<int>(mPath.size()))
-    {
-        target = mPath[currentIdx + 1];
-    }
-    else
-    {
-        // Reached the end of the path
         SetMovementState(MovementState::Wandering);
         mPath.clear();
         return;
     }
 
-    Vector2 targetPos = Vector2(
-        static_cast<float>(target.x + target.w / 2),
-        static_cast<float>(target.y + target.h / 2));
     Vector2 ownerCenter = mOwner->GetCenter();
-    Vector2 toTarget = targetPos - ownerCenter;
-
-    float jumpThreshold = Game::TILE_SIZE * 0.75f;
-
-    float distanceToTarget = toTarget.Length();
-
-    toTarget.Normalize();
-
-    Vector2 desiredVelocity = toTarget * mFowardSpeed;
-    rb->ApplyForce(Vector2(desiredVelocity.x, 0.f));
-
-    if (-toTarget.y > jumpThreshold)
+    
+    // resultant force of the next 3 steps, if available.
+    Vector2 resultantForce = Vector2::Zero;
+    int stepsToConsider = 3;
+    for (int i = 0; i < stepsToConsider; ++i)
     {
-        Jump(true);
-        return;
+        int idx = targetIndex + i;
+        if (idx >= static_cast<int>(mPath.size()))
+            break;
+        
+        SDL_Rect targetRect = mPath[idx];
+        Vector2 targetPos = Vector2(
+            static_cast<float>(targetRect.x + targetRect.w / 2),
+            static_cast<float>(targetRect.y + targetRect.h / 2));
+        
+        
+        Vector2 toTarget = targetPos - ownerCenter;
+        
+        toTarget.Normalize();
+        resultantForce += toTarget;
+        resultantForce *= (1.f / static_cast<float>(stepsToConsider));
     }
 
-    if (currentIdx + 2 < static_cast<int>(mPath.size()))
-    {
-        SDL_Rect nextRect = mPath[currentIdx + 2];
-        Vector2 nextTarget = Vector2(
-            static_cast<float>(nextRect.x + nextRect.w / 2),
-            static_cast<float>(nextRect.y + nextRect.h / 2));
-        Vector2 toNextTargetFromTarget = nextTarget - targetPos;
-        Vector2 toNextTarget = nextTarget - ownerCenter;
+    if (rb->GetOnGround()) {
+        Vector2 desiredHORVelocity = Vector2(resultantForce.x * mFowardSpeed, 0.f);
+        rb->ApplyForce(desiredHORVelocity);
+    }
 
-        if (-toNextTargetFromTarget.y > jumpThreshold &&
-            Math::Abs(toNextTarget.x) < Game::TILE_SIZE * .8f)
-        {
-            Jump(true);
-            return;
-        }
+    if (resultantForce.y < -0.3f)
+    {
+        Jump(true);
     }
 }
 
@@ -255,7 +289,6 @@ void AIMovementComponent::Update(float deltaTime)
         GetMovementState() == MovementState::FollowingPathJumping)
     {
         mPathTimer -= deltaTime;
-        SDL_Log("AIMovementComponent::Update: Path timer: %f", mPathTimer);
         if (mPathTimer <= 0.f)
         {
             SDL_Log("AIMovementComponent::Update: Path timer expired, abandoning path.");

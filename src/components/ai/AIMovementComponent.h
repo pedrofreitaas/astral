@@ -64,7 +64,7 @@ private:
         return mOwner->GetComponent<AABBColliderComponent>();
     }
 
-    SDL_Rect* GetTarget();
+    int GetTargetIndex();
 
     TypeOfMovement mTypeOfMovement;
     MovementState mMovementState;
