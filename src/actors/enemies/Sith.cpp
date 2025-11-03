@@ -22,7 +22,13 @@ Sith::Sith(Game* game, float forwardSpeed, const Vector2& position)
         std::bind(&Sith::AnimationEndCallback, this, std::placeholders::_1), // could use a lambda here too
         static_cast<int>(DrawLayerPosition::Enemy) + 1);
 
-    mAIMovementComponent = new AIMovementComponent(this, forwardSpeed, 3, TypeOfMovement::Flier, 10.f, .01f);
+    mAIMovementComponent = new AIMovementComponent(
+        this, 
+        forwardSpeed, 
+        -1, 
+        TypeOfMovement::Flier,
+        5.f, 
+        .01f);
 
     mDrawComponent->AddAnimation("moving", 28, 35);
 
@@ -55,9 +61,6 @@ void Sith::ManageState()
             SetRotation(0.f);
         else if (mRigidBodyComponent->GetVelocity().x < 0.f)
             SetRotation(Math::Pi);
-
-        // movement component takes care of moving.
-        mAIMovementComponent->LogState();
 
         if (PlayerOnSight()) {
             mBehaviorState = BehaviorState::Charging;
