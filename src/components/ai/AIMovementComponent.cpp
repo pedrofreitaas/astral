@@ -49,27 +49,9 @@ int AIMovementComponent::GetTargetIndex()
     }
     
     // npc not on path, let's find the closest rect in path, and set as target.
-    if (currentIdx == -1) 
+    if (currentIdx == -1)
     {
-        int closestRectIdx = -1;
-        float closestDistSq = std::numeric_limits<float>::max();
-        Vector2 ownerCenter = mOwner->GetCenter();
-
-        for (size_t i = 0; i < mPath.size(); ++i)
-        {
-            SDL_Rect rect = mPath[i];
-            Vector2 rectCenter = Vector2(
-                static_cast<float>(rect.x + rect.w / 2),
-                static_cast<float>(rect.y + rect.h / 2));
-            float distSq = (rectCenter - ownerCenter).LengthSq();
-            if (distSq < closestDistSq)
-            {
-                closestDistSq = distSq;
-                closestRectIdx = static_cast<int>(i);
-            }
-        }
-
-        return closestRectIdx;
+        return 0;
     }
     
     // npc on path, follow to next rect in path.
@@ -86,33 +68,24 @@ void AIMovementComponent::FollowPathFlier()
     AABBColliderComponent *collider = GetOwnerCollider();
     RigidBodyComponent *rb = GetOwnerRigidBody();
 
-    int currentIdx = -1;
-
-    for (size_t i = 0; i < mPath.size(); ++i)
-    {
-        if (collider->IsCollidingRect(mPath[i]))
-        {
-            currentIdx = i;
-            break;
-        }
-    }
-
-    SDL_Rect target;
-    if (currentIdx == -1)
-    {
-        target = mPath[0]; // need to do this more intelligently in the future.
-    }
-    else if (currentIdx + 1 < static_cast<int>(mPath.size()))
-    {
-        target = mPath[currentIdx + 1];
-    }
-    else
-    {
-        // Reached the end of the path
+    int targetIndex = GetTargetIndex();
+    
+    if (targetIndex == -1) {
         SetMovementState(MovementState::Wandering);
         mPath.clear();
         return;
     }
+
+    if (targetIndex >= static_cast<int>(mPath.size())-1)
+    {
+        SetMovementState(MovementState::Wandering);
+        mPath.clear();
+        return;
+    }
+
+    SDL_Rect target = mPath[targetIndex];
+
+    SDL_Log("AIM::FollowPathFlier: Target Rect [%d, %d, %d, %d]", target.x, target.y, target.w, target.h);
 
     Vector2 targetPos = Vector2(
         static_cast<float>(target.x + target.w / 2),
@@ -120,12 +93,10 @@ void AIMovementComponent::FollowPathFlier()
     Vector2 ownerCenter = mOwner->GetCenter();
     Vector2 toTarget = targetPos - ownerCenter;
 
-    float distanceToTarget = toTarget.Length();
-
     toTarget.Normalize();
 
-    Vector2 desiredVelocity = toTarget * mFowardSpeed;
-    rb->ApplyForce(desiredVelocity);
+    Vector2 force = toTarget * mFowardSpeed;
+    rb->ApplyForce(force);
 }
 
 void AIMovementComponent::FollowPathWalker()
@@ -200,7 +171,7 @@ void AIMovementComponent::Act(float deltaTime)
     switch (GetMovementState())
     {
     case MovementState::Wandering:
-        if (!rb->GetOnGround())
+        if (!rb->GetOnGround() && rb->GetApplyGravity())
             break;
 
         if (mInteligence >= .5f)
@@ -208,7 +179,7 @@ void AIMovementComponent::Act(float deltaTime)
         else
             rb->ApplyForce(Vector2(-mFowardSpeed, 0.f));
 
-        if (CrazyDecision(.5f))
+        if (rb->GetApplyGravity() && CrazyDecision(.5f))
             Jump();
 
         break;
@@ -291,7 +262,6 @@ void AIMovementComponent::Update(float deltaTime)
         mPathTimer -= deltaTime;
         if (mPathTimer <= 0.f)
         {
-            SDL_Log("AIMovementComponent::Update: Path timer expired, abandoning path.");
             SetMovementState(MovementState::Wandering);
             mPath.clear();
         }
@@ -304,11 +274,12 @@ void AIMovementComponent::Update(float deltaTime)
 
 void AIMovementComponent::SeekPlayer()
 {
-    if (MovementState::FollowingPath == GetMovementState())
+    if (GetMovementState() == MovementState::FollowingPath)
         return;
 
     Vector2 targetCenter = mOwner->GetGame()->GetZoe()->GetCenter();
     SpatialHashing *sh = mOwner->GetGame()->GetSpatialHashing();
+    
     mPath = sh->GetPath(
         mOwner, 
         targetCenter, 
