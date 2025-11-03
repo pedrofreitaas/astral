@@ -76,7 +76,7 @@
       }
     },
     {
-      "filename": "sith04.png",
+      "filename": "sith03.png",
       "frame": {
         "x": 168,
         "y": 0,
@@ -101,7 +101,7 @@
       }
     },
     {
-      "filename": "sith05.png",
+      "filename": "sith04.png",
       "frame": {
         "x": 224,
         "y": 0,
@@ -126,7 +126,7 @@
       }
     },
     {
-      "filename": "sith06.png",
+      "filename": "sith05.png",
       "frame": {
         "x": 280,
         "y": 0,
@@ -151,7 +151,7 @@
       }
     },
     {
-      "filename": "sith07.png",
+      "filename": "sith06.png",
       "frame": {
         "x": 336,
         "y": 0,
@@ -176,7 +176,7 @@
       }
     },
     {
-      "filename": "sith08.png",
+      "filename": "sith07.png",
       "frame": {
         "x": 392,
         "y": 0,
@@ -276,7 +276,7 @@
       }
     },
     {
-      "filename": "sith12.png",
+      "filename": "sith13.png",
       "frame": {
         "x": 616,
         "y": 0,
@@ -301,7 +301,7 @@
       }
     },
     {
-      "filename": "sith13.png",
+      "filename": "sith14.png",
       "frame": {
         "x": 672,
         "y": 0,
@@ -326,7 +326,7 @@
       }
     },
     {
-      "filename": "sith14.png",
+      "filename": "sith15.png",
       "frame": {
         "x": 728,
         "y": 0,
@@ -526,7 +526,7 @@
       }
     },
     {
-      "filename": "sith24.png",
+      "filename": "sith25.png",
       "frame": {
         "x": 1176,
         "y": 0,
@@ -751,7 +751,7 @@
       }
     },
     {
-      "filename": "sith34.png",
+      "filename": "sith35.png",
       "frame": {
         "x": 1680,
         "y": 0,
@@ -776,7 +776,7 @@
       }
     },
     {
-      "filename": "sith35.png",
+      "filename": "sith36.png",
       "frame": {
         "x": 1736,
         "y": 0,
@@ -801,7 +801,7 @@
       }
     },
     {
-      "filename": "sith36.png",
+      "filename": "sith37.png",
       "frame": {
         "x": 1792,
         "y": 0,
@@ -826,9 +826,9 @@
       }
     },
     {
-      "filename": "sith03.png",
+      "filename": "sith08.png",
       "frame": {
-        "x": 112,
+        "x": 0,
         "y": 0,
         "w": 56,
         "h": 52
@@ -851,9 +851,34 @@
       }
     },
     {
-      "filename": "sith15.png",
+      "filename": "sith12.png",
       "frame": {
-        "x": 336,
+        "x": 0,
+        "y": 0,
+        "w": 56,
+        "h": 52
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 56,
+        "h": 52
+      },
+      "sourceSize": {
+        "w": 56,
+        "h": 52
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "sith24.png",
+      "frame": {
+        "x": 0,
         "y": 0,
         "w": 56,
         "h": 52
@@ -878,7 +903,7 @@
     {
       "filename": "sith19.png",
       "frame": {
-        "x": 336,
+        "x": 896,
         "y": 0,
         "w": 56,
         "h": 52
@@ -901,9 +926,9 @@
       }
     },
     {
-      "filename": "sith25.png",
+      "filename": "sith34.png",
       "frame": {
-        "x": 1176,
+        "x": 1624,
         "y": 0,
         "w": 56,
         "h": 52

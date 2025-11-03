@@ -79,7 +79,6 @@ add_executable(${PROJECT_NAME}
         src/ui/UIImage.h
         src/core/SpatialHashing.cpp
         src/core/SpatialHashing.h
-        src/actors/Projectile.cpp
         src/actors/Projectile.h
         src/actors/Item.h
         src/actors/Item.cpp

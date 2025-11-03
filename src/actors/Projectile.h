@@ -4,19 +4,34 @@
 class Projectile : public Actor
 {
 public:
-    Projectile(class Game* game, ColliderLayer layer, int type=1);
+    Projectile(
+        class Game* game, const std::string &spriteSheetPath, 
+        const std::string &spriteSheetData, Vector2 direction, 
+        Vector2 position, float speed
+    ): Actor(game), mDirection(direction), mSpeed(speed) {};
 
-    void OnUpdate(float deltaTime) override;
+protected:
+    void OnUpdate(float deltaTime) override {
+        Vector2 movement = mDirection * mSpeed * deltaTime;
+        mRigidBodyComponent->ApplyForce(movement);
+    }
 
-    void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
-    void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
-    bool LinesIntersect(const Vector2& p1, const Vector2& p2,
-                                    const Vector2& q1, const Vector2& q2);
-    bool LineIntersectsAABB(const Vector2& p1, const Vector2& p2, AABBColliderComponent* box);
-    Vector2 mPreviousPosition;
+    void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override {
+        Kill();
+    }
 
-private:    
-    class DrawSpriteComponent* mDrawComponent;
+    void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override {
+        Kill();
+    }
+
+    virtual void ManageState() = 0;
+    virtual void ManageAnimations() = 0;
+    virtual void Kill() = 0;
+
+    class DrawAnimatedComponent* mDrawAnimatedComponent;
     class RigidBodyComponent* mRigidBodyComponent;
     class AABBColliderComponent* mColliderComponent;
+    
+    Vector2 mDirection;
+    float mSpeed;
 };
