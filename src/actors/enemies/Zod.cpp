@@ -25,9 +25,9 @@ Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
     mAIMovementComponent = new AIMovementComponent(
         this, 
         forwardSpeed, 
-        3, 
+        4,
         TypeOfMovement::Walker, 
-        10.f, 
+        3.f, 
         .01f);
 
     mDrawComponent->AddAnimation("asleep", {0});
@@ -50,7 +50,7 @@ void Zod::ManageState()
     if (!zoe)
         return;
 
-    bool playerInFov = PlayerOnFov();
+    bool playerInFov = PlayerOnFov(100.f, 400.f);
     float distanceSQToZoe = (zoe->GetPosition() - GetPosition()).LengthSq();
 
     switch (mBehaviorState)
@@ -68,9 +68,6 @@ void Zod::ManageState()
             SetRotation(0.f);
         else if (mRigidBodyComponent->GetVelocity().x < 0.f)
             SetRotation(Math::Pi);
-
-        // movement component takes care of moving.
-        mAIMovementComponent->LogState();
 
         if (PlayerOnSight()) {
             mBehaviorState = BehaviorState::Charging;
