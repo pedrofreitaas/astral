@@ -107,14 +107,6 @@ void Zod::AnimationEndCallback(std::string animationName)
     }
 }
 
-void Zod::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
-{
-    if (other->GetLayer() == ColliderLayer::Blocks)
-    {
-        mAIMovementComponent->SetFowardSpeed(-mAIMovementComponent->GetFowardSpeed());
-    }
-}
-
 void Zod::ManageAnimations()
 {
     switch (mBehaviorState)

@@ -27,8 +27,6 @@ public:
 
     void ManageState() override;
     void AnimationEndCallback(std::string animationName) override;
-    void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
-    void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void ManageAnimations() override;
     void TakeDamage() override;
 

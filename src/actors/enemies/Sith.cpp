@@ -197,21 +197,6 @@ void Sith::TakeDamage()
 {
 }
 
-void Sith::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
-{
-    if (other->GetLayer() == ColliderLayer::Blocks)
-    {
-        mAIMovementComponent->SetFowardSpeed(-mAIMovementComponent->GetFowardSpeed());
-    }
-}
-
-void Sith::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
-{
-    if (other->GetLayer() == ColliderLayer::Blocks)
-    {
-    }
-}
-
 void Sith::OnUpdate(float deltaTime)
 {
     Enemy::OnUpdate(deltaTime);
