@@ -551,8 +551,18 @@ void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
                 SDL_RenderDrawRect(mRenderer, &rect);
                 path.pop_back();
             }
-        }
 
+            // draw enemy's current applied force vector
+            Vector2 force = enemy->GetCurrentAppliedForce(.05f);
+            Vector2 enemyPos = enemy->GetCenter();
+            SDL_SetRenderDrawColor(mRenderer, 29, 88, 146, 255);
+            SDL_RenderDrawLine(
+                mRenderer,
+                static_cast<int>(enemyPos.x - mCameraPos.x),
+                static_cast<int>(enemyPos.y - mCameraPos.y),
+                static_cast<int>(enemyPos.x + force.x - mCameraPos.x),
+                static_cast<int>(enemyPos.y + force.y - mCameraPos.y));
+        }
     }
 
     // Swap front buffer and back buffer
