@@ -21,6 +21,9 @@ enum class MovementState
     FollowingPathJumping
 };
 
+// actor if this component should apply any sort of force, or movement logic directly.
+// it must use this as a middleware.
+
 class AIMovementComponent : public Component
 {
 public:
@@ -43,6 +46,10 @@ public:
     void LogState();
 
     std::vector<SDL_Rect> GetPath() const { return mPath; }
+
+    void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other);
+    void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other);
+    void ApplyForce(const Vector2 &force);
 
 private:
     void Sense(float deltaTime);

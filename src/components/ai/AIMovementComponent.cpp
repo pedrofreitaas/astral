@@ -15,8 +15,14 @@ AIMovementComponent::AIMovementComponent(
       mPreviousMovementState(MovementState::Wandering),
       mJumpForceInBlocks(jumpForceInBlocks), mInteligence(0.0f),
       mCraziness(craziness), mFowardSpeed(fowardSpeed),
-      mPathTolerance(pathTolerance), mTypeOfMovement(typeOfMovement)
+      mPathTolerance(pathTolerance), mTypeOfMovement(typeOfMovement),
+      mPathTimer(0.f)
 {
+    if (mOwner->GetComponent<RigidBodyComponent>() == nullptr)
+    {
+        throw std::runtime_error("AIMovementComponent::AIMovementComponent: Owner missing RigidBodyComponent");
+    }
+
     if (mCraziness > MAX_CRAZINESS)
         mCraziness = MAX_CRAZINESS;
     if (mCraziness < MIN_CRAZINESS)
@@ -51,7 +57,26 @@ int AIMovementComponent::GetTargetIndex()
     // npc not on path, let's find the closest rect in path, and set as target.
     if (currentIdx == -1)
     {
-        return 0;
+        Vector2 ownerCenter = mOwner->GetCenter();
+        float closestDistance = std::numeric_limits<float>::max();
+        
+        for (size_t i = 0; i < mPath.size(); ++i)
+        {
+            SDL_Rect targetRect = mPath[i];
+            Vector2 targetPos = Vector2(
+                static_cast<float>(targetRect.x + targetRect.w / 2),
+                static_cast<float>(targetRect.y + targetRect.h / 2));
+
+            float distance = (targetPos - ownerCenter).LengthSq();
+            
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                currentIdx = static_cast<int>(i);
+            }
+        }
+
+        return currentIdx;
     }
     
     // npc on path, follow to next rect in path.
@@ -85,8 +110,6 @@ void AIMovementComponent::FollowPathFlier()
 
     SDL_Rect target = mPath[targetIndex];
 
-    SDL_Log("AIM::FollowPathFlier: Target Rect [%d, %d, %d, %d]", target.x, target.y, target.w, target.h);
-
     Vector2 targetPos = Vector2(
         static_cast<float>(target.x + target.w / 2),
         static_cast<float>(target.y + target.h / 2));
@@ -95,7 +118,8 @@ void AIMovementComponent::FollowPathFlier()
 
     toTarget.Normalize();
 
-    Vector2 force = toTarget * mFowardSpeed;
+    float fowardSpeedAbs = std::abs(mFowardSpeed);
+    Vector2 force = toTarget * fowardSpeedAbs;
     rb->ApplyForce(force);
 }
 
@@ -148,7 +172,8 @@ void AIMovementComponent::FollowPathWalker()
     }
 
     if (rb->GetOnGround()) {
-        Vector2 desiredHORVelocity = Vector2(resultantForce.x * mFowardSpeed, 0.f);
+        float fowardSpeedAbs = std::abs(mFowardSpeed);
+        Vector2 desiredHORVelocity = Vector2(resultantForce.x * fowardSpeedAbs, 0.f);
         rb->ApplyForce(desiredHORVelocity);
     }
 
@@ -313,5 +338,26 @@ void AIMovementComponent::LogState()
     default:
         SDL_Log("AIMovementComponent::LogState: Unknown State");
         break;
+    }
+}
+
+void AIMovementComponent::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
+{
+    if (other->GetLayer() == ColliderLayer::Blocks && GetMovementState() != MovementState::FollowingPath)
+    {
+        SetFowardSpeed(-GetFowardSpeed());
+    }
+}
+
+void AIMovementComponent::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
+{
+}
+
+void AIMovementComponent::ApplyForce(const Vector2 &force)
+{
+    RigidBodyComponent *rb = GetOwnerRigidBody();
+    if (rb)
+    {
+        rb->ApplyForce(force);
     }
 }

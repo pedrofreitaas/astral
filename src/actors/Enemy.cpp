@@ -67,3 +67,23 @@ std::vector<SDL_Rect> Enemy::GetPath() const
 {
     return mAIMovementComponent->GetPath();
 }
+
+Vector2 Enemy::GetCurrentAppliedForce(float modifier)
+{
+    const RigidBodyComponent* rb = GetComponent<RigidBodyComponent>();
+
+    if (!rb)
+        return Vector2::Zero;
+
+    return rb->GetAppliedForce() * modifier;
+}
+
+void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
+{
+    mAIMovementComponent->OnHorizontalCollision(minOverlap, other);
+}
+
+void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
+{
+    mAIMovementComponent->OnVerticalCollision(minOverlap, other);
+}
