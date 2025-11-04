@@ -37,6 +37,8 @@ public:
 
     bool GetApplyGravity() const { return mApplyGravity; }
 
+    Vector2 GetAppliedForce() const { return mAcceleration * mMass; }
+
 private:
     bool mApplyGravity;
     bool mApplyFriction;
