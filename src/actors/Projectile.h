@@ -5,13 +5,19 @@ class Projectile : public Actor
 {
 public:
     Projectile(
-        class Game* game, const std::string &spriteSheetPath, 
-        const std::string &spriteSheetData, Vector2 direction, 
-        Vector2 position, float speed
-    ): Actor(game), mDirection(direction), mSpeed(speed) {};
+        class Game* game, Vector2 position, 
+        Vector2 direction, float speed
+    ): Actor(game), mDirection(direction), mSpeed(speed) {
+        SetPosition(position);
+    };
 
 protected:
     void OnUpdate(float deltaTime) override {
+        ManageAnimations();
+
+        if (mBehaviorState == BehaviorState::Dying)
+            return;
+        
         Vector2 movement = mDirection * mSpeed * deltaTime;
         mRigidBodyComponent->ApplyForce(movement);
     }
@@ -24,9 +30,8 @@ protected:
         Kill();
     }
 
-    virtual void ManageState() = 0;
     virtual void ManageAnimations() = 0;
-    virtual void Kill() = 0;
+    virtual void Kill() { mBehaviorState = BehaviorState::Dying; };
 
     class DrawAnimatedComponent* mDrawAnimatedComponent;
     class RigidBodyComponent* mRigidBodyComponent;
