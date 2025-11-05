@@ -9,21 +9,31 @@ class SithProjectile : public Projectile
 {
 public:
     SithProjectile(
-        class Game* game, const std::string &spriteSheetPath, 
-        const std::string &spriteSheetData, Vector2 direction, 
-        Vector2 position, float speed
+        class Game* game, Vector2 position, 
+        Vector2 direction, float speed
     );
 
 private:
-    void ManageState() override;
     void ManageAnimations() override;
-    void Kill() override;
     void AnimationEndCallback(std::string animationName);
 };
 
 class Sith : public Enemy
 {
 public:
+    enum class Attacks {
+        None,
+        Attack1,
+        Attack2
+    };
+
+    float PROJECTICLE_COOLDOWN = 30.f;
+    float PROJECTILE_SPEED = 50000.f;
+
+    float ATTACK1_COOLDOWN = 8.f;
+    float ATTACK2_COOLDOWN = 20.f;
+    float ATTACK2_EXTRA_SPEED = 20000.f;
+
     explicit Sith(Game* game, float forwardSpeed, const Vector2& position);
 
     void ManageState() override;
@@ -31,13 +41,26 @@ public:
     void ManageAnimations() override;
     void TakeDamage() override;
 
-    void FireProjectile(Vector2 &direction, float speed);
+    void FireProjectile();
+    void SetProjectileOnCooldown(bool onCooldown) { mIsProjectileOnCooldown = onCooldown; }
 
-    void OnUpdate(float deltaTime) override;
+    void Attack1();
+    void SetAttack1OnCooldown(bool onCooldown) { mIsAttack1OnCooldown = onCooldown; }
+
+    void Attack2();
+    void SetAttack2OnCooldown(bool onCooldown) { mIsAttack2OnCooldown = onCooldown; }
+
+    Vector2 GetProjectileOffset() { 
+        if (GetRotation() == 0.f) {
+            return Vector2(32.f,30.f);
+        }
+        else {
+            return Vector2(22.f,30.f);
+        }
+    }
 
 private:
-    float mAttackCooldown;
-    float mAttackCooldownTimer;
-
+    bool mIsProjectileOnCooldown, mIsAttack1OnCooldown, mIsAttack2OnCooldown;
+    Attacks mCurrentAttack;
     TimerComponent *mTimerComponent;
 };
