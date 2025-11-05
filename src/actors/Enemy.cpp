@@ -27,7 +27,7 @@ bool Enemy::PlayerOnSight(float distance)
     Vector2 lineOfSightStart = GetCenter();
 
     float dir = GetRotation() == 0.f ? 1.f : -1.f;
-    Vector2 lineOfSightEnd = lineOfSightStart + Vector2(100.f * dir, 0.f);
+    Vector2 lineOfSightEnd = lineOfSightStart + Vector2(distance * dir, 0.f);
 
     auto zoeCollider = zoe->GetComponent<AABBColliderComponent>();
 
