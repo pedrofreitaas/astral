@@ -51,13 +51,13 @@ public:
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other);
     void ApplyForce(const Vector2 &force);
 
+    bool CrazyDecision();
+    bool CrazyDecision(float modifier);
+
 private:
     void Sense(float deltaTime);
     void Plan(float deltaTime);
     void Act(float deltaTime);
-
-    bool CrazyDecision();
-    bool CrazyDecision(float modifier);
 
     void Jump(bool isFollowingPath = false);
 

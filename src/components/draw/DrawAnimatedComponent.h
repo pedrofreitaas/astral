@@ -47,6 +47,32 @@ public:
         mScaleFactor = scale;
     };
 
+    int GetSpriteWidth() const {
+        if (mSpriteSheetData.empty()) return 0;
+        return mSpriteSheetData[0]->w * mScaleFactor;
+    };
+
+    int GetSpriteHeight() const {
+        if (mSpriteSheetData.empty()) return 0;
+        return mSpriteSheetData[0]->h * mScaleFactor;
+    };
+
+    Vector2 GetSpriteSize() const {
+        if (mSpriteSheetData.empty()) return Vector2::Zero;
+        return Vector2(
+            static_cast<float>(mSpriteSheetData[0]->w * mScaleFactor),
+            static_cast<float>(mSpriteSheetData[0]->h * mScaleFactor)
+        );
+    };
+
+    Vector2 GetHalfSpriteSize() const {
+        if (mSpriteSheetData.empty()) return Vector2::Zero;
+        return Vector2(
+            static_cast<float>(mSpriteSheetData[0]->w * 0.5f * mScaleFactor),
+            static_cast<float>(mSpriteSheetData[0]->h * 0.5f * mScaleFactor)
+        );
+    };
+
 private:
     std::vector<SDL_Rect*> mSpriteSheetData;
     std::unordered_map<std::string, class Animation> mAnimations;
