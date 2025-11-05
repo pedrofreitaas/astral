@@ -2,6 +2,7 @@
 
 #include "../Enemy.h"
 #include "../Projectile.h"
+#include "../../components/TimerComponent.h"
 #include <SDL.h>
 
 class SithProjectile : public Projectile
@@ -37,4 +38,6 @@ public:
 private:
     float mAttackCooldown;
     float mAttackCooldownTimer;
+
+    TimerComponent *mTimerComponent;
 };

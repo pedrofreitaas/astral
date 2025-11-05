@@ -91,6 +91,7 @@ add_executable(${PROJECT_NAME}
         src/core/Cutscene.h
         src/core/Cutscene.cpp
         src/core/Steps.cpp
+        src/components/TimerComponent.h
 )
 
 # Link libraries using PkgConfig variables

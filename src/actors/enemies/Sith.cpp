@@ -81,6 +81,8 @@ Sith::Sith(Game* game, float forwardSpeed, const Vector2& position)
         std::bind(&Sith::AnimationEndCallback, this, std::placeholders::_1), // could use a lambda here too
         static_cast<int>(DrawLayerPosition::Enemy) + 1);
 
+    mTimerComponent = new TimerComponent(this);
+
     mAIMovementComponent = new AIMovementComponent(
         this, 
         forwardSpeed, 
