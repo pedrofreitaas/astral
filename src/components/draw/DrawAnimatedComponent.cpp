@@ -120,6 +120,11 @@ void DrawAnimatedComponent::Update(float deltaTime)
 void DrawAnimatedComponent::SetAnimation(const std::string &name)
 {
     mAnimName = name;
+
+    if (mAnimTimer < 0.0f || mAnimTimer >= mAnimations[mAnimName].frames.size()) {
+        mAnimTimer = 0.0f;
+    }
+
     Update(0.0f);
 }
 

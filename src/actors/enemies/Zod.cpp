@@ -8,28 +8,27 @@
 ZodProjectile::ZodProjectile(Game* game, Vector2 position, Vector2 direction, float speed)
     : Projectile(game, position, direction, speed)
 {
-    const std::string spriteSheetPath = "../assets/Sprites/Enemies/Sith/Projectile/texture.png";
-    const std::string spriteSheetData = "../assets/Sprites/Enemies/Sith/Projectile/texture.json";
+    const std::string spriteSheetPath = "../assets/Sprites/Enemies/Zod/Projectile/texture.png";
+    const std::string spriteSheetData = "../assets/Sprites/Enemies/Zod/Projectile/texture.json";
 
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 0.f, false);
     
     mColliderComponent = new AABBColliderComponent(
         this,
-        17, 18,
-        14, 12,
+        3, 5,
+        13, 19,
         ColliderLayer::Projectile);
 
     mDrawAnimatedComponent = new DrawAnimatedComponent(
         this,
         spriteSheetPath,
         spriteSheetData,
-        std::bind(&SithProjectile::AnimationEndCallback, this, std::placeholders::_1), // could use a lambda here too
-        static_cast<int>(DrawLayerPosition::Player) + 1);
+        nullptr, // could use a lambda here too
+        static_cast<int>(DrawLayerPosition::Player) - 10);
 
-    mDrawAnimatedComponent->AddAnimation("flying", 0, 2);
-    mDrawAnimatedComponent->AddAnimation("dying", 3, 7);
-
+    mDrawAnimatedComponent->AddAnimation("flying", 0, 3);
     mDrawAnimatedComponent->SetAnimation("flying");
+    
     mBehaviorState = BehaviorState::Moving;
 
     SetPosition(position - mDrawAnimatedComponent->GetHalfSpriteSize());
@@ -37,16 +36,34 @@ ZodProjectile::ZodProjectile(Game* game, Vector2 position, Vector2 direction, fl
 
 void ZodProjectile::ManageAnimations()
 {
-
+    if (mBehaviorState == BehaviorState::Moving)
+    {
+        mDrawAnimatedComponent->SetAnimation("flying");
+    }
 }
 
-void ZodProjectile::AnimationEndCallback(std::string animationName)
+void ZodProjectile::OnUpdate(float deltaTime)
 {
+    if (mBehaviorState == BehaviorState::Dying) {
+        SetState(ActorState::Destroy);
+        return;
+    }
 
+    Projectile::OnUpdate(deltaTime);
+    
+    if (mRigidBodyComponent->GetVelocity().x > 0.0f)
+    {
+        SetRotation(0.0f);
+    }
+
+    else if (mRigidBodyComponent->GetVelocity().x < 0.0f)
+    {
+        SetRotation(Math::Pi);
+    }
 }
 
 Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
-    : Enemy(game, forwardSpeed, position)
+    : Enemy(game, forwardSpeed, position), mProjectileOnCooldown(false)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f);
     mColliderComponent = new AABBColliderComponent(
@@ -70,6 +87,8 @@ Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
         3.f, 
         .01f);
 
+    mTimerComponent = new TimerComponent(this);
+
     mDrawComponent->AddAnimation("asleep", {0});
     mDrawComponent->AddAnimation("waking", 1, 2);
     mDrawComponent->AddAnimation("idle", 3, 5);
@@ -84,6 +103,26 @@ Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
     SetPosition(position);
 }
 
+void Zod::FireProjectile()
+{
+    if (mProjectileOnCooldown)
+        return;
+
+    Vector2 direction = GetGame()->GetZoe()->GetPosition() - GetPosition();
+    direction.Normalize();
+    
+    auto projectile = new ZodProjectile(
+        mGame,
+        GetPosition() + GetProjectileOffset(),
+        direction,
+        Zod::PROJECTILE_SPEED);
+
+    mProjectileOnCooldown = true;
+    mTimerComponent->AddTimer(Zod::PROJECTICLE_COOLDOWN, [this]() {
+        mProjectileOnCooldown = false;
+    });
+}
+
 void Zod::ManageState()
 {
     auto zoe = GetGame()->GetZoe();
@@ -92,6 +131,8 @@ void Zod::ManageState()
 
     bool playerInFov = PlayerOnFov(100.f, 400.f);
     float distanceSQToZoe = (zoe->GetPosition() - GetPosition()).LengthSq();
+
+    float viewDistance = 300.f;
 
     switch (mBehaviorState)
     {
@@ -109,7 +150,7 @@ void Zod::ManageState()
         else if (mRigidBodyComponent->GetVelocity().x < 0.f)
             SetRotation(Math::Pi);
 
-        if (PlayerOnSight()) {
+        if (PlayerOnSight(viewDistance) && !mProjectileOnCooldown) {
             mBehaviorState = BehaviorState::Charging;
             break;
         }
@@ -117,14 +158,13 @@ void Zod::ManageState()
         if (playerInFov && 
             mAIMovementComponent->GetMovementState() != MovementState::FollowingPath)
         {
-            SDL_Log("Enemy::ManageState: Player in FOV, seeking...");
             mAIMovementComponent->SeekPlayer();
         }
         
         break;
     }
     case BehaviorState::Charging:
-        if (!PlayerOnSight()) mBehaviorState = BehaviorState::Moving;
+        if (!PlayerOnSight(viewDistance)) mBehaviorState = BehaviorState::Moving;
         break;
 
     default:
@@ -143,6 +183,7 @@ void Zod::AnimationEndCallback(std::string animationName)
 
     if (animationName == "charging")
     {
+        FireProjectile();
         mBehaviorState = BehaviorState::Moving;
     }
 }
@@ -167,7 +208,7 @@ void Zod::ManageAnimations()
         break;
     case BehaviorState::Charging:
         mDrawComponent->SetAnimation("charging");
-        mDrawComponent->SetAnimFPS(10.f);
+        mDrawComponent->SetAnimFPS(8.f);
         break;
     default:
         mDrawComponent->SetAnimation("asleep");
