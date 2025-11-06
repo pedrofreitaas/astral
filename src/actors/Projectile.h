@@ -35,6 +35,7 @@ protected:
     
     class RigidBodyComponent* mRigidBodyComponent;
     class AABBColliderComponent* mColliderComponent;
+    class DrawAnimatedComponent* mDrawAnimatedComponent;
     
     Vector2 mDirection;
     float mSpeed;
