@@ -32,8 +32,7 @@ protected:
 
     virtual void ManageAnimations() = 0;
     virtual void Kill() { mBehaviorState = BehaviorState::Dying; };
-
-    class DrawAnimatedComponent* mDrawAnimatedComponent;
+    
     class RigidBodyComponent* mRigidBodyComponent;
     class AABBColliderComponent* mColliderComponent;
     

@@ -5,6 +5,46 @@
 #include "../Zoe.h"
 #include "../Actor.h"
 
+ZodProjectile::ZodProjectile(Game* game, Vector2 position, Vector2 direction, float speed)
+    : Projectile(game, position, direction, speed)
+{
+    const std::string spriteSheetPath = "../assets/Sprites/Enemies/Sith/Projectile/texture.png";
+    const std::string spriteSheetData = "../assets/Sprites/Enemies/Sith/Projectile/texture.json";
+
+    mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 0.f, false);
+    
+    mColliderComponent = new AABBColliderComponent(
+        this,
+        17, 18,
+        14, 12,
+        ColliderLayer::Projectile);
+
+    mDrawAnimatedComponent = new DrawAnimatedComponent(
+        this,
+        spriteSheetPath,
+        spriteSheetData,
+        std::bind(&SithProjectile::AnimationEndCallback, this, std::placeholders::_1), // could use a lambda here too
+        static_cast<int>(DrawLayerPosition::Player) + 1);
+
+    mDrawAnimatedComponent->AddAnimation("flying", 0, 2);
+    mDrawAnimatedComponent->AddAnimation("dying", 3, 7);
+
+    mDrawAnimatedComponent->SetAnimation("flying");
+    mBehaviorState = BehaviorState::Moving;
+
+    SetPosition(position - mDrawAnimatedComponent->GetHalfSpriteSize());
+}
+
+void ZodProjectile::ManageAnimations()
+{
+
+}
+
+void ZodProjectile::AnimationEndCallback(std::string animationName)
+{
+
+}
+
 Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
     : Enemy(game, forwardSpeed, position)
 {

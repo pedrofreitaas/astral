@@ -1,7 +1,20 @@
 #pragma once
 
 #include "../Enemy.h"
+#include "../Projectile.h"
 #include <SDL.h>
+
+class ZodProjectile : public Projectile
+{
+public:
+    ZodProjectile(
+        class Game* game, Vector2 position, 
+        Vector2 direction, float speed
+    );
+private:
+    void ManageAnimations() override;
+    void AnimationEndCallback(std::string animationName);
+};
 
 class Zod : public Enemy
 {

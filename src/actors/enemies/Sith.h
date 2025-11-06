@@ -16,6 +16,8 @@ public:
 private:
     void ManageAnimations() override;
     void AnimationEndCallback(std::string animationName);
+
+    class DrawAnimatedComponent* mDrawAnimatedComponent;
 };
 
 class Sith : public Enemy
