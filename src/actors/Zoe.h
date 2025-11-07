@@ -7,6 +7,8 @@ const float DEATH_TIMER = 0.71f;
 class Zoe : public Actor
 {
 public:
+    float INVINCIBILITY_TIME = 0.25f;
+
     explicit Zoe(Game* game, float forwardSpeed = 1500.0f);
 
     void OnProcessInput(const Uint8* keyState) override;
@@ -18,17 +20,19 @@ public:
 
     void Kill() override;
     int Lives() { return mLives; }
-    void FindHeart();
     void ManageState();
+    void SetInvincible(bool invincible) { mInvincible = invincible; }
+    void AnimationEndCallback(std::string animationName);
 
 private:
     float mForwardSpeed;
     float mDeathTimer;
     int mLives;
-    float mInvincibilityTimer;
+    bool mInvincible;
 
+    class TimerComponent *mTimerComponent;
     class RigidBodyComponent* mRigidBodyComponent;
-    class DrawAnimatedComponent* mDrawComponent;
+class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
 
     void TakeDamage();

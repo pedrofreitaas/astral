@@ -4,20 +4,22 @@
 #include "../core/Game.h"
 #include "../components/draw/DrawAnimatedComponent.h"
 #include "../ui/DialogueSystem.h"
+#include "../components/TimerComponent.h"
 
 Zoe::Zoe(Game *game, const float forwardSpeed): 
     Actor(game), mForwardSpeed(forwardSpeed),
-    mDeathTimer(DEATH_TIMER), mLives(6), mInvincibilityTimer(0.0f)
+    mDeathTimer(DEATH_TIMER), mLives(6), mInvincible(false)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 10.0f);
     mColliderComponent = new AABBColliderComponent(this, 25, 20, 15, 28,
                                                    ColliderLayer::Player);
+    mTimerComponent = new TimerComponent(this);
 
     mDrawComponent = new DrawAnimatedComponent(
         this,
         "../assets/Sprites/Zoe/texture.png",
         "../assets/Sprites/Zoe/texture.json",
-        nullptr,
+        std::bind(&Zoe::AnimationEndCallback, this, std::placeholders::_1), // could use a lambda here too
         static_cast<int>(DrawLayerPosition::Player) + 1);
 
     mDrawComponent->AddAnimation("idle", 0, 8);
@@ -68,19 +70,22 @@ void Zoe::OnHandleKeyPress(const int key, const bool isPressed)
 
 void Zoe::TakeDamage()
 {
-    if (mBehaviorState == BehaviorState::Dying)
+    if (mBehaviorState == BehaviorState::Dying || mInvincible)
         return;
-
-    if (mInvincibilityTimer > 0.0f)
-        return;
-
+    
     mLives--;
-    mInvincibilityTimer = 0.25f;
-
+    
     if (mLives <= 0)
     {
         mBehaviorState = BehaviorState::Dying;
+    } else {
+        mBehaviorState = BehaviorState::TakingDamage;
     }
+
+    mInvincible = true;
+    mTimerComponent->AddTimer(Zoe::INVINCIBILITY_TIME, [this]() {
+        SetInvincible(false);
+    });
 }
 
 void Zoe::ManageState()
@@ -123,6 +128,9 @@ void Zoe::ManageState()
             }
             break;
 
+        case BehaviorState::TakingDamage:
+            break;
+
         default:
             mBehaviorState = BehaviorState::Idle;
             break;
@@ -162,9 +170,6 @@ void Zoe::OnUpdate(float deltaTime)
         }
         return;
     }
-
-    if (mInvincibilityTimer > 0.0f)
-        mInvincibilityTimer -= deltaTime;
 }
 
 void Zoe::ManageAnimations()
@@ -183,6 +188,9 @@ void Zoe::ManageAnimations()
     case BehaviorState::Dying:
         mDrawComponent->SetAnimation("dying");
         break;
+    case BehaviorState::TakingDamage:
+        mDrawComponent->SetAnimation("hurt");
+        break;
     default:
         break;
     }
@@ -199,17 +207,26 @@ void Zoe::Kill()
 
 void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
+    if (other->GetLayer() == ColliderLayer::Projectile)
+    {
+        TakeDamage();
+        SDL_Log("Zoe took damage! Lives left: %d", mLives);
+    }
 }
 
 void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
+    if (other->GetLayer() == ColliderLayer::Projectile)
+    {
+        TakeDamage();
+        SDL_Log("Zoe took damage! Lives left: %d", mLives);
+    }
 }
 
-void Zoe::FindHeart()
+void Zoe::AnimationEndCallback(std::string animationName)
 {
-    if (mLives < 6)
-    {
-        mLives++;
+    if (animationName == "hurt") {
+        mBehaviorState = BehaviorState::Idle;
+        SDL_Log("Zoe finished hurt animation.");
     }
-    mGame->GetAudio()->PlaySound("KeyPick.wav");
 }
