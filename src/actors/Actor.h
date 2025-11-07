@@ -32,7 +32,8 @@ enum class BehaviorState // For AI behaviors/animations
     Dying,
     Provoking,
     Fleeing,
-    Wandering
+    Wandering,
+    TakingDamage
 };
 
 class Actor
