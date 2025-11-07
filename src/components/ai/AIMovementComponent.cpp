@@ -384,3 +384,16 @@ void AIMovementComponent::ApplyForce(const Vector2 &force)
         rb->ApplyForce(force);
     }
 }
+
+void AIMovementComponent::BoostToPlayer(float intensity)
+{
+    RigidBodyComponent *rb = GetOwnerRigidBody();
+    if (!rb)
+        return;
+
+    Vector2 boostDirection = mLastSeenPlayerCenter - mOwner->GetCenter();
+    boostDirection.Normalize();
+
+    Vector2 boostForce = boostDirection * intensity;
+    rb->ApplyForce(boostForce);
+}

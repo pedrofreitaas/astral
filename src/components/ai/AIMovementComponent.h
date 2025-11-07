@@ -53,6 +53,9 @@ public:
 
     bool CrazyDecision();
     bool CrazyDecision(float modifier);
+    
+    // applies a force with the same direction of movement considering intensity.
+    void BoostToPlayer(float intensity);
 
 private:
     void Sense(float deltaTime);

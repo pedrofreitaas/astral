@@ -32,7 +32,7 @@ public:
 
     float ATTACK1_COOLDOWN = 8.f;
     float ATTACK2_COOLDOWN = 20.f;
-    float ATTACK2_EXTRA_SPEED = 20000.f;
+    float ATTACK2_EXTRA_SPEED = 30000.f;
 
     explicit Sith(Game* game, float forwardSpeed, const Vector2& position);
 

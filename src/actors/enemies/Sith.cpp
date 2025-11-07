@@ -178,7 +178,12 @@ void Sith::ManageState()
         else if (mRigidBodyComponent->GetVelocity().x < 0.f)
             SetRotation(Math::Pi);
 
-        if (distanceSQToZoe < 1600.f && 
+        if (PlayerOnSight(sightDistance) && !mIsProjectileOnCooldown) {
+            mBehaviorState = BehaviorState::Charging;
+            break;
+        }
+
+        if (distanceSQToZoe < 2500.f && 
             !mIsAttack1OnCooldown &&
             mAIMovementComponent->CrazyDecision(2.f)
         ) {
@@ -186,16 +191,11 @@ void Sith::ManageState()
             break;
         }
 
-        if (distanceSQToZoe < 2500.f &&
+        if (distanceSQToZoe < 12000.f &&
             !mIsAttack2OnCooldown &&
             mAIMovementComponent->CrazyDecision(3.f)
         ) {
             Attack2();
-            break;
-        }
-
-        if (PlayerOnSight(sightDistance) && !mIsProjectileOnCooldown) {
-            mBehaviorState = BehaviorState::Charging;
             break;
         }
 
@@ -210,7 +210,7 @@ void Sith::ManageState()
 
     case BehaviorState::Attacking:
         if (mCurrentAttack == Attacks::Attack2) {
-            mAIMovementComponent->ApplyForce(GetCurrentAppliedForce(Sith::ATTACK2_EXTRA_SPEED));
+            mAIMovementComponent->BoostToPlayer(Sith::ATTACK2_EXTRA_SPEED);
         }
     
         break;
