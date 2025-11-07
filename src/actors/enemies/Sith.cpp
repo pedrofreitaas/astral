@@ -160,6 +160,7 @@ void Sith::ManageState()
 
     bool playerInFov = PlayerOnFov();
     float distanceSQToZoe = (zoe->GetPosition() - GetPosition()).LengthSq();
+    float sightDistance = 400.f;
 
     switch (mBehaviorState)
     {
@@ -193,7 +194,7 @@ void Sith::ManageState()
             break;
         }
 
-        if (PlayerOnSight(400.f) && !mIsProjectileOnCooldown) {
+        if (PlayerOnSight(sightDistance) && !mIsProjectileOnCooldown) {
             mBehaviorState = BehaviorState::Charging;
             break;
         }
@@ -215,7 +216,7 @@ void Sith::ManageState()
         break;
 
     case BehaviorState::Charging:
-        if (!PlayerOnSight()) mBehaviorState = BehaviorState::Moving;
+        if (!PlayerOnSight(sightDistance)) mBehaviorState = BehaviorState::Moving;
         break;
 
     default:
