@@ -18,6 +18,8 @@ public:
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent *other) override;
 
 protected:
+    friend class AIMovementComponent;
+
     class RigidBodyComponent *mRigidBodyComponent;
     class DrawAnimatedComponent *mDrawComponent;
     class AABBColliderComponent *mColliderComponent;
@@ -27,6 +29,6 @@ protected:
     virtual void TakeDamage() = 0;
     virtual void AnimationEndCallback(std::string animationName) = 0;
 
-    bool PlayerOnSight(float distance = 100.f);
+    bool PlayerOnSight(float distance = 100.f, float angle=0.f);
     bool PlayerOnFov(float minDistance = 20.f, float maxDistance = 400.f);
 };

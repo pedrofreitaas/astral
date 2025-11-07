@@ -17,7 +17,7 @@ void Enemy::OnUpdate(float deltaTime)
     mColliderComponent->MaintainInMap();
 }
 
-bool Enemy::PlayerOnSight(float distance)
+bool Enemy::PlayerOnSight(float distance, float angle)
 {
     auto zoe = GetGame()->GetZoe();
 
@@ -27,7 +27,12 @@ bool Enemy::PlayerOnSight(float distance)
     Vector2 lineOfSightStart = GetCenter();
 
     float dir = GetRotation() == 0.f ? 1.f : -1.f;
-    Vector2 lineOfSightEnd = lineOfSightStart + Vector2(distance * dir, 0.f);
+
+    Vector2 viewDir = Vector2(dir, 0.f);
+    viewDir = viewDir.Rotate(viewDir, angle);
+    viewDir.Normalize();
+
+    Vector2 lineOfSightEnd = lineOfSightStart + viewDir*distance;
 
     auto zoeCollider = zoe->GetComponent<AABBColliderComponent>();
 
