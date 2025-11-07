@@ -183,8 +183,8 @@ void Game::LoadFirstLevel()
     Enemy* en = new Zod(this, 1800.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
     mEnemies.push_back(en);
 
-    // en = new Sith(this, 1200.0f, Vector2(200.0f, mMap->GetHeight() - 320.0f));
-    // mEnemies.push_back(en);
+    en = new Sith(this, 1200.0f, Vector2(200.0f, mMap->GetHeight() - 320.0f));
+    mEnemies.push_back(en);
 
     mZoe = new Zoe(this, 1500.0f);
     mZoe->SetPosition(Vector2(32.0f, mMap->GetHeight() - 80.0f));
