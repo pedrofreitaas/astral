@@ -86,4 +86,7 @@ private:
 
     void FollowPathFlier();
     void FollowPathWalker();
+
+    class Enemy* mOwnerEnemy;
+    Vector2 mLastSeenPlayerCenter;
 };

@@ -3,6 +3,7 @@
 #include "../../actors/Zoe.h"
 #include "../../core/Game.h"
 #include "../../core/SpatialHashing.h"
+#include "../../actors/Enemy.h"
 
 const float MAX_CRAZINESS = 1.f;
 const float MIN_CRAZINESS = 0.f;
@@ -16,7 +17,7 @@ AIMovementComponent::AIMovementComponent(
       mJumpForceInBlocks(jumpForceInBlocks), mInteligence(0.0f),
       mCraziness(craziness), mFowardSpeed(fowardSpeed),
       mPathTolerance(pathTolerance), mTypeOfMovement(typeOfMovement),
-      mPathTimer(0.f)
+      mPathTimer(0.f), mLastSeenPlayerCenter(Vector2::Zero)
 {
     if (mOwner->GetComponent<RigidBodyComponent>() == nullptr)
     {
@@ -27,14 +28,37 @@ AIMovementComponent::AIMovementComponent(
         mCraziness = MAX_CRAZINESS;
     if (mCraziness < MIN_CRAZINESS)
         mCraziness = MIN_CRAZINESS;
+
+    mOwnerEnemy = dynamic_cast<class Enemy*>(owner);
 }
 
 void AIMovementComponent::Sense(float deltaTime)
 {
+    if (mOwnerEnemy->PlayerOnFov(50.f, 300.f)) {
+        mLastSeenPlayerCenter = mOwner->GetGame()->GetZoe()->GetCenter();
+    }
 }
 
 void AIMovementComponent::Plan(float deltaTime)
 {
+    if (mPath.empty())
+        return;
+    
+    SDL_Rect whereIThoughPlayerWas = mPath.back();
+    Vector2 whereIThoughPlayerWasVec = Vector2(
+        whereIThoughPlayerWas.x + whereIThoughPlayerWas.w*.5f, 
+        whereIThoughPlayerWas.y + whereIThoughPlayerWas.h*.5f
+    );
+
+    Vector2 dist = mLastSeenPlayerCenter - whereIThoughPlayerWasVec;
+    float distSq = dist.LengthSq();
+
+    if (distSq >= 10000.f)
+    {
+        mPath.clear();
+        mMovementState = MovementState::Wandering;
+        SeekPlayer();
+    }
 }
 
 int AIMovementComponent::GetTargetIndex()
@@ -302,12 +326,11 @@ void AIMovementComponent::SeekPlayer()
     if (GetMovementState() == MovementState::FollowingPath)
         return;
 
-    Vector2 targetCenter = mOwner->GetGame()->GetZoe()->GetCenter();
     SpatialHashing *sh = mOwner->GetGame()->GetSpatialHashing();
     
     mPath = sh->GetPath(
         mOwner, 
-        targetCenter, 
+        mLastSeenPlayerCenter, 
         mTypeOfMovement == TypeOfMovement::Flier);
 
     if (mPath.empty())
