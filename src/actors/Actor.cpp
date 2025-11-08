@@ -146,3 +146,28 @@ Vector2 Actor::GetCenter() const
     else
         return mPosition;
 }
+
+void Actor::LogState()
+{
+    switch (mBehaviorState)
+    {
+    case BehaviorState::Idle:
+        SDL_Log("BehaviorState: Idle");
+        break;
+    case BehaviorState::Moving:
+        SDL_Log("BehaviorState: Moving");
+        break;
+    case BehaviorState::TakingDamage:
+        SDL_Log("BehaviorState: TakingDamage");
+        break;
+    case BehaviorState::Dying:
+        SDL_Log("BehaviorState: Dying");
+        break;
+    case BehaviorState::Jumping:
+        SDL_Log("BehaviorState: Jumping");
+        break;
+    default:
+        SDL_Log("BehaviorState: Other");
+        break;
+    }
+}

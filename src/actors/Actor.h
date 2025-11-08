@@ -113,6 +113,8 @@ public:
     Vector2 GetCenter() const;
     BehaviorState GetBehaviorState() const { return mBehaviorState; }
 
+    void LogState();
+
 protected:
     class Game* mGame;
 

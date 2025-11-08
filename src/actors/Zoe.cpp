@@ -30,15 +30,14 @@ Zoe::Zoe(Game *game, const float forwardSpeed):
     mDrawComponent->AddAnimation("hurt", {34});
 
     mDrawComponent->SetAnimation("idle");
-    mDrawComponent->SetAnimFPS(10.0f);
 }
 
 void Zoe::OnProcessInput(const uint8_t *state)
 {
-    if (mBehaviorState == BehaviorState::Dying)
+    if (mBehaviorState == BehaviorState::Dying || 
+        mBehaviorState == BehaviorState::TakingDamage || 
+        mBehaviorState == BehaviorState::Jumping)
         return;
-
-    mBehaviorState = BehaviorState::Idle;
 
     if (!mRigidBodyComponent->GetOnGround())
         return;
@@ -68,24 +67,23 @@ void Zoe::OnHandleKeyPress(const int key, const bool isPressed)
         return;
 }
 
-void Zoe::TakeDamage()
+void Zoe::TakeDamage(const Vector2 &knockback)
 {
     if (mBehaviorState == BehaviorState::Dying || mInvincible)
         return;
-    
+
     mLives--;
+
+    mRigidBodyComponent->ApplyForce(knockback);
     
     if (mLives <= 0)
     {
         mBehaviorState = BehaviorState::Dying;
-    } else {
-        mBehaviorState = BehaviorState::TakingDamage;
+        return;
     }
 
+    mBehaviorState = BehaviorState::TakingDamage;
     mInvincible = true;
-    mTimerComponent->AddTimer(Zoe::INVINCIBILITY_TIME, [this]() {
-        SetInvincible(false);
-    });
 }
 
 void Zoe::ManageState()
@@ -178,6 +176,7 @@ void Zoe::ManageAnimations()
     {
     case BehaviorState::Idle:
         mDrawComponent->SetAnimation("idle");
+        mDrawComponent->SetAnimFPS(10.0f);
         break;
     case BehaviorState::Moving:
         mDrawComponent->SetAnimation("run");
@@ -190,6 +189,7 @@ void Zoe::ManageAnimations()
         break;
     case BehaviorState::TakingDamage:
         mDrawComponent->SetAnimation("hurt");
+        mDrawComponent->SetAnimFPS(4.f);
         break;
     default:
         break;
@@ -209,8 +209,7 @@ void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *o
 {
     if (other->GetLayer() == ColliderLayer::Projectile)
     {
-        TakeDamage();
-        SDL_Log("Zoe took damage! Lives left: %d", mLives);
+        // projeticle can dye imediately on collision, so the take damage logic is on the projectile
     }
 }
 
@@ -218,8 +217,7 @@ void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *oth
 {
     if (other->GetLayer() == ColliderLayer::Projectile)
     {
-        TakeDamage();
-        SDL_Log("Zoe took damage! Lives left: %d", mLives);
+        // projeticle can dye imediately on collision, so the take damage logic is on the projectile
     }
 }
 
@@ -227,6 +225,6 @@ void Zoe::AnimationEndCallback(std::string animationName)
 {
     if (animationName == "hurt") {
         mBehaviorState = BehaviorState::Idle;
-        SDL_Log("Zoe finished hurt animation.");
+        mInvincible = false;
     }
 }
