@@ -63,6 +63,8 @@ void Game::LoadMainMenu()
         Vector2(0.0f, 0.0f),
         Vector2(33.0f, 33.0f),
         Color::White);
+
+    mAudio->PlaySound("mainMenuTheme.ogg", true);
 }
 
 void Game::LoadBedroom()
@@ -103,6 +105,8 @@ void Game::LoadBedroom()
                 {
                     this->SetGameScene(GameScene::BedroomPortal);
                 });
+
+    mAudio->PlaySound("bedroomTheme.ogg", true);
 }
 
 void Game::LoadBedroomPortal()
@@ -164,6 +168,8 @@ void Game::LoadBedroomPortal()
                 {
                     this->SetGameScene(GameScene::Level1);
                 });
+
+    mAudio->PlaySound("bedroomTheme.ogg", true);
 }
 
 void Game::LoadFirstLevel()
@@ -263,6 +269,8 @@ void Game::LoadFirstLevel()
     AddCutscene("Intro",
                 std::move(steps),
                 [this]() {});
+
+    mAudio->PlaySound("level1Theme.ogg", true);
 
     // StartCutscene("Intro");
 }
