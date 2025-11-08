@@ -135,6 +135,8 @@ bool Game::Initialize()
 
     mTicksCount = SDL_GetTicks();
 
+    mAudio->CacheAllSounds();
+
     return true;
 }
 
@@ -166,6 +168,8 @@ void Game::ChangeScene()
 
     // Reset gameplay state
     mGamePlayState = GamePlayState::Playing;
+
+    mAudio->StopAllSounds();
 
     // Reset scene manager state
     mSpatialHashing = new SpatialHashing(TILE_SIZE, LEVEL_WIDTH * TILE_SIZE, LEVEL_HEIGHT * TILE_SIZE);
