@@ -70,14 +70,14 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
     {
         if (collider == this || !collider->IsEnabled())
             continue;
-
+        
         if (collider->GetLayer() == mLayer)
             continue;
 
         if (Intersect(*collider))
         {
             float overlap = GetMinHorizontalOverlap(collider);
-
+            
             if (collider->IsTangible() && mIsTangible) {
                 ResolveHorizontalCollisions(rigidBody, overlap);
                 mOwner->OnHorizontalCollision(overlap, collider);
@@ -105,6 +105,9 @@ float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBo
     for (auto &collider : colliders)
     {
         if (collider == this || !collider->IsEnabled())
+            continue;
+
+        if (collider->GetLayer() == mLayer)
             continue;
 
         if (Intersect(*collider))
