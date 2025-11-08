@@ -16,7 +16,7 @@ ZodProjectile::ZodProjectile(Game* game, Vector2 position, Vector2 direction, fl
     mColliderComponent = new AABBColliderComponent(
         this,
         3, 5,
-        13, 19,
+        13, 10,
         ColliderLayer::Projectile);
 
     mDrawAnimatedComponent = new DrawAnimatedComponent(
