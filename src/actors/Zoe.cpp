@@ -88,6 +88,8 @@ void Zoe::TakeDamage(const Vector2 &knockback)
 
 void Zoe::ManageState()
 {
+    AudioSystem* audio = mGame->GetAudio();
+
     switch (mBehaviorState)
     {
         case BehaviorState::Dying:
@@ -101,6 +103,12 @@ void Zoe::ManageState()
             break;
 
         case BehaviorState::Moving:
+            if (audio->GetSoundState(mFootstepSoundHandle) == SoundState::Stopped)
+            {
+                mFootstepSoundHandle = audio->PlaySound("footstep.wav"); 
+                // I need to know why this is not playing or if it's playing too low. AI!
+            }
+
             if (mRigidBodyComponent->GetOnGround() && std::abs(mRigidBodyComponent->GetVelocity().x) < 0.1f)
             {
                 mBehaviorState = BehaviorState::Idle;
