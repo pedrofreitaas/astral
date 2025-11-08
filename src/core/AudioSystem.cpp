@@ -106,6 +106,9 @@ SoundHandle AudioSystem::PlaySound(const std::string& soundName, bool looping)
 
     // Play sound on selected channel
     Mix_PlayChannel(availableChannel, sound, looping ? -1 : 0);
+    
+    // Set the volume for this channel
+    Mix_Volume(availableChannel, mMasterVolume);
 
     return mLastHandle;
 }
@@ -185,6 +188,32 @@ void AudioSystem::StopAllSounds()
     mHandleMap.clear();
 }
 
+// Sets the master volume (0.0 to 1.0)
+void AudioSystem::SetMasterVolume(float volume)
+{
+    // Clamp the volume between 0.0 and 1.0
+    if (volume < 0.0f) volume = 0.0f;
+    if (volume > 1.0f) volume = 1.0f;
+    
+    // Convert to SDL_mixer volume range (0-128)
+    mMasterVolume = static_cast<int>(volume * 128.0f);
+    
+    // Update volume for all currently loaded sounds
+    for (auto& sound : mSounds)
+    {
+        Mix_VolumeChunk(sound.second, mMasterVolume);
+    }
+    
+    // Update volume for all currently playing channels
+    for (int i = 0; i < mChannels.size(); i++)
+    {
+        if (mChannels[i].IsValid())
+        {
+            Mix_Volume(i, mMasterVolume);
+        }
+    }
+}
+
 // Cache all sounds under Assets/Sounds
 void AudioSystem::CacheAllSounds()
 {
@@ -238,9 +267,9 @@ Mix_Chunk* AudioSystem::GetSound(const std::string& soundName)
 			return nullptr;
 		}
 
-        Mix_VolumeChunk(chunk, 3);
+        // Set volume using the current master volume
+        Mix_VolumeChunk(chunk, mMasterVolume);
         mSounds.emplace(fileName, chunk);
-		mSounds.emplace(fileName, chunk);
 	}
 	return chunk;
 }

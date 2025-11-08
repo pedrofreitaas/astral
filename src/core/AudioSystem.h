@@ -105,6 +105,10 @@ enum class SoundState
 	//       "Assets/Sounds/ChompLoop.wav".
 	void CacheSound(const std::string& soundName);
 
+public:
+    // Sets the master volume (0.0 to 1.0)
+    void SetMasterVolume(float volume);
+
 private:
 	// If the sound is already loaded, returns Mix_Chunk from the map.
 	// Otherwise, will attempt to load the file and save it in the map.
@@ -140,4 +144,7 @@ private:
 
 	// Used for debug input in ProcessInput
 	bool mLastDebugKey = false;
+    
+    // Master volume (0-128)
+    int mMasterVolume = 64;
 };
