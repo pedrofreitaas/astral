@@ -40,9 +40,9 @@ public:
     MovementState GetMovementState() const { return mMovementState; }
     void SetMovementState(MovementState state) { 
         mPreviousMovementState = mMovementState; 
-        mMovementState = state; 
-        LogState();
+        mMovementState = state;
     }
+
     void LogState();
 
     std::vector<SDL_Rect> GetPath() const { return mPath; }
