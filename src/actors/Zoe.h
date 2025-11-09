@@ -3,6 +3,18 @@
 #include "Projectile.h"
 #include <SDL.h>
 
+const float DEATH_TIMER = 0.71f;
+
+class Ventania : public Actor
+{
+public:
+    Ventania(Game* game, Vector2 playerCenter, Vector2 playerMoveDir, float forwardSpeed = .0f);
+
+private:    
+    class DrawAnimatedComponent *mDrawAnimatedComponent;
+    void AnimationEndCallback(std::string animationName);
+};
+
 class Fireball : public Projectile
 {
     int MAX_RICOCHETS = 3;
@@ -23,14 +35,16 @@ private:
     int mRicochetsCount;
 };
 
-const float DEATH_TIMER = 0.71f;
-
 class Zoe : public Actor
 {
     float FIREBALL_SPEED = 20000.f;
     float FIREBALL_COOLDOWN = 4.f;
+    
+    float VETANIA_SPEED = 17000.f;
+    float VETANIA_COOLDOWN = 0.75f;
+
 public:
-    explicit Zoe(Game* game, float forwardSpeed = 1500.0f);
+    explicit Zoe(Game* game, float forwardSpeed = 2000.0f);
 
     void OnProcessInput(const Uint8* keyState) override;
     void OnUpdate(float deltaTime) override;
@@ -71,4 +85,8 @@ private:
     void FireFireball();
     void SetFireballOnCooldown(bool onCooldown) { mIsFireballOnCooldown = onCooldown; }
     bool mIsFireballOnCooldown, mTryingToFireFireball;
+
+    void TriggerVentania();
+    void SetVentaniaOnCooldown(bool onCooldown) { mIsVentaniaOnCooldown = onCooldown; }
+    bool mIsVentaniaOnCooldown, mTryingToTriggerVentania;
 };

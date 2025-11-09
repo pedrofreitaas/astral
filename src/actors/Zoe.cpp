@@ -5,6 +5,46 @@
 #include "../ui/DialogueSystem.h"
 #include "../components/TimerComponent.h"
 
+Ventania::Ventania(Game* game, Vector2 playerCenter, Vector2 playerMoveDir, float forwardSpeed):
+Actor(game)
+{
+    const std::string spriteSheetPath = "../assets/Sprites/Zoe/Ventania/texture.png";
+    const std::string spriteSheetData = "../assets/Sprites/Zoe/Ventania/texture.json";
+
+    mDrawAnimatedComponent = new DrawAnimatedComponent(
+        this,
+        spriteSheetPath,
+        spriteSheetData,
+        std::bind(&Ventania::AnimationEndCallback, this, std::placeholders::_1),
+        static_cast<int>(DrawLayerPosition::Player)-1
+    );
+
+    mDrawAnimatedComponent->AddAnimation("normal", 0, 5);
+    mDrawAnimatedComponent->SetAnimation("normal");
+    mDrawAnimatedComponent->SetAnimFPS(10.f);
+    mDrawAnimatedComponent->SetUsePivotForRotation(true);
+
+    Vector2 playerFeet = playerCenter;
+
+    SetPosition(playerCenter - mDrawAnimatedComponent->GetHalfSpriteSize());
+
+    float directionAngle = Math::Atan2(playerMoveDir.y, playerMoveDir.x);
+    float originalAngle = Math::Atan2(-1.f, 0.f);
+    directionAngle -= originalAngle;
+
+    SetRotation(directionAngle);
+}
+
+void Ventania::AnimationEndCallback(std::string animationName)
+{
+    if (animationName == "normal")
+    {
+        SetState(ActorState::Destroy);
+    }
+}
+
+// 
+
 Fireball::Fireball(
     class Game* game, Vector2 position, 
     Vector2 target, float speed
@@ -137,9 +177,10 @@ void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent
 Zoe::Zoe(Game *game, const float forwardSpeed): 
     Actor(game), mForwardSpeed(forwardSpeed),
     mDeathTimer(DEATH_TIMER), mLives(6), mInvincible(false), mTryingToFireFireball(false),
-    mIsFireballOnCooldown(false)
+    mIsFireballOnCooldown(false), mIsVentaniaOnCooldown(false),
+    mTryingToTriggerVentania(false)
 {
-    mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 10.0f);
+    mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
     mColliderComponent = new AABBColliderComponent(this, 25, 20, 15, 28,
                                                    ColliderLayer::Player);
     mTimerComponent = new TimerComponent(this);
@@ -164,6 +205,7 @@ Zoe::Zoe(Game *game, const float forwardSpeed):
 void Zoe::OnProcessInput(const uint8_t *state)
 {
     mTryingToFireFireball = state[SDL_SCANCODE_Q];
+    mTryingToTriggerVentania = mBehaviorState == BehaviorState::Jumping && state[SDL_SCANCODE_E];
     
     if (mBehaviorState == BehaviorState::Dying || 
         mBehaviorState == BehaviorState::TakingDamage || 
@@ -230,6 +272,13 @@ void Zoe::ManageState()
             {
                 mBehaviorState = BehaviorState::Idle;
             }
+
+            if (mTryingToTriggerVentania && !mIsVentaniaOnCooldown)
+            {
+                TriggerVentania();
+                break;
+            }
+
             break;
 
         case BehaviorState::Moving:
@@ -395,5 +444,27 @@ void Zoe::FireFireball()
     SetFireballOnCooldown(true);
     mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this]() {
         SetFireballOnCooldown(false);
+    });
+}
+
+void Zoe::TriggerVentania()
+{
+    if (mIsVentaniaOnCooldown)
+        return;
+
+    Vector2 mousePos = GetGame()->GetLogicalMousePos();
+    Vector2 ventaniaDir = GetCenter() - mousePos;
+    ventaniaDir.Normalize();
+
+    mRigidBodyComponent->ApplyForce(ventaniaDir * Zoe::VETANIA_SPEED);
+
+    new Ventania(
+        GetGame(),
+        GetCenter(),
+        ventaniaDir);
+
+    SetVentaniaOnCooldown(true);
+    mTimerComponent->AddTimer(Zoe::VETANIA_COOLDOWN, [this]() {
+        SetVentaniaOnCooldown(false);
     });
 }
