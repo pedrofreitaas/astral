@@ -19,7 +19,6 @@
 #include "../actors/Item.h"
 #include "../ui/UIScreen.h"
 #include "../components/draw/DrawComponent.h"
-#include "../components/draw/DrawSpriteComponent.h"
 #include "../components/collider/AABBColliderComponent.h"
 #include "../ui/DialogueSystem.h"
 #include "../actors/Star.h"
