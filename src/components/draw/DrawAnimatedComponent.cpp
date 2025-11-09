@@ -14,7 +14,7 @@ DrawAnimatedComponent::DrawAnimatedComponent(
     DrawComponent(owner, drawOrder), 
     mSpriteSheetTexture(nullptr), mAnimTimer(0.0f), mAnimFPS(10.0f), 
     mIsPaused(false), mAnimName(""), mAnimationEndCallback(animationEndCallback),
-    mScaleFactor(1.0f)
+    mScaleFactor(1.0f), mPivot(0.5f, 0.5f), mUsePivotForRotation(false)
 {
     LoadSpriteSheet(spriteSheetPath, spriteSheetData);
 }
@@ -80,11 +80,10 @@ void DrawAnimatedComponent::Draw(SDL_Renderer *renderer, const Vector3 &modColor
         srcRect->w * mScaleFactor,
         srcRect->h * mScaleFactor};
 
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
-    if (mOwner->GetRotation() == Math::Pi)
-    {
-        flip = SDL_FLIP_HORIZONTAL;
-    }
+    // Calculate pivot point
+    SDL_Point pivotPoint;
+    pivotPoint.x = static_cast<int>(mPivot.x * dstRect.w);
+    pivotPoint.y = static_cast<int>(mPivot.y * dstRect.h);
 
     SDL_SetTextureBlendMode(mSpriteSheetTexture, SDL_BLENDMODE_BLEND);
     SDL_SetTextureColorMod(mSpriteSheetTexture,
@@ -92,7 +91,22 @@ void DrawAnimatedComponent::Draw(SDL_Renderer *renderer, const Vector3 &modColor
                            static_cast<Uint8>(modColor.y),
                            static_cast<Uint8>(modColor.z));
 
-    SDL_RenderCopyEx(renderer, mSpriteSheetTexture, srcRect, &dstRect, mOwner->GetRotation(), nullptr, flip);
+    // Use pivot point for rotation only if enabled
+    if (mUsePivotForRotation)
+    {
+        SDL_RenderCopyEx(renderer, mSpriteSheetTexture, srcRect, &dstRect, 
+                     Math::ToDegrees(mOwner->GetRotation()), &pivotPoint, SDL_FLIP_NONE);
+        return;
+    }
+    
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    if (mOwner->GetRotation() == Math::Pi)
+    {
+        flip = SDL_FLIP_HORIZONTAL;
+    }
+
+    SDL_RenderCopyEx(renderer, mSpriteSheetTexture, srcRect, &dstRect, 
+                     mOwner->GetRotation(), nullptr, flip);
 }
 
 void DrawAnimatedComponent::Update(float deltaTime)

@@ -47,6 +47,12 @@ public:
         mScaleFactor = scale;
     };
 
+    void SetPivot(const Vector2& pivot) { mPivot = pivot; }
+    const Vector2& GetPivot() const { return mPivot; }
+
+    void SetUsePivotForRotation(bool usePivot) { mUsePivotForRotation = usePivot; }
+    bool GetUsePivotForRotation() const { return mUsePivotForRotation; }
+
     int GetSpriteWidth() const {
         if (mSpriteSheetData.empty()) return 0;
         return mSpriteSheetData[0]->w * mScaleFactor;
@@ -83,6 +89,8 @@ private:
     float mAnimFPS;
     bool mIsPaused;
     int mScaleFactor;
+    Vector2 mPivot;
+    bool mUsePivotForRotation;
 
     void LoadSpriteSheet(const std::string& texturePath, const std::string& dataPath);
 };
