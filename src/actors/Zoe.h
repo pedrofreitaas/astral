@@ -1,11 +1,27 @@
 #pragma once
 #include "Actor.h"
+#include "Projectile.h"
 #include <SDL.h>
+
+class Fireball : public Projectile
+{
+public:
+    Fireball(
+        class Game* game, Vector2 position, 
+        Vector2 direction, float speed
+    );
+
+private:
+    void ManageAnimations();
+    void AnimationEndCallback(std::string animationName);
+};
 
 const float DEATH_TIMER = 0.71f;
 
 class Zoe : public Actor
 {
+    float FIREBALL_SPEED = 50000.f;
+    float FIREBALL_COOLDOWN = 4.f;
 public:
     explicit Zoe(Game* game, float forwardSpeed = 1500.0f);
 
@@ -22,6 +38,15 @@ public:
     void SetInvincible(bool invincible) { mInvincible = invincible; }
     void AnimationEndCallback(std::string animationName);
     void TakeDamage(const Vector2 &knockback = Vector2(0.f, 0.f));
+    
+    Vector2 GetFireballOffset() {
+        if (GetRotation() == 0.f) {
+            return Vector2(48.f,44.f);
+        }
+        else {
+            return Vector2(14.f,44.f);
+        }
+    }
 
 private:
     float mForwardSpeed;
@@ -35,4 +60,8 @@ private:
     class AABBColliderComponent* mColliderComponent;
 
     void ManageAnimations();
+
+    void FireFireball();
+    void SetFireballOnCooldown(bool onCooldown) { mIsFireballOnCooldown = onCooldown; }
+    bool mIsFireballOnCooldown, mTryingToFireFireball;
 };

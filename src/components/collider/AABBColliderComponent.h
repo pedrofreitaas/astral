@@ -19,7 +19,8 @@ enum class ColliderLayer
     Objects,
     Item,
     Portal,
-    Projectile
+    Projectile,
+    Fireball
 };
 
 class AABBColliderComponent : public Component

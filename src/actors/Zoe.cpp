@@ -1,14 +1,74 @@
 #include "Zoe.h"
 #include "Tile.h"
-#include "Projectile.h"
 #include "../core/Game.h"
 #include "../components/draw/DrawAnimatedComponent.h"
 #include "../ui/DialogueSystem.h"
 #include "../components/TimerComponent.h"
 
+Fireball::Fireball(
+    class Game* game, Vector2 position, 
+    Vector2 direction, float speed
+): Projectile(game, position, direction, speed)
+{
+    const std::string spriteSheetPath = "../assets/Sprites/Zoe/Fireball/texture.png";
+    const std::string spriteSheetData = "../assets/Sprites/Zoe/Fireball/texture.json";
+
+    mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 0.f, false);
+    
+    mColliderComponent = new AABBColliderComponent(
+        this,
+        24, 24,
+        19, 6,
+        ColliderLayer::Fireball);
+
+    mDrawAnimatedComponent = new DrawAnimatedComponent(
+        this,
+        spriteSheetPath,
+        spriteSheetData,
+        std::bind(&Fireball::AnimationEndCallback, this, std::placeholders::_1),
+        static_cast<int>(DrawLayerPosition::Player) + 1);
+
+    mDrawAnimatedComponent->AddAnimation("flying", 0, 60);
+    mDrawAnimatedComponent->AddAnimation("dying", 61, 82);
+
+    mDrawAnimatedComponent->SetAnimation("flying");
+    mBehaviorState = BehaviorState::Moving;
+
+    SetPosition(position - mDrawAnimatedComponent->GetHalfSpriteSize());
+    
+    Vector2 originalSpriteDir = Vector2(1.f, 0.f);
+    float directionAngle = Math::Atan2(direction.y, direction.x);
+    float originalAngle = Math::Atan2(originalSpriteDir.y, originalSpriteDir.x);
+    directionAngle -= originalAngle;
+
+    SetRotation(directionAngle);
+}
+
+void Fireball::AnimationEndCallback(std::string animationName)
+{
+    if (animationName == "dying") {
+        SetState(ActorState::Destroy);
+    }
+}
+
+void Fireball::ManageAnimations()
+{
+    if (mBehaviorState == BehaviorState::Dying) {
+        mDrawAnimatedComponent->SetAnimation("dying");
+        mDrawAnimatedComponent->SetAnimFPS(8.f);
+    }
+    else if (mBehaviorState == BehaviorState::Moving) {
+        mDrawAnimatedComponent->SetAnimation("flying");
+        mDrawAnimatedComponent->SetAnimFPS(24.f);
+    }
+}
+
+//
+
 Zoe::Zoe(Game *game, const float forwardSpeed): 
     Actor(game), mForwardSpeed(forwardSpeed),
-    mDeathTimer(DEATH_TIMER), mLives(6), mInvincible(false)
+    mDeathTimer(DEATH_TIMER), mLives(6), mInvincible(false), mTryingToFireFireball(false),
+    mIsFireballOnCooldown(false)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 10.0f);
     mColliderComponent = new AABBColliderComponent(this, 25, 20, 15, 28,
@@ -34,6 +94,8 @@ Zoe::Zoe(Game *game, const float forwardSpeed):
 
 void Zoe::OnProcessInput(const uint8_t *state)
 {
+    mTryingToFireFireball = false;
+    
     if (mBehaviorState == BehaviorState::Dying || 
         mBehaviorState == BehaviorState::TakingDamage || 
         mBehaviorState == BehaviorState::Jumping)
@@ -41,6 +103,8 @@ void Zoe::OnProcessInput(const uint8_t *state)
 
     if (!mRigidBodyComponent->GetOnGround())
         return;
+
+    mTryingToFireFireball = state[SDL_SCANCODE_Q];
 
     Vector2 movementForce = Vector2(
         state[SDL_SCANCODE_D] - state[SDL_SCANCODE_A],
@@ -124,6 +188,17 @@ void Zoe::ManageState()
             {
                 mBehaviorState = BehaviorState::Moving;
             }
+            
+            if (mTryingToFireFireball && !mIsFireballOnCooldown) {
+                mBehaviorState = BehaviorState::Charging;
+            }
+
+            break;
+
+        case BehaviorState::Charging:
+            if (!mTryingToFireFireball) {
+                mBehaviorState = BehaviorState::Idle;
+            }
             break;
 
         case BehaviorState::TakingDamage:
@@ -191,6 +266,10 @@ void Zoe::ManageAnimations()
         mDrawComponent->SetAnimation("hurt");
         mDrawComponent->SetAnimFPS(4.f);
         break;
+    case BehaviorState::Charging:
+        mDrawComponent->SetAnimation("crush");
+        mDrawComponent->SetAnimFPS(12.0f);
+        break;
     default:
         break;
     }
@@ -227,4 +306,30 @@ void Zoe::AnimationEndCallback(std::string animationName)
         mBehaviorState = BehaviorState::Idle;
         mInvincible = false;
     }
+
+    else if (animationName == "crush") {
+        FireFireball();
+        mBehaviorState = BehaviorState::Idle;
+    }
+}
+
+void Zoe::FireFireball()
+{
+    if (mIsFireballOnCooldown)
+        return;
+
+    Vector2 position = GetPosition() + GetFireballOffset();
+    Vector2 direction = GetGame()->GetLogicalMousePos() - position;
+    direction.Normalize();
+    
+    auto projectile = new Fireball(
+        mGame,
+        position,
+        direction,
+        Zoe::FIREBALL_SPEED);
+
+    SetFireballOnCooldown(true);
+    mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this]() {
+        SetFireballOnCooldown(false);
+    });
 }
