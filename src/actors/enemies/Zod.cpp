@@ -64,6 +64,8 @@ void ZodProjectile::OnUpdate(float deltaTime)
     }
 }
 
+//
+
 Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
     : Enemy(game, forwardSpeed, position), mProjectileOnCooldown(false)
 {
@@ -162,8 +164,15 @@ void Zod::ManageState()
         
         break;
     }
+    
     case BehaviorState::Charging:
         if (!PlayerOnSight(viewDistance)) mBehaviorState = BehaviorState::Moving;
+        break;
+
+    case BehaviorState::TakingDamage:
+        break;
+
+    case BehaviorState::Dying:
         break;
 
     default:
@@ -184,6 +193,18 @@ void Zod::AnimationEndCallback(std::string animationName)
     {
         FireProjectile();
         mBehaviorState = BehaviorState::Moving;
+        return;
+    }
+
+    if (animationName == "damage")
+    {
+        mBehaviorState = BehaviorState::Moving;
+        mInvincible = false;
+        return;
+    }
+
+    if (animationName == "dying") {
+        SetState(ActorState::Destroy);
     }
 }
 
@@ -209,8 +230,40 @@ void Zod::ManageAnimations()
         mDrawComponent->SetAnimation("charging");
         mDrawComponent->SetAnimFPS(8.f);
         break;
+    case BehaviorState::TakingDamage:
+        mDrawComponent->SetAnimation("damage");
+        mDrawComponent->SetAnimFPS(9.f);
+        break;
+    case BehaviorState::Dying:
+        mDrawComponent->SetAnimation("dying");
+        mDrawComponent->SetAnimFPS(10.f);
+        break;
     default:
         mDrawComponent->SetAnimation("asleep");
         break;
+    }
+}
+
+void Zod::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
+{
+    if (other->GetLayer() == ColliderLayer::Player)
+    {
+        TakeDamage();
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Fireball)
+    {
+        TakeDamage();
+        return;
+    }
+}
+
+void Zod::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
+{
+    if (other->GetLayer() == ColliderLayer::Fireball)
+    {
+        TakeDamage();
+        return;
     }
 }

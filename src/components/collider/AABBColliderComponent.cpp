@@ -80,7 +80,10 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
             
             if (collider->IsTangible() && mIsTangible) {
                 ResolveHorizontalCollisions(rigidBody, overlap);
+                
+                // has to call both if collision is resolved here
                 mOwner->OnHorizontalCollision(overlap, collider);
+                collider->GetOwner()->OnHorizontalCollision(-overlap, this);
                 return overlap;
             }
             
@@ -116,7 +119,11 @@ float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBo
             
             if (collider->IsTangible() && mIsTangible) {
                 ResolveVerticalCollisions(rigidBody, overlap);
+
+                // has to call both if collision is resolved here
                 mOwner->OnVerticalCollision(overlap, collider);
+                collider->GetOwner()->OnVerticalCollision(-overlap, this);
+                
                 return overlap;
             }
 

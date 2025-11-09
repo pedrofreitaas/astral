@@ -25,6 +25,9 @@ class Zod : public Enemy
 public:
     explicit Zod(Game* game, float forwardSpeed, const Vector2& position);
 
+    void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
+    void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
+    
     Vector2 GetProjectileOffset() { 
         if (GetRotation() == 0.f) {
             return Vector2(37.f,8.f);
