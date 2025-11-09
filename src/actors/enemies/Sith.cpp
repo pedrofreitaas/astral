@@ -9,8 +9,8 @@
 
 SithProjectile::SithProjectile(
     class Game* game, Vector2 position, 
-    Vector2 direction, float speed
-): Projectile(game, position, direction, speed)
+    Vector2 target, float speed
+): Projectile(game, position, target, speed)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Enemies/Sith/Projectile/texture.png";
     const std::string spriteSheetData = "../assets/Sprites/Enemies/Sith/Projectile/texture.json";
@@ -37,6 +37,8 @@ SithProjectile::SithProjectile(
     mBehaviorState = BehaviorState::Moving;
 
     SetPosition(position - mDrawAnimatedComponent->GetHalfSpriteSize());
+    mDirection = target - GetCenter();
+    mDirection.Normalize();
 }
 
 void SithProjectile::AnimationEndCallback(std::string animationName)
@@ -136,14 +138,11 @@ void Sith::FireProjectile()
 {
     if (mIsProjectileOnCooldown)
         return;
-
-    Vector2 direction = GetGame()->GetZoe()->GetPosition() - GetPosition();
-    direction.Normalize();
     
     auto projectile = new SithProjectile(
         mGame,
         GetPosition() + GetProjectileOffset(),
-        direction,
+        GetGame()->GetZoe()->GetCenter(),
         Sith::PROJECTILE_SPEED);
 
     SetProjectileOnCooldown(true);

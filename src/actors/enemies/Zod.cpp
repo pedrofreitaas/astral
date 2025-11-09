@@ -5,8 +5,8 @@
 #include "../Zoe.h"
 #include "../Actor.h"
 
-ZodProjectile::ZodProjectile(Game* game, Vector2 position, Vector2 direction, float speed)
-    : Projectile(game, position, direction, speed)
+ZodProjectile::ZodProjectile(Game* game, Vector2 position, Vector2 target, float speed)
+    : Projectile(game, position, target, speed)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Enemies/Zod/Projectile/texture.png";
     const std::string spriteSheetData = "../assets/Sprites/Enemies/Zod/Projectile/texture.json";
@@ -32,6 +32,8 @@ ZodProjectile::ZodProjectile(Game* game, Vector2 position, Vector2 direction, fl
     mBehaviorState = BehaviorState::Moving;
 
     SetPosition(position - mDrawAnimatedComponent->GetHalfSpriteSize());
+    mDirection = target - GetCenter();
+    mDirection.Normalize();
 }
 
 void ZodProjectile::ManageAnimations()
@@ -108,13 +110,10 @@ void Zod::FireProjectile()
     if (mProjectileOnCooldown)
         return;
 
-    Vector2 direction = GetGame()->GetZoe()->GetPosition() - GetPosition();
-    direction.Normalize();
-    
     auto projectile = new ZodProjectile(
         mGame,
         GetPosition() + GetProjectileOffset(),
-        direction,
+        GetGame()->GetZoe()->GetCenter(),
         Zod::PROJECTILE_SPEED);
 
     mProjectileOnCooldown = true;
