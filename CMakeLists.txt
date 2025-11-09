@@ -80,6 +80,7 @@ add_executable(${PROJECT_NAME}
         src/core/SpatialHashing.cpp
         src/core/SpatialHashing.h
         src/actors/Projectile.h
+        src/actors/Projectile.cpp
         src/actors/Item.h
         src/actors/Item.cpp
         src/ui/DialogueSystem.cpp
