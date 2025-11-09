@@ -32,12 +32,6 @@ void Projectile::OnUpdate(float deltaTime) {
     Vector2 movement = mDirection * mSpeed * deltaTime;
     mRigidBodyComponent->SetVelocity(movement);
 
-    Vector2 dist = GetCenter() - mTarget;
-    float distSq = dist.LengthSq();
-    
-    if (distSq < 25.f) { // 5 pixels
-        Kill();
-    }
 }
 
 void Projectile::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) {
