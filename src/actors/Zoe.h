@@ -5,6 +5,8 @@
 
 class Fireball : public Projectile
 {
+    int MAX_RICOCHETS = 3;
+
 public:
     Fireball(
         class Game* game, Vector2 position, 
@@ -14,13 +16,18 @@ public:
 private:
     void ManageAnimations();
     void AnimationEndCallback(std::string animationName);
+
+    void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
+    void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
+
+    int mRicochetsCount;
 };
 
 const float DEATH_TIMER = 0.71f;
 
 class Zoe : public Actor
 {
-    float FIREBALL_SPEED = 50000.f;
+    float FIREBALL_SPEED = 20000.f;
     float FIREBALL_COOLDOWN = 4.f;
 public:
     explicit Zoe(Game* game, float forwardSpeed = 1500.0f);
@@ -41,10 +48,10 @@ public:
     
     Vector2 GetFireballOffset() {
         if (GetRotation() == 0.f) {
-            return Vector2(48.f,44.f);
+            return Vector2(48.f,34.f);
         }
         else {
-            return Vector2(14.f,44.f);
+            return Vector2(14.f,34.f);
         }
     }
 

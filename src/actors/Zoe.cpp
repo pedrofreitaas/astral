@@ -7,8 +7,8 @@
 
 Fireball::Fireball(
     class Game* game, Vector2 position, 
-    Vector2 direction, float speed
-): Projectile(game, position, direction, speed)
+    Vector2 target, float speed
+): Projectile(game, position, target, speed), mRicochetsCount(0)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Zoe/Fireball/texture.png";
     const std::string spriteSheetData = "../assets/Sprites/Zoe/Fireball/texture.json";
@@ -17,8 +17,8 @@ Fireball::Fireball(
     
     mColliderComponent = new AABBColliderComponent(
         this,
-        24, 24,
-        19, 6,
+        45, 28,
+        10, 9 ,
         ColliderLayer::Fireball);
 
     mDrawAnimatedComponent = new DrawAnimatedComponent(
@@ -26,19 +26,22 @@ Fireball::Fireball(
         spriteSheetPath,
         spriteSheetData,
         std::bind(&Fireball::AnimationEndCallback, this, std::placeholders::_1),
-        static_cast<int>(DrawLayerPosition::Player) + 1);
+        static_cast<int>(DrawLayerPosition::Enemy) + 1);
+    mDrawAnimatedComponent->SetUsePivotForRotation(true);
 
-    mDrawAnimatedComponent->AddAnimation("flying", 0, 60);
-    mDrawAnimatedComponent->AddAnimation("dying", 61, 82);
+    mDrawAnimatedComponent->AddAnimation("flying", 0, 28);
+    mDrawAnimatedComponent->AddAnimation("dying", 29, 48);
 
     mDrawAnimatedComponent->SetAnimation("flying");
     mBehaviorState = BehaviorState::Moving;
 
     SetPosition(position - mDrawAnimatedComponent->GetHalfSpriteSize());
     
-    Vector2 originalSpriteDir = Vector2(1.f, 0.f);
-    float directionAngle = Math::Atan2(direction.y, direction.x);
-    float originalAngle = Math::Atan2(originalSpriteDir.y, originalSpriteDir.x);
+    mDirection = target - GetCenter();
+    mDirection.Normalize();
+
+    float directionAngle = Math::Atan2(mDirection.y, mDirection.x);
+    float originalAngle = Math::Atan2(0.f, 1.f);
     directionAngle -= originalAngle;
 
     SetRotation(directionAngle);
@@ -55,11 +58,77 @@ void Fireball::ManageAnimations()
 {
     if (mBehaviorState == BehaviorState::Dying) {
         mDrawAnimatedComponent->SetAnimation("dying");
-        mDrawAnimatedComponent->SetAnimFPS(8.f);
+        mDrawAnimatedComponent->SetAnimFPS(10.f);
     }
     else if (mBehaviorState == BehaviorState::Moving) {
         mDrawAnimatedComponent->SetAnimation("flying");
-        mDrawAnimatedComponent->SetAnimFPS(24.f);
+        mDrawAnimatedComponent->SetAnimFPS(20.f);
+    }
+}
+
+void Fireball::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) {
+    if (mBehaviorState != BehaviorState::Moving) return;
+
+    if (other->GetLayer() == ColliderLayer::Player)
+    {
+        return;
+    }
+
+    if (mRicochetsCount >= MAX_RICOCHETS || other->GetLayer() == ColliderLayer::Enemy)
+    {
+        Kill();
+    }
+
+    if (other->GetLayer() == ColliderLayer::Blocks)
+    {
+        mRicochetsCount++;
+
+        Vector2 reflection = Vector2::Reflect(
+            mDirection,
+            Vector2(Math::Sign(minOverlap), 0.f));
+
+        reflection.Normalize();
+
+        mDirection = reflection;
+
+        float directionAngle = Math::Atan2(mDirection.y, mDirection.x);
+        float originalAngle = Math::Atan2(0.f, 1.f);
+        directionAngle -= originalAngle;
+
+        SetRotation(directionAngle);
+    }
+}
+
+void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) {
+    if (mBehaviorState != BehaviorState::Moving) return;
+
+    if (other->GetLayer() == ColliderLayer::Player)
+    {
+        return;
+    }
+
+    if (mRicochetsCount >= MAX_RICOCHETS || other->GetLayer() == ColliderLayer::Enemy)
+    {
+        Kill();
+    }
+
+    if (other->GetLayer() == ColliderLayer::Blocks)
+    {
+        mRicochetsCount++;
+
+        Vector2 reflection = Vector2::Reflect(
+            mDirection,
+            Vector2(0.f, Math::Sign(minOverlap)));
+
+        reflection.Normalize();
+
+        mDirection = reflection;
+
+        float directionAngle = Math::Atan2(mDirection.y, mDirection.x);
+        float originalAngle = Math::Atan2(0.f, 1.f);
+        directionAngle -= originalAngle;
+
+        SetRotation(directionAngle);
     }
 }
 
@@ -94,21 +163,20 @@ Zoe::Zoe(Game *game, const float forwardSpeed):
 
 void Zoe::OnProcessInput(const uint8_t *state)
 {
-    mTryingToFireFireball = false;
+    mTryingToFireFireball = state[SDL_SCANCODE_Q];
     
     if (mBehaviorState == BehaviorState::Dying || 
         mBehaviorState == BehaviorState::TakingDamage || 
-        mBehaviorState == BehaviorState::Jumping)
+        mBehaviorState == BehaviorState::Jumping ||
+        mBehaviorState == BehaviorState::Charging)
         return;
 
     if (!mRigidBodyComponent->GetOnGround())
         return;
 
-    mTryingToFireFireball = state[SDL_SCANCODE_Q];
-
     Vector2 movementForce = Vector2(
         state[SDL_SCANCODE_D] - state[SDL_SCANCODE_A],
-        state[SDL_SCANCODE_S] - state[SDL_SCANCODE_W]
+        GetGame()->GetApplyGravityScene() ? 0.f : (state[SDL_SCANCODE_S] - state[SDL_SCANCODE_W])
     );
 
     float lengthSq = movementForce.LengthSq();
@@ -268,7 +336,7 @@ void Zoe::ManageAnimations()
         break;
     case BehaviorState::Charging:
         mDrawComponent->SetAnimation("crush");
-        mDrawComponent->SetAnimFPS(12.0f);
+        mDrawComponent->SetAnimFPS(10.0f);
         break;
     default:
         break;
@@ -317,15 +385,11 @@ void Zoe::FireFireball()
 {
     if (mIsFireballOnCooldown)
         return;
-
-    Vector2 position = GetPosition() + GetFireballOffset();
-    Vector2 direction = GetGame()->GetLogicalMousePos() - position;
-    direction.Normalize();
     
     auto projectile = new Fireball(
         mGame,
-        position,
-        direction,
+        GetPosition() + GetFireballOffset(),
+        GetGame()->GetLogicalMousePos(),
         Zoe::FIREBALL_SPEED);
 
     SetFireballOnCooldown(true);
