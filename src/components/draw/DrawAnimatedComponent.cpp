@@ -106,25 +106,24 @@ void DrawAnimatedComponent::Update(float deltaTime)
     if (mAnimTimer >= mAnimations[mAnimName].frames.size()) {
         if (mAnimationEndCallback) mAnimationEndCallback(mAnimName);
 
-        do {
-            if (mAnimations[mAnimName].isLoop) {
-                mAnimTimer -= mAnimations[mAnimName].frames.size();
-                continue;
-            }
-
+        if (mAnimations[mAnimName].isLoop) {
+            mAnimTimer = 0.0f;
+        }
+        else {
+            // block in last frame
             mAnimTimer = static_cast<float>(mAnimations[mAnimName].frames.size() - 1);
-        } while (mAnimTimer >= mAnimations[mAnimName].frames.size());
+        }
     }
 }
 
 void DrawAnimatedComponent::SetAnimation(const std::string &name)
 {
-    mAnimName = name;
-
-    if (mAnimTimer < 0.0f || mAnimTimer >= mAnimations[mAnimName].frames.size()) {
-        mAnimTimer = 0.0f;
+    if (mAnimName == name) {
+        return;
     }
 
+    mAnimTimer = 0.0f;
+    mAnimName = name;
     Update(0.0f);
 }
 
