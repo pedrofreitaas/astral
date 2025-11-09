@@ -7,8 +7,10 @@
 
 Projectile::Projectile(
     class Game* game, Vector2 position, 
-    Vector2 direction, float speed
-): Actor(game), mDirection(direction), mSpeed(speed), mKnockbackIntensity(10.f) {
+    Vector2 target, float speed
+): Actor(game), mTarget(target), mSpeed(speed), 
+   mKnockbackIntensity(10.f), mDirection(Vector2::Zero) 
+{
     SetPosition(position);
 
     mTimerComponent = new TimerComponent(this);
@@ -22,10 +24,20 @@ void Projectile::OnUpdate(float deltaTime) {
     ManageAnimations();
 
     if (mBehaviorState == BehaviorState::Dying)
+    {
+        mRigidBodyComponent->SetVelocity(Vector2::Zero);
         return;
+    }
     
     Vector2 movement = mDirection * mSpeed * deltaTime;
-    mRigidBodyComponent->ApplyForce(movement);
+    mRigidBodyComponent->SetVelocity(movement);
+
+    Vector2 dist = GetCenter() - mTarget;
+    float distSq = dist.LengthSq();
+    
+    if (distSq < 25.f) { // 5 pixels
+        Kill();
+    }
 }
 
 void Projectile::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) {

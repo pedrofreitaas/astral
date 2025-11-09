@@ -10,7 +10,7 @@ class Projectile : public Actor
 public:
     Projectile(
         class Game* game, Vector2 position, 
-        Vector2 direction, float speed
+        Vector2 target, float speed
     );
 
 protected:
@@ -19,14 +19,14 @@ protected:
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
 
     virtual void ManageAnimations() = 0;
-    virtual void Kill();
+    void Kill();
     
     class RigidBodyComponent* mRigidBodyComponent;
     class AABBColliderComponent* mColliderComponent;
     class DrawAnimatedComponent* mDrawAnimatedComponent;
     class TimerComponent* mTimerComponent;
     
-    Vector2 mDirection;
+    Vector2 mTarget, mDirection;
     float mKnockbackIntensity;
     float mSpeed;
 };
