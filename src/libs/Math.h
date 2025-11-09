@@ -20,6 +20,11 @@ namespace Math
 	const float Infinity = std::numeric_limits<float>::infinity();
 	const float NegInfinity = -std::numeric_limits<float>::infinity();
 
+	inline float Sign(float x)
+	{
+		return (x > 0) - (x < 0);
+	}
+
 	inline float ToRadians(float degrees)
 	{
 		return degrees * Pi / 180.0f;
