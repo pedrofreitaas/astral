@@ -11,6 +11,7 @@
 #include <SDL_stdinc.h>
 #include "../libs/Math.h"
 #include "../components/collider/AABBColliderComponent.h"
+#include "../components/TimerComponent.h"
 
 enum class ActorState
 {
@@ -39,8 +40,14 @@ enum class BehaviorState // For AI behaviors/animations
 class Actor
 {
 public:
-    Actor(class Game* game);
+    Actor(class Game* game, int lives=3);
     virtual ~Actor();
+
+    // it's actor's responsibility to become not invicible again
+    void TakeDamage(const Vector2 &knockback = Vector2(0.f, 0.f));
+
+    int Lives() { return mLives; }
+    void SetLives(int lives) { mLives = lives; }
 
     // Reinsert function called from Game (not overridable)
     void Update(float deltaTime);
@@ -137,6 +144,10 @@ protected:
 
     // Game specific
     bool mIsOnGround;
+    int mLives;
+    bool mInvincible;
+
+    class TimerComponent* mTimerComponent;
 
 private:
     friend class Component;

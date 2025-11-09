@@ -38,7 +38,6 @@ private:
     void ManageState() override;
     void AnimationEndCallback(std::string animationName) override;
     void ManageAnimations() override;
-    void TakeDamage() override;
 
     void FireProjectile();
 

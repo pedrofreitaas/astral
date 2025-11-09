@@ -214,7 +214,3 @@ void Zod::ManageAnimations()
         break;
     }
 }
-
-void Zod::TakeDamage()
-{
-}

@@ -272,7 +272,3 @@ void Sith::ManageAnimations()
         break;
     }
 }
-
-void Sith::TakeDamage()
-{
-}

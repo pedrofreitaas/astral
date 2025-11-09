@@ -54,11 +54,9 @@ public:
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
 
     void Kill() override;
-    int Lives() { return mLives; }
     void ManageState();
     void SetInvincible(bool invincible) { mInvincible = invincible; }
     void AnimationEndCallback(std::string animationName);
-    void TakeDamage(const Vector2 &knockback = Vector2(0.f, 0.f));
     
     Vector2 GetFireballOffset() {
         if (GetRotation() == 0.f) {
@@ -72,8 +70,6 @@ public:
 private:
     float mForwardSpeed;
     float mDeathTimer;
-    int mLives;
-    bool mInvincible;
 
     class TimerComponent *mTimerComponent;
     class RigidBodyComponent* mRigidBodyComponent;

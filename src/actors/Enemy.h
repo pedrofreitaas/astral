@@ -26,7 +26,6 @@ protected:
     class AIMovementComponent *mAIMovementComponent;
 
     virtual void ManageAnimations() = 0;
-    virtual void TakeDamage() = 0;
     virtual void AnimationEndCallback(std::string animationName) = 0;
 
     bool PlayerOnSight(float distance = 100.f, float angle=0.f);

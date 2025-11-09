@@ -10,7 +10,7 @@
 #include "../components/Component.h"
 #include <algorithm>
 
-Actor::Actor(Game* game)
+Actor::Actor(Game* game, int lives)
         : mState(ActorState::Active)
         , mPosition(Vector2::Zero)
         , mScale(1.0f)
@@ -18,6 +18,8 @@ Actor::Actor(Game* game)
         , mGame(game)
         , mIsOnGround(false)
         , mBehaviorState(BehaviorState::Idle)
+        , mLives(lives)
+        , mInvincible(false)
 {
     mGame->AddActor(this);
 }
@@ -170,4 +172,27 @@ void Actor::LogState()
         SDL_Log("BehaviorState: Other");
         break;
     }
+}
+
+void Actor::TakeDamage(const Vector2 &knockback)
+{
+    if (mBehaviorState == BehaviorState::Dying || mInvincible)
+        return;
+
+    mLives--;
+
+    auto rigidBody = GetComponent<RigidBodyComponent>();
+    if (rigidBody)
+    {
+        rigidBody->ApplyForce(knockback);
+    }
+    
+    if (mLives <= 0)
+    {
+        mBehaviorState = BehaviorState::Dying;
+        return;
+    }
+
+    mBehaviorState = BehaviorState::TakingDamage;
+    mInvincible = true;
 }

@@ -176,10 +176,12 @@ void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent
 
 Zoe::Zoe(Game *game, const float forwardSpeed): 
     Actor(game), mForwardSpeed(forwardSpeed),
-    mDeathTimer(DEATH_TIMER), mLives(6), mInvincible(false), mTryingToFireFireball(false),
+    mDeathTimer(DEATH_TIMER), mTryingToFireFireball(false),
     mIsFireballOnCooldown(false), mIsVentaniaOnCooldown(false),
     mTryingToTriggerVentania(false)
 {
+    SetLives(6);
+    
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
     mColliderComponent = new AABBColliderComponent(this, 25, 20, 15, 28,
                                                    ColliderLayer::Player);
@@ -239,25 +241,6 @@ void Zoe::OnHandleKeyPress(const int key, const bool isPressed)
 {
     if (mBehaviorState == BehaviorState::Dying)
         return;
-}
-
-void Zoe::TakeDamage(const Vector2 &knockback)
-{
-    if (mBehaviorState == BehaviorState::Dying || mInvincible)
-        return;
-
-    mLives--;
-
-    mRigidBodyComponent->ApplyForce(knockback);
-    
-    if (mLives <= 0)
-    {
-        mBehaviorState = BehaviorState::Dying;
-        return;
-    }
-
-    mBehaviorState = BehaviorState::TakingDamage;
-    mInvincible = true;
 }
 
 void Zoe::ManageState()
