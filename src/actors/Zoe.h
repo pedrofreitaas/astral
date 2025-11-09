@@ -3,8 +3,6 @@
 #include "Projectile.h"
 #include <SDL.h>
 
-const float DEATH_TIMER = 0.71f;
-
 class Ventania : public Actor
 {
 public:
@@ -31,6 +29,8 @@ private:
 
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
+
+    void Kill() override;
 
     int mRicochetsCount;
 };
@@ -69,7 +69,6 @@ public:
 
 private:
     float mForwardSpeed;
-    float mDeathTimer;
 
     class TimerComponent *mTimerComponent;
     class RigidBodyComponent* mRigidBodyComponent;

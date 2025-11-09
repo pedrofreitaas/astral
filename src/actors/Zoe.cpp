@@ -172,13 +172,19 @@ void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent
     }
 }
 
+void Fireball::Kill()
+{
+    Projectile::Kill();
+
+    // mColliderComponent->SetEnabled(false);
+}
+
 //
 
 Zoe::Zoe(Game *game, const float forwardSpeed): 
     Actor(game), mForwardSpeed(forwardSpeed),
-    mDeathTimer(DEATH_TIMER), mTryingToFireFireball(false),
-    mIsFireballOnCooldown(false), mIsVentaniaOnCooldown(false),
-    mTryingToTriggerVentania(false)
+    mTryingToFireFireball(false), mIsFireballOnCooldown(false), 
+    mIsVentaniaOnCooldown(false), mTryingToTriggerVentania(false)
 {
     SetLives(6);
     
@@ -332,17 +338,6 @@ void Zoe::OnUpdate(float deltaTime)
 
     mColliderComponent->MaintainInMap();
     ManageAnimations();
-
-    if (mBehaviorState == BehaviorState::Dying)
-    {
-        mDeathTimer -= deltaTime;
-
-        if (mDeathTimer <= 0)
-        {
-            mGame->Quit();
-        }
-        return;
-    }
 }
 
 void Zoe::ManageAnimations()
@@ -405,6 +400,10 @@ void Zoe::AnimationEndCallback(std::string animationName)
     if (animationName == "hurt") {
         mBehaviorState = BehaviorState::Idle;
         mInvincible = false;
+
+        if (mLives <= 0) {
+            Kill();
+        }
     }
 
     else if (animationName == "crush") {
