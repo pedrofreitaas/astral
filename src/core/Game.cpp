@@ -27,7 +27,6 @@
 #include "../actors/Item.h"
 #include "../ui/UIScreen.h"
 #include "../components/draw/DrawComponent.h"
-#include "../components/draw/DrawSpriteComponent.h"
 #include "../components/collider/AABBColliderComponent.h"
 #include "../ui/DialogueSystem.h"
 #include "../actors/Star.h"
@@ -780,7 +779,7 @@ Vector2 Game::GetLogicalMousePos() const
     int x, y;
     SDL_GetMouseState(&x, &y);
     SDL_RenderWindowToLogical(mRenderer, (float)x, (float)y, &lx, &ly);
-    return Vector2(lx, ly);
+    return Vector2(lx, ly) + mCameraPos;
 }
 
 void Game::AddCutscene(const std::string &name, std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback)
