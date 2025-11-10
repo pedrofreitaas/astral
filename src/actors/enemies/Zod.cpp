@@ -246,7 +246,7 @@ void Zod::ManageAnimations()
 
 void Zod::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    if (other->GetLayer() == ColliderLayer::Player)
+    if (other->GetLayer() == ColliderLayer::Player && minOverlap < 0.f)
     {
         TakeDamage();
         return;
