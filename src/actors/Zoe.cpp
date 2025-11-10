@@ -393,6 +393,19 @@ void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *oth
     {
         // projeticle can dye imediately on collision, so the take damage logic is on the projectile
     }
+
+    if (other->GetLayer() == ColliderLayer::Enemy && minOverlap > 0.f)
+    {
+        mRigidBodyComponent->ApplyForce(
+            Vector2(
+                0.f, 
+                mRigidBodyComponent->GetVerticalForce(3)));
+    }
+
+    if (other->GetLayer() == ColliderLayer::Enemy && minOverlap < 0.f)
+    {
+        TakeDamage();
+    }
 }
 
 void Zoe::AnimationEndCallback(std::string animationName)
