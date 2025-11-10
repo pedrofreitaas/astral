@@ -169,7 +169,6 @@ void Sith::ManageState()
         break;
     case BehaviorState::Idle:
         break;
-
     case BehaviorState::Moving:
     {
         if (mRigidBodyComponent->GetVelocity().x > 0.f)
@@ -206,18 +205,18 @@ void Sith::ManageState()
         
         break;
     }
-
     case BehaviorState::Attacking:
         if (mCurrentAttack == Attacks::Attack2) {
             mAIMovementComponent->BoostToPlayer(Sith::ATTACK2_EXTRA_SPEED);
         }
-    
         break;
-
     case BehaviorState::Charging:
         if (!PlayerOnSight(sightDistance)) mBehaviorState = BehaviorState::Moving;
         break;
-
+    case BehaviorState::TakingDamage:
+        break;
+    case BehaviorState::Dying:
+        break;
     default:
         mBehaviorState = BehaviorState::Asleep;
         break;
@@ -238,6 +237,12 @@ void Sith::AnimationEndCallback(std::string animationName)
 
     else if (animationName == "death") {
         SetState(ActorState::Destroy);
+    }
+
+    else if (animationName == "damage")
+    {
+        mBehaviorState = BehaviorState::Moving;
+        mInvincible = false;
     }
 }
 
@@ -267,8 +272,36 @@ void Sith::ManageAnimations()
         mDrawComponent->SetAnimation("death");
         mDrawComponent->SetAnimFPS(10.f);
         break;
+    case BehaviorState::TakingDamage:
+        mDrawComponent->SetAnimation("damage");
+        mDrawComponent->SetAnimFPS(9.f);
+        break;
     default:
         mDrawComponent->SetAnimation("moving");
         break;
+    }
+}
+
+void Sith::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
+{
+    if (other->GetLayer() == ColliderLayer::Player && minOverlap < 0.f)
+    {
+        TakeDamage();
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Fireball)
+    {
+        TakeDamage();
+        return;
+    }
+}
+
+void Sith::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
+{
+    if (other->GetLayer() == ColliderLayer::Fireball)
+    {
+        TakeDamage();
+        return;
     }
 }
