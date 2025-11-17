@@ -28,11 +28,11 @@ public:
     };
 
     float PROJECTICLE_COOLDOWN = 30.f;
-    float PROJECTILE_SPEED = 50000.f;
+    float PROJECTILE_SPEED = 20000.f;
 
     float ATTACK1_COOLDOWN = 8.f;
     float ATTACK2_COOLDOWN = 20.f;
-    float ATTACK2_EXTRA_SPEED = 25000.f;
+    float ATTACK2_EXTRA_SPEED = 2500.f;
 
     explicit Sith(Game* game, float forwardSpeed, const Vector2& position);
 
