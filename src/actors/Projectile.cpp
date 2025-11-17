@@ -7,9 +7,10 @@
 
 Projectile::Projectile(
     class Game* game, Vector2 position, 
-    Vector2 target, float speed
+    Vector2 target, float speed,
+    Actor* shooter
 ): Actor(game), mTarget(target), mSpeed(speed), 
-   mKnockbackIntensity(10.f), mDirection(Vector2::Zero) 
+   mKnockbackIntensity(10.f), mDirection(Vector2::Zero), mShooter(shooter)
 {
     SetPosition(position);
 
@@ -36,6 +37,7 @@ void Projectile::OnUpdate(float deltaTime) {
 
 void Projectile::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) {
     if (mBehaviorState != BehaviorState::Moving) return;
+    if (other->GetLayer() == mShooter->GetComponent<AABBColliderComponent>()->GetLayer()) return;
 
     // projectile can die immediately on collision, so the take damage logic is on the projectile
     if (other->GetLayer() == ColliderLayer::Player)
@@ -52,6 +54,7 @@ void Projectile::OnVerticalCollision(const float minOverlap, AABBColliderCompone
 
 void Projectile::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) {
     if (mBehaviorState != BehaviorState::Moving) return;
+    if (other->GetLayer() == mShooter->GetComponent<AABBColliderComponent>()->GetLayer()) return;
 
     // projectile can die immediately on collision, so the take damage logic is on the projectile
     if (other->GetLayer() == ColliderLayer::Player)

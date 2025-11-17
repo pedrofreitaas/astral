@@ -47,8 +47,8 @@ void Ventania::AnimationEndCallback(std::string animationName)
 
 Fireball::Fireball(
     class Game* game, Vector2 position, 
-    Vector2 target, float speed
-): Projectile(game, position, target, speed), mRicochetsCount(0)
+    Vector2 target, float speed, Actor* shooter
+): Projectile(game, position, target, speed, shooter), mRicochetsCount(0)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Zoe/Fireball/texture.png";
     const std::string spriteSheetData = "../assets/Sprites/Zoe/Fireball/texture.json";
@@ -434,7 +434,8 @@ void Zoe::FireFireball()
         mGame,
         GetPosition() + GetFireballOffset(),
         GetGame()->GetLogicalMousePos(),
-        Zoe::FIREBALL_SPEED);
+        Zoe::FIREBALL_SPEED,
+        this);
 
     SetFireballOnCooldown(true);
     mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this]() {

@@ -10,7 +10,7 @@ class SithProjectile : public Projectile
 public:
     SithProjectile(
         class Game* game, Vector2 position, 
-        Vector2 direction, float speed
+        Vector2 direction, float speed, Actor* sith
     );
 
 private:

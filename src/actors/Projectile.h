@@ -10,7 +10,8 @@ class Projectile : public Actor
 public:
     Projectile(
         class Game* game, Vector2 position, 
-        Vector2 target, float speed
+        Vector2 target, float speed,
+        Actor* shooter
     );
 
 protected:
@@ -29,4 +30,6 @@ protected:
     Vector2 mTarget, mDirection;
     float mKnockbackIntensity;
     float mSpeed;
+
+    Actor *mShooter;
 };

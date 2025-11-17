@@ -9,8 +9,8 @@
 
 SithProjectile::SithProjectile(
     class Game* game, Vector2 position, 
-    Vector2 target, float speed
-): Projectile(game, position, target, speed)
+    Vector2 target, float speed, Actor* sith
+): Projectile(game, position, target, speed, sith)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Enemies/Sith/Projectile/texture.png";
     const std::string spriteSheetData = "../assets/Sprites/Enemies/Sith/Projectile/texture.json";
@@ -143,7 +143,8 @@ void Sith::FireProjectile()
         mGame,
         GetPosition() + GetProjectileOffset(),
         GetGame()->GetZoe()->GetCenter(),
-        Sith::PROJECTILE_SPEED);
+        Sith::PROJECTILE_SPEED,
+        this);
 
     SetProjectileOnCooldown(true);
     mTimerComponent->AddTimer(Sith::PROJECTICLE_COOLDOWN, [this]() {

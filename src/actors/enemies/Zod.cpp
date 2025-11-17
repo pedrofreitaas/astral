@@ -5,8 +5,9 @@
 #include "../Zoe.h"
 #include "../Actor.h"
 
-ZodProjectile::ZodProjectile(Game* game, Vector2 position, Vector2 target, float speed)
-    : Projectile(game, position, target, speed)
+ZodProjectile::ZodProjectile(
+    Game* game, Vector2 position, Vector2 target, float speed, Actor* zod
+): Projectile(game, position, target, speed, zod)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Enemies/Zod/Projectile/texture.png";
     const std::string spriteSheetData = "../assets/Sprites/Enemies/Zod/Projectile/texture.json";
@@ -116,7 +117,8 @@ void Zod::FireProjectile()
         mGame,
         GetPosition() + GetProjectileOffset(),
         GetGame()->GetZoe()->GetCenter(),
-        Zod::PROJECTILE_SPEED);
+        Zod::PROJECTILE_SPEED,
+        this);
 
     mProjectileOnCooldown = true;
     mTimerComponent->AddTimer(Zod::PROJECTICLE_COOLDOWN, [this]() {

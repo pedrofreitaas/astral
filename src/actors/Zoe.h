@@ -20,7 +20,7 @@ class Fireball : public Projectile
 public:
     Fireball(
         class Game* game, Vector2 position, 
-        Vector2 direction, float speed
+        Vector2 direction, float speed, Actor* shooter
     );
 
 private:
