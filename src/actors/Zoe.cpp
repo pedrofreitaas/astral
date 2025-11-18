@@ -354,9 +354,6 @@ void Zoe::ManageAnimations()
     case BehaviorState::Jumping:
         mDrawComponent->SetAnimation("jump");
         break;
-    case BehaviorState::Dying:
-        mDrawComponent->SetAnimation("dying");
-        break;
     case BehaviorState::TakingDamage:
         mDrawComponent->SetAnimation("hurt");
         mDrawComponent->SetAnimFPS(4.f);
@@ -372,11 +369,7 @@ void Zoe::ManageAnimations()
 
 void Zoe::Kill()
 {
-    mBehaviorState = BehaviorState::Dying;
-    mGame->SetGamePlayState(Game::GamePlayState::GameOver);
-
-    mRigidBodyComponent->SetEnabled(false);
-    mColliderComponent->SetEnabled(false);
+    mGame->SetGameScene(Game::GameScene::DeathScreen);
 }
 
 void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
