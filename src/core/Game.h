@@ -53,6 +53,7 @@ public:
         Bedroom,
         BedroomPortal,
         Level1,
+        DeathScreen
     };
 
     enum class CameraCenter
@@ -99,6 +100,7 @@ public:
     void LoadBedroom();
     void LoadBedroomPortal();
     void LoadFirstLevel();
+    void LoadDeathScreen();
 
     std::vector<Actor *> GetNearbyActors(const Vector2 &position, const int range = 1);
     std::vector<class AABBColliderComponent *> GetNearbyColliders(const Vector2 &position, const int range = 2);

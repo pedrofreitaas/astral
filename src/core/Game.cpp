@@ -143,7 +143,8 @@ bool Game::Initialize()
 
 void Game::SetGameScene(Game::GameScene scene, float sceneLeftTime)
 {
-    if (mSceneManagerState != SceneManagerState::None) return;
+    if (mSceneManagerState != SceneManagerState::None)
+        return;
 
     mNextScene = scene;
     mSceneManagerState = SceneManagerState::Entering;
@@ -184,6 +185,8 @@ void Game::ChangeScene()
         LoadBedroomPortal();
     else if (mNextScene == GameScene::Level1)
         LoadFirstLevel();
+    else if (mNextScene == GameScene::DeathScreen)
+        LoadDeathScreen();
 
     // Set new scene
     mGameScene = mNextScene;
@@ -237,7 +240,7 @@ void Game::UnloadScene()
     }
 }
 
-// 
+//
 
 void Game::RunLoop()
 {
@@ -364,8 +367,10 @@ void Game::TogglePause()
 
 void Game::UpdateGame()
 {
+    // Cap at 60 fps
     while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16))
-        ; // Cap at 60 fps
+    {
+    };
 
     float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
     if (deltaTime > 0.05f)
@@ -375,7 +380,8 @@ void Game::UpdateGame()
 
     mTicksCount = SDL_GetTicks();
 
-    if (mGamePlayState == GamePlayState::Playing || mGamePlayState == GamePlayState::PlayingCutscene)
+    if (mGamePlayState == GamePlayState::Playing ||
+        mGamePlayState == GamePlayState::PlayingCutscene)
     {
         UpdateActors(deltaTime);
     }
@@ -386,7 +392,7 @@ void Game::UpdateGame()
     }
 
     mAudio->Update(deltaTime);
-    
+
     GetDialogueSystem()->Update(deltaTime);
 
     // Reinsert UI screens
@@ -413,7 +419,7 @@ void Game::UpdateGame()
         }
     }
 
-    if (mGameScene != GameScene::MainMenu)
+    if (mGameScene != GameScene::MainMenu && mGameScene != GameScene::DeathScreen && mHUD)
     {
         mHUD->SetFPS(static_cast<int>(1.0f / deltaTime));
     }
@@ -427,6 +433,9 @@ void Game::UpdateGame()
 void Game::UpdateCamera()
 {
     if (mCameraCenter == CameraCenter::Zoe && !mZoe)
+        return;
+
+    if (mMap == nullptr)
         return;
 
     Vector2 center = (mCameraCenter == CameraCenter::Zoe) ? mZoe->GetPosition() : mCameraCenterPos;
@@ -460,7 +469,7 @@ void Game::UpdateActors(float deltaTime)
         mCameraPos,
         mWindowWidth,
         mWindowHeight,
-        Game::TILE_SIZE*2.f);
+        Game::TILE_SIZE * 2.f);
 
     bool isZoeOnCamera = false;
     for (auto actor : actorsOnCamera)
@@ -539,7 +548,7 @@ void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
                 SDL_RenderDrawRect(mRenderer, &rect);
             }
         }
-    
+
         // check actor type if it's enemy
         if (auto enemy = dynamic_cast<Enemy *>(actor))
         {
@@ -602,7 +611,7 @@ void Game::GenerateOutput()
         mCameraPos,
         mWindowWidth,
         mWindowHeight,
-        Game::TILE_SIZE*2.f);
+        Game::TILE_SIZE * 2.f);
 
     // Get list of drawables in draw order
     std::vector<DrawComponent *> drawables;
