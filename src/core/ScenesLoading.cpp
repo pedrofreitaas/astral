@@ -42,20 +42,23 @@ void Game::LoadMainMenu()
         titleSize);
 
     const Vector2 playButtonSize = Vector2(
-        mWindowWidth / 6.0f,
-        mWindowHeight / 12.0f);
+        49.f,
+        19.f);
 
     const Vector2 playButtonPos = Vector2(
         mWindowWidth / 2.0f - playButtonSize.x / 2.0f,
-        mWindowHeight / 2.0f - playButtonSize.y / 2.0f);
+        mWindowHeight*.6f);
 
-    mainMenu->AddButton(
-        "Play",
+    mainMenu->AddTransparentButton(
         playButtonPos,
         playButtonSize,
         [this]()
-        { SetGameScene( /*GameScene::Bedroom */ GameScene::Level1); },
-        Vector2(CHAR_WIDTH * 4, WORD_HEIGHT));
+        { SetGameScene(/*GameScene::Bedroom*/ GameScene::DeathScreen); });
+    
+    mainMenu->AddImage(
+        "../assets/Sprites/Menu/playButton.png",
+        playButtonPos,
+        playButtonSize);
 
     mUIStack.front()->AddCursor(
         "../assets/Sprites/Hud/cursor.png",
@@ -157,7 +160,7 @@ void Game::LoadBedroomPortal()
         120.0f,
         true));
     steps.push_back(std::make_unique<UnspawnStep>(
-        this, 
+        this,
         [this]()
         { return this->GetZoe(); }));
 
@@ -185,7 +188,7 @@ void Game::LoadFirstLevel()
         Vector2(mWindowWidth, mWindowHeight),
         false);
 
-    Enemy* en = new Zod(this, 1800.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
+    Enemy *en = new Zod(this, 1800.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
     mEnemies.push_back(en);
 
     en = new Sith(this, 1200.0f, Vector2(200.0f, mMap->GetHeight() - 320.0f));
@@ -201,7 +204,7 @@ void Game::LoadFirstLevel()
         { return GetZoe(); },
         [this]()
         {
-            return Vector2(GetZoe()->GetCenter().x+64.f, GetZoe()->GetCenter().y);
+            return Vector2(GetZoe()->GetCenter().x + 64.f, GetZoe()->GetCenter().y);
         },
         100.0f));
     steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
@@ -211,7 +214,7 @@ void Game::LoadFirstLevel()
         { return GetZoe(); },
         [this]()
         {
-            return Vector2(GetZoe()->GetCenter().x-2.f, GetZoe()->GetCenter().y);
+            return Vector2(GetZoe()->GetCenter().x - 2.f, GetZoe()->GetCenter().y);
         },
         20.0f));
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
@@ -221,7 +224,7 @@ void Game::LoadFirstLevel()
         { return GetZoe(); },
         [this]()
         {
-            return Vector2(GetZoe()->GetCenter().x+4.f, GetZoe()->GetCenter().y);
+            return Vector2(GetZoe()->GetCenter().x + 4.f, GetZoe()->GetCenter().y);
         },
         20.0f));
     steps.push_back(std::make_unique<WaitStep>(this, 1.5f));
@@ -272,4 +275,47 @@ void Game::LoadFirstLevel()
     mAudio->PlaySound("level1Theme.ogg", true);
 
     // StartCutscene("Intro");
+}
+
+void Game::LoadDeathScreen()
+{
+    UIScreen *mainMenu = new UIScreen(this, FONT_PATH_SMB);
+
+    mainMenu->AddBackground(
+        "../assets/Sprites/Menu/backgroundDeath.png",
+        Vector2(0, 0),
+        Vector2(mWindowWidth, mWindowHeight));
+
+    Vector2 titleSize = Vector2(256.f, 171.f);
+    mainMenu->AddImage(
+        "../assets/Sprites/Menu/deathText.png",
+        Vector2(mWindowWidth / 2.0f - titleSize.x / 2.0f, mWindowHeight * .1f),
+        titleSize);
+
+    const Vector2 restartButtonSize = Vector2(
+        137.f,
+        38.f);
+
+    const Vector2 restartButtonPos = Vector2(
+        mWindowWidth / 2.0f - restartButtonSize.x / 2.0f,
+        mWindowHeight * .1f + titleSize.y + 50.f);
+
+    mainMenu->AddTransparentButton(
+        restartButtonPos,
+        restartButtonSize,
+        [this]()
+        { SetGameScene(GameScene::Level1); });
+
+    mainMenu->AddImage(
+        "../assets/Sprites/Menu/restartButton.png",
+        restartButtonPos,
+        restartButtonSize);
+
+    mUIStack.front()->AddCursor(
+        "../assets/Sprites/Hud/cursor.png",
+        Vector2(0.0f, 0.0f),
+        Vector2(33.0f, 33.0f),
+        Color::White);
+
+    mAudio->PlaySound("deathTheme.ogg", true);
 }

@@ -162,6 +162,19 @@ UIButton* UIScreen::AddButton(const std::string& name, const Vector2 &pos, const
     return b;
 }
 
+UIButton* UIScreen::AddTransparentButton(const Vector2& pos, const Vector2& dims, std::function<void()> onClick)
+{
+    auto b = new UIButton(
+        "", mFont, onClick,
+        pos, dims,
+        Vector3(0, 0, 0), 40, 1024,
+        Vector2::Zero, dims, Color::White
+    );
+    mButtons.emplace_back(b);
+
+    return b;
+}
+
 UIImage* UIScreen::AddImage(const std::string &imagePath, const Vector2 &pos, const Vector2 &dims, const Vector3 &color)
 {
     auto img = new UIImage(imagePath, pos, dims, color);
