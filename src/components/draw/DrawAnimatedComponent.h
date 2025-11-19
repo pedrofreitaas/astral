@@ -79,6 +79,13 @@ public:
         );
     };
 
+    // ZERO INDEXED
+    int GetCurrentSprite() {
+        if (mAnimName.empty()) return -1;
+        int firstFrame = mAnimations[mAnimName].frames[0];
+        return mAnimations[mAnimName].frames[static_cast<int>(mAnimTimer)] - firstFrame;
+    }
+
 private:
     std::vector<SDL_Rect*> mSpriteSheetData;
     std::unordered_map<std::string, class Animation> mAnimations;
