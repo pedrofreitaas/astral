@@ -13,7 +13,7 @@
 
 enum class ColliderLayer
 {
-    Player,
+    Player, PlayerAttack,
     Enemy,
     Blocks,
     Objects,
@@ -53,6 +53,9 @@ public:
 
     bool IsCollidingRect(const SDL_Rect& rect) const;
 
+    void IgnoreLayer(ColliderLayer layer);
+    void IgnoreLayers(const std::vector<ColliderLayer>& layers);
+
 private:
     float GetMinVerticalOverlap(AABBColliderComponent* b) const;
     float GetMinHorizontalOverlap(AABBColliderComponent* b) const;
@@ -66,4 +69,6 @@ private:
     bool mIsTangible;
 
     ColliderLayer mLayer;
+
+    std::vector<ColliderLayer> mIgnoredLayers;
 };
