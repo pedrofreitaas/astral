@@ -187,6 +187,12 @@ void Actor::TakeDamage(const Vector2 &knockback)
         rigidBody->ApplyForce(knockback);
     }
 
+    if (mLives <= 0)
+    {
+        mBehaviorState = BehaviorState::Dying;
+        return;
+    }
+
     mBehaviorState = BehaviorState::TakingDamage;
     mInvincible = true;
 }
