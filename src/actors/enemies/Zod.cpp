@@ -18,7 +18,7 @@ ZodProjectile::ZodProjectile(
         this,
         3, 5,
         13, 10,
-        ColliderLayer::Projectile);
+        ColliderLayer::EnemyProjectile);
 
     mDrawAnimatedComponent = new DrawAnimatedComponent(
         this,

@@ -21,7 +21,7 @@ SithProjectile::SithProjectile(
         this,
         17, 18,
         14, 12,
-        ColliderLayer::Projectile);
+        ColliderLayer::EnemyProjectile);
 
     mDrawAnimatedComponent = new DrawAnimatedComponent(
         this,
