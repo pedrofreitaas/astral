@@ -1,6 +1,8 @@
 #pragma once
 #include "Actor.h"
 #include "Projectile.h"
+#include "Collider.h"
+#include "../components/collider/AABBColliderComponent.h"
 #include <SDL.h>
 
 class Ventania : public Actor
@@ -37,11 +39,25 @@ private:
 
 class Zoe : public Actor
 {
+    std::vector<ColliderLayer> IGNORED_LAYERS_DODGE = {
+        ColliderLayer::Enemy,
+        ColliderLayer::EnemyProjectile
+    };
+
+    std::vector<ColliderLayer> IGNORED_LAYERS_DEFAULT = {
+    };
+    
     float FIREBALL_SPEED = 20000.f;
     float FIREBALL_COOLDOWN = 4.f;
     
     float VETANIA_SPEED = 17000.f;
     float VETANIA_COOLDOWN = 0.75f;
+    
+    SDL_Scancode FIREBALL_KEY = SDL_SCANCODE_Q;
+    SDL_Scancode VETANIA_KEY = SDL_SCANCODE_E;
+    SDL_Scancode JUMP_KEY = SDL_SCANCODE_SPACE;
+    SDL_Scancode HIT_KEY = SDL_SCANCODE_R;
+    SDL_Scancode DODGE_KEY = SDL_SCANCODE_LSHIFT;
 
 public:
     explicit Zoe(Game* game, float forwardSpeed = 2000.0f);
@@ -60,12 +76,14 @@ public:
     
     Vector2 GetFireballOffset() {
         if (GetRotation() == 0.f) {
-            return Vector2(48.f,34.f);
+            return Vector2(50.f,53.f);
         }
         else {
-            return Vector2(14.f,34.f);
+            return Vector2(12.f,52.f);
         }
     }
+
+    void TakeDamage(const Vector2 &knockback = Vector2(0.f, 0.f)) override;
 
 private:
     float mForwardSpeed;
@@ -77,6 +95,9 @@ private:
 
     void ManageAnimations();
 
+    Vector2 mInputMovementDir;
+    bool mIsTryingToHit, mIsTryingToDodge, mIsTryingToJump;
+
     void FireFireball();
     void SetFireballOnCooldown(bool onCooldown) { mIsFireballOnCooldown = onCooldown; }
     bool mIsFireballOnCooldown, mTryingToFireFireball;
@@ -84,4 +105,6 @@ private:
     void TriggerVentania();
     void SetVentaniaOnCooldown(bool onCooldown) { mIsVentaniaOnCooldown = onCooldown; }
     bool mIsVentaniaOnCooldown, mTryingToTriggerVentania;
+
+    Collider *mAttackCollider;
 };

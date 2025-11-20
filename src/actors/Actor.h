@@ -27,7 +27,9 @@ enum class BehaviorState // For AI behaviors/animations
     Idle,
     Moving,
     Charging,
-    Attacking,
+    Attacking, 
+    AerialAttacking,
+    Dodging,
     Stunned,
     Jumping,
     Dying,
@@ -44,7 +46,7 @@ public:
     virtual ~Actor();
 
     // it's actor's responsibility to become not invicible again
-    void TakeDamage(const Vector2 &knockback = Vector2(0.f, 0.f));
+    virtual void TakeDamage(const Vector2 &knockback = Vector2(0.f, 0.f));
 
     int Lives() { return mLives; }
     void SetLives(int lives) { mLives = lives; }

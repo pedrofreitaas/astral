@@ -4,9 +4,9 @@
 #include "../components/draw/DrawAnimatedComponent.h"
 #include "../ui/DialogueSystem.h"
 #include "../components/TimerComponent.h"
+#include "./Collider.h"
 
-Ventania::Ventania(Game* game, Vector2 playerCenter, Vector2 playerMoveDir, float forwardSpeed):
-Actor(game)
+Ventania::Ventania(Game *game, Vector2 playerCenter, Vector2 playerMoveDir, float forwardSpeed) : Actor(game)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Zoe/Ventania/texture.png";
     const std::string spriteSheetData = "../assets/Sprites/Zoe/Ventania/texture.json";
@@ -16,8 +16,7 @@ Actor(game)
         spriteSheetPath,
         spriteSheetData,
         std::bind(&Ventania::AnimationEndCallback, this, std::placeholders::_1),
-        static_cast<int>(DrawLayerPosition::Player)-1
-    );
+        static_cast<int>(DrawLayerPosition::Player) - 1);
 
     mDrawAnimatedComponent->AddAnimation("normal", 0, 5);
     mDrawAnimatedComponent->SetAnimation("normal");
@@ -43,22 +42,21 @@ void Ventania::AnimationEndCallback(std::string animationName)
     }
 }
 
-// 
+//
 
 Fireball::Fireball(
-    class Game* game, Vector2 position, 
-    Vector2 target, float speed, Actor* shooter
-): Projectile(game, position, target, speed, shooter), mRicochetsCount(0)
+    class Game *game, Vector2 position,
+    Vector2 target, float speed, Actor *shooter) : Projectile(game, position, target, speed, shooter), mRicochetsCount(0)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Zoe/Fireball/texture.png";
     const std::string spriteSheetData = "../assets/Sprites/Zoe/Fireball/texture.json";
 
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 0.f, false);
-    
+
     mColliderComponent = new AABBColliderComponent(
         this,
         45, 28,
-        10, 9 ,
+        10, 9,
         ColliderLayer::Fireball);
 
     mDrawAnimatedComponent = new DrawAnimatedComponent(
@@ -66,7 +64,7 @@ Fireball::Fireball(
         spriteSheetPath,
         spriteSheetData,
         std::bind(&Fireball::AnimationEndCallback, this, std::placeholders::_1),
-        static_cast<int>(DrawLayerPosition::Enemy) + 1);
+        static_cast<int>(DrawLayerPosition::Enemy) - 1);
     mDrawAnimatedComponent->SetUsePivotForRotation(true);
 
     mDrawAnimatedComponent->AddAnimation("flying", 0, 28);
@@ -76,7 +74,7 @@ Fireball::Fireball(
     mBehaviorState = BehaviorState::Moving;
 
     SetPosition(position - mDrawAnimatedComponent->GetHalfSpriteSize());
-    
+
     mDirection = target - GetCenter();
     mDirection.Normalize();
 
@@ -89,25 +87,30 @@ Fireball::Fireball(
 
 void Fireball::AnimationEndCallback(std::string animationName)
 {
-    if (animationName == "dying") {
+    if (animationName == "dying")
+    {
         SetState(ActorState::Destroy);
     }
 }
 
 void Fireball::ManageAnimations()
 {
-    if (mBehaviorState == BehaviorState::Dying) {
+    if (mBehaviorState == BehaviorState::Dying)
+    {
         mDrawAnimatedComponent->SetAnimation("dying");
         mDrawAnimatedComponent->SetAnimFPS(10.f);
     }
-    else if (mBehaviorState == BehaviorState::Moving) {
+    else if (mBehaviorState == BehaviorState::Moving)
+    {
         mDrawAnimatedComponent->SetAnimation("flying");
         mDrawAnimatedComponent->SetAnimFPS(20.f);
     }
 }
 
-void Fireball::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) {
-    if (mBehaviorState != BehaviorState::Moving) return;
+void Fireball::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
+{
+    if (mBehaviorState != BehaviorState::Moving)
+        return;
 
     if (other->GetLayer() == ColliderLayer::Player)
     {
@@ -139,8 +142,10 @@ void Fireball::OnHorizontalCollision(const float minOverlap, AABBColliderCompone
     }
 }
 
-void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) {
-    if (mBehaviorState != BehaviorState::Moving) return;
+void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
+{
+    if (mBehaviorState != BehaviorState::Moving)
+        return;
 
     if (other->GetLayer() == ColliderLayer::Player)
     {
@@ -181,16 +186,23 @@ void Fireball::Kill()
 
 //
 
-Zoe::Zoe(Game *game, const float forwardSpeed): 
-    Actor(game), mForwardSpeed(forwardSpeed),
-    mTryingToFireFireball(false), mIsFireballOnCooldown(false), 
-    mIsVentaniaOnCooldown(false), mTryingToTriggerVentania(false)
+Zoe::Zoe(
+    Game *game, const float forwardSpeed) : Actor(game), mForwardSpeed(forwardSpeed),
+                                            mTryingToFireFireball(false), mIsFireballOnCooldown(false),
+                                            mIsVentaniaOnCooldown(false), mTryingToTriggerVentania(false),
+                                            mIsTryingToHit(false), mAttackCollider(nullptr), mIsTryingToDodge(false),
+                                            mInputMovementDir(0.f, 0.f)
 {
     SetLives(6);
-    
+
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
-    mColliderComponent = new AABBColliderComponent(this, 25, 20, 15, 28,
+    
+    mColliderComponent = new AABBColliderComponent(this, 27, 39, 13, 24,
                                                    ColliderLayer::Player);
+    mColliderComponent->IgnoreLayers(
+        Zoe::IGNORED_LAYERS_DEFAULT
+    );
+
     mTimerComponent = new TimerComponent(this);
 
     mDrawComponent = new DrawAnimatedComponent(
@@ -201,45 +213,35 @@ Zoe::Zoe(Game *game, const float forwardSpeed):
         static_cast<int>(DrawLayerPosition::Player) + 1);
 
     mDrawComponent->AddAnimation("idle", 0, 8);
-    mDrawComponent->AddAnimation("crush", 10, 17);
-    mDrawComponent->AddAnimation("blink", 19, 21);
-    mDrawComponent->AddAnimation("jump", 23, 25);
-    mDrawComponent->AddAnimation("run", 27, 32);
-    mDrawComponent->AddAnimation("hurt", {34});
+    mDrawComponent->AddAnimation("ground-crush", 9, 16);
+    mDrawComponent->AddAnimation("blink", 17, 20);
+    mDrawComponent->AddAnimation("jump", 20, 22);
+    mDrawComponent->AddAnimation("run", 23, 28);
+    mDrawComponent->AddAnimation("hurt", {29});
+    mDrawComponent->AddAnimation("dodging", {30});
+    mDrawComponent->AddAnimation("aerial-crush", 31, 40);
 
     mDrawComponent->SetAnimation("idle");
+
+    mColliderComponent->IgnoreLayers({ColliderLayer::PlayerAttack});
 }
 
 void Zoe::OnProcessInput(const uint8_t *state)
 {
-    mTryingToFireFireball = state[SDL_SCANCODE_Q];
-    mTryingToTriggerVentania = mBehaviorState == BehaviorState::Jumping && state[SDL_SCANCODE_E];
-    
-    if (mBehaviorState == BehaviorState::Dying || 
-        mBehaviorState == BehaviorState::TakingDamage || 
-        mBehaviorState == BehaviorState::Jumping ||
-        mBehaviorState == BehaviorState::Charging)
-        return;
+    mIsTryingToHit = state[Zoe::HIT_KEY];
+    mTryingToFireFireball = state[Zoe::FIREBALL_KEY];
+    mTryingToTriggerVentania = mBehaviorState == BehaviorState::Jumping && state[Zoe::VETANIA_KEY];
+    mIsTryingToDodge = state[Zoe::DODGE_KEY];
+    mIsTryingToJump = state[Zoe::JUMP_KEY];
 
-    if (!mRigidBodyComponent->GetOnGround())
-        return;
-
-    Vector2 movementForce = Vector2(
+    mInputMovementDir = Vector2(
         state[SDL_SCANCODE_D] - state[SDL_SCANCODE_A],
-        GetGame()->GetApplyGravityScene() ? 0.f : (state[SDL_SCANCODE_S] - state[SDL_SCANCODE_W])
-    );
+        GetGame()->GetApplyGravityScene() ? 0.f : (state[SDL_SCANCODE_S] - state[SDL_SCANCODE_W]));
 
-    float lengthSq = movementForce.LengthSq();
-    if (lengthSq > 0.0f) {
-        movementForce *= 1/(Math::Sqrt(lengthSq));
-    }
-
-    mRigidBodyComponent->ApplyForce(movementForce*mForwardSpeed);
-
-    if (state[SDL_SCANCODE_SPACE] && mGame->GetApplyGravityScene())
+    float lengthSq = mInputMovementDir.LengthSq();
+    if (lengthSq > 0.0f)
     {
-        float jumpForce = mRigidBodyComponent->GetVerticalForce(3); 
-        mRigidBodyComponent->ApplyForce(Vector2(0.f, jumpForce));
+        mInputMovementDir *= 1 / (Math::Sqrt(lengthSq));
     }
 }
 
@@ -253,66 +255,140 @@ void Zoe::ManageState()
 {
     switch (mBehaviorState)
     {
-        case BehaviorState::Dying:
+    case BehaviorState::Dying:
+        Kill();
+        break;
+
+    case BehaviorState::Jumping:
+        if (mRigidBodyComponent->GetOnGround())
+        {
+            mBehaviorState = BehaviorState::Idle;
+        }
+
+        if (mTryingToTriggerVentania && !mIsVentaniaOnCooldown)
+        {
+            TriggerVentania();
             break;
-        
-        case BehaviorState::Jumping:
-            if (mRigidBodyComponent->GetOnGround())
-            {
-                mBehaviorState = BehaviorState::Idle;
-            }
+        }
 
-            if (mTryingToTriggerVentania && !mIsVentaniaOnCooldown)
-            {
-                TriggerVentania();
-                break;
-            }
-
+        if (mIsTryingToHit)
+        {
+            mBehaviorState = BehaviorState::AerialAttacking;
+            float upwardForce = mRigidBodyComponent->GetVerticalForce(.3f);
+            mRigidBodyComponent->ApplyForce(Vector2(0.f, upwardForce));
             break;
+        }
 
-        case BehaviorState::Moving:
-            if (mRigidBodyComponent->GetOnGround() && std::abs(mRigidBodyComponent->GetVelocity().x) < 0.1f)
-            {
-                mBehaviorState = BehaviorState::Idle;
-            }
-            if (!mRigidBodyComponent->GetOnGround())
-            {
-                mBehaviorState = BehaviorState::Jumping;
-            }    
+        break;
 
+    case BehaviorState::Moving:
+    {
+        if (mIsTryingToJump && mGame->GetApplyGravityScene())
+        {
+            float jumpForce = mRigidBodyComponent->GetVerticalForce(3);
+            mRigidBodyComponent->ApplyForce(Vector2(0.f, jumpForce));
+            mBehaviorState = BehaviorState::Jumping;
             break;
+        }
 
-        case BehaviorState::Idle:
-            if (!mRigidBodyComponent->GetOnGround())
-            {
-                mBehaviorState = BehaviorState::Jumping;
-            }
-            else if (
-                std::abs(mRigidBodyComponent->GetVelocity().x) > 0.1f ||
-                std::abs(mRigidBodyComponent->GetVelocity().y) > 0.1f && !mGame->GetApplyGravityScene()
-            )
-            {
-                mBehaviorState = BehaviorState::Moving;
-            }
-            
-            if (mTryingToFireFireball && !mIsFireballOnCooldown) {
-                mBehaviorState = BehaviorState::Charging;
-            }
-
+        if (mIsTryingToDodge)
+        {
+            mBehaviorState = BehaviorState::Dodging;
             break;
+        }
 
-        case BehaviorState::Charging:
-            if (!mTryingToFireFireball) {
-                mBehaviorState = BehaviorState::Idle;
-            }
+        if (mIsTryingToHit)
+        {
+            mBehaviorState = BehaviorState::Attacking;
             break;
+        }
 
-        case BehaviorState::TakingDamage:
-            break;
-
-        default:
+        if (mRigidBodyComponent->GetOnGround() && std::abs(mInputMovementDir.x) < 0.1f)
+        {
             mBehaviorState = BehaviorState::Idle;
             break;
+        }
+
+        if (!mRigidBodyComponent->GetOnGround())
+        {
+            mBehaviorState = BehaviorState::Jumping;
+            break;
+        }
+
+        mRigidBodyComponent->ApplyForce(mInputMovementDir * mForwardSpeed);
+        break;
+    }
+
+    case BehaviorState::Idle:
+    {
+        if (mIsTryingToJump && mGame->GetApplyGravityScene())
+        {
+            float jumpForce = mRigidBodyComponent->GetVerticalForce(3);
+            mRigidBodyComponent->ApplyForce(Vector2(0.f, jumpForce));
+            mBehaviorState = BehaviorState::Jumping;
+            break;
+        }
+
+        if (mIsTryingToDodge)
+        {
+            mBehaviorState = BehaviorState::Dodging;
+            break;
+        }
+
+        if (mIsTryingToHit)
+        {
+            mBehaviorState = BehaviorState::Attacking;
+            break;
+        }
+
+        else if (!mRigidBodyComponent->GetOnGround())
+        {
+            mBehaviorState = BehaviorState::Jumping;
+            break;
+        }
+
+        if (
+            mInputMovementDir.x != 0.f ||
+            (mInputMovementDir.y != 0.f && !mGame->GetApplyGravityScene()))
+        {
+            mBehaviorState = BehaviorState::Moving;
+            break;
+        }
+
+        if (mTryingToFireFireball && !mIsFireballOnCooldown)
+        {
+            mBehaviorState = BehaviorState::Charging;
+            break;
+        }
+
+        break;
+    }
+
+    case BehaviorState::Charging:
+        if (!mTryingToFireFireball)
+        {
+            mBehaviorState = BehaviorState::Idle;
+        }
+        break;
+
+    case BehaviorState::TakingDamage:
+        break;
+
+    case BehaviorState::Attacking:
+        break;
+
+    case BehaviorState::Dodging:
+        mColliderComponent->SetIgnoreLayers(
+            Zoe::IGNORED_LAYERS_DODGE
+        );
+        break;
+
+    case BehaviorState::AerialAttacking:
+        break;
+
+    default:
+        mBehaviorState = BehaviorState::Idle;
+        break;
     }
 }
 
@@ -359,9 +435,44 @@ void Zoe::ManageAnimations()
         mDrawComponent->SetAnimFPS(4.f);
         break;
     case BehaviorState::Charging:
-        mDrawComponent->SetAnimation("crush");
+        mDrawComponent->SetAnimation("ground-crush");
         mDrawComponent->SetAnimFPS(10.0f);
+
+        if (mDrawComponent->GetCurrentSprite() == 5)
+        {
+            FireFireball();
+        }
+
         break;
+
+    case BehaviorState::Attacking:
+        mDrawComponent->SetAnimation("ground-crush");
+        mDrawComponent->SetAnimFPS(12.0f);
+
+        if (mDrawComponent->GetCurrentSprite() == 5 && mAttackCollider == nullptr)
+        {
+            mAttackCollider = new Collider(
+                mGame,
+                GetCenter() + (GetRotation() == 0.f ? Vector2(11, -3) : Vector2(-22, -6)),
+                Vector2(9, 9),
+                [this](bool collided, const float minOverlap, AABBColliderComponent *other) {},
+                DismissOn::Both,
+                ColliderLayer::PlayerAttack,
+                {ColliderLayer::Player},
+                .5f);
+        }
+        break;
+
+    case BehaviorState::Dodging:
+        mDrawComponent->SetAnimation("dodging");
+        mDrawComponent->SetAnimFPS(1.75f);
+        break;
+
+    case BehaviorState::AerialAttacking:
+        mDrawComponent->SetAnimation("aerial-crush");
+        mDrawComponent->SetAnimFPS(12.0f);
+        break;
+
     default:
         break;
     }
@@ -374,47 +485,73 @@ void Zoe::Kill()
 
 void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    if (other->GetLayer() == ColliderLayer::Projectile)
+    if (other->GetLayer() == ColliderLayer::EnemyProjectile)
     {
-        // projeticle can dye imediately on collision, so the take damage logic is on the projectile
+        TakeDamage();
+        return;
     }
 }
 
 void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    if (other->GetLayer() == ColliderLayer::Projectile)
+    if (other->GetLayer() == ColliderLayer::EnemyProjectile)
     {
-        // projeticle can dye imediately on collision, so the take damage logic is on the projectile
+        TakeDamage();
+        return;
     }
 
     if (other->GetLayer() == ColliderLayer::Enemy && minOverlap > 0.f)
     {
         mRigidBodyComponent->ApplyForce(
             Vector2(
-                0.f, 
+                0.f,
                 mRigidBodyComponent->GetVerticalForce(3)));
+        return;
     }
 
     if (other->GetLayer() == ColliderLayer::Enemy && minOverlap < 0.f)
     {
         TakeDamage();
+        return;
     }
 }
 
 void Zoe::AnimationEndCallback(std::string animationName)
 {
-    if (animationName == "hurt") {
+    if (animationName == "hurt")
+    {
         mBehaviorState = BehaviorState::Idle;
         mInvincible = false;
-
-        if (mLives <= 0) {
-            Kill();
-        }
+        return;
     }
 
-    else if (animationName == "crush") {
-        FireFireball();
+    if (animationName == "ground-crush" && mTryingToFireFireball)
+    {
         mBehaviorState = BehaviorState::Idle;
+        return;
+    }
+
+    if (animationName == "ground-crush")
+    {
+        mBehaviorState = BehaviorState::Idle;
+        mAttackCollider->Dismiss();
+        mAttackCollider = nullptr;
+        return;
+    }
+
+    if (animationName == "dodging")
+    {
+        mBehaviorState = BehaviorState::Idle;
+        mColliderComponent->SetIgnoreLayers(
+            Zoe::IGNORED_LAYERS_DEFAULT
+        );
+        return;
+    }
+
+    if (animationName == "aerial-crush")
+    {
+        mBehaviorState = BehaviorState::Jumping;
+        return;
     }
 }
 
@@ -422,7 +559,7 @@ void Zoe::FireFireball()
 {
     if (mIsFireballOnCooldown)
         return;
-    
+
     auto projectile = new Fireball(
         mGame,
         GetPosition() + GetFireballOffset(),
@@ -431,9 +568,8 @@ void Zoe::FireFireball()
         this);
 
     SetFireballOnCooldown(true);
-    mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this]() {
-        SetFireballOnCooldown(false);
-    });
+    mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this]()
+                              { SetFireballOnCooldown(false); });
 }
 
 void Zoe::TriggerVentania()
@@ -453,7 +589,15 @@ void Zoe::TriggerVentania()
         ventaniaDir);
 
     SetVentaniaOnCooldown(true);
-    mTimerComponent->AddTimer(Zoe::VETANIA_COOLDOWN, [this]() {
-        SetVentaniaOnCooldown(false);
-    });
+    mTimerComponent->AddTimer(Zoe::VETANIA_COOLDOWN, [this]()
+                              { SetVentaniaOnCooldown(false); });
+}
+
+void Zoe::TakeDamage(const Vector2 &knockback)
+{
+    if (mBehaviorState == BehaviorState::Dodging) {
+        return;
+    }
+
+    Actor::TakeDamage(knockback);
 }
