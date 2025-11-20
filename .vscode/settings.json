@@ -70,5 +70,6 @@
         "format": "cpp",
         "span": "cpp",
         "variant": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "/wsl.localhost/Ubuntu-22.04/home/freitaas/projects/jogos/astral"
 }
