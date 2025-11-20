@@ -39,16 +39,6 @@ void Projectile::OnVerticalCollision(const float minOverlap, AABBColliderCompone
     if (mBehaviorState != BehaviorState::Moving) return;
     if (other->GetLayer() == mShooter->GetComponent<AABBColliderComponent>()->GetLayer()) return;
 
-    // projectile can die immediately on collision, so the take damage logic is on the projectile
-    if (other->GetLayer() == ColliderLayer::Player)
-    {
-        auto player = dynamic_cast<Zoe*>(GetGame()->GetZoe());
-        if (player)
-        {
-            Vector2 mSpeedDir = mRigidBodyComponent->GetAppliedForce();
-            player->TakeDamage(mSpeedDir * mKnockbackIntensity);
-        }
-    }
     Kill();
 }
 
@@ -56,16 +46,6 @@ void Projectile::OnHorizontalCollision(const float minOverlap, AABBColliderCompo
     if (mBehaviorState != BehaviorState::Moving) return;
     if (other->GetLayer() == mShooter->GetComponent<AABBColliderComponent>()->GetLayer()) return;
 
-    // projectile can die immediately on collision, so the take damage logic is on the projectile
-    if (other->GetLayer() == ColliderLayer::Player)
-    {
-        auto player = dynamic_cast<Zoe*>(GetGame()->GetZoe());
-        if (player)
-        {
-            Vector2 mSpeedDir = mRigidBodyComponent->GetAppliedForce();
-            player->TakeDamage(mSpeedDir * mKnockbackIntensity);
-        }
-    }
     Kill();
 }
 
