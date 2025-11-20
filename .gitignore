@@ -86,5 +86,3 @@ build/
 .aider*
 
 teste.cpp
-
-*.txt
