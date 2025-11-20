@@ -67,43 +67,6 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
     std::sort(colliders.begin(), colliders.end(), [this](AABBColliderComponent *a, AABBColliderComponent *b)
               { return Math::Abs((a->GetCenter() - GetCenter()).LengthSq() < (b->GetCenter() - GetCenter()).LengthSq()); });
 
-    if (GetLayer() == ColliderLayer::PlayerAttack) {
-        SDL_Log("Detecting horizontal collisions for PlayerAttack collider");
-        SDL_Log("total nearby colliders: %zu", colliders.size());
-        // log there layers
-        for (auto &collider : colliders) {
-            switch (collider->GetLayer()) {
-                case ColliderLayer::Player:
-                    SDL_Log("Nearby collider layer: Player");
-                    break;
-                case ColliderLayer::Enemy:
-                    SDL_Log("Nearby collider layer: Enemy");
-                    break;
-                case ColliderLayer::Blocks:
-                    SDL_Log("Nearby collider layer: Blocks");
-                    break;
-                case ColliderLayer::Objects:
-                    SDL_Log("Nearby collider layer: Objects");
-                    break;
-                case ColliderLayer::Item:
-                    SDL_Log("Nearby collider layer: Item");
-                    break;
-                case ColliderLayer::Portal:
-                    SDL_Log("Nearby collider layer: Portal");
-                    break;
-                case ColliderLayer::Projectile:
-                    SDL_Log("Nearby collider layer: Projectile");
-                    break;
-                case ColliderLayer::Fireball:
-                    SDL_Log("Nearby collider layer: Fireball");
-                    break;
-                default:
-                    SDL_Log("Nearby collider layer: Unknown");
-                    break;
-            }
-        }
-    }
-
     for (auto &collider : colliders)
     {
         if (collider == this || !collider->IsEnabled())
@@ -113,6 +76,9 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
             continue;
 
         if (std::find(mIgnoredLayers.begin(), mIgnoredLayers.end(), collider->GetLayer()) != mIgnoredLayers.end())
+            continue;
+
+        if (std::find(collider->GetIgnoredLayers().begin(), collider->GetIgnoredLayers().end(), GetLayer()) != collider->GetIgnoredLayers().end())
             continue;
 
         if (Intersect(*collider))
@@ -155,6 +121,9 @@ float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBo
             continue;
 
         if (std::find(mIgnoredLayers.begin(), mIgnoredLayers.end(), collider->GetLayer()) != mIgnoredLayers.end())
+            continue;
+
+        if (std::find(collider->GetIgnoredLayers().begin(), collider->GetIgnoredLayers().end(), GetLayer()) != collider->GetIgnoredLayers().end())
             continue;
 
         if (Intersect(*collider))
@@ -302,4 +271,9 @@ void AABBColliderComponent::IgnoreLayers(const std::vector<ColliderLayer>& layer
     {
         IgnoreLayer(layer);
     }
+}
+
+void AABBColliderComponent::SetIgnoreLayers(const std::vector<ColliderLayer>& layers)
+{
+    mIgnoredLayers = layers;
 }

@@ -13,8 +13,9 @@
 
 enum class ColliderLayer
 {
-    Player, PlayerAttack,
-    Enemy,
+    Player, 
+    PlayerAttack,
+    Enemy, EnemyProjectile,
     Blocks,
     Objects,
     Item,
@@ -55,6 +56,8 @@ public:
 
     void IgnoreLayer(ColliderLayer layer);
     void IgnoreLayers(const std::vector<ColliderLayer>& layers);
+    void SetIgnoreLayers(const std::vector<ColliderLayer>& layers);
+    std::vector<ColliderLayer> GetIgnoredLayers() const { return mIgnoredLayers; }
 
 private:
     float GetMinVerticalOverlap(AABBColliderComponent* b) const;
