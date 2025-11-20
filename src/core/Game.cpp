@@ -42,7 +42,8 @@ Game::Game(int windowWidth, int windowHeight)
       mBackgroundPosition(Vector2::Zero), mMap(nullptr), mBackgroundIsCameraWise(true),
       mCurrentCutscene(nullptr), mCutscenes(), mGamePlayState(GamePlayState::Playing),
       mDebugMode(false), mPrevDeltaTime(0.0f), mEnemies(), mStar(nullptr), mApplyGravityScene(true),
-      mCameraCenter(CameraCenter::Zoe), mMaintainCameraInMap(true), mCameraCenterPos(Vector2::Zero)
+      mCameraCenter(CameraCenter::Zoe), mMaintainCameraInMap(true), mCameraCenterPos(Vector2::Zero),
+      mController(nullptr)
 {
     mRealWindowWidth = windowWidth;
     mRealWindowHeight = windowHeight;
@@ -59,7 +60,7 @@ void Game::SetMap(const std::string &path)
 
 bool Game::Initialize()
 {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER | SDL_INIT_JOYSTICK) != 0)
     {
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
         return false;
@@ -114,6 +115,24 @@ bool Game::Initialize()
     {
         SDL_Log("Failed to initialize SDL_mixer");
         return false;
+    }
+
+    int numJoysticks = SDL_NumJoysticks();
+    for (int i = 0; i < numJoysticks; ++i)
+    {
+        if (SDL_IsGameController(i))
+        {
+            mController = SDL_GameControllerOpen(i);
+            if (mController)
+            {
+                SDL_Log("Opened game controller %d: %s", i, SDL_GameControllerName(mController));
+            }
+            else
+            {
+                SDL_Log("Could not open gamecontroller %d: %s", i, SDL_GetError());
+            }
+            break;
+        }
     }
 
     // Start random number generator
@@ -770,6 +789,12 @@ void Game::Shutdown()
 
     delete mAudio;
     mAudio = nullptr;
+
+    if (mController)
+    {
+        SDL_GameControllerClose(mController);
+        mController = nullptr;
+    }
 
     Mix_CloseAudio();
 

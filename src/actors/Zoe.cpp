@@ -196,12 +196,11 @@ Zoe::Zoe(
     SetLives(6);
 
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
-    
+
     mColliderComponent = new AABBColliderComponent(this, 27, 39, 13, 24,
                                                    ColliderLayer::Player);
     mColliderComponent->IgnoreLayers(
-        Zoe::IGNORED_LAYERS_DEFAULT
-    );
+        Zoe::IGNORED_LAYERS_DEFAULT);
 
     mTimerComponent = new TimerComponent(this);
 
@@ -228,20 +227,67 @@ Zoe::Zoe(
 
 void Zoe::OnProcessInput(const uint8_t *state)
 {
+    SDL_GameController *controller = GetGame()->GetController();
+    const bool hasController = controller && SDL_GameControllerGetAttached(controller);
+
     mIsTryingToHit = state[Zoe::HIT_KEY];
     mTryingToFireFireball = state[Zoe::FIREBALL_KEY];
-    mTryingToTriggerVentania = mBehaviorState == BehaviorState::Jumping && state[Zoe::VETANIA_KEY];
+    mTryingToTriggerVentania = state[Zoe::VETANIA_KEY];
     mIsTryingToDodge = state[Zoe::DODGE_KEY];
     mIsTryingToJump = state[Zoe::JUMP_KEY];
 
-    mInputMovementDir = Vector2(
-        state[SDL_SCANCODE_D] - state[SDL_SCANCODE_A],
-        GetGame()->GetApplyGravityScene() ? 0.f : (state[SDL_SCANCODE_S] - state[SDL_SCANCODE_W]));
+    if (hasController)
+    {
+        mIsTryingToHit = mIsTryingToHit || SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_X);
+        mTryingToFireFireball = mTryingToFireFireball || SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_A);
+        mTryingToTriggerVentania = mTryingToTriggerVentania || SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_B);
+        mIsTryingToDodge = mIsTryingToDodge || SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
+        mIsTryingToJump = mIsTryingToJump || SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
+    }
+
+    // Keyboard movement
+    float kbX = static_cast<float>(state[SDL_SCANCODE_D] - state[SDL_SCANCODE_A]);
+    float kbY = GetGame()->GetApplyGravityScene()
+                    ? 0.0f
+                    : static_cast<float>(state[SDL_SCANCODE_S] - state[SDL_SCANCODE_W]);
+
+    // Controller movement
+    float padX = 0.0f;
+    float padY = 0.0f;
+
+    if (hasController)
+    {
+        int rawX = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
+        int rawY = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
+
+        const int DEADZONE = 8000;
+
+        if (SDL_abs(rawX) < DEADZONE)
+            rawX = 0;
+        if (SDL_abs(rawY) < DEADZONE)
+            rawY = 0;
+
+        const float MAX_AXIS = 32767.0f;
+
+        padX = rawX / MAX_AXIS;
+        padY = rawY / MAX_AXIS;
+
+        // If you use gravity, probably ignore vertical from pad too:
+        if (GetGame()->GetApplyGravityScene())
+        {
+            padY = 0.0f;
+        }
+    }
+
+    float finalX = kbX != 0.0f ? kbX : padX;
+    float finalY = kbY != 0.0f ? kbY : padY;
+
+    mInputMovementDir = Vector2(finalX, finalY);
 
     float lengthSq = mInputMovementDir.LengthSq();
     if (lengthSq > 0.0f)
     {
-        mInputMovementDir *= 1 / (Math::Sqrt(lengthSq));
+        mInputMovementDir *= 1.0f / Math::Sqrt(lengthSq);
     }
 }
 
@@ -379,8 +425,7 @@ void Zoe::ManageState()
 
     case BehaviorState::Dodging:
         mColliderComponent->SetIgnoreLayers(
-            Zoe::IGNORED_LAYERS_DODGE
-        );
+            Zoe::IGNORED_LAYERS_DODGE);
         break;
 
     case BehaviorState::AerialAttacking:
@@ -543,8 +588,7 @@ void Zoe::AnimationEndCallback(std::string animationName)
     {
         mBehaviorState = BehaviorState::Idle;
         mColliderComponent->SetIgnoreLayers(
-            Zoe::IGNORED_LAYERS_DEFAULT
-        );
+            Zoe::IGNORED_LAYERS_DEFAULT);
         return;
     }
 
@@ -595,7 +639,8 @@ void Zoe::TriggerVentania()
 
 void Zoe::TakeDamage(const Vector2 &knockback)
 {
-    if (mBehaviorState == BehaviorState::Dodging) {
+    if (mBehaviorState == BehaviorState::Dodging)
+    {
         return;
     }
 

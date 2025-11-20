@@ -176,6 +176,8 @@ public:
 
     class SpatialHashing *GetSpatialHashing() { return mSpatialHashing; }
 
+    SDL_GameController* GetController() const { return mController; }
+
 private:
     void SetCameraCenterToZoe() {
         mCameraCenter = CameraCenter::Zoe;
@@ -200,6 +202,7 @@ private:
     void SetMap(const std::string &path);
 
     bool mDebugMode;
+    SDL_GameController* mController;
 
     SceneManagerState mSceneManagerState;
     float mSceneManagerTimer;
