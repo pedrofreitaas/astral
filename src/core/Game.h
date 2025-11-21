@@ -183,6 +183,9 @@ public:
         mMustAlwaysUpdateActors.push_back(actor);
     }
 
+    void AddEnemy(class Enemy *enemy);
+    void RemoveEnemy(class Enemy *enemy);
+
 private:
     void SetCameraCenterToZoe() {
         mCameraCenter = CameraCenter::Zoe;

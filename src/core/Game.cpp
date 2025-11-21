@@ -911,12 +911,12 @@ int Game::GetMapHeight()
     return mMap->GetHeight();
 }
 
-void Game::AddEnemy(Enemy *enemy)
+void Game::AddEnemy(class Enemy *enemy)
 {
     mEnemies.emplace_back(enemy);
 }
 
-void Game::RemoveEnemy(Enemy *enemy)
+void Game::RemoveEnemy(class Enemy *enemy)
 {
     auto iter = std::find(mEnemies.begin(), mEnemies.end(), enemy);
     if (iter != mEnemies.end())
