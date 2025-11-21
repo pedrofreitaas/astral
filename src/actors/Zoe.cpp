@@ -200,8 +200,6 @@ Zoe::Zoe(
 
     mColliderComponent = new AABBColliderComponent(this, 27, 39, 13, 24,
                                                    ColliderLayer::Player);
-    mColliderComponent->IgnoreLayers(
-        Zoe::IGNORED_LAYERS_DEFAULT);
 
     mTimerComponent = new TimerComponent(this);
 
@@ -223,7 +221,9 @@ Zoe::Zoe(
 
     mDrawComponent->SetAnimation("idle");
 
-    mColliderComponent->IgnoreLayers({ColliderLayer::PlayerAttack});
+    mColliderComponent->SetIgnoreLayers(
+        Zoe::IGNORED_LAYERS_DEFAULT
+    );
 
     SetPosition(center - GetHalfSize());
     
@@ -618,7 +618,8 @@ void Zoe::AnimationEndCallback(std::string animationName)
     {
         mBehaviorState = BehaviorState::Idle;
         mColliderComponent->SetIgnoreLayers(
-            Zoe::IGNORED_LAYERS_DEFAULT);
+            Zoe::IGNORED_LAYERS_DEFAULT
+        );
         return;
     }
 
@@ -684,4 +685,11 @@ void Zoe::TakeDamage(const Vector2 &knockback)
     }
 
     Actor::TakeDamage(knockback);
+}
+
+void Zoe::LockAbilitiesForDuration(float duration)
+{
+    mAbilitiesLocked = true;
+    mTimerComponent->AddTimer(duration, [this]()
+                              { mAbilitiesLocked = false; });
 }

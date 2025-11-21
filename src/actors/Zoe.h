@@ -41,10 +41,12 @@ class Zoe : public Actor
 {
     std::vector<ColliderLayer> IGNORED_LAYERS_DODGE = {
         ColliderLayer::Enemy,
-        ColliderLayer::EnemyProjectile
+        ColliderLayer::EnemyProjectile,
+        ColliderLayer::PlayerAttack
     };
 
     std::vector<ColliderLayer> IGNORED_LAYERS_DEFAULT = {
+        ColliderLayer::PlayerAttack
     };
     
     float FIREBALL_SPEED = 20000.f;
@@ -97,6 +99,8 @@ public:
 
     bool IsAbilitiesLocked() const { return mAbilitiesLocked; }
     void SetAbilitiesLocked(bool locked) { mAbilitiesLocked = locked; }
+
+    void LockAbilitiesForDuration(float duration);
 
 private:
     float mForwardSpeed;
