@@ -42,7 +42,7 @@ enum class BehaviorState // For AI behaviors/animations
 class Actor
 {
 public:
-    Actor(class Game* game, int lives=3);
+    Actor(class Game* game, int lives=3, bool mustAlwaysUpdate = false);
     virtual ~Actor();
 
     // it's actor's responsibility to become not invicible again
@@ -119,7 +119,10 @@ public:
     virtual void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other);
     virtual void OnCollision() {};
     virtual void Kill();
+    
     Vector2 GetCenter() const;
+    Vector2 GetHalfSize() const;
+
     BehaviorState GetBehaviorState() const { return mBehaviorState; }
 
     void LogState();

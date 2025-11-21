@@ -10,7 +10,7 @@
 #include "../components/Component.h"
 #include <algorithm>
 
-Actor::Actor(Game* game, int lives)
+Actor::Actor(Game* game, int lives, bool mustAlwaysUpdate)
         : mState(ActorState::Active)
         , mPosition(Vector2::Zero)
         , mScale(1.0f)
@@ -22,6 +22,12 @@ Actor::Actor(Game* game, int lives)
         , mInvincible(false)
 {
     mGame->AddActor(this);
+    
+    SetLives(lives);
+
+    if (mustAlwaysUpdate) {
+        mGame->AddMustAlwaysUpdateActor(this);
+    }
 }
 
 Actor::~Actor()
@@ -195,4 +201,9 @@ void Actor::TakeDamage(const Vector2 &knockback)
 
     mBehaviorState = BehaviorState::TakingDamage;
     mInvincible = true;
+}
+
+Vector2 Actor::GetHalfSize() const
+{
+    return GetCenter() - GetPosition();
 }
