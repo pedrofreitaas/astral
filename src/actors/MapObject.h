@@ -13,6 +13,12 @@ class Game;
 
 class MapObject: public Actor {
 public:
+    enum class EntityCode {
+        Zoe=0,
+        Sith=1,
+        Zod=2,
+    };
+
     MapObject(Game *game, int inId, const std::string &ev, const std::string &func_name, 
               const Vector2 &pos, const Vector2 &size, const json &parameters=json::object());
 
@@ -26,7 +32,10 @@ public:
     AABBColliderComponent *mColliderComponent;
     RigidBodyComponent *mRigidBodyComponent; // only to check collision
     bool mIsPlayerInside, mWasPlayerInside;
+    float mCloseToCenterDistanceSQ;
 
     void Log();
-    void PlayCutscene(const std::string &cutsceneName);
+    void PlayCutscene();
+    void SpawnEntity();
+    void CallMyFunction();
 };
