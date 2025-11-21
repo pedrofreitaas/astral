@@ -1,6 +1,7 @@
 #include "DialogueSystem.h"
 #include "../core/Game.h"
 #include "UIFont.h"
+#include "../actors/Zoe.h"
 
 DialogueSystem::DialogueSystem(Game::GamePlayState currentGameState)
     : mGame(nullptr), mFont(nullptr), mSmallFont(nullptr), mCurrentLine(0), mTextTexture(nullptr),
@@ -58,7 +59,7 @@ void DialogueSystem::Initialize(Game* game)
     if (mSmallFont)
     {
         SDL_Color grey = {180, 180, 180, 255};
-        SDL_Surface* surface = TTF_RenderText_Blended(mSmallFont, "Pressione Enter", grey);
+        SDL_Surface* surface = TTF_RenderText_Blended(mSmallFont, "Pressione Enter ou B", grey);
         if (surface)
         {
             mPromptTexture = SDL_CreateTextureFromSurface(mGame->GetRenderer(), surface);
@@ -116,7 +117,11 @@ void DialogueSystem::HandleInput(const uint8_t* keyState)
 {
     if (!mIsActive) return;
 
-    if (keyState[SDL_SCANCODE_RETURN] || keyState[SDL_SCANCODE_KP_ENTER])
+    SDL_GameController *controller = mGame->GetController();
+    const bool hasController = controller && SDL_GameControllerGetAttached(controller);
+
+    if (keyState[SDL_SCANCODE_RETURN] || keyState[SDL_SCANCODE_KP_ENTER] ||
+        (hasController && SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_B)))
     {
         if (!mContinuePressed)
         {
@@ -262,6 +267,7 @@ void DialogueSystem::AdvanceDialogue()
 {
     mLineTimer = 0.0f;
     mCurrentLine++;
+    mGame->GetAudio()->PlaySound("dialogueStep.wav");
 
     if (mCurrentLine >= mLines.size())
     {
@@ -270,6 +276,7 @@ void DialogueSystem::AdvanceDialogue()
         if (mOnComplete)
         {
             mGame->SetGamePlayState(mPreviousGameState);
+            mGame->GetZoe()->LockAbilitiesForDuration(0.25f);
             mOnComplete();
         }
     }
