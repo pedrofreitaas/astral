@@ -70,11 +70,17 @@ bool Game::Initialize()
         "astral",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         mRealWindowWidth, mRealWindowHeight,
-        SDL_WINDOW_ALWAYS_ON_TOP);
+        SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
 
     if (!mWindow)
     {
         SDL_Log("Failed to create window: %s", SDL_GetError());
+        return false;
+    }
+
+    if (!SDL_RenderSetIntegerScale(mRenderer, SDL_TRUE))
+    {
+        SDL_Log("Failed to set integer scale: %s", SDL_GetError());
         return false;
     }
 
