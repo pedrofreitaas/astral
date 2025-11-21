@@ -43,7 +43,7 @@ Game::Game(int windowWidth, int windowHeight)
       mCurrentCutscene(nullptr), mCutscenes(), mGamePlayState(GamePlayState::Playing),
       mDebugMode(false), mPrevDeltaTime(0.0f), mEnemies(), mStar(nullptr), mApplyGravityScene(true),
       mCameraCenter(CameraCenter::Zoe), mMaintainCameraInMap(true), mCameraCenterPos(Vector2::Zero),
-      mController(nullptr)
+      mController(nullptr), mMustAlwaysUpdateActors()
 {
     mRealWindowWidth = windowWidth;
     mRealWindowHeight = windowHeight;
@@ -489,6 +489,8 @@ void Game::UpdateCamera()
 
 void Game::UpdateActors(float deltaTime)
 {
+    std::vector<Actor*> toUpdateActors = mMustAlwaysUpdateActors;
+    
     // Get actors on camera
     std::vector<Actor *> actorsOnCamera = mSpatialHashing->QueryOnCamera(
         mCameraPos,
@@ -496,20 +498,18 @@ void Game::UpdateActors(float deltaTime)
         mWindowHeight,
         Game::TILE_SIZE * 2.f);
 
-    bool isZoeOnCamera = false;
     for (auto actor : actorsOnCamera)
     {
-        actor->Update(deltaTime);
-        if (actor == mZoe)
+        // Avoid duplicates
+        if (std::find(toUpdateActors.begin(), toUpdateActors.end(), actor) == toUpdateActors.end())
         {
-            isZoeOnCamera = true;
+            toUpdateActors.push_back(actor);
         }
     }
 
-    // If Zoe is not on camera, update him (player should always be updated)
-    if (!isZoeOnCamera && mZoe)
+    for (auto actor : toUpdateActors)
     {
-        mZoe->Update(deltaTime);
+        actor->Update(deltaTime);    
     }
 
     for (auto actor : actorsOnCamera)
@@ -533,6 +533,15 @@ void Game::AddActor(Actor *actor)
 void Game::RemoveActor(Actor *actor)
 {
     mSpatialHashing->Remove(actor);
+    
+    auto it = std::find(
+        mMustAlwaysUpdateActors.begin(),
+        mMustAlwaysUpdateActors.end(),
+        actor);
+
+    if (it != mMustAlwaysUpdateActors.end()) {
+        mMustAlwaysUpdateActors.erase(it);
+    }
 }
 
 void Game::Reinsert(Actor *actor)
