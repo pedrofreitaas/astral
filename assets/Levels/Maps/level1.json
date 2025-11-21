@@ -278,6 +278,33 @@
                  "width":50.7998,
                  "x":69.9334,
                  "y":1836.11
+                }, 
+                {
+                 "height":96.663,
+                 "id":5,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"cutscene_name",
+                         "type":"string",
+                         "value":"test"
+                        }, 
+                        {
+                         "name":"event",
+                         "type":"string",
+                         "value":"enter"
+                        }, 
+                        {
+                         "name":"function_name",
+                         "type":"string",
+                         "value":"play_cutscene"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":180.1331,
+                 "x":263.43345,
+                 "y":1802.1685
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -286,7 +313,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":5,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
