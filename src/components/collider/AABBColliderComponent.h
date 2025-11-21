@@ -15,7 +15,8 @@ enum class ColliderLayer
 {
     Player, 
     PlayerAttack,
-    Enemy, EnemyProjectile,
+    Enemy, 
+    EnemyProjectile,
     Blocks,
     Objects,
     Item,
@@ -57,6 +58,7 @@ public:
     void IgnoreLayer(ColliderLayer layer);
     void IgnoreLayers(const std::vector<ColliderLayer>& layers);
     void SetIgnoreLayers(const std::vector<ColliderLayer>& layers);
+    bool CheckLayerIgnored(ColliderLayer layer) const;
     std::vector<ColliderLayer> GetIgnoredLayers() const { return mIgnoredLayers; }
 
 private:

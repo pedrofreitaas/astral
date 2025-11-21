@@ -10,8 +10,7 @@
 AABBColliderComponent::AABBColliderComponent(class Actor *owner, int dx, int dy, int w, int h,
                                              ColliderLayer layer, bool isTangible, int updateOrder)
     : Component(owner, updateOrder), mOffset(Vector2((float)dx, (float)dy)), 
-    mWidth(w), mHeight(h), mLayer(layer), mIsTangible(isTangible),
-    mIgnoredLayers()
+    mWidth(w), mHeight(h), mLayer(layer), mIsTangible(isTangible)
 {
 }
 
@@ -75,10 +74,10 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
         if (collider->GetLayer() == mLayer)
             continue;
 
-        if (std::find(mIgnoredLayers.begin(), mIgnoredLayers.end(), collider->GetLayer()) != mIgnoredLayers.end())
+        if (collider->CheckLayerIgnored(mLayer))
             continue;
 
-        if (std::find(collider->GetIgnoredLayers().begin(), collider->GetIgnoredLayers().end(), GetLayer()) != collider->GetIgnoredLayers().end())
+        if (CheckLayerIgnored(collider->GetLayer()))
             continue;
 
         if (Intersect(*collider))
@@ -120,10 +119,10 @@ float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBo
         if (collider->GetLayer() == mLayer)
             continue;
 
-        if (std::find(mIgnoredLayers.begin(), mIgnoredLayers.end(), collider->GetLayer()) != mIgnoredLayers.end())
+        if (collider->CheckLayerIgnored(mLayer))
             continue;
 
-        if (std::find(collider->GetIgnoredLayers().begin(), collider->GetIgnoredLayers().end(), GetLayer()) != collider->GetIgnoredLayers().end())
+        if (CheckLayerIgnored(collider->GetLayer()))
             continue;
 
         if (Intersect(*collider))
@@ -275,5 +274,19 @@ void AABBColliderComponent::IgnoreLayers(const std::vector<ColliderLayer>& layer
 
 void AABBColliderComponent::SetIgnoreLayers(const std::vector<ColliderLayer>& layers)
 {
-    mIgnoredLayers = layers;
+    mIgnoredLayers.clear();
+    for (const auto& layer : layers)
+    {
+        IgnoreLayer(layer);
+    }
 }
+
+bool AABBColliderComponent::CheckLayerIgnored(ColliderLayer layer) const
+{
+    for (const auto& ignoredLayer : mIgnoredLayers)
+    {
+        if (ignoredLayer == layer)
+            return true;
+    }
+    return false;
+}   
