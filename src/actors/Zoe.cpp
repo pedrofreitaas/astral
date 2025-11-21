@@ -334,6 +334,7 @@ void Zoe::ManageState()
         if (mIsTryingToHit)
         {
             mBehaviorState = BehaviorState::AerialAttacking;
+            mGame->GetAudio()->PlaySound("zoeSmash.wav");
             float upwardForce = mRigidBodyComponent->GetVerticalForce(.3f);
             mRigidBodyComponent->ApplyForce(Vector2(0.f, upwardForce));
             break;
@@ -360,6 +361,7 @@ void Zoe::ManageState()
         if (mIsTryingToHit)
         {
             mBehaviorState = BehaviorState::Attacking;
+            mGame->GetAudio()->PlaySound("zoeSmash.wav");
             break;
         }
 
@@ -414,6 +416,7 @@ void Zoe::ManageState()
         if (mIsTryingToHit)
         {
             mBehaviorState = BehaviorState::Attacking;
+            mGame->GetAudio()->PlaySound("zoeSmash.wav");
             break;
         }
 
@@ -652,6 +655,8 @@ void Zoe::FireFireball()
     SetFireballOnCooldown(true);
     mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this]()
                               { SetFireballOnCooldown(false); });
+
+    mGame->GetAudio()->PlaySound("fireball.wav");
 }
 
 void Zoe::TriggerVentania()
@@ -675,6 +680,8 @@ void Zoe::TriggerVentania()
     SetVentaniaOnCooldown(true);
     mTimerComponent->AddTimer(Zoe::VETANIA_COOLDOWN, [this]()
                               { SetVentaniaOnCooldown(false); });
+
+    mGame->GetAudio()->PlaySound("ventania.wav");
 }
 
 void Zoe::TakeDamage(const Vector2 &knockback)
@@ -685,6 +692,8 @@ void Zoe::TakeDamage(const Vector2 &knockback)
     }
 
     Actor::TakeDamage(knockback);
+
+    mGame->GetAudio()->PlaySound("zoeTakeDamage.wav");
 }
 
 void Zoe::LockAbilitiesForDuration(float duration)
