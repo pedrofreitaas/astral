@@ -901,3 +901,26 @@ int Game::GetMapHeight()
         return 0.f;
     return mMap->GetHeight();
 }
+
+void Game::AddEnemy(Enemy *enemy)
+{
+    mEnemies.emplace_back(enemy);
+}
+
+void Game::RemoveEnemy(Enemy *enemy)
+{
+    auto iter = std::find(mEnemies.begin(), mEnemies.end(), enemy);
+    if (iter != mEnemies.end())
+    {
+        mEnemies.erase(iter);
+    }
+}
+
+void Game::SetZoe(class Zoe *zoe)
+{
+    if (mZoe != nullptr)
+    {
+        mZoe->SetState(ActorState::Destroy);
+    }
+    mZoe = zoe;
+}

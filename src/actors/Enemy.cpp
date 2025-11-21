@@ -8,6 +8,12 @@
 Enemy::Enemy(Game *game, float forwardSpeed, const Vector2 &position)
     : Actor(game)
 {
+    mGame->AddEnemy(this);
+}
+
+Enemy::~Enemy()
+{
+    mGame->RemoveEnemy(this);
 }
 
 void Enemy::OnUpdate(float deltaTime)

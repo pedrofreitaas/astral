@@ -150,6 +150,7 @@ public:
 
     // Game-specific
     class Zoe *GetZoe() { return mZoe; }
+    void SetZoe(class Zoe *zoe);
 
     void SetGamePlayState(GamePlayState state) { mGamePlayState = state; }
     GamePlayState GetGamePlayState() const { return mGamePlayState; }
@@ -177,6 +178,10 @@ public:
     class SpatialHashing *GetSpatialHashing() { return mSpatialHashing; }
 
     SDL_GameController* GetController() const { return mController; }
+
+    void AddMustAlwaysUpdateActor(class Actor* actor) {
+        mMustAlwaysUpdateActors.push_back(actor);
+    }
 
 private:
     void SetCameraCenterToZoe() {
@@ -265,4 +270,6 @@ private:
     bool mMaintainCameraInMap;
 
     void DrawDebugInfo(std::vector<class Actor *> &actorsOnCamera);
+
+    std::vector<class Actor*> mMustAlwaysUpdateActors; //use with caution, can highly impact performance
 };

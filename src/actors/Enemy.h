@@ -7,6 +7,7 @@ class Enemy : public Actor
 {
 public:
     explicit Enemy(Game *game, float forwardSpeed, const Vector2 &position);
+    ~Enemy() override;
 
     void OnUpdate(float deltaTime) override;
     virtual void ManageState() = 0;
