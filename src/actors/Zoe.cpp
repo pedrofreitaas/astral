@@ -46,7 +46,8 @@ void Ventania::AnimationEndCallback(std::string animationName)
 
 Fireball::Fireball(
     class Game *game, Vector2 position,
-    Vector2 target, float speed, Actor *shooter) : Projectile(game, position, target, speed, shooter), mRicochetsCount(0)
+    Vector2 dir, float speed, Actor *shooter
+) : Projectile(game, position, Vector2(0.f,0.f), speed, shooter), mRicochetsCount(0)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Zoe/Fireball/texture.png";
     const std::string spriteSheetData = "../assets/Sprites/Zoe/Fireball/texture.json";
@@ -75,7 +76,7 @@ Fireball::Fireball(
 
     SetPosition(position - mDrawAnimatedComponent->GetHalfSpriteSize());
 
-    mDirection = target - GetCenter();
+    mDirection = dir;
     mDirection.Normalize();
 
     float directionAngle = Math::Atan2(mDirection.y, mDirection.x);
@@ -187,14 +188,14 @@ void Fireball::Kill()
 //
 
 Zoe::Zoe(
-    Game *game, const float forwardSpeed) : Actor(game), mForwardSpeed(forwardSpeed),
-                                            mTryingToFireFireball(false), mIsFireballOnCooldown(false),
-                                            mIsVentaniaOnCooldown(false), mTryingToTriggerVentania(false),
-                                            mIsTryingToHit(false), mAttackCollider(nullptr), mIsTryingToDodge(false),
-                                            mInputMovementDir(0.f, 0.f)
+    Game *game, const float forwardSpeed, const Vector2 &center
+)
+    : Actor(game, 6, true), mForwardSpeed(forwardSpeed),
+      mTryingToFireFireball(false), mIsFireballOnCooldown(false),
+      mIsVentaniaOnCooldown(false), mTryingToTriggerVentania(false),
+      mIsTryingToHit(false), mAttackCollider(nullptr), mIsTryingToDodge(false),
+      mInputMovementDir(0.f, 0.f), mMovementLocked(false), mAbilitiesLocked(false)
 {
-    SetLives(6);
-
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
 
     mColliderComponent = new AABBColliderComponent(this, 27, 39, 13, 24,
@@ -223,6 +224,16 @@ Zoe::Zoe(
     mDrawComponent->SetAnimation("idle");
 
     mColliderComponent->IgnoreLayers({ColliderLayer::PlayerAttack});
+
+    SetPosition(center - GetHalfSize());
+    
+    mGame->SetZoe(this);
+}
+
+Zoe::~Zoe()
+{
+    mGame->SetZoe(nullptr);
+    Actor::~Actor();
 }
 
 void Zoe::OnProcessInput(const uint8_t *state)
@@ -230,19 +241,28 @@ void Zoe::OnProcessInput(const uint8_t *state)
     SDL_GameController *controller = GetGame()->GetController();
     const bool hasController = controller && SDL_GameControllerGetAttached(controller);
 
-    mIsTryingToHit = state[Zoe::HIT_KEY];
-    mTryingToFireFireball = state[Zoe::FIREBALL_KEY];
-    mTryingToTriggerVentania = state[Zoe::VETANIA_KEY];
-    mIsTryingToDodge = state[Zoe::DODGE_KEY];
-    mIsTryingToJump = state[Zoe::JUMP_KEY];
-
-    if (hasController)
+    if (!mAbilitiesLocked)
     {
-        mIsTryingToHit = mIsTryingToHit || SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_X);
-        mTryingToFireFireball = mTryingToFireFireball || SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_A);
-        mTryingToTriggerVentania = mTryingToTriggerVentania || SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_B);
-        mIsTryingToDodge = mIsTryingToDodge || SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
-        mIsTryingToJump = mIsTryingToJump || SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
+        mIsTryingToHit = state[Zoe::HIT_KEY];
+        mTryingToFireFireball = state[Zoe::FIREBALL_KEY];
+        mTryingToTriggerVentania = state[Zoe::VENTANIA_KEY];
+        mIsTryingToDodge = state[Zoe::DODGE_KEY];
+        mIsTryingToJump = state[Zoe::JUMP_KEY];
+    }
+
+    if (hasController && !mAbilitiesLocked)
+    {
+        mIsTryingToHit = mIsTryingToHit || SDL_GameControllerGetButton(controller, Zoe::HIT_BUTTON);
+        mTryingToFireFireball = mTryingToFireFireball || SDL_GameControllerGetButton(controller, Zoe::FIREBALL_BUTTON);
+        mTryingToTriggerVentania = mTryingToTriggerVentania || SDL_GameControllerGetButton(controller, Zoe::VENTANIA_BUTTON);
+        mIsTryingToDodge = mIsTryingToDodge || SDL_GameControllerGetButton(controller, Zoe::DODGE_BUTTON);
+        mIsTryingToJump = mIsTryingToJump || SDL_GameControllerGetButton(controller, Zoe::JUMP_BUTTON);
+    }
+
+    if (mMovementLocked)
+    {
+        mInputMovementDir = Vector2(0.f, 0.f);
+        return;
     }
 
     // Keyboard movement
@@ -271,12 +291,6 @@ void Zoe::OnProcessInput(const uint8_t *state)
 
         padX = rawX / MAX_AXIS;
         padY = rawY / MAX_AXIS;
-
-        // If you use gravity, probably ignore vertical from pad too:
-        if (GetGame()->GetApplyGravityScene())
-        {
-            padY = 0.0f;
-        }
     }
 
     float finalX = kbX != 0.0f ? kbX : padX;
@@ -361,7 +375,23 @@ void Zoe::ManageState()
             break;
         }
 
-        mRigidBodyComponent->ApplyForce(mInputMovementDir * mForwardSpeed);
+        if (mTryingToFireFireball && !mIsFireballOnCooldown)
+        {
+            mBehaviorState = BehaviorState::Charging;
+            break;
+        }
+
+        Vector2 movementDir = mInputMovementDir;
+
+        if (mGame->GetApplyGravityScene())
+        {
+            movementDir.y = 0.f;
+            movementDir.Normalize();
+        }
+
+        mRigidBodyComponent->ApplyForce(
+            movementDir * mForwardSpeed
+        );
         break;
     }
 
@@ -480,10 +510,10 @@ void Zoe::ManageAnimations()
         mDrawComponent->SetAnimFPS(4.f);
         break;
     case BehaviorState::Charging:
-        mDrawComponent->SetAnimation("ground-crush");
-        mDrawComponent->SetAnimFPS(10.0f);
+        mDrawComponent->SetAnimation("blink");
+        mDrawComponent->SetAnimFPS(4.0f);
 
-        if (mDrawComponent->GetCurrentSprite() == 5)
+        if (mDrawComponent->GetCurrentSprite() == 3)
         {
             FireFireball();
         }
@@ -570,7 +600,7 @@ void Zoe::AnimationEndCallback(std::string animationName)
         return;
     }
 
-    if (animationName == "ground-crush" && mTryingToFireFireball)
+    if (animationName == "blink" && mTryingToFireFireball)
     {
         mBehaviorState = BehaviorState::Idle;
         return;
@@ -604,10 +634,17 @@ void Zoe::FireFireball()
     if (mIsFireballOnCooldown)
         return;
 
+    Vector2 fireballDir = mInputMovementDir;
+    
+    if (fireballDir.LengthSq() == 0.f)
+    {
+        fireballDir = GetForward();
+    }
+
     auto projectile = new Fireball(
         mGame,
         GetPosition() + GetFireballOffset(),
-        GetGame()->GetLogicalMousePos(),
+        fireballDir,
         Zoe::FIREBALL_SPEED,
         this);
 
@@ -620,10 +657,12 @@ void Zoe::TriggerVentania()
 {
     if (mIsVentaniaOnCooldown)
         return;
+    
+    mRigidBodyComponent->SetVelocity(Vector2(0.f, 0.f));
 
-    Vector2 mousePos = GetGame()->GetLogicalMousePos();
-    Vector2 ventaniaDir = GetCenter() - mousePos;
-    ventaniaDir.Normalize();
+    Vector2 ventaniaDir = mInputMovementDir.LengthSq() >= 0.f ? 
+                          mInputMovementDir : 
+                          Vector2(0.f, 1.f);
 
     mRigidBodyComponent->ApplyForce(ventaniaDir * Zoe::VETANIA_SPEED);
 
