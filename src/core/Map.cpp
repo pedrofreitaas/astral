@@ -123,13 +123,12 @@ void Map::LoadObjectsLayer(const json &layerData, int layerIdx)
 		for (const auto &prop : obj["properties"])
 		{
 			std::string propName = prop["name"].get<std::string>();
-			std::string propValue = prop["value"].get<std::string>(); 
-			
+			const json &propValue = prop["value"];
+
 			if (propName == "event")
-				ev = propValue;
+				ev = propValue.get<std::string>();
 			else if (propName == "function_name")
-				function_name = propValue;
-			// every other property goes into parameters json
+				function_name = propValue.get<std::string>();
 			else
 				parameters[propName] = propValue;
 		}
