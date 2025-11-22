@@ -10,9 +10,9 @@ MoveStep::MoveStep(
     class Game* game, 
     std::function<Actor*()> targetActorFunc,
     std::function<Vector2()> getTargetPosFunc,
-    float speed, bool spin)
+    float speed, bool spin, float maxTime)
     : 
-    Step(game), mSpeed(speed), 
+    Step(game, maxTime), mSpeed(speed), 
     mGetTargetActor(std::move(targetActorFunc)), 
     mGetTargetPos(std::move(getTargetPosFunc)),
     mTargetPos(Vector2::Zero), mSpinAngle(0.0f), mSpin(spin)
@@ -40,6 +40,8 @@ void MoveStep::Update(float deltaTime)
 {
     if (GetIsComplete())
         return;
+    
+    Step::Update(deltaTime);
     
     Actor *mTargetActor = mGetTargetActor();    
     RigidBodyComponent *rb = mTargetActor->GetComponent<RigidBodyComponent>();
@@ -90,15 +92,12 @@ void MoveStep::Update(float deltaTime)
     }
 }
 
-SpawnStep::SpawnStep(class Game *game, ActorType actorType, const Vector2 &position)
-    : Step(game), mActorType(actorType), mPosition(position)
-{
-}
-
 void SpawnStep::Update(float deltaTime)
 {
     if (GetIsComplete())
         return;
+
+    Step::Update(deltaTime);
 
     Actor *newActor = nullptr;
 
@@ -124,6 +123,8 @@ void DialogueStep::Update(float deltaTime)
     if (GetIsComplete())
         return;
 
+    Step::Update(deltaTime);
+
     if (!mSpeaker.empty())
     {
         mGame->GetDialogueSystem()->StartDialogueWithSpeaker(
@@ -143,4 +144,15 @@ void DialogueStep::Update(float deltaTime)
                 SetComplete();
             });
     }
+}
+
+void SoundStep::Update(float deltaTime)
+{
+    if (GetIsComplete())
+        return;
+    
+    Step::Update(deltaTime);
+
+    mGame->GetAudio()->PlaySound(mSoundFile, mLoop);
+    SetComplete();
 }

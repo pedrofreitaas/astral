@@ -11,9 +11,14 @@ class Game;
 
 class Step {
 public:
-    explicit Step(class Game* game) : mGame(game) {}
+    explicit Step(class Game* game, float maxTime=5.f) : mGame(game), mTimer(maxTime) {}
     virtual ~Step() = default;
-    virtual void Update(float deltaTime) = 0;
+    virtual void Update(float deltaTime) {
+        mTimer -= deltaTime;
+        if (mTimer <= 0.f) {
+            SetComplete();
+        }
+    };
     virtual void PreUpdate() = 0;
 
     bool operator==(const Step& other) const { return this == &other; }
@@ -23,6 +28,7 @@ protected:
     void SetComplete(bool v = true) { mIsComplete = v; }
     bool mIsComplete = false;
     Game *mGame;
+    float mTimer;
 };
 
 class SpawnStep : public Step {
@@ -31,7 +37,7 @@ public:
         Star,
         // Add other actor types here as needed
     };
-    SpawnStep(class Game* game, ActorType actorType, const Vector2& position);
+    SpawnStep(class Game* game, ActorType actorType, const Vector2& position, float maxTime=2.f): Step(game, maxTime), mActorType(actorType), mPosition(position) {};
     void Update(float deltaTime) override;
     void PreUpdate() override {};
 private:
@@ -46,7 +52,8 @@ public:
         std::function<Actor*()> targetActorFunc,
         std::function<Vector2()> getTargetPosFunc, 
         float speed,
-        bool spin=false);
+        bool spin=false,
+        float maxTime=5.f);
 
     void Update(float deltaTime) override;
     void PreUpdate() override;
@@ -61,8 +68,10 @@ private:
 
 class UnspawnStep : public Step {
 public:
-    UnspawnStep(class Game* game, std::function<Actor*()> targetActorFunc) : Step(game), mGetTargetActor(std::move(targetActorFunc)) {}
-    UnspawnStep(class Game* game, Actor* targetActor): Step(game) {
+    UnspawnStep(class Game* game, std::function<Actor*()> targetActorFunc, float maxTime=2.f) 
+    : Step(game, maxTime), mGetTargetActor(std::move(targetActorFunc)) {}
+    UnspawnStep(class Game* game, Actor* targetActor, float maxTime=2.f)
+    : Step(game, maxTime) {
         mGetTargetActor = [targetActor]() { return targetActor; };
     }
     void Update(float deltaTime) override {
@@ -83,26 +92,29 @@ private:
 
 class WaitStep : public Step {
 public:
-    WaitStep(class Game* game, float duration) : Step(game), mDuration(duration), mElapsed(0.0f) {}
-    void Update(float deltaTime) override {
-        if (GetIsComplete()) return;
-        mElapsed += deltaTime;
-        if (mElapsed >= mDuration) {
-            SetComplete();
-        }
-    }
+    WaitStep(class Game* game, float duration) : Step(game, duration) {}
     void PreUpdate() override {};
+};
+
+class SoundStep : public Step {
+public:
+    SoundStep(class Game* game, std::string soundFile, bool loop = false, float maxTime=5.f) 
+        : Step(game, maxTime), mSoundFile(soundFile), mLoop(loop) {}
+    
+    void Update(float deltaTime) override;
+    void PreUpdate() override {};
+
 private:
-    float mDuration;
-    float mElapsed;
+    std::string mSoundFile;
+    bool mLoop;
 };
 
 class DialogueStep : public Step {
 public:
     DialogueStep(class Game* game, std::vector<std::string>& messages) 
-        : Step(game), mMessages(messages), mSpeaker("") {}
+        : Step(game, -1.f), mMessages(messages), mSpeaker("") {}
     DialogueStep(class Game* game, const std::string& speaker, std::vector<std::string>& messages) 
-        : Step(game), mMessages(messages), mSpeaker(speaker) {}
+        : Step(game, -1.f), mMessages(messages), mSpeaker(speaker) {}
     
     void Update(float deltaTime) override;
     void PreUpdate() override {};
