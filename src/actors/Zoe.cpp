@@ -222,11 +222,10 @@ Zoe::Zoe(
     mDrawComponent->SetAnimation("idle");
 
     mColliderComponent->SetIgnoreLayers(
-        Zoe::IGNORED_LAYERS_DEFAULT
-    );
+        Zoe::IGNORED_LAYERS_DEFAULT);
 
     SetPosition(center - GetHalfSize());
-    
+
     mGame->SetZoe(this);
 }
 
@@ -621,8 +620,7 @@ void Zoe::AnimationEndCallback(std::string animationName)
     {
         mBehaviorState = BehaviorState::Idle;
         mColliderComponent->SetIgnoreLayers(
-            Zoe::IGNORED_LAYERS_DEFAULT
-        );
+            Zoe::IGNORED_LAYERS_DEFAULT);
         return;
     }
 
