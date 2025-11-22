@@ -335,21 +335,18 @@ void Game::ProcessInputActors()
 {
     const Uint8 *state = SDL_GetKeyboardState(nullptr);
 
-    if (mGamePlayState == GamePlayState::Playing)
-    {
-        // Get actors on camera
-        std::vector<Actor *> actorsOnCamera = mSpatialHashing->QueryOnCamera(
-            mCameraPos,
-            mWindowWidth,
-            mWindowHeight);
+    // Get actors on camera
+    std::vector<Actor *> actorsOnCamera = mSpatialHashing->QueryOnCamera(
+        mCameraPos,
+        mWindowWidth,
+        mWindowHeight);
 
-        for (auto actor : actorsOnCamera)
-        {
-            actor->ProcessInput(state);
-        }
+    for (auto actor : actorsOnCamera)
+    {
+        actor->ProcessInput(state);
     }
 
-    else if (mGamePlayState == GamePlayState::Dialogue)
+    if (mGamePlayState == GamePlayState::Dialogue)
     {
         GetDialogueSystem()->HandleInput(state);
     }
@@ -489,8 +486,8 @@ void Game::UpdateCamera()
 
 void Game::UpdateActors(float deltaTime)
 {
-    std::vector<Actor*> toUpdateActors = mMustAlwaysUpdateActors;
-    
+    std::vector<Actor *> toUpdateActors = mMustAlwaysUpdateActors;
+
     // Get actors on camera
     std::vector<Actor *> actorsOnCamera = mSpatialHashing->QueryOnCamera(
         mCameraPos,
@@ -509,7 +506,7 @@ void Game::UpdateActors(float deltaTime)
 
     for (auto actor : toUpdateActors)
     {
-        actor->Update(deltaTime);    
+        actor->Update(deltaTime);
     }
 
     for (auto actor : actorsOnCamera)
@@ -533,13 +530,14 @@ void Game::AddActor(Actor *actor)
 void Game::RemoveActor(Actor *actor)
 {
     mSpatialHashing->Remove(actor);
-    
+
     auto it = std::find(
         mMustAlwaysUpdateActors.begin(),
         mMustAlwaysUpdateActors.end(),
         actor);
 
-    if (it != mMustAlwaysUpdateActors.end()) {
+    if (it != mMustAlwaysUpdateActors.end())
+    {
         mMustAlwaysUpdateActors.erase(it);
     }
 }
@@ -833,10 +831,12 @@ Vector2 Game::GetLogicalMousePos() const
 
 void Game::AddCutscene(const std::string &name, std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback)
 {
-    if (mCutscenes.find(name) != mCutscenes.end())
+    auto it = mCutscenes.find(name);
+    if (it != mCutscenes.end())
     {
         SDL_Log("Cutscene with name '%s' already exists. Overwriting.", name.c_str());
-        delete mCutscenes[name];
+        delete it->second;
+        mCutscenes.erase(it);
     }
 
     Cutscene *newCutscene = new Cutscene(std::move(steps), onCompleteCallback, this);
