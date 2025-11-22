@@ -232,7 +232,6 @@ Zoe::Zoe(
 Zoe::~Zoe()
 {
     mGame->SetZoe(nullptr);
-    Actor::~Actor();
 }
 
 void Zoe::OnProcessInput(const uint8_t *state)
