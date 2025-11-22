@@ -236,6 +236,17 @@ Zoe::~Zoe()
 
 void Zoe::OnProcessInput(const uint8_t *state)
 {
+    if (mGame->GetGamePlayState() != Game::GamePlayState::Playing)
+    {
+        mIsTryingToDodge = false;
+        mIsTryingToJump = false;
+        mIsTryingToHit = false;
+        mTryingToFireFireball = false;
+        mTryingToTriggerVentania = false;
+        mInputMovementDir = Vector2(0.f, 0.f);
+        return;
+    }
+    
     SDL_GameController *controller = GetGame()->GetController();
     const bool hasController = controller && SDL_GameControllerGetAttached(controller);
 
@@ -265,9 +276,7 @@ void Zoe::OnProcessInput(const uint8_t *state)
 
     // Keyboard movement
     float kbX = static_cast<float>(state[SDL_SCANCODE_D] - state[SDL_SCANCODE_A]);
-    float kbY = GetGame()->GetApplyGravityScene()
-                    ? 0.0f
-                    : static_cast<float>(state[SDL_SCANCODE_S] - state[SDL_SCANCODE_W]);
+    float kbY = static_cast<float>(state[SDL_SCANCODE_S] - state[SDL_SCANCODE_W]);
 
     // Controller movement
     float padX = 0.0f;
@@ -278,7 +287,7 @@ void Zoe::OnProcessInput(const uint8_t *state)
         int rawX = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
         int rawY = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
 
-        const int DEADZONE = 8000;
+        const int DEADZONE = 2000;
 
         if (SDL_abs(rawX) < DEADZONE)
             rawX = 0;
@@ -363,12 +372,6 @@ void Zoe::ManageState()
             break;
         }
 
-        if (mRigidBodyComponent->GetOnGround() && std::abs(mInputMovementDir.x) < 0.1f)
-        {
-            mBehaviorState = BehaviorState::Idle;
-            break;
-        }
-
         if (!mRigidBodyComponent->GetOnGround())
         {
             mBehaviorState = BehaviorState::Jumping;
@@ -381,17 +384,28 @@ void Zoe::ManageState()
             break;
         }
 
-        Vector2 movementDir = mInputMovementDir;
-
-        if (mGame->GetApplyGravityScene())
+        if (mGame->GetGamePlayState() == Game::GamePlayState::Playing)
         {
-            movementDir.y = 0.f;
-            movementDir.Normalize();
+            Vector2 movementDir = mInputMovementDir;
+
+            if (mGame->GetApplyGravityScene() && mRigidBodyComponent->GetApplyGravity())
+            {
+                movementDir.y = 0.f;
+                movementDir.Normalize();
+            }
+
+            mRigidBodyComponent->ApplyForce(
+                movementDir * mForwardSpeed);
         }
 
-        mRigidBodyComponent->ApplyForce(
-            movementDir * mForwardSpeed
-        );
+        if (
+            mRigidBodyComponent->GetVelocity().x == 0.f &&
+            mRigidBodyComponent->GetVelocity().y == 0.f)
+        {
+            mBehaviorState = BehaviorState::Idle;
+            break;
+        }
+
         break;
     }
 
@@ -418,15 +432,16 @@ void Zoe::ManageState()
             break;
         }
 
-        else if (!mRigidBodyComponent->GetOnGround())
+        if (!mRigidBodyComponent->GetOnGround())
         {
             mBehaviorState = BehaviorState::Jumping;
             break;
         }
 
+        Vector2 movementDir = mInputMovementDir;
+
         if (
-            mInputMovementDir.x != 0.f ||
-            (mInputMovementDir.y != 0.f && !mGame->GetApplyGravityScene()))
+            movementDir.x != 0 || movementDir.x != 0)
         {
             mBehaviorState = BehaviorState::Moving;
             break;
@@ -636,7 +651,7 @@ void Zoe::FireFireball()
         return;
 
     Vector2 fireballDir = mInputMovementDir;
-    
+
     if (fireballDir.LengthSq() == 0.f)
     {
         fireballDir = GetForward();
