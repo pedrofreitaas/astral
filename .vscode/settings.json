@@ -69,7 +69,10 @@
         "coroutine": "cpp",
         "format": "cpp",
         "span": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "queue": "cpp",
+        "stack": "cpp",
+        "text_encoding": "cpp"
     },
     "cmake.sourceDirectory": "C:/Users/freit/github/astral"
 }
