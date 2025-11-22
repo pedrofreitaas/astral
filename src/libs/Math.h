@@ -229,9 +229,13 @@ public:
 	// Normalize this vector
 	void Normalize()
 	{
-		float length = Length();
-		x /= length;
-		y /= length;
+		float lengthSQ = LengthSq();
+
+		if (lengthSQ > 0.f) {
+			float length = Math::Sqrt(lengthSQ);
+			x /= length;
+			y /= length;
+		}
 	}
 
 	// Normalize the provided vector
