@@ -181,20 +181,28 @@ void AABBColliderComponent::MaintainInCamera()
 
     if (getUpperLeftBorder.x < 0)
     {
-        mOwner->SetPosition(Vector2(-offset.x, mOwner->GetPosition().y));
+        ResolveHorizontalCollisions(
+            mOwner->GetComponent<RigidBodyComponent>(),
+            getUpperLeftBorder.x);
     }
     else if (getBottomRightBorder.x > maxXBoundary)
     {
-        mOwner->SetPosition(Vector2(maxXBoundary - mWidth - offset.x, mOwner->GetPosition().y));
+        ResolveHorizontalCollisions(
+            mOwner->GetComponent<RigidBodyComponent>(),
+            getBottomRightBorder.x - maxXBoundary);
     }
 
     if (getUpperLeftBorder.y < 0)
     {
-        mOwner->SetPosition(Vector2(mOwner->GetPosition().x, -offset.y));
+        ResolveVerticalCollisions(
+            mOwner->GetComponent<RigidBodyComponent>(),
+            getUpperLeftBorder.y);
     }
     else if (getBottomRightBorder.y > maxYBoundary)
     {
-        mOwner->SetPosition(Vector2(mOwner->GetPosition().x, maxYBoundary - mHeight - offset.y));
+        ResolveVerticalCollisions(
+            mOwner->GetComponent<RigidBodyComponent>(),
+            getBottomRightBorder.y - maxYBoundary);
     }
 }
 
@@ -207,20 +215,28 @@ void AABBColliderComponent::MaintainInMap()
 
     if (getUpperLeftBorder.x < 0)
     {
-        mOwner->SetPosition(Vector2(0, mOwner->GetPosition().y));
+        ResolveHorizontalCollisions(
+            mOwner->GetComponent<RigidBodyComponent>(),
+            getUpperLeftBorder.x);
     }
     else if (getBottomRightBorder.x > maxXBoundary)
     {
-        mOwner->SetPosition(Vector2(maxXBoundary - mWidth, mOwner->GetPosition().y));
+        ResolveHorizontalCollisions(
+            mOwner->GetComponent<RigidBodyComponent>(),
+            getBottomRightBorder.x - maxXBoundary);
     }
 
     if (getUpperLeftBorder.y < 0)
     {
-        mOwner->SetPosition(Vector2(mOwner->GetPosition().x, 0));
+        ResolveVerticalCollisions(
+            mOwner->GetComponent<RigidBodyComponent>(),
+            getUpperLeftBorder.y);
     }
     else if (getBottomRightBorder.y > maxYBoundary)
     {
-        mOwner->SetPosition(Vector2(mOwner->GetPosition().x, maxYBoundary - mHeight));
+        ResolveVerticalCollisions(
+            mOwner->GetComponent<RigidBodyComponent>(),
+            getBottomRightBorder.y - maxYBoundary);
     }
 }
 
