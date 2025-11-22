@@ -6,7 +6,7 @@
  "name":"bedroom",
  "spacing":0,
  "tilecount":224,
- "tiledversion":"1.11.1-99-gec89c545",
+ "tiledversion":"1.11.2",
  "tileheight":32,
  "tiles":[
         {
@@ -219,18 +219,7 @@
              "objects":[
                     {
                      "height":32,
-                     "id":1,
-                     "name":"",
-                     "rotation":0,
-                     "type":"",
-                     "visible":true,
-                     "width":4,
-                     "x":28,
-                     "y":0
-                    }, 
-                    {
-                     "height":32,
-                     "id":2,
+                     "id":3,
                      "name":"",
                      "rotation":0,
                      "type":"",
@@ -1064,6 +1053,32 @@
         }, 
         {
          "id":106,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "id":2,
+             "name":"",
+             "objects":[
+                    {
+                     "height":15,
+                     "id":1,
+                     "name":"",
+                     "rotation":0,
+                     "type":"",
+                     "visible":true,
+                     "width":32,
+                     "x":0,
+                     "y":0
+                    }],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        }, 
+        {
+         "id":107,
          "objectgroup":
             {
              "draworder":"index",

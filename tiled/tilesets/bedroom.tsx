@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.1-99-gec89c545" name="bedroom" tilewidth="32" tileheight="32" tilecount="224" columns="16">
+<tileset version="1.10" tiledversion="1.11.2" name="bedroom" tilewidth="32" tileheight="32" tilecount="224" columns="16">
  <editorsettings>
   <export target="../../assets/Levels/Tilesets/bedroom.json" format="json"/>
  </editorsettings>
@@ -40,8 +40,7 @@
  </tile>
  <tile id="17">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="28" y="0" width="4" height="32"/>
-   <object id="2" x="28" y="0" width="4" height="32"/>
+   <object id="3" x="28" y="0" width="4" height="32"/>
   </objectgroup>
  </tile>
  <tile id="18">
@@ -193,6 +192,11 @@
   </objectgroup>
  </tile>
  <tile id="106">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="0" width="32" height="15"/>
+  </objectgroup>
+ </tile>
+ <tile id="107">
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="32" height="15"/>
   </objectgroup>

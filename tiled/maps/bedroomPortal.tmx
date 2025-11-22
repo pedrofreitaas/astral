@@ -24,10 +24,10 @@
 267,322,267,267,267,41,
 283,311,382,383,339,41,
 0,327,397,398,355,41,
-0,0,413,414,0,41,
-250,254,0,0,0,41,
-41,270,0,0,0,41,
-41,270,0,0,0,41,
+0,0,413,414,265,41,
+250,254,0,0,265,41,
+41,270,0,0,265,41,
+41,270,0,0,265,41,
 41,270,0,0,337,41,
 41,271,250,250,353,41,
 41,41,41,41,41,41
@@ -38,24 +38,24 @@
 251,251,251,251,256,0,
 0,401,0,0,265,0,
 0,0,386,0,265,0,
-0,0,0,0,265,0,
-0,0,0,0,265,0,
-0,0,0,0,265,0,
-0,0,0,0,265,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
 0,0,0,0,265,0,
 0,0,0,0,272,0,
 0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup id="4" name="objects">
-  <object id="3" x="57.5" y="144" width="84.5" height="40">
+  <object id="3" x="39.5" y="144" width="112.75" height="40">
    <properties>
     <property name="cutscene_name" value="portalSuck"/>
     <property name="event" value="enter"/>
     <property name="function_name" value="play_cutscene"/>
    </properties>
   </object>
-  <object id="4" x="8.3501" y="78.6058" width="50.7998" height="49.7883">
+  <object id="4" x="16.3501" y="80.3558" width="27.2998" height="27.2883">
    <properties>
     <property name="entity_code" type="int" value="0"/>
     <property name="event" value="atStart"/>
