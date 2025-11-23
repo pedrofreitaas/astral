@@ -22,7 +22,12 @@ enum class ColliderLayer
     Item,
     Portal,
     Projectile,
-    Fireball
+    Fireball,
+    SpikesBlock,
+    Spikes,
+    SpearBlock,
+    SpearTip,
+    Shuriken
 };
 
 class AABBColliderComponent : public Component
