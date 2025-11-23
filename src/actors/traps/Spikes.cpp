@@ -26,7 +26,7 @@ Spikes::Spikes(Game *game, const Vector2 &position)
     mTimerComponent->AddTimer(Spikes::TRIGGER_COOLDOWN, [this]()
                               { Trigger(); });
 
-    SetPosition(position);
+    SetPosition(position - GetHalfSize());
 
     mSpikeCollider = new Collider(
         mGame,
