@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="13">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="14">
  <editorsettings>
   <export target="../../assets/Levels/Maps/level1.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/Terrain and Back Wall (32x32).tsx"/>
  <tileset firstgid="248" source="../tilesets/Platforms (32x32).tsx"/>
+ <tileset firstgid="272" source="../tilesets/traps.tsx"/>
  <layer id="2" name="behind_player" width="60" height="60">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -198,7 +199,7 @@
 </data>
  </layer>
  <objectgroup id="5" name="objects">
-  <object id="3" x="454.433" y="1736.54" width="40.1331" height="37.955">
+  <object id="3" x="457.433" y="1843.04" width="40.1331" height="37.955">
    <properties>
     <property name="distance" type="float" value="120"/>
     <property name="entity_code" type="int" value="1"/>
@@ -213,7 +214,7 @@
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
-  <object id="6" x="564.933" y="1686.02" width="40.1331" height="37.955">
+  <object id="6" x="519.933" y="1844.02" width="40.1331" height="37.955">
    <properties>
     <property name="distance" type="float" value="120"/>
     <property name="entity_code" type="int" value="2"/>
@@ -221,37 +222,9 @@
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
-  <object id="8" x="352.297" y="1862.93" width="21.5876" height="21.2277">
-   <properties>
-    <property name="entity_code" type="int" value="4"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="9" x="320.07" y="1862.25" width="21.5876" height="21.2277">
-   <properties>
-    <property name="entity_code" type="int" value="4"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="10" x="385.115" y="1863.8" width="21.5876" height="21.2277">
-   <properties>
-    <property name="entity_code" type="int" value="4"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="11" x="317.206" y="1763.39" width="21.5876" height="21.2277">
+  <object id="13" x="299.933" y="1768.44" width="24.7998" height="21.1216">
    <properties>
     <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="12" x="478.706" y="1817.89" width="21.5876" height="21.2277">
-   <properties>
-    <property name="entity_code" type="int" value="3"/>
     <property name="event" value="atStart"/>
     <property name="function_name" value="spawn_entity"/>
    </properties>
