@@ -49,5 +49,7 @@ private:
     bool mIsOnGround;
 
     Vector2 mVelocity;
-    Vector2 mAcceleration;
+    Vector2 mAcceleration, mNotAppliedAcceleration;
+
+    bool hasProcessedAppliedForceThisFrame;
 };

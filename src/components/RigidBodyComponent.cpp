@@ -20,17 +20,29 @@ RigidBodyComponent::RigidBodyComponent(class Actor* owner, float mass, float fri
         ,mFrictionCoefficient(friction)
         ,mVelocity(Vector2::Zero)
         ,mAcceleration(Vector2::Zero)
+        ,mNotAppliedAcceleration(Vector2::Zero)
         ,mIsOnGround(false)
+        ,hasProcessedAppliedForceThisFrame(false)
 {
-
+    if (mMass <= 0.f) {
+        throw std::invalid_argument("Mass must be greater than zero");
+    }
 }
 
 void RigidBodyComponent::ApplyForce(const Vector2 &force) {
+    if (hasProcessedAppliedForceThisFrame) {
+        mNotAppliedAcceleration += force * (1.f/mMass);
+        return;
+    }
+
     mAcceleration += force * (1.f/mMass);
 }
 
 void RigidBodyComponent::Update(float deltaTime)
 {
+    ApplyForce(mNotAppliedAcceleration); // apply any not applied acceleration from last frame
+    mNotAppliedAcceleration = Vector2::Zero;
+
     bool sceneAppliesGravity = mOwner->GetGame()->GetApplyGravityScene();
     bool applyGravity = mApplyGravity && sceneAppliesGravity;
     
@@ -42,6 +54,7 @@ void RigidBodyComponent::Update(float deltaTime)
 
     // Euler Integration
     mVelocity += mAcceleration * deltaTime;
+    hasProcessedAppliedForceThisFrame = true;
 
     // Clamp velocity
     mVelocity.x = Math::Clamp<float>(mVelocity.x, -MAX_SPEED_X, MAX_SPEED_X);
@@ -73,6 +86,7 @@ void RigidBodyComponent::Update(float deltaTime)
     }
 
     mAcceleration = Vector2::Zero;
+    hasProcessedAppliedForceThisFrame = false;
 }
 
 float RigidBodyComponent::GetVerticalForce(float totalBlocks) {
