@@ -123,7 +123,7 @@ private:
     void SetVentaniaOnCooldown(bool onCooldown) { mIsVentaniaOnCooldown = onCooldown; }
     bool mIsVentaniaOnCooldown, mTryingToTriggerVentania;
 
-    Collider *mAttackCollider;
+    Collider *mAttackCollider, *mAerialAttackCollider;
 
     SoundHandle mDamageSoundHandle;
 
