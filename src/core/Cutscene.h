@@ -112,12 +112,19 @@ private:
 class DialogueStep : public Step {
 public:
     DialogueStep(class Game* game, std::vector<std::string>& messages) 
-        : Step(game, -1.f), mMessages(messages), mSpeaker("") {}
+        : Step(game, -1.f), mMessages(messages), mSpeaker("") {};
     DialogueStep(class Game* game, const std::string& speaker, std::vector<std::string>& messages) 
-        : Step(game, -1.f), mMessages(messages), mSpeaker(speaker) {}
+        : Step(game, -1.f), mMessages(messages), mSpeaker(speaker) {};
     
-    void Update(float deltaTime) override;
+    void Initialize();
+    void Update(float deltaTime) override {
+        if (GetIsComplete())
+            return;
+        
+        Initialize();
+    };
     void PreUpdate() override {};
+
 private:
     std::vector<std::string> mMessages;
     std::string mSpeaker;
@@ -125,7 +132,7 @@ private:
 
 class Cutscene {
 public:
-    enum class State { Playing, Paused };
+    enum class State { Playing, Paused, Finished};
 
     explicit Cutscene(std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback, Game* game);
     ~Cutscene() = default;
@@ -139,6 +146,8 @@ public:
     bool IsComplete() const { return mIsComplete; }
 
 private:
+    void Finish();
+    
     std::vector<std::unique_ptr<Step>> mSteps;
     State mState;
     size_t mCurrentStepIdx;

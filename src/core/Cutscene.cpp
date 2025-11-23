@@ -37,6 +37,8 @@ void Cutscene::Play()  {
     }
     
     mState = State::Playing;
+    mGame->SetGamePlayState(Game::GamePlayState::PlayingCutscene);
+    
     mSteps[mCurrentStepIdx]->PreUpdate();
 }
 
@@ -45,7 +47,11 @@ void Cutscene::Pause() {
 }
 
 void Cutscene::Update(float deltaTime) {
-    if (mState != State::Playing || mIsComplete || mSteps.empty()) {
+    if (mIsComplete) {
+        return;
+    }
+
+    if (mState != State::Playing || mSteps.empty()) {
         SDL_Log("Updating a cutscene not valid for updates");
         return;
     }
@@ -57,13 +63,21 @@ void Cutscene::Update(float deltaTime) {
         mCurrentStepIdx++;
 
         if (mCurrentStepIdx >= mSteps.size()) {
-            mState = State::Paused;
-            mGame->SetGamePlayState(Game::GamePlayState::Playing);
-            mIsComplete = true;
-            if (mOnCompleteCallback) mOnCompleteCallback();
+            Finish();
             return;
         }
 
         mSteps[mCurrentStepIdx]->PreUpdate();
+    }
+}
+
+void Cutscene::Finish() {
+    mState = State::Finished;
+    mGame->SetGamePlayState(Game::GamePlayState::Playing);
+    mIsComplete = true;
+
+    if (mOnCompleteCallback) 
+    {
+        mOnCompleteCallback();
     }
 }
