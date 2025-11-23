@@ -83,3 +83,8 @@ void Collider::SetEnabled(bool enabled)
 {
     mColliderComponent->SetEnabled(enabled);
 }
+
+bool Collider::IsEnabled() const
+{
+    return mColliderComponent->IsEnabled();
+}

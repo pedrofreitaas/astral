@@ -36,6 +36,7 @@ public:
     void Dismiss();
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
+    bool IsEnabled() const;
     void SetEnabled(bool enabled);
     Actor* GetOwnerActor() const { return mOwner; }
 
