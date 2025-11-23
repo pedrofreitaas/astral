@@ -150,13 +150,17 @@ float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBo
 
 void AABBColliderComponent::ResolveHorizontalCollisions(RigidBodyComponent *rigidBody, const float minXOverlap)
 {
-    mOwner->SetPosition(mOwner->GetPosition() - Vector2(minXOverlap, 0.0f));
+    constexpr float epsilon = 0.001f; // Small separation buffer
+    float adjustment = minXOverlap + (minXOverlap > 0 ? epsilon : -epsilon);
+    mOwner->SetPosition(mOwner->GetPosition() - Vector2(adjustment, 0.0f));    
     rigidBody->SetVelocity(Vector2(0.f, rigidBody->GetVelocity().y));
 }
 
 void AABBColliderComponent::ResolveVerticalCollisions(RigidBodyComponent *rigidBody, const float minYOverlap)
 {
-    mOwner->SetPosition(mOwner->GetPosition() - Vector2(0.0f, minYOverlap));
+    constexpr float epsilon = 0.001f; // Small separation buffer
+    float adjustment = minYOverlap + (minYOverlap > 0 ? epsilon : -epsilon);
+    mOwner->SetPosition(mOwner->GetPosition() - Vector2(0.0f, adjustment));
     rigidBody->SetVelocity(Vector2(rigidBody->GetVelocity().x, 0.f));
 }
 
