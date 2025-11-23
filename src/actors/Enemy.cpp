@@ -4,6 +4,7 @@
 #include "../components/ai/AIMovementComponent.h"
 #include "Zoe.h"
 #include "Actor.h"
+#include "Collider.h"
 
 Enemy::Enemy(Game *game, float forwardSpeed, const Vector2 &position)
     : Actor(game)
@@ -92,9 +93,63 @@ Vector2 Enemy::GetCurrentAppliedForce(float modifier)
 void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
     mAIMovementComponent->OnHorizontalCollision(minOverlap, other);
+
+    if (other->GetLayer() == ColliderLayer::Fireball)
+    {
+        Fireball *fireball = static_cast<Fireball*>(other->GetOwner());
+        Vector2 fireballCenter = fireball->GetCenter();
+
+        Vector2 knockbackDir = GetCenter() - fireballCenter;
+        knockbackDir.Normalize();
+
+        TakeDamage(knockbackDir * Enemy::FIREBALL_KNOCKBACK_FORCE);
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::PlayerAttack)
+    {
+        Collider *collider = static_cast<Collider*>(other->GetOwner());
+        Vector2 colliderCenter = collider->GetCenter();
+
+        Vector2 knockbackDir = GetCenter() - colliderCenter;
+        knockbackDir.Normalize();
+
+        TakeDamage(knockbackDir * Enemy::PLAYER_ATTACK_KNOCKBACK_FORCE);
+        return;
+    }
 }
 
 void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
     mAIMovementComponent->OnVerticalCollision(minOverlap, other);
+
+    if (other->GetLayer() == ColliderLayer::Fireball)
+    {
+        Fireball *fireball = static_cast<Fireball*>(other->GetOwner());
+        Vector2 fireballCenter = fireball->GetCenter();
+
+        Vector2 knockbackDir = GetCenter() - fireballCenter;
+        knockbackDir.Normalize();
+
+        TakeDamage(knockbackDir * Enemy::FIREBALL_KNOCKBACK_FORCE);
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Player && minOverlap < 0.f)
+    {
+        TakeDamage();
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::PlayerAttack)
+    {
+        Collider *collider = static_cast<Collider*>(other->GetOwner());
+        Vector2 colliderCenter = collider->GetCenter();
+
+        Vector2 knockbackDir = GetCenter() - colliderCenter;
+        knockbackDir.Normalize();
+
+        TakeDamage(knockbackDir * Enemy::PLAYER_ATTACK_KNOCKBACK_FORCE);
+        return;
+    }
 }

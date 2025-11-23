@@ -249,28 +249,14 @@ void Zod::ManageAnimations()
 
 void Zod::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    if (other->GetLayer() == ColliderLayer::Player && minOverlap < 0.f)
-    {
-        TakeDamage();
-        return;
-    }
-
-    if (other->GetLayer() == ColliderLayer::Fireball)
-    {
-        TakeDamage();
-        return;
-    }
-
+    Enemy::OnVerticalCollision(minOverlap, other);
+    
     Actor::OnVerticalCollision(minOverlap, other);
 }
 
 void Zod::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    if (other->GetLayer() == ColliderLayer::Fireball)
-    {
-        TakeDamage();
-        return;
-    }
-   
+    Enemy::OnHorizontalCollision(minOverlap, other);
+    
     Actor::OnHorizontalCollision(minOverlap, other);
 }
