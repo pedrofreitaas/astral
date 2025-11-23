@@ -8,6 +8,9 @@
 #include "../actors/Tile.h"
 #include "../libs/Math.h"
 #include "../actors/Actor.h"
+#include "../actors/traps/Shuriken.h"
+#include "../actors/traps/Spear.h"
+#include "../actors/traps/Spikes.h"
 
 SpatialHashing::SpatialHashing(int cellSize, int width, int height)
     : mCellSize(cellSize), mWidth(width), mHeight(height)
@@ -444,7 +447,14 @@ bool SpatialHashing::isTileCell(int row, int col)
         return false;
 
     return std::any_of(actors.begin(), actors.end(), [](Actor *a)
-                       { return dynamic_cast<Tile *>(a) != nullptr; });
+    { 
+        bool isTile = dynamic_cast<Tile *>(a) != nullptr; 
+        bool isSpikes = dynamic_cast<Spikes *>(a) != nullptr;
+        bool isSpear = dynamic_cast<Spear *>(a) != nullptr;
+        bool isShuriken = dynamic_cast<Shuriken *>(a) != nullptr;
+        
+        return isTile || isSpikes || isSpear || isShuriken;
+    });
 }
 
 bool SpatialHashing::isPlaformCell(int row, int col)
