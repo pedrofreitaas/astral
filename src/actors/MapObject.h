@@ -17,6 +17,9 @@ public:
         Zoe=0,
         Sith=1,
         Zod=2,
+        Shuriken=3,
+        Spear=4,
+        Spikes=5,
     };
 
     MapObject(Game *game, int inId, const std::string &ev, const std::string &func_name, 

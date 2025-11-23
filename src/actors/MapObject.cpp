@@ -4,6 +4,9 @@
 #include "../actors/enemies/Sith.h"
 #include "../actors/enemies/Zod.h"
 #include "../actors/Zoe.h"
+#include "../actors/traps/Shuriken.h"
+#include "../actors/traps/Spear.h"
+#include "../actors/traps/Spikes.h"
 
 MapObject::MapObject(Game *game, int inId, const std::string &ev, const std::string &func_name,
                      const Vector2 &pos, const Vector2 &size, const json &parameters)
@@ -170,6 +173,15 @@ void MapObject::SpawnEntity()
         break;
     case EntityCode::Zod:
         new Zod(mGame, 1200.f, GetCenter());
+        break;
+    case EntityCode::Shuriken:
+        new Shuriken(mGame, GetCenter());
+        break;
+    case EntityCode::Spear:
+        new Spear(mGame, GetCenter());
+        break;
+    case EntityCode::Spikes:
+        new Spikes(mGame, GetCenter());
         break;
     default:
         throw std::runtime_error("MapObject unknown SpawnCode");
