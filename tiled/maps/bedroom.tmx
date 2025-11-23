@@ -48,21 +48,21 @@
 </data>
  </layer>
  <objectgroup id="4" name="objects">
-  <object id="1" x="204.127" y="168.803" width="40.1331" height="106.663">
+  <object id="1" x="207.117" y="167.806" width="40.1331" height="106.663">
    <properties>
     <property name="cutscene_name" value="leave_bedroom"/>
     <property name="event" value="enter"/>
     <property name="function_name" value="play_cutscene"/>
    </properties>
   </object>
-  <object id="5" x="460.794" y="58.8033" width="16.7998" height="106.663">
+  <object id="5" x="442.856" y="58.8033" width="34.7381" height="106.663">
    <properties>
     <property name="cutscene_name" value="enterBedroomPortal"/>
     <property name="event" value="enter"/>
     <property name="function_name" value="play_cutscene"/>
    </properties>
   </object>
-  <object id="6" x="72.2644" y="110.142" width="50.7998" height="49.7883">
+  <object id="6" x="60.3055" y="126.087" width="32.8615" height="34.3414">
    <properties>
     <property name="entity_code" type="int" value="0"/>
     <property name="event" value="atStart"/>
