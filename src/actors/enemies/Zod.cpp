@@ -32,7 +32,8 @@ ZodProjectile::ZodProjectile(
     
     mBehaviorState = BehaviorState::Moving;
 
-    SetPosition(position - mDrawAnimatedComponent->GetHalfSpriteSize());
+    SetPosition(position - GetHalfSize());
+
     mDirection = target - GetCenter();
     mDirection.Normalize();
 }

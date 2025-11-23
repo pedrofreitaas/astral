@@ -36,7 +36,8 @@ SithProjectile::SithProjectile(
     mDrawAnimatedComponent->SetAnimation("flying");
     mBehaviorState = BehaviorState::Moving;
 
-    SetPosition(position - mDrawAnimatedComponent->GetHalfSpriteSize());
+    SetPosition(position - GetHalfSize());
+
     mDirection = target - GetCenter();
     mDirection.Normalize();
 }
