@@ -8,6 +8,10 @@ Shuriken::Shuriken(Game *game, const Vector2 &position)
     mColliderComponent = new AABBColliderComponent(
         this, 3, 3, 26, 26, ColliderLayer::Shuriken);
 
+    mColliderComponent->SetIgnoreLayers({
+        ColliderLayer::PlayerAttack
+    });
+
     mDrawComponent = new DrawAnimatedComponent(
         this,
         "../assets/Sprites/Enemies/Traps/Shuriken/texture.png",

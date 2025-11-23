@@ -8,6 +8,10 @@ Spear::Spear(Game *game, const Vector2 &position)
     mColliderComponent = new AABBColliderComponent(
         this, 4, 60, 8, 3, ColliderLayer::SpearBlock);
 
+    mColliderComponent->SetIgnoreLayers({
+        ColliderLayer::PlayerAttack
+    });
+
     mDrawComponent = new DrawAnimatedComponent(
         this,
         "../assets/Sprites/Enemies/Traps/Spear/texture.png",
@@ -35,7 +39,7 @@ Spear::Spear(Game *game, const Vector2 &position)
         {},
         DismissOn::None,
         ColliderLayer::SpearTip,
-        {ColliderLayer::SpearBlock},
+        {ColliderLayer::SpearBlock, ColliderLayer::PlayerAttack},
         -1.f);
 
     Vector2 toTipCenter = mTipCollider->GetCenter() - GetPosition();

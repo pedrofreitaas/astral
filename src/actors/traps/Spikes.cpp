@@ -8,6 +8,10 @@ Spikes::Spikes(Game *game, const Vector2 &position)
     mColliderComponent = new AABBColliderComponent(
         this, 0, 28, 32, 4, ColliderLayer::SpikesBlock);
 
+    mColliderComponent->SetIgnoreLayers({
+        ColliderLayer::PlayerAttack
+    });
+
     mDrawComponent = new DrawAnimatedComponent(
         this,
         "../assets/Sprites/Enemies/Traps/Spikes/texture.png",
@@ -36,7 +40,7 @@ Spikes::Spikes(Game *game, const Vector2 &position)
         [this](bool collided, const float minOverlap, AABBColliderComponent *other) {},
         DismissOn::None,
         ColliderLayer::Spikes,
-        {ColliderLayer::SpikesBlock},
+        {ColliderLayer::SpikesBlock, ColliderLayer::PlayerAttack},
         -1.f,
         nullptr,
         false);
