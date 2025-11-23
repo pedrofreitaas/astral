@@ -7,7 +7,7 @@ DialogueSystem::DialogueSystem(Game::GamePlayState currentGameState)
     : mGame(nullptr), mFont(nullptr), mSmallFont(nullptr), mCurrentLine(0), mTextTexture(nullptr),
       mIsActive(false), mContinuePressed(false), mPromptTexture(nullptr), mPreviousGameState(currentGameState),
       mSpeakerName(""), mSpeakerTexture(nullptr), mSpeakerOffset(-5.0f, -10.0f), mTextOffset(0.0f, 0.0f),
-      mLineTimer(0.0f), mLineDuration(5.0f)
+      mLineTimer(0.0f), mLineDuration(5.0f), mStepDialogueSound(SoundHandle::Invalid)
 {
 }
 
@@ -84,7 +84,6 @@ void DialogueSystem::StartDialogue(const std::vector<std::string>& lines, std::f
     mContinuePressed = true;
     mLineTimer = 0.0f;
 
-    mPreviousGameState = mGame->GetGamePlayState();
     mGame->SetGamePlayState(Game::GamePlayState::Dialogue);
 
     CreateTextTexture();
@@ -267,7 +266,11 @@ void DialogueSystem::AdvanceDialogue()
 {
     mLineTimer = 0.0f;
     mCurrentLine++;
-    mGame->GetAudio()->PlaySound("dialogueStep.wav");
+    
+    if (!mStepDialogueSound.IsValid() || mGame->GetAudio()->GetSoundState(mStepDialogueSound) != SoundState::Playing)
+    {
+        mStepDialogueSound = mGame->GetAudio()->PlaySound("dialogueStep.wav");
+    }
 
     if (mCurrentLine >= mLines.size())
     {
@@ -275,7 +278,7 @@ void DialogueSystem::AdvanceDialogue()
         
         if (mOnComplete)
         {
-            mGame->SetGamePlayState(mPreviousGameState);
+            mGame->GoBackToPreviousGameState();
             mGame->GetZoe()->LockAbilitiesForDuration(0.25f);
             mOnComplete();
         }

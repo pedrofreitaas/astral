@@ -5,6 +5,7 @@
 #include <SDL_ttf.h>
 #include "../core/Game.h"
 #include "../libs/Math.h"
+#include "../core/AudioSystem.h"
 
 class Game;
 struct SDL_Renderer;
@@ -60,4 +61,6 @@ private:
     bool mContinuePressed;
     float mLineTimer;
     float mLineDuration;
+
+    SoundHandle mStepDialogueSound;
 };
