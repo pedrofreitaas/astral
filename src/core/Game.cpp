@@ -567,7 +567,7 @@ void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
         std::vector<AABBColliderComponent *> colliders = actor->GetComponents<AABBColliderComponent>();
         for (auto collider : colliders)
         {
-            if (collider)
+            if (collider && collider->IsEnabled())
             {
                 SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
                 Vector2 min = collider->GetMin();
