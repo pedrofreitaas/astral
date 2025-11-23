@@ -55,9 +55,9 @@ class Zoe : public Actor
     float VETANIA_SPEED = 20000.f;
     float VETANIA_COOLDOWN = 0.75f;
 
-    float SPIKE_KNOCKBACK_FORCE = 15000.f;
-    float SPEAR_KNOCKBACK_FORCE = 15000.f;
-    float SHURIKEN_KNOCKBACK_FORCE = 15000.f;
+    float SPIKE_KNOCKBACK_FORCE = 8000.f;
+    float SPEAR_KNOCKBACK_FORCE = 6000.f;
+    float SHURIKEN_KNOCKBACK_FORCE = 10000.f;
     
     SDL_Scancode FIREBALL_KEY = SDL_SCANCODE_Q;
     SDL_Scancode VENTANIA_KEY = SDL_SCANCODE_E;

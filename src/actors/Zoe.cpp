@@ -755,12 +755,11 @@ void Zoe::TakeDamage(const Vector2 &knockback)
 
     Actor::TakeDamage(knockback);
 
-    if (mDamageSoundHandle.IsValid())
+    if (!mDamageSoundHandle.IsValid() ||
+         mGame->GetAudio()->GetSoundState(mDamageSoundHandle) == SoundState::Stopped)
     {
-        mGame->GetAudio()->StopSound(mDamageSoundHandle);
+        mDamageSoundHandle = mGame->GetAudio()->PlaySound("zoeTakeDamage.wav");
     }
-
-    mDamageSoundHandle = mGame->GetAudio()->PlaySound("zoeTakeDamage.wav");
 }
 
 void Zoe::LockAbilitiesForDuration(float duration)
