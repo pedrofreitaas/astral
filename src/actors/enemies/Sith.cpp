@@ -297,6 +297,8 @@ void Sith::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
         TakeDamage();
         return;
     }
+
+    Actor::OnVerticalCollision(minOverlap, other);
 }
 
 void Sith::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
@@ -306,4 +308,6 @@ void Sith::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* 
         TakeDamage();
         return;
     }
+
+    Actor::OnHorizontalCollision(minOverlap, other);
 }

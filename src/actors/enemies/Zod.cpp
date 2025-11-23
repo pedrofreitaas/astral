@@ -260,6 +260,8 @@ void Zod::OnVerticalCollision(const float minOverlap, AABBColliderComponent* oth
         TakeDamage();
         return;
     }
+
+    Actor::OnVerticalCollision(minOverlap, other);
 }
 
 void Zod::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
@@ -269,4 +271,6 @@ void Zod::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* o
         TakeDamage();
         return;
     }
+   
+    Actor::OnHorizontalCollision(minOverlap, other);
 }
