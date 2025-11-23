@@ -37,7 +37,9 @@ Spikes::Spikes(Game *game, const Vector2 &position)
         DismissOn::None,
         ColliderLayer::Spikes,
         {ColliderLayer::SpikesBlock},
-        -1.f);
+        -1.f,
+        nullptr,
+        false);
     
     mSpikeCollider->SetEnabled(false);
 }
