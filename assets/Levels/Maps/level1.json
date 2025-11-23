@@ -308,8 +308,89 @@
                  "type":"",
                  "visible":true,
                  "width":40.1331,
-                 "x":564.93345,
-                 "y":1686.0225
+                 "x":564.933,
+                 "y":1686.02
+                }, 
+                {
+                 "height":21.2277272727272,
+                 "id":8,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"entity_code",
+                         "type":"int",
+                         "value":4
+                        }, 
+                        {
+                         "name":"event",
+                         "type":"string",
+                         "value":"atStart"
+                        }, 
+                        {
+                         "name":"function_name",
+                         "type":"string",
+                         "value":"spawn_entity"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":21.5876454545455,
+                 "x":352.297086363636,
+                 "y":1862.93159090909
+                }, 
+                {
+                 "height":21.2277,
+                 "id":9,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"entity_code",
+                         "type":"int",
+                         "value":4
+                        }, 
+                        {
+                         "name":"event",
+                         "type":"string",
+                         "value":"atStart"
+                        }, 
+                        {
+                         "name":"function_name",
+                         "type":"string",
+                         "value":"spawn_entity"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":21.5876,
+                 "x":320.069836363636,
+                 "y":1862.24978636364
+                }, 
+                {
+                 "height":21.2277,
+                 "id":10,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"entity_code",
+                         "type":"int",
+                         "value":4
+                        }, 
+                        {
+                         "name":"event",
+                         "type":"string",
+                         "value":"atStart"
+                        }, 
+                        {
+                         "name":"function_name",
+                         "type":"string",
+                         "value":"spawn_entity"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":21.5876,
+                 "x":385.115290909091,
+                 "y":1863.79524090909
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -318,7 +399,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":7,
+ "nextobjectid":11,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
