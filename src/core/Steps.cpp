@@ -118,32 +118,27 @@ void SpawnStep::Update(float deltaTime)
     }
 }
 
-void DialogueStep::Update(float deltaTime)
+void DialogueStep::Initialize()
 {
-    if (GetIsComplete())
-        return;
-
-    Step::Update(deltaTime);
-
     if (!mSpeaker.empty())
     {
         mGame->GetDialogueSystem()->StartDialogueWithSpeaker(
             mSpeaker,
             mMessages,
-            [this]()
-            {
+            [this](){
+                mGame->SetGamePlayState(Game::GamePlayState::PlayingCutscene);
                 SetComplete();
             });
+        
+        return;
     }
-    else
-    {
-        mGame->GetDialogueSystem()->StartDialogue(
-            mMessages,
-            [this]()
-            {
-                SetComplete();
-            });
-    }
+
+    mGame->GetDialogueSystem()->StartDialogue(
+        mMessages,
+        [this](){
+            mGame->SetGamePlayState(Game::GamePlayState::PlayingCutscene);
+            SetComplete();
+        });
 }
 
 void SoundStep::Update(float deltaTime)
