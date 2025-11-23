@@ -5,6 +5,10 @@
 #include "../ui/DialogueSystem.h"
 #include "../components/TimerComponent.h"
 #include "./Collider.h"
+#include "./traps/Spikes.h"
+#include "./traps/Spear.h"
+#include "./traps/Shuriken.h"
+#include "../libs/Math.h"
 
 Ventania::Ventania(Game *game, Vector2 playerCenter, Vector2 playerMoveDir, float forwardSpeed) : Actor(game)
 {
@@ -581,6 +585,29 @@ void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *o
         TakeDamage();
         return;
     }
+
+    if (other->GetLayer() == ColliderLayer::Spikes)
+    {
+        Collider *spikeCollider = static_cast<Collider*>(other->GetOwner());
+        Spikes *spikes = static_cast<Spikes*>(spikeCollider->GetOwnerActor());
+        TakeSpikeHit(spikes->GetBaseCenter());
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::SpearTip)
+    {
+        Collider *spearTipCollider = static_cast<Collider*>(other->GetOwner());
+        Spear *spear = static_cast<Spear*>(spearTipCollider->GetOwnerActor());
+        TakeSpearHit(spear->GetTipCenter());
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Shuriken) //shuriken doesnt use intermediate collider
+    {
+        Shuriken *shuriken = static_cast<Shuriken*>(other->GetOwner());
+        TakeShurikenHit(shuriken->GetCenter());
+        return;
+    }
 }
 
 void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
@@ -603,6 +630,29 @@ void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *oth
     if (other->GetLayer() == ColliderLayer::Enemy && minOverlap < 0.f)
     {
         TakeDamage();
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Spikes)
+    {
+        Collider *spikeCollider = static_cast<Collider*>(other->GetOwner());
+        Spikes *spikes = static_cast<Spikes*>(spikeCollider->GetOwnerActor());
+        TakeSpikeHit(spikes->GetBaseCenter());
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::SpearTip)
+    {
+        Collider *spearTipCollider = static_cast<Collider*>(other->GetOwner());
+        Spear *spear = static_cast<Spear*>(spearTipCollider->GetOwnerActor());
+        TakeSpearHit(spear->GetTipCenter());
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Shuriken) //shuriken doesnt use intermediate collider
+    {
+        Shuriken *shuriken = static_cast<Shuriken*>(other->GetOwner());
+        TakeShurikenHit(shuriken->GetCenter());
         return;
     }
 }
@@ -711,4 +761,34 @@ void Zoe::LockAbilitiesForDuration(float duration)
     mAbilitiesLocked = true;
     mTimerComponent->AddTimer(duration, [this]()
                               { mAbilitiesLocked = false; });
+}
+
+void Zoe::TakeSpikeHit(const Vector2 &SpikeBaseCenter)
+{
+    float knockbackX = Math::Sign(GetCenter().x - SpikeBaseCenter.x);
+
+    Vector2 knockback = Vector2(knockbackX, -1.f);
+    knockback.Normalize();
+
+    TakeDamage(knockback * Zoe::SPIKE_KNOCKBACK_FORCE);
+}
+
+void Zoe::TakeSpearHit(const Vector2 &SpearTipCenter)
+{
+    float knockbackX = Math::Sign(GetCenter().x - SpearTipCenter.x);
+
+    Vector2 knockback = Vector2(knockbackX, -1.f);
+    knockback.Normalize();
+
+    TakeDamage(knockback * Zoe::SPEAR_KNOCKBACK_FORCE);
+}
+
+void Zoe::TakeShurikenHit(const Vector2 &ShurikenCenter)
+{
+    float knockbackX = Math::Sign(GetCenter().x - ShurikenCenter.x);
+
+    Vector2 knockback = Vector2(knockbackX, -1.f);
+    knockback.Normalize();
+
+    TakeDamage(knockback * Zoe::SHURIKEN_KNOCKBACK_FORCE);
 }
