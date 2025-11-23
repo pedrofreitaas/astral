@@ -53,6 +53,7 @@ public:
     void SetOffset(const Vector2& offset) { mOffset = offset; }
     ColliderLayer GetLayer() const { return mLayer; }
     bool IsTangible() const { return mIsTangible; }
+    void SetIsTangible(bool isTangible) { mIsTangible = isTangible; }
 
     void MaintainInCamera();
     void MaintainInMap();
