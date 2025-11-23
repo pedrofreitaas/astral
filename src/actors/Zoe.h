@@ -129,6 +129,8 @@ private:
 
     Collider *mAttackCollider;
 
+    SoundHandle mDamageSoundHandle;
+
     bool mAbilitiesLocked, mMovementLocked;
 
     void TakeSpikeHit(const Vector2 &SpikeBaseCenter);

@@ -198,7 +198,8 @@ Zoe::Zoe(
       mTryingToFireFireball(false), mIsFireballOnCooldown(false),
       mIsVentaniaOnCooldown(false), mTryingToTriggerVentania(false),
       mIsTryingToHit(false), mAttackCollider(nullptr), mIsTryingToDodge(false),
-      mInputMovementDir(0.f, 0.f), mMovementLocked(false), mAbilitiesLocked(false)
+      mInputMovementDir(0.f, 0.f), mMovementLocked(false), mAbilitiesLocked(false),
+      mDamageSoundHandle(SoundHandle::Invalid)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
 
@@ -753,7 +754,12 @@ void Zoe::TakeDamage(const Vector2 &knockback)
 
     Actor::TakeDamage(knockback);
 
-    mGame->GetAudio()->PlaySound("zoeTakeDamage.wav");
+    if (mDamageSoundHandle.IsValid())
+    {
+        mGame->GetAudio()->StopSound(mDamageSoundHandle);
+    }
+
+    mDamageSoundHandle = mGame->GetAudio()->PlaySound("zoeTakeDamage.wav");
 }
 
 void Zoe::LockAbilitiesForDuration(float duration)
