@@ -41,14 +41,14 @@ Game::Game(int windowWidth, int windowHeight)
       mNextScene(GameScene::Level1), mBackgroundTexture(nullptr), mBackgroundSize(Vector2::Zero),
       mBackgroundPosition(Vector2::Zero), mMap(nullptr), mBackgroundIsCameraWise(true),
       mCurrentCutscene(nullptr), mCutscenes(), mGamePlayState(GamePlayState::Playing),
-      mDebugMode(false), mPrevDeltaTime(0.0f), mEnemies(), mStar(nullptr), mApplyGravityScene(true),
+      mDebugMode(false), mEnemies(), mStar(nullptr), mApplyGravityScene(true),
       mCameraCenter(CameraCenter::Zoe), mMaintainCameraInMap(true), mCameraCenterPos(Vector2::Zero),
       mController(nullptr), mMustAlwaysUpdateActors(), mPreviousGameState(GamePlayState::Playing)
 {
     mRealWindowWidth = windowWidth;
     mRealWindowHeight = windowHeight;
     mWindowWidth = 640;
-    mWindowHeight = 360;
+    mWindowHeight = 352;
 
     mDialogueSystem = new DialogueSystem(mGamePlayState);
 }
@@ -341,6 +341,8 @@ void Game::ProcessInputActors()
 {
     const Uint8 *state = SDL_GetKeyboardState(nullptr);
 
+    std::vector<Actor *> toProcessActors = mMustAlwaysUpdateActors;
+
     // Get actors on camera
     std::vector<Actor *> actorsOnCamera = mSpatialHashing->QueryOnCamera(
         mCameraPos,
@@ -348,6 +350,15 @@ void Game::ProcessInputActors()
         mWindowHeight);
 
     for (auto actor : actorsOnCamera)
+    {
+        // Avoid duplicates
+        if (std::find(toProcessActors.begin(), toProcessActors.end(), actor) == toProcessActors.end())
+        {
+            toProcessActors.push_back(actor);
+        }
+    }
+
+    for (auto actor : toProcessActors)
     {
         actor->ProcessInput(state);
     }
@@ -452,8 +463,6 @@ void Game::UpdateGame()
 
     UpdateSceneManager(deltaTime);
     UpdateCamera();
-
-    mPrevDeltaTime = deltaTime;
 }
 
 void Game::UpdateCamera()
@@ -464,7 +473,23 @@ void Game::UpdateCamera()
     if (mMap == nullptr)
         return;
 
-    Vector2 center = (mCameraCenter == CameraCenter::Zoe) ? mZoe->GetPosition() : mCameraCenterPos;
+
+    Vector2 center;
+    switch (mCameraCenter)
+    {
+    case CameraCenter::Zoe:
+        center = mZoe->GetCenter();
+        break;
+    case CameraCenter::Point:
+        center = mCameraCenterPos;
+        break;
+    case CameraCenter::LogicalWindowSizeCenter:
+        center = GetBoxCenter(
+            mZoe->GetCenter(),
+            static_cast<float>(mWindowWidth), 
+            static_cast<float>(mWindowHeight));
+        break;
+    }
 
     float cameraX = center.x - mWindowWidth / 2.0f;
     float cameraY = center.y - mWindowHeight / 2.0f;
@@ -513,7 +538,7 @@ void Game::UpdateActors(float deltaTime)
         actor->Update(deltaTime);
     }
 
-    for (auto actor : actorsOnCamera)
+    for (auto actor : toUpdateActors)
     {
         if (actor->GetState() == ActorState::Destroy)
         {
@@ -935,4 +960,17 @@ void Game::SetZoe(class Zoe *zoe)
         mZoe->SetState(ActorState::Destroy);
     }
     mZoe = zoe;
+}
+
+Vector2 Game::GetBoxCenter(const Vector2& pos, float boxW, float boxH)
+{
+    // Determine which box the point is in
+    int boxX = static_cast<int>(pos.x / boxW);
+    int boxY = static_cast<int>(pos.y / boxH);
+
+    // Compute center of that box
+    float centerX = boxX * boxW + boxW * 0.5f;
+    float centerY = boxY * boxH + boxH * 0.5f;
+
+    return Vector2(centerX, centerY);
 }

@@ -59,7 +59,8 @@ public:
     enum class CameraCenter
     {
         Zoe,
-        Point
+        Point,
+        LogicalWindowSizeCenter
     };
 
     enum class SceneManagerState
@@ -177,7 +178,6 @@ public:
     void PauseCutscene();
     void ResetCutscenes();
 
-    float GetPrevDeltaTime() const { return mPrevDeltaTime; }
     class DialogueSystem *GetDialogueSystem() { return mDialogueSystem; }
 
     void SetStar(class Star *star) { mStar = star; };
@@ -198,6 +198,10 @@ public:
     void RemoveEnemy(class Enemy *enemy);
 
 private:
+    void SetCameraCenterToLogicalWindowSizeCenter() {
+        mCameraCenter = CameraCenter::LogicalWindowSizeCenter;
+        mCameraCenterPos = Vector2(.0f, .0f);
+    }
     void SetCameraCenterToZoe() {
         mCameraCenter = CameraCenter::Zoe;
         mCameraCenterPos = Vector2::Zero;
@@ -245,7 +249,6 @@ private:
 
     // Track elapsed time since game start
     Uint32 mTicksCount;
-    float mPrevDeltaTime;
 
     // Track actors state
     bool mIsRunning;
@@ -286,4 +289,6 @@ private:
     void DrawDebugInfo(std::vector<class Actor *> &actorsOnCamera);
 
     std::vector<class Actor*> mMustAlwaysUpdateActors; //use with caution, can highly impact performance
+
+    Vector2 GetBoxCenter(const Vector2& pos, float boxW, float boxH);
 };
