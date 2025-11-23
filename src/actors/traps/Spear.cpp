@@ -16,7 +16,7 @@ Spear::Spear(Game *game, const Vector2 &position)
         { AnimationEndCallback(animationName); });
 
     mRigidBodyComponent = new RigidBodyComponent(
-        this, 1.0f, 0.0f, false);
+        this, 1.0f, 0.0f, true);
 
     mDrawComponent->AddAnimation("idle", {0});
     mDrawComponent->AddAnimation("spiking", 1, 7);
@@ -38,7 +38,9 @@ Spear::Spear(Game *game, const Vector2 &position)
         {ColliderLayer::SpearBlock},
         -1.f);
 
-    SetPosition(position);
+    Vector2 toTipCenter = mTipCollider->GetCenter() - GetPosition();
+
+    SetPosition(position-toTipCenter);
 }
 
 void Spear::ManageState()
