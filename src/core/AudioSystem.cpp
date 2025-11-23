@@ -116,15 +116,17 @@ SoundHandle AudioSystem::PlaySound(const std::string& soundName, bool looping)
 // Stops the sound if it is currently playing
 void AudioSystem::StopSound(SoundHandle sound)
 {
-    if(mHandleMap.find(sound) == mHandleMap.end())
+    auto it = mHandleMap.find(sound);
+    if (it == mHandleMap.end())
     {
         SDL_Log("[AudioSystem] StopSound couldn't find handle %s", sound.GetDebugStr());
         return;
     }
 
-    Mix_HaltChannel(mHandleMap[sound].mChannel);
-    mHandleMap.erase(sound);
-    mChannels[mHandleMap[sound].mChannel].Reset();
+    int channel = it->second.mChannel;
+    Mix_HaltChannel(channel);
+    mHandleMap.erase(it);
+    mChannels[channel].Reset();
 }
 
 // Pauses the sound if it is currently playing
