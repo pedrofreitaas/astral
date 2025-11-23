@@ -89,7 +89,7 @@ void RigidBodyComponent::Update(float deltaTime)
     hasProcessedAppliedForceThisFrame = false;
 }
 
-float RigidBodyComponent::GetVerticalForce(float totalBlocks) {
+float RigidBodyComponent::GetVerticalVelY(float totalBlocks) {
     const float height = totalBlocks * Game::TILE_SIZE;
     const float v0 = std::sqrt(2.0f * GRAVITY * height); GRAVITY;
 

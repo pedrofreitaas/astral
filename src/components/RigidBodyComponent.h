@@ -28,7 +28,7 @@ public:
     void ApplyForce(const Vector2 &force);
     bool GetOnGround() { return mIsOnGround; }
 
-    float GetVerticalForce(float totalBlocks);
+    float GetVerticalVelY(float totalBlocks);
 
     int SpeedHDir() {
         if (mVelocity.x == 0) return 0;

@@ -364,7 +364,7 @@ void Zoe::ManageState()
         {
             mBehaviorState = BehaviorState::AerialAttacking;
             mGame->GetAudio()->PlaySound("zoeSmash.wav");
-            float upwardForce = mRigidBodyComponent->GetVerticalForce(.3f);
+            float upwardForce = mRigidBodyComponent->GetVerticalVelY(.3f);
             mRigidBodyComponent->ApplyForce(Vector2(0.f, upwardForce));
             break;
         }
@@ -459,7 +459,7 @@ void Zoe::ManageState()
         Vector2 movementDir = mInputMovementDir;
 
         if (
-            movementDir.x != 0 || movementDir.x != 0)
+            movementDir.x != 0 || movementDir.y != 0)
         {
             mBehaviorState = BehaviorState::Moving;
             break;
@@ -511,7 +511,7 @@ void Zoe::ManageState()
 }
 
 void Zoe::OnUpdate(float deltaTime)
-{
+{    
     if (mGame->GetGamePlayState() == Game::GamePlayState::Dialogue)
     {
         mDrawComponent->SetAnimation("idle");
@@ -530,7 +530,7 @@ void Zoe::OnUpdate(float deltaTime)
         SetRotation(Math::Pi);
     }
 
-    mColliderComponent->MaintainInMap();
+    // mColliderComponent->MaintainInMap();
     ManageAnimations();
 }
 
@@ -610,7 +610,7 @@ void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *o
         return;
     }
 
-    Actor::OnVerticalCollision(minOverlap, other);
+    Actor::OnHorizontalCollision(minOverlap, other);
 }
 
 void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
@@ -626,7 +626,7 @@ void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *oth
         mRigidBodyComponent->ApplyForce(
             Vector2(
                 0.f,
-                mRigidBodyComponent->GetVerticalForce(3)));
+                mRigidBodyComponent->GetVerticalVelY(3)));
         return;
     }
 
@@ -711,7 +711,7 @@ void Zoe::TriggerVentania()
 
     mRigidBodyComponent->SetVelocity(Vector2(0.f, 0.f));
 
-    Vector2 ventaniaDir = mInputMovementDir.LengthSq() >= 0.f ? mInputMovementDir : Vector2(0.f, 1.f);
+    Vector2 ventaniaDir = mInputMovementDir.LengthSq() > 0.f ? mInputMovementDir : Vector2(0.f, 1.f);
 
     mRigidBodyComponent->ApplyForce(ventaniaDir * Zoe::VETANIA_SPEED);
 
@@ -755,7 +755,7 @@ void Zoe::Jump()
     if (mBehaviorState == BehaviorState::Jumping)
         return;
     
-    float jumpForce = mRigidBodyComponent->GetVerticalForce(5);
+    float jumpForce = mRigidBodyComponent->GetVerticalVelY(5);
     mRigidBodyComponent->SumVelocity(Vector2(0.f, jumpForce));
     mBehaviorState = BehaviorState::Jumping;
 }
