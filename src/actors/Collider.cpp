@@ -10,7 +10,8 @@ Collider::Collider(
     ColliderLayer layer,
     std::vector<ColliderLayer> ignoredLayers,
     float timeToDismiss,
-    std::function<void()> dismissCallback
+    std::function<void()> dismissCallback,
+    bool isTangible
 ): Actor(game), 
    mOwner(owner),
    mCollideCallback(std::move(collideCallback)),
@@ -28,6 +29,7 @@ Collider::Collider(
     
     mColliderComponent->IgnoreLayers(ignoredLayers);
     mColliderComponent->SetEnabled(true);
+    mColliderComponent->SetIsTangible(isTangible);
 
     mTimerComponent = new TimerComponent(this);
 

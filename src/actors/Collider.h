@@ -19,6 +19,7 @@ enum class DismissOn {
 class Collider : public Actor
 {
 public:
+    // isTangible false wont solve collision 
     Collider(
         Game *game,
         Actor *owner,
@@ -29,7 +30,8 @@ public:
         ColliderLayer layer,
         std::vector<ColliderLayer> ignoredLayers = {},
         float timeToDismiss = 0.f,
-        std::function<void()> dismissCallback = nullptr);
+        std::function<void()> dismissCallback = nullptr,
+        bool isTangible = true);
 
     void Dismiss();
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
