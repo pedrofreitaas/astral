@@ -375,9 +375,7 @@ void Zoe::ManageState()
     {
         if (mIsTryingToJump && mGame->GetApplyGravityScene())
         {
-            float jumpForce = mRigidBodyComponent->GetVerticalForce(3);
-            mRigidBodyComponent->ApplyForce(Vector2(0.f, jumpForce));
-            mBehaviorState = BehaviorState::Jumping;
+            Jump();
             break;
         }
 
@@ -435,9 +433,7 @@ void Zoe::ManageState()
     {
         if (mIsTryingToJump && mGame->GetApplyGravityScene())
         {
-            float jumpForce = mRigidBodyComponent->GetVerticalForce(3);
-            mRigidBodyComponent->ApplyForce(Vector2(0.f, jumpForce));
-            mBehaviorState = BehaviorState::Jumping;
+            Jump();
             break;
         }
 
@@ -577,7 +573,7 @@ void Zoe::ManageAnimations()
                 mGame,
                 this,
                 GetCenter() + (GetRotation() == 0.f ? Vector2(11, -3) : Vector2(-22, -6)),
-                Vector2(9, 9),
+                Vector2(14, 14),
                 [this](bool collided, const float minOverlap, AABBColliderComponent *other) {},
                 DismissOn::Both,
                 ColliderLayer::PlayerAttack,
@@ -752,4 +748,14 @@ void Zoe::LockAbilitiesForDuration(float duration)
     mAbilitiesLocked = true;
     mTimerComponent->AddTimer(duration, [this]()
                               { mAbilitiesLocked = false; });
+}
+
+void Zoe::Jump()
+{
+    if (mBehaviorState == BehaviorState::Jumping)
+        return;
+    
+    float jumpForce = mRigidBodyComponent->GetVerticalForce(5);
+    mRigidBodyComponent->SumVelocity(Vector2(0.f, jumpForce));
+    mBehaviorState = BehaviorState::Jumping;
 }

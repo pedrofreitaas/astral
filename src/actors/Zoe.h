@@ -128,4 +128,6 @@ private:
     SoundHandle mDamageSoundHandle;
 
     bool mAbilitiesLocked, mMovementLocked;
+
+    void Jump();
 };

@@ -91,10 +91,7 @@ void RigidBodyComponent::Update(float deltaTime)
 
 float RigidBodyComponent::GetVerticalForce(float totalBlocks) {
     const float height = totalBlocks * Game::TILE_SIZE;
-    const float v0 = std::sqrt(2.0f * GRAVITY * height);
-    const float dt = mOwner->GetGame()->GetPrevDeltaTime();
+    const float v0 = std::sqrt(2.0f * GRAVITY * height); GRAVITY;
 
-    const float a_total = (v0 / dt) + GRAVITY;
-
-    return -mMass * a_total - 250.f; // small extra force to counter minor losses
+    return -mMass * v0; // small extra force to counter minor losses
 }
