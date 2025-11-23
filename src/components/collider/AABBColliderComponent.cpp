@@ -94,6 +94,7 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
             }
             
             mOwner->OnHorizontalCollision(overlap, collider);
+            collider->GetOwner()->OnHorizontalCollision(-overlap, this);
         }
     }
 
@@ -140,6 +141,7 @@ float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBo
             }
 
             mOwner->OnVerticalCollision(overlap, collider);
+            collider->GetOwner()->OnVerticalCollision(-overlap, this);
         }
     }
     
