@@ -152,8 +152,19 @@ public:
     class Zoe *GetZoe() { return mZoe; }
     void SetZoe(class Zoe *zoe);
 
-    void SetGamePlayState(GamePlayState state) { mGamePlayState = state; }
-    GamePlayState GetGamePlayState() const { return mGamePlayState; }
+    GamePlayState GetGamePlayState() const { 
+        return mGamePlayState; 
+    }
+
+    void SetGamePlayState(GamePlayState state) { 
+        mPreviousGameState = GetGamePlayState();
+        mGamePlayState = state; 
+    }
+
+    void GoBackToPreviousGameState() {
+        SetGamePlayState(mPreviousGameState);
+    }
+
     GameScene GetGameScene() const { return mGameScene; }
     SDL_Window *GetWindow() { return mWindow; }
     SDL_Renderer *GetRenderer() const { return mRenderer; }
@@ -238,7 +249,7 @@ private:
 
     // Track actors state
     bool mIsRunning;
-    GamePlayState mGamePlayState;
+    GamePlayState mGamePlayState, mPreviousGameState;
 
     // Track level state
     GameScene mGameScene;

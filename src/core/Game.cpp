@@ -43,7 +43,7 @@ Game::Game(int windowWidth, int windowHeight)
       mCurrentCutscene(nullptr), mCutscenes(), mGamePlayState(GamePlayState::Playing),
       mDebugMode(false), mPrevDeltaTime(0.0f), mEnemies(), mStar(nullptr), mApplyGravityScene(true),
       mCameraCenter(CameraCenter::Zoe), mMaintainCameraInMap(true), mCameraCenterPos(Vector2::Zero),
-      mController(nullptr), mMustAlwaysUpdateActors()
+      mController(nullptr), mMustAlwaysUpdateActors(), mPreviousGameState(GamePlayState::Playing)
 {
     mRealWindowWidth = windowWidth;
     mRealWindowHeight = windowHeight;
@@ -289,14 +289,10 @@ void Game::ProcessInput()
             break;
 
         case SDL_KEYDOWN:
-            // if clicks G, activate debug mode
             if (event.key.keysym.sym == SDLK_g && event.key.repeat == 0)
             {
                 mDebugMode = !mDebugMode;
-                if (mDebugMode)
-                    std::cout << "Debug mode activated" << std::endl;
-                else
-                    std::cout << "Debug mode deactivated" << std::endl;
+                if (mDebugMode) std::cout << "Debug mode activated" << std::endl;
             }
 
             // Handle key press for UI screens
@@ -308,7 +304,8 @@ void Game::ProcessInput()
             HandleKeyPressActors(event.key.keysym.sym, event.key.repeat == 0);
 
             // Check if the Return key has been pressed to pause/unpause the game
-            if (event.key.keysym.sym == SDLK_RETURN)
+            if (event.key.keysym.sym == SDLK_RETURN && 
+                GetGamePlayState() == GamePlayState::Playing)
             {
                 TogglePause();
             }
@@ -328,7 +325,16 @@ void Game::ProcessInput()
         }
     }
 
-    ProcessInputActors();
+    if (mGamePlayState == GamePlayState::Playing)
+    {
+        ProcessInputActors();
+    }
+
+    if (mGamePlayState == GamePlayState::Dialogue)
+    {
+        const Uint8 *state = SDL_GetKeyboardState(nullptr);
+        GetDialogueSystem()->HandleInput(state);
+    }
 }
 
 void Game::ProcessInputActors()
@@ -344,11 +350,6 @@ void Game::ProcessInputActors()
     for (auto actor : actorsOnCamera)
     {
         actor->ProcessInput(state);
-    }
-
-    if (mGamePlayState == GamePlayState::Dialogue)
-    {
-        GetDialogueSystem()->HandleInput(state);
     }
 }
 
@@ -415,7 +416,10 @@ void Game::UpdateGame()
 
     mAudio->Update(deltaTime);
 
-    GetDialogueSystem()->Update(deltaTime);
+    if (mGamePlayState == GamePlayState::Dialogue)
+    {
+        GetDialogueSystem()->Update(deltaTime);
+    }
 
     // Reinsert UI screens
     for (auto ui : mUIStack)
@@ -849,7 +853,6 @@ void Game::StartCutscene(const std::string &name)
     if (iter != mCutscenes.end())
     {
         mCurrentCutscene = iter->second;
-        mGamePlayState = GamePlayState::PlayingCutscene;
         mCurrentCutscene->Play();
         return;
     }
