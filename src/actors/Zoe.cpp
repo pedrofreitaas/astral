@@ -549,6 +549,7 @@ void Zoe::ManageAnimations()
         {
             mAttackCollider = new Collider(
                 mGame,
+                this,
                 GetCenter() + (GetRotation() == 0.f ? Vector2(11, -3) : Vector2(-22, -6)),
                 Vector2(9, 9),
                 [this](bool collided, const float minOverlap, AABBColliderComponent *other) {},

@@ -2,17 +2,21 @@
 
 Collider::Collider(
     Game *game,
+    Actor *owner,
     const Vector2 &position,
     const Vector2 &size,
-    std::function<void(bool collided, const float minOverlap, AABBColliderComponent *other)> dismissCallback, 
+    std::function<void(bool collided, const float minOverlap, AABBColliderComponent *other)> collideCallback, 
     DismissOn dismissOn,
     ColliderLayer layer,
     std::vector<ColliderLayer> ignoredLayers,
-    float timeToDismiss
+    float timeToDismiss,
+    std::function<void()> dismissCallback
 ): Actor(game), 
-   mDismissCallback(std::move(dismissCallback)),
+   mOwner(owner),
+   mCollideCallback(std::move(collideCallback)),
    mDismissOn(dismissOn), 
-   mTimeToDismiss(timeToDismiss)
+   mTimeToDismiss(timeToDismiss),
+   mDismissCallback(std::move(dismissCallback))
 {
     mColliderComponent = new AABBColliderComponent(
         this,
@@ -31,7 +35,7 @@ Collider::Collider(
     {
         mTimerComponent->AddTimer(mTimeToDismiss, [this]() {
             if (mDismissCallback) {
-                mDismissCallback(false, 0.f, nullptr);
+                mDismissCallback();
             }
             SetState(ActorState::Destroy);
         });
@@ -42,25 +46,38 @@ Collider::Collider(
 
 void Collider::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) 
 {
-    if (mDismissCallback) {
-        mDismissCallback(true, minOverlap, other);
+    if (mCollideCallback) {
+        mCollideCallback(true, minOverlap, other);
     }
+
     if (mDismissOn == DismissOn::Collision || mDismissOn == DismissOn::Both) {
         SetState(ActorState::Destroy);
+        if (mDismissCallback) {
+            mDismissCallback();
+        }
     }
 }
 
 void Collider::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) 
 {
-    if (mDismissCallback) {
-        mDismissCallback(true, minOverlap, other);
+    if (mCollideCallback) {
+        mCollideCallback(true, minOverlap, other);
     }
+
     if (mDismissOn == DismissOn::Collision || mDismissOn == DismissOn::Both) {
         SetState(ActorState::Destroy);
+        if (mDismissCallback) {
+            mDismissCallback();
+        }
     }
 }
 
 void Collider::Dismiss()
 {
     SetState(ActorState::Destroy);
+}
+
+void Collider::SetEnabled(bool enabled)
+{
+    mColliderComponent->SetEnabled(enabled);
 }
