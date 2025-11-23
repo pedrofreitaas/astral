@@ -46,9 +46,16 @@ MapObject::MapObject(Game *game, int inId, const std::string &ev, const std::str
     mRigidBodyComponent->SetApplyFriction(false);
 
     mColliderComponent = new AABBColliderComponent(
-        this, 0, 0, size.x, size.y,
+        this, 
+        0, 0, 
+        size.x, size.y,
         ColliderLayer::Objects,
-        false, 10);
+        false, 
+        10);
+    
+    mColliderComponent->SetIgnoreLayers({
+        ColliderLayer::Blocks
+    });
 
     if (ev == "atStart")
     {
@@ -84,13 +91,31 @@ void MapObject::OnUpdate(float deltaTime)
     // do logic before because components update before actor update
     float distanceToPlayerSQ = (mGame->GetZoe()->GetCenter() - GetCenter()).LengthSq();
 
-    if (
-        mEvent == "in" && mIsPlayerInside ||
-        mEvent == "out" && !mIsPlayerInside ||
-        mEvent == "enter" && mIsPlayerInside && !mWasPlayerInside ||
-        mEvent == "exit" && !mIsPlayerInside && mWasPlayerInside ||
-        mEvent == "closeToCenter" && distanceToPlayerSQ <= mCloseToCenterDistanceSQ
-    )
+    if (mEvent == "in" && mIsPlayerInside)
+    {
+        CallMyFunction();
+        return;
+    }
+    
+    if (mEvent == "out" && !mIsPlayerInside)
+    {
+        CallMyFunction();
+        return;
+    }
+        
+    if (mEvent == "enter" && mIsPlayerInside && !mWasPlayerInside)
+    {
+        CallMyFunction();
+        return;
+    }
+        
+    if (mEvent == "exit" && !mIsPlayerInside && mWasPlayerInside)
+    {
+        CallMyFunction();
+        return;
+    }
+    
+    if (mEvent == "closeToCenter" && distanceToPlayerSQ <= mCloseToCenterDistanceSQ)
     {
         CallMyFunction();
         return;
