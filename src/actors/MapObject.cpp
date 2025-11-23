@@ -41,7 +41,7 @@ MapObject::MapObject(Game *game, int inId, const std::string &ev, const std::str
 
     SetPosition(pos);
 
-    mRigidBodyComponent = new RigidBodyComponent(this, 0.0f, 0.0f);
+    mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 0.0f);
     mRigidBodyComponent->SetApplyGravity(false);
     mRigidBodyComponent->SetApplyFriction(false);
 
