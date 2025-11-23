@@ -122,7 +122,7 @@ void Fireball::OnHorizontalCollision(const float minOverlap, AABBColliderCompone
         return;
     }
 
-    if (mRicochetsCount >= MAX_RICOCHETS || other->GetLayer() == ColliderLayer::Enemy)
+    if (other->GetLayer() == ColliderLayer::Enemy)
     {
         Kill();
     }
@@ -130,6 +130,12 @@ void Fireball::OnHorizontalCollision(const float minOverlap, AABBColliderCompone
     if (other->GetLayer() == ColliderLayer::Blocks)
     {
         mRicochetsCount++;
+
+        if (mRicochetsCount >= MAX_RICOCHETS)
+        {
+            Kill();
+            return;
+        }
 
         Vector2 reflection = Vector2::Reflect(
             mDirection,
@@ -185,8 +191,7 @@ void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent
 void Fireball::Kill()
 {
     Projectile::Kill();
-
-    // mColliderComponent->SetEnabled(false);
+    mColliderComponent->SetEnabled(false);
 }
 
 //
@@ -232,6 +237,18 @@ Zoe::Zoe(
     SetPosition(center - GetHalfSize());
 
     mGame->SetZoe(this);
+
+    mAerialAttackCollider = new Collider(
+        mGame,
+        this,
+        GetCenter()-Vector2(20, 30),
+        Vector2(40, 40),
+        [this](bool collided, const float minOverlap, AABBColliderComponent *other) {},
+        DismissOn::None,
+        ColliderLayer::PlayerAttack,
+        {ColliderLayer::Player},
+        1.f);
+    mAerialAttackCollider->SetEnabled(false);
 }
 
 Zoe::~Zoe()
@@ -251,7 +268,7 @@ void Zoe::OnProcessInput(const uint8_t *state)
         mInputMovementDir = Vector2(0.f, 0.f);
         return;
     }
-    
+
     SDL_GameController *controller = GetGame()->GetController();
     const bool hasController = controller && SDL_GameControllerGetAttached(controller);
 
@@ -480,7 +497,16 @@ void Zoe::ManageState()
         break;
 
     case BehaviorState::AerialAttacking:
+    {
+        if (!mAerialAttackCollider->IsEnabled())
+        {
+            mAerialAttackCollider->SetEnabled(true);
+        }
+
+        Vector2 attackColliderPosition = GetCenter() - Vector2(20, 30);
+        mAerialAttackCollider->SetPosition(attackColliderPosition);
         break;
+    }
 
     default:
         mBehaviorState = BehaviorState::Idle;
@@ -651,6 +677,7 @@ void Zoe::AnimationEndCallback(std::string animationName)
     if (animationName == "aerial-crush")
     {
         mBehaviorState = BehaviorState::Jumping;
+        mAerialAttackCollider->SetEnabled(false);
         return;
     }
 }
