@@ -80,9 +80,6 @@ void Game::LoadBedroom()
 
     SetApplyGravityScene(false);
 
-    mZoe = new Zoe(this, 1500.0f);
-    mZoe->SetPosition(Vector2(32.0f, 80.0f));
-
     std::vector<std::unique_ptr<Step>> steps;
     std::vector<std::string> dialogue = {
         "Hoje e dia de visitar a Vovo, Papai e Mamae ja devem estar se arrumando.",
@@ -95,7 +92,6 @@ void Game::LoadBedroom()
 
     steps.clear();
 
-    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
     dialogue = {
         "Sera que eles estao bravos porque acordei tarde?"};
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
@@ -122,9 +118,6 @@ void Game::LoadBedroomPortal()
 
     SetApplyGravityScene(false);
 
-    mZoe = new Zoe(this, 1500.0f);
-    mZoe->SetPosition(Vector2(10.0f, 32.0f));
-
     auto portal = new Portal(this, Vector2(0.f, 72.f) + mMap->GetCenter());
 
     std::vector<std::unique_ptr<Step>> steps;
@@ -150,7 +143,8 @@ void Game::LoadBedroomPortal()
         "O que e isso no meio do quarto?",
     };
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
-    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
+    steps.push_back(std::make_unique<SoundStep>(this, "portalSuck.wav"));
+    steps.push_back(std::make_unique<WaitStep>(this, .75f));
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this]()
@@ -187,15 +181,6 @@ void Game::LoadFirstLevel()
         Vector2(0.0f, 0.0f),
         Vector2(mWindowWidth, mWindowHeight),
         false);
-
-    Enemy *en = new Zod(this, 1800.0f, Vector2(600.0f, mMap->GetHeight() - 80.0f));
-    mEnemies.push_back(en);
-
-    en = new Sith(this, 1200.0f, Vector2(200.0f, mMap->GetHeight() - 320.0f));
-    mEnemies.push_back(en);
-
-    mZoe = new Zoe(this, 1500.0f);
-    mZoe->SetPosition(Vector2(32.0f, mMap->GetHeight() - 80.0f));
 
     std::vector<std::unique_ptr<Step>> steps;
     steps.push_back(std::make_unique<MoveStep>(
