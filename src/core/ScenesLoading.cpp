@@ -22,8 +22,6 @@
 #include "../components/collider/AABBColliderComponent.h"
 #include "../ui/DialogueSystem.h"
 #include "../actors/Star.h"
-#include "../actors/enemies/Zod.h"
-#include "../actors/enemies/Sith.h"
 #include "../actors/Portal.h"
 
 void Game::LoadMainMenu()
