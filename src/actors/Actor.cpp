@@ -9,6 +9,11 @@
 #include "../core/Game.h"
 #include "../components/Component.h"
 #include <algorithm>
+#include "./Collider.h"
+#include "./traps/Spikes.h"
+#include "./traps/Spear.h"
+#include "./traps/Shuriken.h"
+#include "../libs/Math.h"
 
 Actor::Actor(Game* game, int lives, bool mustAlwaysUpdate)
         : mState(ActorState::Active)
@@ -74,12 +79,56 @@ void Actor::OnUpdate(float deltaTime)
 
 }
 
-void Actor::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) {
+void Actor::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) 
+{
+    if (other->GetLayer() == ColliderLayer::Spikes)
+    {
+        Collider *spikeCollider = static_cast<Collider*>(other->GetOwner());
+        Spikes *spikes = static_cast<Spikes*>(spikeCollider->GetOwnerActor());
+        TakeSpikeHit(spikes->GetBaseCenter());
+        return;
+    }
 
+    if (other->GetLayer() == ColliderLayer::SpearTip)
+    {
+        Collider *spearTipCollider = static_cast<Collider*>(other->GetOwner());
+        Spear *spear = static_cast<Spear*>(spearTipCollider->GetOwnerActor());
+        TakeSpearHit(spear->GetTipCenter());
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Shuriken) //shuriken doesnt use intermediate collider
+    {
+        Shuriken *shuriken = static_cast<Shuriken*>(other->GetOwner());
+        TakeShurikenHit(shuriken->GetCenter());
+        return;
+    }
 }
 
-void Actor::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) {
+void Actor::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) 
+{
+    if (other->GetLayer() == ColliderLayer::Spikes)
+    {
+        Collider *spikeCollider = static_cast<Collider*>(other->GetOwner());
+        Spikes *spikes = static_cast<Spikes*>(spikeCollider->GetOwnerActor());
+        TakeSpikeHit(spikes->GetBaseCenter());
+        return;
+    }
 
+    if (other->GetLayer() == ColliderLayer::SpearTip)
+    {
+        Collider *spearTipCollider = static_cast<Collider*>(other->GetOwner());
+        Spear *spear = static_cast<Spear*>(spearTipCollider->GetOwnerActor());
+        TakeSpearHit(spear->GetTipCenter());
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Shuriken) //shuriken doesnt use intermediate collider
+    {
+        Shuriken *shuriken = static_cast<Shuriken*>(other->GetOwner());
+        TakeShurikenHit(shuriken->GetCenter());
+        return;
+    }
 }
 
 void Actor::Kill()
@@ -206,4 +255,34 @@ void Actor::TakeDamage(const Vector2 &knockback)
 Vector2 Actor::GetHalfSize() const
 {
     return GetCenter() - GetPosition();
+}
+
+void Actor::TakeSpikeHit(const Vector2 &SpikeBaseCenter)
+{
+    float knockbackX = Math::Sign(GetCenter().x - SpikeBaseCenter.x);
+
+    Vector2 knockback = Vector2(knockbackX, -1.f);
+    knockback.Normalize();
+
+    TakeDamage(knockback * Actor::SPIKE_KNOCKBACK_FORCE);
+}
+
+void Actor::TakeSpearHit(const Vector2 &SpearTipCenter)
+{
+    float knockbackX = Math::Sign(GetCenter().x - SpearTipCenter.x);
+
+    Vector2 knockback = Vector2(knockbackX, -1.f);
+    knockback.Normalize();
+
+    TakeDamage(knockback * Actor::SPEAR_KNOCKBACK_FORCE);
+}
+
+void Actor::TakeShurikenHit(const Vector2 &ShurikenCenter)
+{
+    float knockbackX = Math::Sign(GetCenter().x - ShurikenCenter.x);
+
+    Vector2 knockback = Vector2(knockbackX, -1.f);
+    knockback.Normalize();
+
+    TakeDamage(knockback * Actor::SHURIKEN_KNOCKBACK_FORCE);
 }

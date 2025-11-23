@@ -42,6 +42,10 @@ enum class BehaviorState // For AI behaviors/animations
 class Actor
 {
 public:
+    float SPIKE_KNOCKBACK_FORCE = 10000.f;
+    float SPEAR_KNOCKBACK_FORCE = 10000.f;
+    float SHURIKEN_KNOCKBACK_FORCE = 10000.f;
+
     Actor(class Game* game, int lives=3, bool mustAlwaysUpdate = false);
     virtual ~Actor();
 
@@ -134,6 +138,10 @@ protected:
     virtual void OnUpdate(float deltaTime);
     virtual void OnProcessInput(const Uint8* keyState);
     virtual void OnHandleKeyPress(const int key, const bool isPressed);
+
+    void TakeSpikeHit(const Vector2 &SpikeBaseCenter);
+    void TakeSpearHit(const Vector2 &SpearTipCenter);
+    void TakeShurikenHit(const Vector2 &ShurikenCenter);
 
     // Actor's state
     ActorState mState;
