@@ -42,6 +42,11 @@ void UIImage::Draw(SDL_Renderer *renderer, const Vector2 &screenPos, float spinA
         return;
     }
 
+    if (!mIsEnabled)
+    {
+        return;
+    }
+
     SDL_Rect destRect = {static_cast<int>(screenPos.x + mPosition.x),
                          static_cast<int>(screenPos.y + mPosition.y),
                          static_cast<int>(mSize.x),
