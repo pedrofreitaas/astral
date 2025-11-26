@@ -11,7 +11,7 @@
 class Spear : public Actor
 {
 public:
-    const float TRIGGER_COOLDOWN = 2.f;
+    const float TRIGGER_COOLDOWN = .5f;
 
     explicit Spear(Game* game, const Vector2& position);
 
