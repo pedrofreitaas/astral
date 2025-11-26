@@ -21,7 +21,11 @@ public:
 
     void HandleKeyPress(int key) override;
 	void HandleMouseClick(int button, int x, int y) override;
+    void SetLife(int life);
 
 private:
     UIText* mFPSText;
+
+    std::vector<UIImage*> mLifeImages;
+    std::vector<UIImage*> mCooldownImages;
 };

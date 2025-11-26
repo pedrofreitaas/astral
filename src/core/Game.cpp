@@ -456,9 +456,10 @@ void Game::UpdateGame()
         }
     }
 
-    if (mGameScene != GameScene::MainMenu && mGameScene != GameScene::DeathScreen && mHUD)
+    if (mGameScene != GameScene::MainMenu && mGameScene != GameScene::DeathScreen && mHUD && mZoe)
     {
         mHUD->SetFPS(static_cast<int>(1.0f / deltaTime));
+        mHUD->SetLife(mZoe->GetLifes());
     }
 
     UpdateSceneManager(deltaTime);
