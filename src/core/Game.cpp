@@ -460,6 +460,9 @@ void Game::UpdateGame()
     {
         mHUD->SetFPS(static_cast<int>(1.0f / deltaTime));
         mHUD->SetLife(mZoe->GetLifes());
+        mHUD->SetLoadingBarProgress(
+            mZoe->CheckFireballOnCooldown(),
+            mZoe->GetFireballCooldownProgress());
     }
 
     UpdateSceneManager(deltaTime);
