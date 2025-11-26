@@ -52,8 +52,8 @@ public:
     // it's actor's responsibility to become not invicible again
     virtual void TakeDamage(const Vector2 &knockback = Vector2(0.f, 0.f));
 
-    int Lives() { return mLives; }
-    void SetLives(int lives) { mLives = lives; }
+    void SetLifes(int lives) { mLifes = lives; }
+    int GetLifes() { return mLifes; }
 
     // Reinsert function called from Game (not overridable)
     void Update(float deltaTime);
@@ -157,7 +157,7 @@ protected:
 
     // Game specific
     bool mIsOnGround;
-    int mLives;
+    int mLifes;
     bool mInvincible;
 
     class TimerComponent* mTimerComponent;

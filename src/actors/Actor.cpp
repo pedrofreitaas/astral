@@ -23,12 +23,12 @@ Actor::Actor(Game* game, int lives, bool mustAlwaysUpdate)
         , mGame(game)
         , mIsOnGround(false)
         , mBehaviorState(BehaviorState::Idle)
-        , mLives(lives)
+        , mLifes(lives)
         , mInvincible(false)
 {
     mGame->AddActor(this);
     
-    SetLives(lives);
+    SetLifes(lives);
 
     if (mustAlwaysUpdate) {
         mGame->AddMustAlwaysUpdateActor(this);
@@ -234,7 +234,7 @@ void Actor::TakeDamage(const Vector2 &knockback)
     if (mBehaviorState == BehaviorState::Dying || mInvincible)
         return;
 
-    mLives--;
+    mLifes--;
 
     auto rigidBody = GetComponent<RigidBodyComponent>();
     if (rigidBody)
@@ -242,7 +242,7 @@ void Actor::TakeDamage(const Vector2 &knockback)
         rigidBody->ApplyForce(knockback);
     }
 
-    if (mLives <= 0)
+    if (mLifes <= 0)
     {
         mBehaviorState = BehaviorState::Dying;
         return;
