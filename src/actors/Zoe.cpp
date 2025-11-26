@@ -50,8 +50,7 @@ void Ventania::AnimationEndCallback(std::string animationName)
 
 Fireball::Fireball(
     class Game *game, Vector2 position,
-    Vector2 dir, float speed, Actor *shooter
-) : Projectile(game, position, Vector2(0.f,0.f), speed, shooter), mRicochetsCount(0)
+    Vector2 dir, float speed, Actor *shooter) : Projectile(game, position, Vector2(0.f, 0.f), speed, shooter), mRicochetsCount(0)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Zoe/Fireball/texture.png";
     const std::string spriteSheetData = "../assets/Sprites/Zoe/Fireball/texture.json";
@@ -197,10 +196,9 @@ void Fireball::Kill()
 //
 
 Zoe::Zoe(
-    Game *game, const float forwardSpeed, const Vector2 &center
-)
+    Game *game, const float forwardSpeed, const Vector2 &center)
     : Actor(game, 6, true), mForwardSpeed(forwardSpeed),
-      mTryingToFireFireball(false), mIsFireballOnCooldown(false),
+      mTryingToFireFireball(false), mFireballCooldownTimer(),
       mIsVentaniaOnCooldown(false), mTryingToTriggerVentania(false),
       mIsTryingToHit(false), mAttackCollider(nullptr), mIsTryingToDodge(false),
       mInputMovementDir(0.f, 0.f), mMovementLocked(false), mAbilitiesLocked(false),
@@ -241,13 +239,14 @@ Zoe::Zoe(
     mAerialAttackCollider = new Collider(
         mGame,
         this,
-        GetCenter()-Vector2(20, 30),
+        GetCenter() - Vector2(20, 30),
         Vector2(40, 40),
         [this](bool collided, const float minOverlap, AABBColliderComponent *other) {},
         DismissOn::None,
         ColliderLayer::PlayerAttack,
         {ColliderLayer::Player},
         1.f);
+
     mAerialAttackCollider->SetEnabled(false);
 }
 
@@ -398,7 +397,7 @@ void Zoe::ManageState()
             break;
         }
 
-        if (mTryingToFireFireball && !mIsFireballOnCooldown)
+        if (mTryingToFireFireball && !CheckFireballOnCooldown())
         {
             mBehaviorState = BehaviorState::Charging;
             break;
@@ -465,7 +464,7 @@ void Zoe::ManageState()
             break;
         }
 
-        if (mTryingToFireFireball && !mIsFireballOnCooldown)
+        if (mTryingToFireFireball && !CheckFireballOnCooldown())
         {
             mBehaviorState = BehaviorState::Charging;
             break;
@@ -511,7 +510,7 @@ void Zoe::ManageState()
 }
 
 void Zoe::OnUpdate(float deltaTime)
-{    
+{
     if (mGame->GetGamePlayState() == Game::GamePlayState::Dialogue)
     {
         mDrawComponent->SetAnimation("idle");
@@ -680,7 +679,7 @@ void Zoe::AnimationEndCallback(std::string animationName)
 
 void Zoe::FireFireball()
 {
-    if (mIsFireballOnCooldown)
+    if (CheckFireballOnCooldown())
         return;
 
     Vector2 fireballDir = mInputMovementDir;
@@ -697,10 +696,7 @@ void Zoe::FireFireball()
         Zoe::FIREBALL_SPEED,
         this);
 
-    SetFireballOnCooldown(true);
-    mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this]()
-                              { SetFireballOnCooldown(false); });
-
+    mFireballCooldownTimer = mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this](){});
     mGame->GetAudio()->PlaySound("fireball.wav");
 }
 
@@ -737,7 +733,7 @@ void Zoe::TakeDamage(const Vector2 &knockback)
     Actor::TakeDamage(knockback);
 
     if (!mDamageSoundHandle.IsValid() ||
-         mGame->GetAudio()->GetSoundState(mDamageSoundHandle) == SoundState::Stopped)
+        mGame->GetAudio()->GetSoundState(mDamageSoundHandle) == SoundState::Stopped)
     {
         mDamageSoundHandle = mGame->GetAudio()->PlaySound("zoeTakeDamage.wav");
     }
@@ -754,7 +750,7 @@ void Zoe::Jump()
 {
     if (mBehaviorState == BehaviorState::Jumping)
         return;
-    
+
     float jumpForce = mRigidBodyComponent->GetVerticalVelY(5);
     mRigidBodyComponent->SumVelocity(Vector2(0.f, jumpForce));
     mBehaviorState = BehaviorState::Jumping;

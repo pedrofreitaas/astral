@@ -102,6 +102,18 @@ public:
 
     void LockAbilitiesForDuration(float duration);
 
+    bool CheckFireballOnCooldown() {
+        return mFireballCooldownTimer && 
+               mTimerComponent->checkTimerRemaining(mFireballCooldownTimer) > 0.f;
+    }
+
+    float GetFireballCooldownProgress() {
+        if (mFireballCooldownTimer) {
+            return mTimerComponent->checkTimerRemaining(mFireballCooldownTimer) / FIREBALL_COOLDOWN;
+        }
+        return 1.f;
+    }
+
 private:
     float mForwardSpeed;
 
@@ -116,8 +128,8 @@ private:
     bool mIsTryingToHit, mIsTryingToDodge, mIsTryingToJump;
 
     void FireFireball();
-    void SetFireballOnCooldown(bool onCooldown) { mIsFireballOnCooldown = onCooldown; }
-    bool mIsFireballOnCooldown, mTryingToFireFireball;
+    bool mTryingToFireFireball;
+    Timer* mFireballCooldownTimer;
 
     void TriggerVentania();
     void SetVentaniaOnCooldown(bool onCooldown) { mIsVentaniaOnCooldown = onCooldown; }
