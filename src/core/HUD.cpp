@@ -33,8 +33,6 @@ HUD::HUD(class Game* game, const std::string& fontName)
 
     for (const auto& path : lifeImagePaths)
     {
-        SDL_Log("Loading life image: %s", path.c_str());
-
         UIImage* img = AddImage(
             path,
             Vector2(10.0f, 4.0f),
@@ -45,6 +43,28 @@ HUD::HUD(class Game* game, const std::string& fontName)
     }
 
     mLifeImages[6]->SetEnabled(true);
+
+    std::vector<std::string> loadingBarPaths = {
+        "../assets/Sprites/Hud/loadingBar/loading-bar7.png",
+        "../assets/Sprites/Hud/loadingBar/loading-bar6.png",
+        "../assets/Sprites/Hud/loadingBar/loading-bar5.png",
+        "../assets/Sprites/Hud/loadingBar/loading-bar4.png",
+        "../assets/Sprites/Hud/loadingBar/loading-bar3.png",
+        "../assets/Sprites/Hud/loadingBar/loading-bar2.png",
+        "../assets/Sprites/Hud/loadingBar/loading-bar1.png",
+        "../assets/Sprites/Hud/loadingBar/loading-bar0.png"
+    };
+
+    for (const auto& path : loadingBarPaths)
+    {
+        UIImage* img = AddImage(
+            path,
+            Vector2(64.0f, 4.0f),
+            Vector2(16.0f, 16.0f)
+        );
+        img->SetEnabled(false);
+        mLoadingBarImages.push_back(img);
+    }
 }
 
 HUD::~HUD()
@@ -83,5 +103,15 @@ void HUD::SetLife(int life) {
     
     for (int i = 0; i < mLifeImages.size(); ++i) {
         mLifeImages[i]->SetEnabled(i == life);
+    }
+}
+
+void HUD::SetLoadingBarProgress(bool enabled, float progress) {
+    progress = std::max(0.f, std::min(1.f, progress));
+    int index = static_cast<int>(progress * (mLoadingBarImages.size() - 1));
+    index = std::max(0, std::min(index, static_cast<int>(mLoadingBarImages.size() - 1)));
+
+    for (int i = 0; i < mLoadingBarImages.size(); ++i) {
+        mLoadingBarImages[i]->SetEnabled(enabled && (i == index));
     }
 }
