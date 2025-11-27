@@ -171,6 +171,7 @@ void Game::LoadFirstLevel()
     mHUD = new HUD(this, Game::FONT_PATH_INTER);
 
     SetApplyGravityScene(true);
+    SetCameraCenterToLogicalWindowSizeCenter();
 
     SetMap("level1.json");
 
@@ -181,36 +182,30 @@ void Game::LoadFirstLevel()
         false);
 
     std::vector<std::unique_ptr<Step>> steps;
+
+    steps.push_back(std::make_unique<WaitStep>(this, 1.f)); // just to land
+
     steps.push_back(std::make_unique<MoveStep>(
         this,
-        [this]()
-        { return GetZoe(); },
-        [this]()
-        {
-            return Vector2(GetZoe()->GetCenter().x + 64.f, GetZoe()->GetCenter().y);
-        },
+        [this](){ return GetZoe(); },
+        [this](){return Vector2(GetZoe()->GetCenter().x + 64.f, GetZoe()->GetCenter().y);},
         100.0f));
+
     steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
     steps.push_back(std::make_unique<MoveStep>(
         this,
-        [this]()
-        { return GetZoe(); },
-        [this]()
-        {
-            return Vector2(GetZoe()->GetCenter().x - 2.f, GetZoe()->GetCenter().y);
-        },
+        [this](){ return GetZoe(); },
+        [this](){return Vector2(GetZoe()->GetCenter().x - 2.f, GetZoe()->GetCenter().y);},
         20.0f));
+
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
     steps.push_back(std::make_unique<MoveStep>(
         this,
-        [this]()
-        { return GetZoe(); },
-        [this]()
-        {
-            return Vector2(GetZoe()->GetCenter().x + 4.f, GetZoe()->GetCenter().y);
-        },
+        [this](){ return GetZoe(); },
+        [this](){return Vector2(GetZoe()->GetCenter().x + 4.f, GetZoe()->GetCenter().y);},
         20.0f));
-    steps.push_back(std::make_unique<WaitStep>(this, 1.5f));
+
+    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
 
     std::vector<std::string> dialogue = {
         "O que... o que e isso?",
@@ -221,25 +216,23 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<SpawnStep>(
         this,
         SpawnStep::ActorType::Star,
-        Vector2(0.0f, mMap->GetHeight() - mWindowHeight / 2.0f)));
+        Vector2(30.f, 560.f)));
+    
     steps.push_back(std::make_unique<MoveStep>(
         this,
-        [this]()
-        { return GetStar(); },
-        [this]()
-        { return Vector2(mWindowWidth / 2.0f, mMap->GetHeight() - mWindowHeight / 2.0f); },
+        [this](){ return GetStar(); },
+        [this](){ return Vector2(330.f, 530.f); },
         250.0f));
 
     dialogue = {
         "Uma estrela? Ela parece estar indo para algum lugar?",
         "Nao tenho outra opcao, tenho que segui-la."};
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
     steps.push_back(std::make_unique<MoveStep>(
         this,
-        [this]()
-        { return GetStar(); },
-        [this]()
-        { return Vector2(mWindowWidth * 1.5f, mMap->GetHeight() - mWindowHeight * 1.2f); },
+        [this](){ return GetStar(); },
+        [this](){ return Vector2(730.f, 330.f); },
         320.0f));
 
     dialogue = {
@@ -255,9 +248,95 @@ void Game::LoadFirstLevel()
                 std::move(steps),
                 [this]() {});
 
+    steps.clear();
+
+    dialogue = {
+        "Oi Zoe! Seja bem vinda ao Espaco Astral!"
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
+
+    dialogue = {
+        "Como assim? O que e esse lugar? Quem e voce?",
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
+    dialogue = {
+        "Se acalme garota, por enquanto nao ha muito a fazer a nao ser seguir a estrela que voce acabou de ver.",
+        "Ela e a chave para voce descobrir o que esta fazendo aqui.",
+        "Voce pode apertar 'A' para saltar as plataformas e chegar la em cima.",
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
+
+    AddCutscene("introduction",
+                std::move(steps),
+                [this]()
+                {
+                    this->GetZoe()->SetAbilitiesLocked(false);
+                });
+
+    steps.clear();
+
+    dialogue = {
+        "Muito bem, alem de pular, voce tambem pode usar um impulso para se mover mais rapido.",
+        "Aperte 'RB' enquanto esta no ar, se quiser ver como funciona.",
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
+
+    AddCutscene("jumped_first_platform",
+                std::move(steps),
+                [this](){});
+
+    steps.clear();
+    dialogue = {
+        "Voce tambem pode atacar inimigos com golpes corpo a corpo, apertando 'X'.",
+        "Voce pode se desviar apertando 'B' no momento correto para evitar danos.",
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
+
+    AddCutscene("jumped_second_platform",
+                std::move(steps),
+                [this](){});
+    
+    steps.clear();
+    dialogue = {
+        "Por fim mas nao menos importante, voce consegue lancar bolas de fogo magicas.",
+        "Aperte 'Y' para lancar uma bola de fogo.",
+        "Elas tem um tempo de carregamento ate poderem ser usadas novamente.",
+        "Ah, eu quase esqueci, essas bolas de fogo refletem em superficies solidas, e nao causam dano a voce.",
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
+
+    AddCutscene("jumped_third_platform",
+                std::move(steps),
+                [this](){});
+    
+    steps.clear();
+    dialogue = {
+        "Parabens Zoe! Voce pegou bem o basico.",
+        "Continue seguindo a estrela para descobrir mais sobre esse lugar misterioso.",
+        "A partir de agora a minha ajuda nao serve de muito mais, entao boa sorte! Voce vai precisar..."
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
+
+    AddCutscene("exit_tutorial",
+                std::move(steps),
+                [this](){});
+
+    steps.clear();
+    dialogue = {
+        "Ha? O que e aquilo?",
+        "O que quer que seja nao me parece amigavel..."
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
+    AddCutscene("see_sith",
+                std::move(steps),
+                [this](){});
+
     mAudio->PlaySound("level1Theme.ogg", true);
 
-    // StartCutscene("Intro");
+    mZoe->SetAbilitiesLocked(true);
+    StartCutscene("Intro");
 }
 
 void Game::LoadDeathScreen()
