@@ -27,7 +27,10 @@ enum class ColliderLayer
     Spikes,
     SpearBlock,
     SpearTip,
-    Shuriken
+    Shuriken,
+    EnemyBlocker,
+    SithAttack1,
+    SithAttack2
 };
 
 class AABBColliderComponent : public Component
