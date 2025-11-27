@@ -146,6 +146,31 @@ void Map::LoadObjectsLayer(const json &layerData, int layerIdx)
 	}
 }
 
+void Map::LoadEnemyColliderObjects(const json &layerData, int layerIdx)
+{
+	for (const auto &obj : layerData["objects"])
+	{
+		int x = obj["x"].get<int>();
+		int y = obj["y"].get<int>();
+		int width = obj["width"].get<int>();
+		int height = obj["height"].get<int>();
+
+		new Collider(
+			mGame,
+			nullptr,
+			Vector2(x, y),
+			Vector2(width, height),
+			nullptr,
+			DismissOn::None,
+			ColliderLayer::EnemyBlocker,
+			{ColliderLayer::Player, ColliderLayer::PlayerAttack, ColliderLayer::Fireball, ColliderLayer::Projectile},
+			0.f,
+			nullptr,
+			true
+		);
+	}
+}
+
 std::vector<std::pair<std::string, int>> Map::LoadTilsetsUsedInMap(const json &data, const std::string &baseTilesetsPath, std::map<std::string, Tileset> &allAvailableTilesets)
 {
 	std::vector<std::pair<std::string, int>> nameToFirstGID;
@@ -223,6 +248,12 @@ Map::Map(Game *game, std::string jsonPath)
 		if (layerData["name"] == "objects")
 		{
 			LoadObjectsLayer(layerData, layerIdx);
+			continue;
+		}
+
+		if (layerData["name"] == "en_collider_objects")
+		{
+			LoadEnemyColliderObjects(layerData, layerIdx);
 			continue;
 		}
 
