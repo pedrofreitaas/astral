@@ -19,8 +19,8 @@ private:
 
 class Zod : public Enemy
 {
-    float PROJECTILE_SPEED = 40000.f;
-    float PROJECTICLE_COOLDOWN = 5.f;
+    float PROJECTILE_SPEED = 35000.f;
+    float PROJECTICLE_COOLDOWN = 3.f;
 
 public:
     explicit Zod(Game* game, float forwardSpeed, const Vector2& position);

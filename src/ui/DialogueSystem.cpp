@@ -59,7 +59,7 @@ void DialogueSystem::Initialize(Game* game)
     if (mSmallFont)
     {
         SDL_Color grey = {180, 180, 180, 255};
-        SDL_Surface* surface = TTF_RenderText_Blended(mSmallFont, "Pressione Enter ou B", grey);
+        SDL_Surface* surface = TTF_RenderText_Blended(mSmallFont, "Pressione B", grey);
         if (surface)
         {
             mPromptTexture = SDL_CreateTextureFromSurface(mGame->GetRenderer(), surface);
@@ -240,11 +240,13 @@ void DialogueSystem::SetSpeakerName(const std::string& name)
         CreateSpeakerTexture();
         
         // Reposition the speaker box if the dialogue is active and name is not empty
-        if (mIsActive && !mSpeakerName.empty())
+        if (!mIsActive || mSpeakerName.empty())
         {
-            mSpeakerRect.x = mBoxRect.x + 10 + static_cast<int>(mSpeakerOffset.x);
-            mSpeakerRect.y = mBoxRect.y - mSpeakerRect.h / 2 + static_cast<int>(mSpeakerOffset.y);
+            return;
         }
+        
+        mSpeakerRect.x = mBoxRect.x + 10 + static_cast<int>(mSpeakerOffset.x);
+        mSpeakerRect.y = mBoxRect.y - mSpeakerRect.h / 2 + static_cast<int>(mSpeakerOffset.y);
     }
 }
 
