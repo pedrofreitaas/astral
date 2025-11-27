@@ -8,15 +8,14 @@
 #include "../Actor.h"
 
 SithProjectile::SithProjectile(
-    class Game* game, Vector2 position, 
-    Vector2 target, float speed, Actor* sith
-): Projectile(game, position, target, speed, sith)
+    class Game *game, Vector2 position,
+    Vector2 target, float speed, Actor *sith) : Projectile(game, position, target, speed, sith)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Enemies/Sith/Projectile/texture.png";
     const std::string spriteSheetData = "../assets/Sprites/Enemies/Sith/Projectile/texture.json";
 
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 0.f, false);
-    
+
     mColliderComponent = new AABBColliderComponent(
         this,
         17, 18,
@@ -44,27 +43,30 @@ SithProjectile::SithProjectile(
 
 void SithProjectile::AnimationEndCallback(std::string animationName)
 {
-    if (animationName == "dying") {
+    if (animationName == "dying")
+    {
         SetState(ActorState::Destroy);
     }
 }
 
 void SithProjectile::ManageAnimations()
 {
-    if (mBehaviorState == BehaviorState::Dying) {
+    if (mBehaviorState == BehaviorState::Dying)
+    {
         mDrawAnimatedComponent->SetAnimation("dying");
     }
-    else if (mBehaviorState == BehaviorState::Moving) {
+    else if (mBehaviorState == BehaviorState::Moving)
+    {
         mDrawAnimatedComponent->SetAnimation("flying");
     }
 }
 
 // Sith
 
-Sith::Sith(Game* game, float forwardSpeed, const Vector2& position)
-    : Enemy(game, forwardSpeed, position), 
-    mIsProjectileOnCooldown(false), mIsAttack1OnCooldown(false), mIsAttack2OnCooldown(false),
-    mCurrentAttack(Attacks::None)
+Sith::Sith(Game *game, float forwardSpeed, const Vector2 &position)
+    : Enemy(game, forwardSpeed, position),
+      mIsProjectileOnCooldown(false), mIsAttack1OnCooldown(false), mIsAttack2OnCooldown(false),
+      mCurrentAttack(Attacks::None), mAttack1Collider(nullptr), mAttack2Collider(nullptr)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f, false);
     mColliderComponent = new AABBColliderComponent(
@@ -83,11 +85,11 @@ Sith::Sith(Game* game, float forwardSpeed, const Vector2& position)
     mTimerComponent = new TimerComponent(this);
 
     mAIMovementComponent = new AIMovementComponent(
-        this, 
-        forwardSpeed, 
-        -1, 
+        this,
+        forwardSpeed,
+        -1,
         TypeOfMovement::Flier,
-        5.f, 
+        5.f,
         .01f);
 
     mDrawComponent->AddAnimation("moving", 0, 7);
@@ -101,12 +103,27 @@ Sith::Sith(Game* game, float forwardSpeed, const Vector2& position)
 
     mBehaviorState = BehaviorState::Moving;
     SetPosition(position);
+
+    mAttack2Collider = new Collider(
+        mGame,
+        this,
+        GetCenter() - Vector2(12.5f, 12.f),
+        Vector2(50, 50),
+        nullptr,
+        DismissOn::None,
+        ColliderLayer::SithAttack2,
+        {ColliderLayer::Enemy},
+        -1.f,
+        nullptr,
+        false
+    );
+    mAttack2Collider->SetEnabled(false);
 }
 
 void Sith::Attack1()
 {
-    if (mIsAttack1OnCooldown || 
-        mBehaviorState == BehaviorState::Attacking || 
+    if (mIsAttack1OnCooldown ||
+        mBehaviorState == BehaviorState::Attacking ||
         mBehaviorState == BehaviorState::Charging)
         return;
 
@@ -114,9 +131,8 @@ void Sith::Attack1()
     mCurrentAttack = Attacks::Attack1;
 
     SetAttack1OnCooldown(true);
-    mTimerComponent->AddTimer(Sith::ATTACK1_COOLDOWN, [this]() {
-        SetAttack1OnCooldown(false);
-    });
+    mTimerComponent->AddTimer(Sith::ATTACK1_COOLDOWN, [this]()
+                              { SetAttack1OnCooldown(false); });
 }
 
 void Sith::Attack2()
@@ -128,18 +144,18 @@ void Sith::Attack2()
 
     mBehaviorState = BehaviorState::Attacking;
     mCurrentAttack = Attacks::Attack2;
+    mAttack2Collider->SetEnabled(true);
 
     SetAttack2OnCooldown(true);
-    mTimerComponent->AddTimer(Sith::ATTACK2_COOLDOWN, [this]() {
-        SetAttack2OnCooldown(false);
-    });
+    mTimerComponent->AddTimer(Sith::ATTACK2_COOLDOWN, [this]()
+                              { SetAttack2OnCooldown(false); });
 }
 
 void Sith::FireProjectile()
 {
     if (mIsProjectileOnCooldown)
         return;
-    
+
     auto projectile = new SithProjectile(
         mGame,
         GetPosition() + GetProjectileOffset(),
@@ -148,9 +164,8 @@ void Sith::FireProjectile()
         this);
 
     SetProjectileOnCooldown(true);
-    mTimerComponent->AddTimer(Sith::PROJECTICLE_COOLDOWN, [this]() {
-        SetProjectileOnCooldown(false);
-    });
+    mTimerComponent->AddTimer(Sith::PROJECTICLE_COOLDOWN, [this]()
+                              { SetProjectileOnCooldown(false); });
 }
 
 void Sith::ManageState()
@@ -183,10 +198,10 @@ void Sith::ManageState()
             break;
         }
 
-        if (distanceSQToZoe < 2500.f && 
+        if (distanceSQToZoe < 2500.f &&
             !mIsAttack1OnCooldown &&
-            mAIMovementComponent->CrazyDecision(2.f)
-        ) {
+            mAIMovementComponent->CrazyDecision(2.f))
+        {
             Attack1();
             break;
         }
@@ -199,21 +214,30 @@ void Sith::ManageState()
             break;
         }
 
-        if (playerInFov && 
+        if (playerInFov &&
             mAIMovementComponent->GetMovementState() != MovementState::FollowingPath)
         {
             mAIMovementComponent->SeekPlayer();
         }
-        
+
         break;
     }
     case BehaviorState::Attacking:
-        if (mCurrentAttack == Attacks::Attack2) {
+        if (mCurrentAttack == Attacks::Attack1)
+        {
+            mAIMovementComponent->BoostToPlayer(Sith::ATTACK1_EXTRA_SPEED);
+        }
+
+        else if (mCurrentAttack == Attacks::Attack2)
+        {
             mAIMovementComponent->BoostToPlayer(Sith::ATTACK2_EXTRA_SPEED);
+            Vector2 attackColliderPosition = GetCenter() - Vector2(12.5, 12.5);
+            mAttack2Collider->SetPosition(attackColliderPosition);
         }
         break;
     case BehaviorState::Charging:
-        if (!PlayerOnSight(sightDistance)) mBehaviorState = BehaviorState::Moving;
+        if (!PlayerOnSight(sightDistance))
+            mBehaviorState = BehaviorState::Moving;
         break;
     case BehaviorState::TakingDamage:
         break;
@@ -227,17 +251,30 @@ void Sith::ManageState()
 
 void Sith::AnimationEndCallback(std::string animationName)
 {
-    if (animationName == "charging") {
+    if (animationName == "charging")
+    {
         FireProjectile();
         mBehaviorState = BehaviorState::Moving;
     }
 
-    else if (animationName == "attack" || animationName == "attack2") {
+    else if (animationName == "attack")
+    {
         mBehaviorState = BehaviorState::Moving;
         mCurrentAttack = Attacks::None;
+        if (mAttack1Collider)
+            mAttack1Collider->Dismiss();
+        mAttack1Collider = nullptr;
     }
 
-    else if (animationName == "death") {
+    else if (animationName == "attack2")
+    {
+        mBehaviorState = BehaviorState::Moving;
+        mCurrentAttack = Attacks::None;
+        mAttack2Collider->SetEnabled(false);
+    }
+
+    else if (animationName == "death")
+    {
         SetState(ActorState::Destroy);
     }
 
@@ -261,18 +298,36 @@ void Sith::ManageAnimations()
         mDrawComponent->SetAnimFPS(8.f);
         break;
     case BehaviorState::Attacking:
-        if (mCurrentAttack == Attacks::Attack1) {
+        if (mCurrentAttack == Attacks::Attack1)
+        {
             mDrawComponent->SetAnimation("attack");
-            mDrawComponent->SetAnimFPS(12.f);
+            mDrawComponent->SetAnimFPS(8.f);
+
+            if (mDrawComponent->GetCurrentSprite() >= 5 && mAttack1Collider == nullptr)
+            {
+                mAttack1Collider = new Collider(
+                    mGame,
+                    this,
+                    GetPosition() + (GetRotation() == 0.f ? Vector2(30.f, 30.f) : Vector2(7.f, 30.f)),
+                    Vector2(17.f, 8.f),
+                    nullptr,
+                    DismissOn::Both,
+                    ColliderLayer::SithAttack1,
+                    {ColliderLayer::Enemy},
+                    .5f,
+                    nullptr,
+                    false);
+            }
         }
-        else if (mCurrentAttack == Attacks::Attack2) {
+        else if (mCurrentAttack == Attacks::Attack2)
+        {
             mDrawComponent->SetAnimation("attack2");
             mDrawComponent->SetAnimFPS(12.f);
         }
         break;
     case BehaviorState::Dying:
         mDrawComponent->SetAnimation("death");
-        mDrawComponent->SetAnimFPS(10.f);
+        mDrawComponent->SetAnimFPS(5.f);
         break;
     case BehaviorState::TakingDamage:
         mDrawComponent->SetAnimation("damage");
@@ -284,16 +339,16 @@ void Sith::ManageAnimations()
     }
 }
 
-void Sith::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
+void Sith::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
     Enemy::OnVerticalCollision(minOverlap, other);
-    
+
     Actor::OnVerticalCollision(minOverlap, other);
 }
 
-void Sith::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
+void Sith::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
     Enemy::OnHorizontalCollision(minOverlap, other);
-    
+
     Actor::OnHorizontalCollision(minOverlap, other);
 }

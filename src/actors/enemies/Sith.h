@@ -1,9 +1,10 @@
 #pragma once
 
+#include <SDL.h>
 #include "../Enemy.h"
 #include "../Projectile.h"
 #include "../../components/TimerComponent.h"
-#include <SDL.h>
+#include "../Collider.h"
 
 class SithProjectile : public Projectile
 {
@@ -27,11 +28,13 @@ public:
         Attack2
     };
 
-    float PROJECTICLE_COOLDOWN = 30.f;
+    float PROJECTICLE_COOLDOWN = 12.f;
     float PROJECTILE_SPEED = 20000.f;
 
-    float ATTACK1_COOLDOWN = 8.f;
-    float ATTACK2_COOLDOWN = 20.f;
+    float ATTACK1_COOLDOWN = 3.f;
+    float ATTACK1_EXTRA_SPEED = 1100.f;
+    
+    float ATTACK2_COOLDOWN = 12.f;
     float ATTACK2_EXTRA_SPEED = 2500.f;
 
     explicit Sith(Game* game, float forwardSpeed, const Vector2& position);
@@ -65,4 +68,6 @@ private:
     bool mIsProjectileOnCooldown, mIsAttack1OnCooldown, mIsAttack2OnCooldown;
     Attacks mCurrentAttack;
     TimerComponent *mTimerComponent;
+
+    Collider *mAttack1Collider, *mAttack2Collider;
 };
