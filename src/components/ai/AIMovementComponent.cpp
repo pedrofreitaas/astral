@@ -272,8 +272,8 @@ void AIMovementComponent::Jump(bool isFollowingPath)
     if (rb->GetOnGround() && mTypeOfMovement == TypeOfMovement::Walker)
     {
         float xSpeed = rb->GetVelocity().x;
-        float yForce = rb->GetVerticalVelY(mJumpForceInBlocks);
-        rb->ApplyForce(Vector2(xSpeed, yForce));
+        float ySpeed = rb->GetVerticalVelY(mJumpForceInBlocks);
+        rb->SumVelocity(Vector2(0.f, ySpeed));
         SetMovementState(
             isFollowingPath ? MovementState::FollowingPathJumping : MovementState::Jumping);
     }
@@ -366,7 +366,8 @@ void AIMovementComponent::LogState()
 
 void AIMovementComponent::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    if (other->GetLayer() == ColliderLayer::Blocks && GetMovementState() != MovementState::FollowingPath)
+    if (other->GetLayer() == ColliderLayer::Blocks || other->GetLayer() == ColliderLayer::EnemyBlocker
+        && GetMovementState() != MovementState::FollowingPath)
     {
         SetFowardSpeed(-GetFowardSpeed());
     }
