@@ -11,6 +11,7 @@
 #include "../actors/traps/Shuriken.h"
 #include "../actors/traps/Spear.h"
 #include "../actors/traps/Spikes.h"
+#include "../actors/Collider.h"
 
 SpatialHashing::SpatialHashing(int cellSize, int width, int height)
     : mCellSize(cellSize), mWidth(width), mHeight(height)
@@ -111,7 +112,10 @@ void SpatialHashing::Remove(Actor *actor)
             mCellTypes[row - 1][col - 1] = CellType::Empty;
         }
 
-        if (col < mGrid[0].size() && mCellTypes[row - 1][col + 1] == CellType::Corner && !isCornerCel(row - 1, col + 1))
+        if (col >= mGrid[0].size()-1) 
+            return;
+
+        if (mCellTypes[row - 1][col + 1] == CellType::Corner && !isCornerCel(row - 1, col + 1))
         {
             mCellTypes[row - 1][col + 1] = CellType::Empty;
         }
@@ -452,8 +456,10 @@ bool SpatialHashing::isTileCell(int row, int col)
         bool isSpikes = dynamic_cast<Spikes *>(a) != nullptr;
         bool isSpear = dynamic_cast<Spear *>(a) != nullptr;
         bool isShuriken = dynamic_cast<Shuriken *>(a) != nullptr;
+        bool isEnemyBlocker = dynamic_cast<Collider *>(a) != nullptr && 
+                              a->GetComponent<AABBColliderComponent>()->GetLayer() == ColliderLayer::EnemyBlocker;
         
-        return isTile || isSpikes || isSpear || isShuriken;
+        return isTile || isSpikes || isSpear || isShuriken || isEnemyBlocker;
     });
 }
 
@@ -465,7 +471,20 @@ bool SpatialHashing::isPlaformCell(int row, int col)
         return false; // Out of bounds
     }
 
-    return isTileCell(row + 1, col) && !isTileCell(row, col);
+    bool bellowCellIsTile = isTileCell(row + 1, col);
+    
+    std::vector<Actor *> actors = mGrid[row+1][col];
+    bool bellowCellIsEnemyBlock = std::any_of(actors.begin(), actors.end(), [](Actor *a)
+    { 
+        bool isEnemyBlocker = dynamic_cast<Collider *>(a) != nullptr && 
+                              a->GetComponent<AABBColliderComponent>()->GetLayer() == ColliderLayer::EnemyBlocker;
+        
+        return isEnemyBlocker;
+    });
+
+    bool IAmTile = isTileCell(row, col);
+
+    return bellowCellIsTile && !bellowCellIsEnemyBlock && !IAmTile;
 }
 
 bool SpatialHashing::isCornerCel(int row, int col)
