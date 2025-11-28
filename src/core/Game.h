@@ -53,7 +53,8 @@ public:
         Bedroom,
         BedroomPortal,
         Level1,
-        DeathScreen
+        DeathScreen,
+        EndDemo
     };
 
     enum class CameraCenter
@@ -102,6 +103,7 @@ public:
     void LoadBedroomPortal();
     void LoadFirstLevel();
     void LoadDeathScreen();
+    void LoadEndDemoScene();
 
     std::vector<Actor *> GetNearbyActors(const Vector2 &position, const int range = 1);
     std::vector<class AABBColliderComponent *> GetNearbyColliders(const Vector2 &position, const int range = 2);
@@ -197,6 +199,8 @@ public:
     void AddEnemy(class Enemy *enemy);
     void RemoveEnemy(class Enemy *enemy);
 
+    std::vector<class Enemy *> GetEnemies(const Vector2 &min, const Vector2 &max);
+
 private:
     void SetCameraCenterToLogicalWindowSizeCenter() {
         mCameraCenter = CameraCenter::LogicalWindowSizeCenter;
@@ -291,4 +295,7 @@ private:
     std::vector<class Actor*> mMustAlwaysUpdateActors; //use with caution, can highly impact performance
 
     Vector2 GetBoxCenter(const Vector2& pos, float boxW, float boxH);
+
+    bool isEnding;
+    void EndDemoCheck();
 };

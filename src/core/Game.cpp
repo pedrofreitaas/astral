@@ -469,6 +469,8 @@ void Game::UpdateGame()
 
     UpdateSceneManager(deltaTime);
     UpdateCamera();
+
+    EndDemoCheck();
 }
 
 void Game::UpdateCamera()
@@ -979,4 +981,55 @@ Vector2 Game::GetBoxCenter(const Vector2& pos, float boxW, float boxH)
     float centerY = boxY * boxH + boxH * 0.5f;
 
     return Vector2(centerX, centerY);
+}
+
+std::vector<class Enemy *> Game::GetEnemies(const Vector2 &min, const Vector2 &max)
+{
+    std::vector<Enemy*> nearbyEnemies;
+    for (auto enemy : mEnemies)
+    {
+        Vector2 enemyPos = enemy->GetCenter();
+        if (enemyPos.x >= min.x && enemyPos.x <= max.x &&
+            enemyPos.y >= min.y && enemyPos.y <= max.y)
+        {
+            nearbyEnemies.push_back(enemy);
+        }
+    }
+    return nearbyEnemies;
+}
+
+void Game::EndDemoCheck()
+{
+    if (GameScene::Level1 != mGameScene)
+    {
+        return;
+    }
+
+    if (mGamePlayState != GamePlayState::Playing)
+    {
+        return;
+    }
+
+    if (isEnding)
+    {
+        return;
+    }
+
+    Vector2 start = Vector2(0.f, 0.f);
+    Vector2 end = Vector2(630.f, 340.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
+
+    if (!enemiesInArea.empty())
+    {
+        return;
+    }
+
+    if (zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y)
+    {
+        StartCutscene("endDemo");
+        isEnding = true;
+    }
 }
