@@ -212,6 +212,8 @@ void Game::ChangeScene()
         LoadFirstLevel();
     else if (mNextScene == GameScene::DeathScreen)
         LoadDeathScreen();
+    else if (mNextScene == GameScene::EndDemo)
+        LoadEndDemoScene();
 
     // Set new scene
     mGameScene = mNextScene;

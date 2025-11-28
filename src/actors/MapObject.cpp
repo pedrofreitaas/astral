@@ -7,6 +7,7 @@
 #include "../actors/traps/Shuriken.h"
 #include "../actors/traps/Spear.h"
 #include "../actors/traps/Spikes.h"
+#include "../actors/Portal.h"
 
 MapObject::MapObject(Game *game, int inId, const std::string &ev, const std::string &func_name,
                      const Vector2 &pos, const Vector2 &size, const json &parameters)
@@ -182,6 +183,9 @@ void MapObject::SpawnEntity()
         break;
     case EntityCode::Spikes:
         new Spikes(mGame, GetCenter());
+        break;
+    case EntityCode::Portal:
+        new Portal(mGame, GetCenter());
         break;
     default:
         throw std::runtime_error("MapObject unknown SpawnCode");
