@@ -281,7 +281,6 @@ void DialogueSystem::AdvanceDialogue()
         if (mOnComplete)
         {
             mGame->GoBackToPreviousGameState();
-            mGame->GetZoe()->LockAbilitiesForDuration(0.25f);
             mOnComplete();
         }
     }
