@@ -22,6 +22,9 @@ SithProjectile::SithProjectile(
         14, 12,
         ColliderLayer::EnemyProjectile);
 
+    mColliderComponent->SetIgnoreLayers({ColliderLayer::Enemy,
+                                         ColliderLayer::EnemyProjectile});
+
     mDrawAnimatedComponent = new DrawAnimatedComponent(
         this,
         spriteSheetPath,
@@ -121,8 +124,7 @@ Sith::Sith(Game *game, float forwardSpeed, const Vector2 &position)
         {ColliderLayer::Enemy},
         -1.f,
         nullptr,
-        false
-    );
+        false);
     mAttack2Collider->SetEnabled(false);
 }
 
@@ -199,7 +201,8 @@ void Sith::ManageState()
         else if (mRigidBodyComponent->GetVelocity().x < 0.f)
             SetRotation(Math::Pi);
 
-        if (PlayerOnSight(sightDistance) && !mIsProjectileOnCooldown) {
+        if (PlayerOnSight(sightDistance) && !mIsProjectileOnCooldown)
+        {
             mBehaviorState = BehaviorState::Charging;
             break;
         }
@@ -214,8 +217,8 @@ void Sith::ManageState()
 
         if (distanceSQToZoe < 12000.f &&
             !mIsAttack2OnCooldown &&
-            mAIMovementComponent->CrazyDecision(3.f)
-        ) {
+            mAIMovementComponent->CrazyDecision(3.f))
+        {
             Attack2();
             break;
         }
@@ -228,7 +231,7 @@ void Sith::ManageState()
 
         break;
     }
-    
+
     case BehaviorState::Attacking:
         mInvincible = true; // animation must end to disable colliders (cannot be interrupted by dmg)
 
@@ -321,7 +324,13 @@ void Sith::ManageAnimations()
                     this,
                     GetPosition() + (GetRotation() == 0.f ? Vector2(30.f, 30.f) : Vector2(7.f, 30.f)),
                     Vector2(17.f, 8.f),
-                    nullptr,
+                    [this](bool collided, float minOverlap, AABBColliderComponent *other)
+                    {
+                        if (collided && other->GetOwner() == GetGame()->GetZoe())
+                        {
+                            mAttack1Collider->SetEnabled(false);
+                        }
+                    },
                     DismissOn::Both,
                     ColliderLayer::SithAttack1,
                     {ColliderLayer::Enemy},

@@ -19,6 +19,11 @@ ZodProjectile::ZodProjectile(
         3, 5,
         13, 10,
         ColliderLayer::EnemyProjectile);
+    
+    mColliderComponent->SetIgnoreLayers({
+        ColliderLayer::Enemy,
+        ColliderLayer::EnemyProjectile
+    });
 
     mDrawAnimatedComponent = new DrawAnimatedComponent(
         this,
