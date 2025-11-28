@@ -24,7 +24,5 @@ Portal::Portal(Game *game, const Vector2 &center)
     mDrawComponent->AddAnimation("idle", 0, 7);
     mDrawComponent->SetAnimation("idle");
 
-    Vector2 myCenter = mColliderComponent->GetCenter();
-
-    SetPosition(center - myCenter*.5f);
+    SetPosition(center - GetHalfSize());
 }
