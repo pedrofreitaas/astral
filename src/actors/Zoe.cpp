@@ -672,6 +672,12 @@ void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *o
         return;
     }
 
+    if (other->GetLayer() == ColliderLayer::Quasar)
+    {
+        TakeDamage(Vector2(Math::Sign(-minOverlap), 1.f) * Zoe::DEFAULT_KNOCKBACK_FORCE*6.f);
+        return;
+    }
+
     Actor::OnHorizontalCollision(minOverlap, other);
 }
 
