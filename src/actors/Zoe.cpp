@@ -576,7 +576,7 @@ void Zoe::OnUpdate(float deltaTime)
         SetRotation(Math::Pi);
     }
 
-    // mColliderComponent->MaintainInMap();
+    mColliderComponent->MaintainInMap();
     ManageAnimations();
 }
 
