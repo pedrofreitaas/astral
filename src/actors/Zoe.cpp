@@ -235,7 +235,7 @@ Zoe::Zoe(
       mIsVentaniaOnCooldown(false), mTryingToTriggerVentania(false),
       mIsTryingToHit(false), mAttackCollider(nullptr), mIsTryingToDodge(false),
       mInputMovementDir(0.f, 0.f), mMovementLocked(false), mAbilitiesLocked(false),
-      mDamageSoundHandle(SoundHandle::Invalid)
+      mDamageSoundHandle(SoundHandle::Invalid), mIsTryingToJump(false)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
 
@@ -304,22 +304,30 @@ void Zoe::OnProcessInput(const uint8_t *state)
     SDL_GameController *controller = GetGame()->GetController();
     const bool hasController = controller && SDL_GameControllerGetAttached(controller);
 
-    if (!mAbilitiesLocked)
+    if (mAbilitiesLocked)
     {
+        mIsTryingToDodge = false;
+        mIsTryingToJump = false;
+        mIsTryingToHit = false;
+        mTryingToFireFireball = false;
+        mTryingToTriggerVentania = false;
+    }
+
+    else if (hasController)
+    {
+        mIsTryingToHit = SDL_GameControllerGetButton(controller, Zoe::HIT_BUTTON);
+        mTryingToFireFireball = SDL_GameControllerGetButton(controller, Zoe::FIREBALL_BUTTON);
+        mTryingToTriggerVentania = SDL_GameControllerGetButton(controller, Zoe::VENTANIA_BUTTON);
+        mIsTryingToDodge = SDL_GameControllerGetButton(controller, Zoe::DODGE_BUTTON);
+        mIsTryingToJump = SDL_GameControllerGetButton(controller, Zoe::JUMP_BUTTON);
+    }
+
+    else {
         mIsTryingToHit = state[Zoe::HIT_KEY];
         mTryingToFireFireball = state[Zoe::FIREBALL_KEY];
         mTryingToTriggerVentania = state[Zoe::VENTANIA_KEY];
         mIsTryingToDodge = state[Zoe::DODGE_KEY];
         mIsTryingToJump = state[Zoe::JUMP_KEY];
-    }
-
-    if (hasController && !mAbilitiesLocked)
-    {
-        mIsTryingToHit = mIsTryingToHit || SDL_GameControllerGetButton(controller, Zoe::HIT_BUTTON);
-        mTryingToFireFireball = mTryingToFireFireball || SDL_GameControllerGetButton(controller, Zoe::FIREBALL_BUTTON);
-        mTryingToTriggerVentania = mTryingToTriggerVentania || SDL_GameControllerGetButton(controller, Zoe::VENTANIA_BUTTON);
-        mIsTryingToDodge = mIsTryingToDodge || SDL_GameControllerGetButton(controller, Zoe::DODGE_BUTTON);
-        mIsTryingToJump = mIsTryingToJump || SDL_GameControllerGetButton(controller, Zoe::JUMP_BUTTON);
     }
 
     if (mMovementLocked)
@@ -328,11 +336,6 @@ void Zoe::OnProcessInput(const uint8_t *state)
         return;
     }
 
-    // Keyboard movement
-    float kbX = static_cast<float>(state[SDL_SCANCODE_D] - state[SDL_SCANCODE_A]);
-    float kbY = static_cast<float>(state[SDL_SCANCODE_S] - state[SDL_SCANCODE_W]);
-
-    // Controller movement
     float padX = 0.0f;
     float padY = 0.0f;
 
@@ -352,12 +355,16 @@ void Zoe::OnProcessInput(const uint8_t *state)
 
         padX = rawX / MAX_AXIS;
         padY = rawY / MAX_AXIS;
+
+        mInputMovementDir = Vector2(padX, padY);
+    } 
+    
+    else {
+        float kbX = static_cast<float>(state[SDL_SCANCODE_D] - state[SDL_SCANCODE_A]);
+        float kbY = static_cast<float>(state[SDL_SCANCODE_S] - state[SDL_SCANCODE_W]);
+
+        mInputMovementDir = Vector2(kbX, kbY);
     }
-
-    float finalX = kbX != 0.0f ? kbX : padX;
-    float finalY = kbY != 0.0f ? kbY : padY;
-
-    mInputMovementDir = Vector2(finalX, finalY);
 
     float lengthSq = mInputMovementDir.LengthSq();
     if (lengthSq > 0.0f)
@@ -587,6 +594,10 @@ void Zoe::ManageAnimations()
     case BehaviorState::Jumping:
         mDrawComponent->SetAnimation("jump");
         break;
+    case BehaviorState::Dying:
+        mDrawComponent->SetAnimation("hurt");
+        mDrawComponent->SetAnimFPS(0.01f);
+        break;
     case BehaviorState::TakingDamage:
         mDrawComponent->SetAnimation("hurt");
         mDrawComponent->SetAnimFPS(4.f);
@@ -801,13 +812,6 @@ void Zoe::TakeDamage(const Vector2 &knockback)
     }
 }
 
-void Zoe::LockAbilitiesForDuration(float duration)
-{
-    mAbilitiesLocked = true;
-    mTimerComponent->AddTimer(duration, [this]()
-                              { mAbilitiesLocked = false; });
-}
-
 void Zoe::Jump()
 {
     if (mBehaviorState == BehaviorState::Jumping)
@@ -842,4 +846,20 @@ void Zoe::TakeSithAttack2(const float minOverlap, AABBColliderComponent *other)
 
     TakeDamage(Vector2(xDiff, 1.f) * modifier);
     return;
+}
+
+bool Zoe::IsAbilitiesLocked() const { 
+    return mAbilitiesLocked; 
+}
+
+void Zoe::SetAbilitiesLocked(bool locked) { 
+    mAbilitiesLocked = locked; 
+}
+
+bool Zoe::IsMovementLocked() const { 
+    return mMovementLocked; 
+}
+
+void Zoe::SetMovementLocked(bool locked) { 
+    mMovementLocked = locked; 
 }

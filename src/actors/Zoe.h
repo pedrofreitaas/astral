@@ -96,13 +96,11 @@ public:
 
     void TakeDamage(const Vector2 &knockback = Vector2(0.f, 0.f)) override;
 
-    bool IsMovementLocked() const { return mMovementLocked; }
-    void SetMovementLocked(bool locked) { mMovementLocked = locked; }
+    bool IsMovementLocked() const;
+    void SetMovementLocked(bool locked);
 
-    bool IsAbilitiesLocked() const { return mAbilitiesLocked; }
-    void SetAbilitiesLocked(bool locked) { mAbilitiesLocked = locked; }
-
-    void LockAbilitiesForDuration(float duration);
+    bool IsAbilitiesLocked() const;
+    void SetAbilitiesLocked(bool locked);
 
     bool CheckFireballOnCooldown() {
         return mFireballCooldownTimer && 
