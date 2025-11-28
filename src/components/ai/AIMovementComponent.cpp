@@ -34,7 +34,7 @@ AIMovementComponent::AIMovementComponent(
 
 void AIMovementComponent::Sense(float deltaTime)
 {
-    if (mOwnerEnemy->PlayerOnFov(50.f, 300.f)) {
+    if (mOwnerEnemy->PlayerOnFov()) {
         mLastSeenPlayerCenter = mOwner->GetGame()->GetZoe()->GetCenter();
     }
 }

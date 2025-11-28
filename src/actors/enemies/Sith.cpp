@@ -107,9 +107,15 @@ Sith::Sith(Game *game, float forwardSpeed, const Vector2 &position)
     mAttack2Collider = new Collider(
         mGame,
         this,
-        GetCenter() - Vector2(12.5f, 12.f),
-        Vector2(50, 50),
-        nullptr,
+        GetCenter() - Vector2(15.f, 15.f),
+        Vector2(20, 20),
+        [this](bool collided, float minOverlap, AABBColliderComponent *other)
+        {
+            if (collided && other->GetOwner() == GetGame()->GetZoe())
+            {
+                mAttack2Collider->SetEnabled(false);
+            }
+        },
         DismissOn::None,
         ColliderLayer::SithAttack2,
         {ColliderLayer::Enemy},
@@ -222,7 +228,10 @@ void Sith::ManageState()
 
         break;
     }
+    
     case BehaviorState::Attacking:
+        mInvincible = true; // animation must end to disable colliders (cannot be interrupted by dmg)
+
         if (mCurrentAttack == Attacks::Attack1)
         {
             mAIMovementComponent->BoostToPlayer(Sith::ATTACK1_EXTRA_SPEED);
@@ -231,7 +240,7 @@ void Sith::ManageState()
         else if (mCurrentAttack == Attacks::Attack2)
         {
             mAIMovementComponent->BoostToPlayer(Sith::ATTACK2_EXTRA_SPEED);
-            Vector2 attackColliderPosition = GetCenter() - Vector2(12.5, 12.5);
+            Vector2 attackColliderPosition = GetCenter() - Vector2(15.f, 15.f);
             mAttack2Collider->SetPosition(attackColliderPosition);
         }
         break;
@@ -264,6 +273,7 @@ void Sith::AnimationEndCallback(std::string animationName)
         if (mAttack1Collider)
             mAttack1Collider->Dismiss();
         mAttack1Collider = nullptr;
+        mInvincible = false;
     }
 
     else if (animationName == "attack2")
@@ -271,6 +281,7 @@ void Sith::AnimationEndCallback(std::string animationName)
         mBehaviorState = BehaviorState::Moving;
         mCurrentAttack = Attacks::None;
         mAttack2Collider->SetEnabled(false);
+        mInvincible = false;
     }
 
     else if (animationName == "death")
