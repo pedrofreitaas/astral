@@ -33,5 +33,5 @@ protected:
     virtual void AnimationEndCallback(std::string animationName) = 0;
 
     bool PlayerOnSight(float distance = 100.f, float angle=0.f);
-    bool PlayerOnFov(float minDistance = 20.f, float maxDistance = 400.f);
+    bool PlayerOnFov(float minDistance = 20.f, float maxDistance=250.f);
 };
