@@ -27,6 +27,7 @@
 void Game::LoadMainMenu()
 {
     UIScreen *mainMenu = new UIScreen(this, FONT_PATH_SMB);
+    isEnding = false;
 
     mainMenu->AddBackground(
         "../assets/Sprites/Menu/background.png",
@@ -51,7 +52,7 @@ void Game::LoadMainMenu()
         playButtonPos,
         playButtonSize,
         [this]()
-        { SetGameScene(/*GameScene::Bedroom*/ GameScene::DeathScreen); });
+        { SetGameScene(GameScene::Bedroom); });
     
     mainMenu->AddImage(
         "../assets/Sprites/Menu/playButton.png",
@@ -69,7 +70,7 @@ void Game::LoadMainMenu()
 
 void Game::LoadBedroom()
 {
-    mHUD = new HUD(this, FONT_PATH_INTER);
+    // mHUD = new HUD(this, FONT_PATH_INTER);
 
     SetMap("bedroom.json");
 
@@ -93,7 +94,6 @@ void Game::LoadBedroom()
     dialogue = {
         "Sera que eles estao bravos porque acordei tarde?"};
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
-    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
 
     AddCutscene("enterBedroomPortal",
                 std::move(steps),
@@ -102,12 +102,14 @@ void Game::LoadBedroom()
                     this->SetGameScene(GameScene::BedroomPortal);
                 });
 
+    mZoe->SetAbilitiesLocked(true);
+
     mAudio->PlaySound("bedroomTheme.ogg", true);
 }
 
 void Game::LoadBedroomPortal()
 {
-    mHUD = new HUD(this, FONT_PATH_INTER);
+    // mHUD = new HUD(this, FONT_PATH_INTER);
 
     SetMap("bedroomPortal.json");
 
@@ -119,7 +121,6 @@ void Game::LoadBedroomPortal()
     auto portal = new Portal(this, Vector2(0.f, 72.f) + mMap->GetCenter());
 
     std::vector<std::unique_ptr<Step>> steps;
-    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this]()
@@ -127,7 +128,6 @@ void Game::LoadBedroomPortal()
         [this]()
         { return GetZoe()->GetCenter() + Vector2(-10.f, 0.f); },
         20.f));
-    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this]()
@@ -135,14 +135,12 @@ void Game::LoadBedroomPortal()
         [this]()
         { return GetZoe()->GetCenter() + Vector2(10.f, 0.f); },
         20.f));
-    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
     std::vector<std::string> dialogue = {
         "Pai? Mae? Cade voces?",
         "O que e isso no meio do quarto?",
     };
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
     steps.push_back(std::make_unique<SoundStep>(this, "portalSuck.wav"));
-    steps.push_back(std::make_unique<WaitStep>(this, .75f));
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this]()
@@ -162,7 +160,8 @@ void Game::LoadBedroomPortal()
                 {
                     this->SetGameScene(GameScene::Level1);
                 });
-
+    
+    mZoe->SetAbilitiesLocked(true);
     mAudio->PlaySound("bedroomTheme.ogg", true);
 }
 
@@ -182,8 +181,9 @@ void Game::LoadFirstLevel()
         false);
 
     std::vector<std::unique_ptr<Step>> steps;
+    std::vector<std::string> dialogue;
 
-    steps.push_back(std::make_unique<WaitStep>(this, 1.f)); // just to land
+    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
 
     steps.push_back(std::make_unique<MoveStep>(
         this,
@@ -207,7 +207,7 @@ void Game::LoadFirstLevel()
 
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
 
-    std::vector<std::string> dialogue = {
+    dialogue = {
         "O que... o que e isso?",
         "Onde estou? Parece que estou no espaco.",
         "Mas algo esta errado, eu sou uma pessoa comum, eu nao deveria estar aqui."};
@@ -269,8 +269,7 @@ void Game::LoadFirstLevel()
 
     AddCutscene("introduction",
                 std::move(steps),
-                [this]()
-                {
+                [this](){
                     this->GetZoe()->SetAbilitiesLocked(false);
                 });
 
@@ -333,6 +332,38 @@ void Game::LoadFirstLevel()
                 std::move(steps),
                 [this](){});
 
+    steps.clear();
+    dialogue = {
+        "Parece que esses desafios foram muito faceis para voce!",
+        "Acho que voce vai se sair muito bem nos proximos!"
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
+
+    dialogue = {
+        "E isso jogador! Essa foi a DEMO do Astral. Muito obrigado por jogar!",
+        "Espero que tenha gostado do que viu ate agora, novas funcionalidades e conteudos estarao disponiveis na versao completa do jogo.",
+        "Nos vemos em breve!"
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, "Desenvolvedor", dialogue));
+
+    AddCutscene("endDemo",
+                std::move(steps),
+                [this](){
+                    SetGameScene(GameScene::EndDemo);
+                });
+
+    steps.clear();
+    dialogue = {
+        "Nao posso te falar muito sobre essa sala ainda.",
+        "Mas eu acho que era para ter algo diferente aqui...",
+        "Nao sei, talvez no futuro..."
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
+
+    AddCutscene("future_new_enemy_location",
+                std::move(steps),
+                [this](){});
+
     mAudio->PlaySound("level1Theme.ogg", true);
 
     mZoe->SetAbilitiesLocked(true);
@@ -380,4 +411,41 @@ void Game::LoadDeathScreen()
         Color::White);
 
     mAudio->PlaySound("deathTheme.ogg", true);
+}
+
+void Game::LoadEndDemoScene()
+{
+    UIScreen *mainMenu = new UIScreen(this, FONT_PATH_SMB);
+
+    mainMenu->AddBackground(
+        "../assets/Sprites/Menu/backgroundEndDemo.png",
+        Vector2(0, 0),
+        Vector2(mWindowWidth, mWindowHeight));
+    
+    const Vector2 restartButtonSize = Vector2(
+        137.f,
+        38.f);
+
+    const Vector2 restartButtonPos = Vector2(
+        mWindowWidth / 2.0f - restartButtonSize.x / 2.0f,
+        mWindowHeight * .1f);
+
+    mainMenu->AddTransparentButton(
+        restartButtonPos,
+        restartButtonSize,
+        [this]()
+        { SetGameScene(GameScene::MainMenu); });
+
+    mainMenu->AddImage(
+        "../assets/Sprites/Menu/restartButton.png",
+        restartButtonPos,
+        restartButtonSize);
+
+    mUIStack.front()->AddCursor(
+        "../assets/Sprites/Hud/cursor.png",
+        Vector2(0.0f, 0.0f),
+        Vector2(33.0f, 33.0f),
+        Color::White);
+
+    mAudio->PlaySound("endDemoTheme.ogg", true);
 }
