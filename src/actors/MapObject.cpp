@@ -3,6 +3,7 @@
 #include "../core/Game.h"
 #include "../actors/enemies/Sith.h"
 #include "../actors/enemies/Zod.h"
+#include "../actors/enemies/Quasar.h"
 #include "../actors/Zoe.h"
 #include "../actors/traps/Shuriken.h"
 #include "../actors/traps/Spear.h"
@@ -186,6 +187,9 @@ void MapObject::SpawnEntity()
         break;
     case EntityCode::Portal:
         new Portal(mGame, GetCenter());
+        break;
+    case EntityCode::Quasar:
+        new Quasar(mGame, 700.f, GetCenter());
         break;
     default:
         throw std::runtime_error("MapObject unknown SpawnCode");

@@ -21,6 +21,7 @@ public:
         Spear=4,
         Spikes=5,
         Portal=6,
+        Quasar=7,
     };
 
     MapObject(Game *game, int inId, const std::string &ev, const std::string &func_name, 

@@ -77,6 +77,9 @@ bool Enemy::PlayerOnFov(float minDistance, float maxDistance)
 
 std::vector<SDL_Rect> Enemy::GetPath() const
 {
+    if (mAIMovementComponent == nullptr)
+        return {};
+
     return mAIMovementComponent->GetPath();
 }
 

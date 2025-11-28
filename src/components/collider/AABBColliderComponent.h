@@ -30,7 +30,8 @@ enum class ColliderLayer
     Shuriken,
     EnemyBlocker,
     SithAttack1,
-    SithAttack2
+    SithAttack2,
+    Quasar,
 };
 
 class AABBColliderComponent : public Component
