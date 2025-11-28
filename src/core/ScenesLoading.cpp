@@ -354,13 +354,14 @@ void Game::LoadFirstLevel()
 
     steps.clear();
     dialogue = {
-        "Nao posso te falar muito sobre essa sala ainda.",
-        "Mas eu acho que era para ter algo diferente aqui...",
-        "Nao sei, talvez no futuro..."
+        "Opa, opa, opa...",
+        "Esse e o Quasar, um golem de energia que protege o Espaco Astral.",
+        "Voce deu sorte dele estar dormindo hoje.",
+        "Nao acho que voce vai conseguir acorda-lo, mas se ele acordar, corra!"
     };
     steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
 
-    AddCutscene("future_new_enemy_location",
+    AddCutscene("quasar_encounter",
                 std::move(steps),
                 [this](){});
 
