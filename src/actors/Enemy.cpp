@@ -111,13 +111,7 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent 
 
     if (other->GetLayer() == ColliderLayer::PlayerAttack)
     {
-        Collider *collider = static_cast<Collider*>(other->GetOwner());
-        Vector2 colliderCenter = collider->GetCenter();
-
-        Vector2 knockbackDir = GetCenter() - colliderCenter;
-        knockbackDir.Normalize();
-
-        TakeDamage(knockbackDir * Enemy::PLAYER_ATTACK_KNOCKBACK_FORCE);
+        TakeDamage(Vector2(-minOverlap, 1.f) * Enemy::PLAYER_ATTACK_KNOCKBACK_FORCE);
         return;
     }
 }
@@ -146,13 +140,7 @@ void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent *o
 
     if (other->GetLayer() == ColliderLayer::PlayerAttack)
     {
-        Collider *collider = static_cast<Collider*>(other->GetOwner());
-        Vector2 colliderCenter = collider->GetCenter();
-
-        Vector2 knockbackDir = GetCenter() - colliderCenter;
-        knockbackDir.Normalize();
-
-        TakeDamage(knockbackDir * Enemy::PLAYER_ATTACK_KNOCKBACK_FORCE);
+        TakeDamage();
         return;
     }
 }
