@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="33" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="103">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="33" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="104">
  <editorsettings>
   <export target="../../assets/Levels/Maps/level1.json" format="json"/>
  </editorsettings>
@@ -117,7 +117,7 @@
 </data>
  </layer>
  <objectgroup id="5" name="objects">
-  <object id="4" x="53.2251" y="596.943" width="64" height="64">
+  <object id="4" x="58.8918" y="601.61" width="64" height="64">
    <properties>
     <property name="entity_code" type="int" value="0"/>
     <property name="event" value="atStart"/>
@@ -453,11 +453,18 @@
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
-  <object id="102" x="1347.65" y="931.543" width="525.36" height="88.913">
+  <object id="102" x="1546.32" y="931.543" width="336.694" height="88.913">
    <properties>
-    <property name="cutscene_name" value="future_new_enemy_location"/>
+    <property name="cutscene_name" value="quasar_encounter"/>
     <property name="event" value="enter"/>
     <property name="function_name" value="play_cutscene"/>
+   </properties>
+  </object>
+  <object id="103" x="1692.67" y="948.5" width="66" height="63">
+   <properties>
+    <property name="entity_code" type="int" value="7"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
  </objectgroup>

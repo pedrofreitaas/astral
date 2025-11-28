@@ -163,8 +163,8 @@
                  "type":"",
                  "visible":true,
                  "width":64,
-                 "x":53.2251,
-                 "y":596.943
+                 "x":58.8917666666666,
+                 "y":601.609666666667
                 }, 
                 {
                  "height":13,
@@ -1443,7 +1443,7 @@
                         {
                          "name":"cutscene_name",
                          "type":"string",
-                         "value":"future_new_enemy_location"
+                         "value":"quasar_encounter"
                         }, 
                         {
                          "name":"event",
@@ -1458,9 +1458,36 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":525.3603,
-                 "x":1347.65318333333,
+                 "width":336.693633333334,
+                 "x":1546.31985,
                  "y":931.5435
+                }, 
+                {
+                 "height":63.0000333333334,
+                 "id":103,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"entity_code",
+                         "type":"int",
+                         "value":7
+                        }, 
+                        {
+                         "name":"event",
+                         "type":"string",
+                         "value":"atStart"
+                        }, 
+                        {
+                         "name":"function_name",
+                         "type":"string",
+                         "value":"spawn_entity"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":65.999966666667,
+                 "x":1692.66668333333,
+                 "y":948.499983333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1733,7 +1760,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":103,
+ "nextobjectid":104,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
