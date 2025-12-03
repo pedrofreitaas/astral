@@ -83,7 +83,7 @@ public:
         PlayingCutscene
     };
 
-    Game(int windowWidth, int windowHeight);
+    Game();
 
     bool Initialize();
     void RunLoop();

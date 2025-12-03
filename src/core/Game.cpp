@@ -33,7 +33,7 @@
 #include "../actors/Enemy.h"
 #include "../actors/Portal.h"
 
-Game::Game(int windowWidth, int windowHeight)
+Game::Game()
     : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true),
       mZoe(nullptr), mHUD(nullptr), mBackgroundColor(0, 0, 0),
       mModColor(255, 255, 255), mCameraPos(Vector2::Zero), mAudio(nullptr),
@@ -43,10 +43,9 @@ Game::Game(int windowWidth, int windowHeight)
       mCurrentCutscene(nullptr), mCutscenes(), mGamePlayState(GamePlayState::Playing),
       mDebugMode(false), mEnemies(), mStar(nullptr), mApplyGravityScene(true),
       mCameraCenter(CameraCenter::Zoe), mMaintainCameraInMap(true), mCameraCenterPos(Vector2::Zero),
-      mController(nullptr), mMustAlwaysUpdateActors(), mPreviousGameState(GamePlayState::Playing)
+      mController(nullptr), mMustAlwaysUpdateActors(), mPreviousGameState(GamePlayState::Playing),
+      mRealWindowHeight(0), mRealWindowWidth(0)
 {
-    mRealWindowWidth = windowWidth;
-    mRealWindowHeight = windowHeight;
     mWindowWidth = 640;
     mWindowHeight = 352;
 
@@ -65,6 +64,12 @@ bool Game::Initialize()
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
         return false;
     }
+
+    SDL_DisplayMode mode;
+    SDL_GetCurrentDisplayMode(0, &mode);
+
+    mRealWindowWidth = mode.w;
+    mRealWindowHeight = mode.h;
 
     mWindow = SDL_CreateWindow(
         "astral",
@@ -123,22 +128,11 @@ bool Game::Initialize()
         return false;
     }
 
-    int numJoysticks = SDL_NumJoysticks();
-    for (int i = 0; i < numJoysticks; ++i)
-    {
-        if (SDL_IsGameController(i))
-        {
-            mController = SDL_GameControllerOpen(i);
-            if (mController)
-            {
-                SDL_Log("Opened game controller %d: %s", i, SDL_GameControllerName(mController));
-            }
-            else
-            {
-                SDL_Log("Could not open gamecontroller %d: %s", i, SDL_GetError());
-            }
-            break;
-        }
+    int mappingsAdded = SDL_GameControllerAddMappingsFromFile("gamecontrollerdb.txt");
+    if (mappingsAdded == -1) {
+        SDL_Log("Warning: gamecontrollerdb.txt not found! Generic controllers might not work.");
+    } else {
+        SDL_Log("Success: Loaded %d controller mappings.", mappingsAdded);
     }
 
     // Start random number generator
@@ -281,6 +275,21 @@ void Game::RunLoop()
 
 void Game::ProcessInput()
 {
+    int numJoysticks = SDL_NumJoysticks();
+
+    for (int i = 0; i < numJoysticks; ++i)
+    {
+        if (SDL_IsGameController(i))
+        {
+            mController = SDL_GameControllerOpen(i);
+            if (!mController)
+            {
+                SDL_Log("Could not open gamecontroller %d: %s", i, SDL_GetError());
+            }
+            break;
+        }
+    }
+
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {

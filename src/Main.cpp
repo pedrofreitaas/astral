@@ -10,12 +10,12 @@
 #define SDL_MAIN_HANDLED
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 1920;
-const int SCREEN_HEIGHT = 1080;
+// const int SCREEN_WIDTH = 1920;
+// const int SCREEN_HEIGHT = 1080;
 
 int main(int argc, char** argv)
 {
-    Game game = Game(SCREEN_WIDTH, SCREEN_HEIGHT);
+    Game game = Game();
     bool success = game.Initialize();
 
     if (!success) throw std::runtime_error("Failed to initialize game.");
