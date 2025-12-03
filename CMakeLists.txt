@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.26)
 
-project(astral CXX)
+project(astral)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# --- EDIT THESE TO MATCH YOUR ACTUAL FOLDERS ---
+# --- 1. Library Paths ---
 set(SDL2_ROOT        "C:/libs/SDL2/x86_64-w64-mingw32")
 set(SDL2_IMAGE_ROOT  "C:/libs/SDL2_image/x86_64-w64-mingw32")
 set(SDL2_TTF_ROOT    "C:/libs/SDL2_ttf/x86_64-w64-mingw32")
 set(SDL2_MIXER_ROOT  "C:/libs/SDL2_mixer/x86_64-w64-mingw32")
-# ------------------------------------------------
 
+# --- 2. Source Files ---
 add_executable(astral
     src/Main.cpp
     src/libs/Math.h
@@ -101,7 +101,7 @@ add_executable(astral
     src/components/TimerComponent.h
 )
 
-# Include dirs for headers
+# --- 3. Include Directories ---
 target_include_directories(astral PRIVATE
     ${SDL2_ROOT}/include
     ${SDL2_ROOT}/include/SDL2
@@ -116,8 +116,7 @@ target_include_directories(astral PRIVATE
     ${SDL2_MIXER_ROOT}/include/SDL2
 )
 
-
-# Where to find .a / .dll.a libs
+# --- 4. Link Directories ---
 target_link_directories(astral PRIVATE
     ${SDL2_ROOT}/lib
     ${SDL2_IMAGE_ROOT}/lib
@@ -125,8 +124,7 @@ target_link_directories(astral PRIVATE
     ${SDL2_MIXER_ROOT}/lib
 )
 
-# Link order is important on MinGW:
-#   mingw32, SDL2main, SDL2, then the others
+# --- 5. Link Libraries & Static Config ---
 target_link_libraries(astral PRIVATE
     mingw32
     SDL2main
@@ -134,4 +132,43 @@ target_link_libraries(astral PRIVATE
     SDL2_image
     SDL2_ttf
     SDL2_mixer
+)
+
+if(MINGW)
+    target_link_options(astral PRIVATE 
+        -static-libgcc 
+        -static-libstdc++ 
+        -mwindows # Hides the console window
+    )
+endif()
+
+# --- 6. Auto-Copy DLLs ---
+add_custom_command(TARGET astral POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E echo "Copying DLLs to build directory..."
+    
+    # SDL2
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different 
+        "${SDL2_ROOT}/bin/SDL2.dll" 
+        $<TARGET_FILE_DIR:astral>
+        
+    # SDL2 Image
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different 
+        "${SDL2_IMAGE_ROOT}/bin/SDL2_image.dll" 
+        $<TARGET_FILE_DIR:astral>
+        
+    # SDL2 TTF
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different 
+        "${SDL2_TTF_ROOT}/bin/SDL2_ttf.dll" 
+        $<TARGET_FILE_DIR:astral>
+        
+    # SDL2 Mixer
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different 
+        "${SDL2_MIXER_ROOT}/bin/SDL2_mixer.dll" 
+        $<TARGET_FILE_DIR:astral>
+)
+
+add_custom_command(TARGET astral POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/assets"
+    "$<TARGET_FILE_DIR:astral>/assets"
 )
