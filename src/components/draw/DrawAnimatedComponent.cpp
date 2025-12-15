@@ -54,13 +54,6 @@ void DrawAnimatedComponent::LoadSpriteSheet(const std::string &texturePath, cons
         rects.emplace_back(fileName, r);
     }
 
-    // Sort by filename (lexicographically)
-    std::sort(rects.begin(), rects.end(),
-              [](const std::pair<std::string, SDL_Rect*> &a,
-                 const std::pair<std::string, SDL_Rect*> &b) {
-                  return a.first < b.first;
-              });
-
     // Move sorted rect pointers into mSpriteSheetData
     mSpriteSheetData.reserve(rects.size());
     for (auto &p : rects)
