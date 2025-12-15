@@ -239,7 +239,7 @@ Zoe::Zoe(
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
 
-    mColliderComponent = new AABBColliderComponent(this, 27, 39, 13, 24,
+    mColliderComponent = new AABBColliderComponent(this, 27, 21, 10, 24, // previous 27, 39, 13, 24
                                                    ColliderLayer::Player);
 
     mTimerComponent = new TimerComponent(this);
@@ -247,8 +247,8 @@ Zoe::Zoe(
     mDrawComponent = new DrawAnimatedComponent(
         this,
         "../assets/Sprites/Zoe/texture.png",
-        "../assets/Sprites/Zoe/texture.json",
-        std::bind(&Zoe::AnimationEndCallback, this, std::placeholders::_1), // could use a lambda here too
+        "../assets/Sprites/Zoe/texture.json", //aseprite format
+        std::bind(&Zoe::AnimationEndCallback, this, std::placeholders::_1),
         static_cast<int>(DrawLayerPosition::Player) + 1);
 
     mDrawComponent->AddAnimation("idle", 0, 8);
