@@ -89,10 +89,10 @@ public:
     
     Vector2 GetFireballOffset() {
         if (GetRotation() == 0.f) {
-            return Vector2(50.f,53.f);
+            return Vector2(50.f,35.f);
         }
         else {
-            return Vector2(12.f,52.f);
+            return Vector2(12.f,36.f);
         }
     }
 
