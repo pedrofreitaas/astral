@@ -814,7 +814,14 @@ void Zoe::Jump()
         return;
 
     float jumpForce = mRigidBodyComponent->GetVerticalVelY(5);
-    mRigidBodyComponent->SumVelocity(Vector2(0.f, jumpForce));
+    float horizontalDir = Math::Sign(mRigidBodyComponent->GetVelocity().x);
+    
+    mRigidBodyComponent->ApplyForce(
+        Vector2(horizontalDir * mForwardSpeed, 0.f));
+    
+    mRigidBodyComponent->SumVelocity(
+        Vector2(.0f, jumpForce));
+    
     mBehaviorState = BehaviorState::Jumping;
 }
 
