@@ -32,6 +32,7 @@ enum class BehaviorState // For AI behaviors/animations
     Dodging,
     Stunned,
     Jumping,
+    Falling,
     Dying,
     Provoking,
     Fleeing,
