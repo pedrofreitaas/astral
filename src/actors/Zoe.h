@@ -55,6 +55,8 @@ class Zoe : public Actor
     float VETANIA_SPEED = 20000.f;
     float VETANIA_COOLDOWN = 0.75f;
 
+    float DODGE_COOLDOWN = 1.0f;
+
     float DEFAULT_KNOCKBACK_FORCE = 2400.f;
     
     SDL_Scancode FIREBALL_KEY = SDL_SCANCODE_Q;
@@ -129,6 +131,7 @@ private:
 
     Vector2 mInputMovementDir;
     bool mIsTryingToHit, mIsTryingToDodge, mIsTryingToJump;
+    Timer* mDodgeCooldownTimer;
 
     void FireFireball();
     bool mTryingToFireFireball;

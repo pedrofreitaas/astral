@@ -191,7 +191,7 @@ void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent
         float originalAngle = Math::Atan2(0.f, 1.f);
         directionAngle -= originalAngle;
         SetRotation(directionAngle);
-        
+
         return;
     }
 
@@ -231,7 +231,7 @@ void Fireball::Kill()
 Zoe::Zoe(
     Game *game, const float forwardSpeed, const Vector2 &center)
     : Actor(game, 6, true), mForwardSpeed(forwardSpeed),
-      mTryingToFireFireball(false), mFireballCooldownTimer(),
+      mTryingToFireFireball(false), mFireballCooldownTimer(), mDodgeCooldownTimer(),
       mIsVentaniaOnCooldown(false), mTryingToTriggerVentania(false),
       mIsTryingToHit(false), mAttackCollider(nullptr), mIsTryingToDodge(false),
       mInputMovementDir(0.f, 0.f), mMovementLocked(false), mAbilitiesLocked(false),
@@ -247,7 +247,7 @@ Zoe::Zoe(
     mDrawComponent = new DrawAnimatedComponent(
         this,
         "../assets/Sprites/Zoe/texture.png",
-        "../assets/Sprites/Zoe/texture.json", //aseprite format
+        "../assets/Sprites/Zoe/texture.json", // aseprite format
         std::bind(&Zoe::AnimationEndCallback, this, std::placeholders::_1),
         static_cast<int>(DrawLayerPosition::Player) + 1);
 
@@ -322,7 +322,8 @@ void Zoe::OnProcessInput(const uint8_t *state)
         mIsTryingToJump = SDL_GameControllerGetButton(controller, Zoe::JUMP_BUTTON);
     }
 
-    else {
+    else
+    {
         mIsTryingToHit = state[Zoe::HIT_KEY];
         mTryingToFireFireball = state[Zoe::FIREBALL_KEY];
         mTryingToTriggerVentania = state[Zoe::VENTANIA_KEY];
@@ -357,9 +358,10 @@ void Zoe::OnProcessInput(const uint8_t *state)
         padY = rawY / MAX_AXIS;
 
         mInputMovementDir = Vector2(padX, padY);
-    } 
-    
-    else {
+    }
+
+    else
+    {
         float kbX = static_cast<float>(state[SDL_SCANCODE_D] - state[SDL_SCANCODE_A]);
         float kbY = static_cast<float>(state[SDL_SCANCODE_S] - state[SDL_SCANCODE_W]);
 
@@ -664,7 +666,7 @@ void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *o
 
     if (other->GetLayer() == ColliderLayer::Quasar)
     {
-        TakeDamage(Vector2(Math::Sign(-minOverlap), 1.f) * Zoe::DEFAULT_KNOCKBACK_FORCE*6.f);
+        TakeDamage(Vector2(Math::Sign(-minOverlap), 1.f) * Zoe::DEFAULT_KNOCKBACK_FORCE * 6.f);
         return;
     }
 
@@ -682,7 +684,7 @@ void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *oth
     if (other->GetLayer() == ColliderLayer::Enemy && minOverlap > 0.f)
     {
         float ySpeed = mRigidBodyComponent->GetVerticalVelY(3);
-        mRigidBodyComponent->SumVelocity(Vector2(0.f,ySpeed));
+        mRigidBodyComponent->SumVelocity(Vector2(0.f, ySpeed));
         return;
     }
 
@@ -763,7 +765,7 @@ void Zoe::FireFireball()
         Zoe::FIREBALL_SPEED,
         this);
 
-    mFireballCooldownTimer = mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this](){});
+    mFireballCooldownTimer = mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this]() {});
     mGame->GetAudio()->PlaySound("fireball.wav");
 }
 
@@ -818,8 +820,8 @@ void Zoe::Jump()
 
 void Zoe::TakeSithAttack1(const float minOverlap, AABBColliderComponent *other)
 {
-    Collider *sithAttackCollider = static_cast<Collider*>(other->GetOwner());
-    Sith *sith = static_cast<Sith*>(sithAttackCollider->GetOwnerActor());
+    Collider *sithAttackCollider = static_cast<Collider *>(other->GetOwner());
+    Sith *sith = static_cast<Sith *>(sithAttackCollider->GetOwnerActor());
 
     float xDiff = Math::Sign(GetCenter().x - sith->GetCenter().x);
 
@@ -831,8 +833,8 @@ void Zoe::TakeSithAttack1(const float minOverlap, AABBColliderComponent *other)
 
 void Zoe::TakeSithAttack2(const float minOverlap, AABBColliderComponent *other)
 {
-    Collider *sithAttackCollider = static_cast<Collider*>(other->GetOwner());
-    Sith *sith = static_cast<Sith*>(sithAttackCollider->GetOwnerActor());
+    Collider *sithAttackCollider = static_cast<Collider *>(other->GetOwner());
+    Sith *sith = static_cast<Sith *>(sithAttackCollider->GetOwnerActor());
 
     float xDiff = Math::Sign(GetCenter().x - sith->GetCenter().x);
 
@@ -842,25 +844,35 @@ void Zoe::TakeSithAttack2(const float minOverlap, AABBColliderComponent *other)
     return;
 }
 
-bool Zoe::IsAbilitiesLocked() const { 
-    return mAbilitiesLocked; 
+bool Zoe::IsAbilitiesLocked() const
+{
+    return mAbilitiesLocked;
 }
 
-void Zoe::SetAbilitiesLocked(bool locked) { 
-    mAbilitiesLocked = locked; 
+void Zoe::SetAbilitiesLocked(bool locked)
+{
+    mAbilitiesLocked = locked;
 }
 
-bool Zoe::IsMovementLocked() const { 
-    return mMovementLocked; 
+bool Zoe::IsMovementLocked() const
+{
+    return mMovementLocked;
 }
 
-void Zoe::SetMovementLocked(bool locked) { 
-    mMovementLocked = locked; 
+void Zoe::SetMovementLocked(bool locked)
+{
+    mMovementLocked = locked;
 }
 
 void Zoe::CheckDodge()
 {
-    if (!mIsTryingToDodge) return;
+    if (!mIsTryingToDodge || mBehaviorState == BehaviorState::Dodging)
+        return;
+
+    if (mDodgeCooldownTimer != nullptr && mTimerComponent->checkTimerRemaining(mDodgeCooldownTimer) > 0.f)
+    {
+        return;
+    }
 
     mBehaviorState = BehaviorState::Dodging;
     mColliderComponent->SetIgnoreLayers(Zoe::IGNORED_LAYERS_DODGE);
@@ -870,7 +882,8 @@ void Zoe::CheckDodge()
 
 void Zoe::DodgeEnd()
 {
-    if (mBehaviorState != BehaviorState::Dodging) return;
+    if (mBehaviorState != BehaviorState::Dodging)
+        return;
 
     mBehaviorState = BehaviorState::Idle;
 
@@ -880,4 +893,6 @@ void Zoe::DodgeEnd()
     mColliderComponent->SetIgnoreLayers(Zoe::IGNORED_LAYERS_DEFAULT);
     mColliderComponent->SetOffset(Vector2(27, 21));
     mColliderComponent->SetSize(10, 24);
+
+    mDodgeCooldownTimer = mTimerComponent->AddTimer(Zoe::DODGE_COOLDOWN, nullptr);
 }
