@@ -147,7 +147,10 @@ private:
 
     bool mAbilitiesLocked, mMovementLocked;
 
+    void Move(float modifier=1.f);
     void Jump();
     void CheckDodge(); 
     void DodgeEnd();
+    void EndAerialAttack();
+    bool CheckHit();
 };

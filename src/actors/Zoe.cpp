@@ -395,20 +395,37 @@ void Zoe::ManageState()
             mBehaviorState = BehaviorState::Idle;
         }
 
+        if (mRigidBodyComponent->GetVelocity().y > 0.f)
+        {
+            mBehaviorState = BehaviorState::Falling;
+        }
+
         if (mTryingToTriggerVentania && !mIsVentaniaOnCooldown)
         {
             TriggerVentania();
             break;
         }
 
-        if (mIsTryingToHit)
+        if (CheckHit()) break;
+
+        Move(.125f);
+
+        break;
+
+    case BehaviorState::Falling:
+        if (mRigidBodyComponent->GetOnGround())
         {
-            mBehaviorState = BehaviorState::AerialAttacking;
-            mGame->GetAudio()->PlaySound("zoeSmash.wav");
-            float ySpeed = mRigidBodyComponent->GetVerticalVelY(.3f);
-            mRigidBodyComponent->SumVelocity(Vector2(0.f, ySpeed));
+            mBehaviorState = BehaviorState::Idle;
             break;
         }
+
+        if (mTryingToTriggerVentania && !mIsVentaniaOnCooldown)
+        {
+            TriggerVentania();
+            break;
+        }
+
+        if (CheckHit()) break;
 
         break;
 
@@ -422,12 +439,7 @@ void Zoe::ManageState()
 
         CheckDodge();
 
-        if (mIsTryingToHit)
-        {
-            mBehaviorState = BehaviorState::Attacking;
-            mGame->GetAudio()->PlaySound("zoeSmash.wav");
-            break;
-        }
+        if (CheckHit()) break;
 
         if (!mRigidBodyComponent->GetOnGround())
         {
@@ -441,19 +453,7 @@ void Zoe::ManageState()
             break;
         }
 
-        if (mGame->GetGamePlayState() == Game::GamePlayState::Playing)
-        {
-            Vector2 movementDir = mInputMovementDir;
-
-            if (mGame->GetApplyGravityScene() && mRigidBodyComponent->GetApplyGravity())
-            {
-                movementDir.y = 0.f;
-                movementDir.Normalize();
-            }
-
-            mRigidBodyComponent->ApplyForce(
-                movementDir * mForwardSpeed);
-        }
+        Move();
 
         if (
             mRigidBodyComponent->GetVelocity().x == 0.f &&
@@ -476,12 +476,7 @@ void Zoe::ManageState()
 
         CheckDodge();
 
-        if (mIsTryingToHit)
-        {
-            mBehaviorState = BehaviorState::Attacking;
-            mGame->GetAudio()->PlaySound("zoeSmash.wav");
-            break;
-        }
+        if (CheckHit()) break;
 
         if (!mRigidBodyComponent->GetOnGround())
         {
@@ -539,6 +534,12 @@ void Zoe::ManageState()
 
         Vector2 attackColliderPosition = GetCenter() - Vector2(20, 30);
         mAerialAttackCollider->SetPosition(attackColliderPosition);
+        
+        if (mRigidBodyComponent->GetOnGround())
+        {
+            EndAerialAttack();
+        }
+
         break;
     }
 
@@ -584,6 +585,9 @@ void Zoe::ManageAnimations()
         mDrawComponent->SetAnimation("run");
         break;
     case BehaviorState::Jumping:
+        mDrawComponent->SetAnimation("jump");
+        break;
+    case BehaviorState::Falling:
         mDrawComponent->SetAnimation("jump");
         break;
     case BehaviorState::Dying:
@@ -740,8 +744,7 @@ void Zoe::AnimationEndCallback(std::string animationName)
 
     if (animationName == "aerial-crush")
     {
-        mBehaviorState = BehaviorState::Jumping;
-        mAerialAttackCollider->SetEnabled(false);
+        EndAerialAttack();
         return;
     }
 }
@@ -812,16 +815,19 @@ void Zoe::Jump()
 {
     if (mBehaviorState == BehaviorState::Jumping)
         return;
+    
+    if (mBehaviorState == BehaviorState::Falling)
+        return;
 
     float jumpForce = mRigidBodyComponent->GetVerticalVelY(5);
     float horizontalDir = Math::Sign(mRigidBodyComponent->GetVelocity().x);
-    
+
     mRigidBodyComponent->ApplyForce(
         Vector2(horizontalDir * mForwardSpeed, 0.f));
-    
+
     mRigidBodyComponent->SumVelocity(
         Vector2(.0f, jumpForce));
-    
+
     mBehaviorState = BehaviorState::Jumping;
 }
 
@@ -902,4 +908,60 @@ void Zoe::DodgeEnd()
     mColliderComponent->SetSize(10, 24);
 
     mDodgeCooldownTimer = mTimerComponent->AddTimer(Zoe::DODGE_COOLDOWN, nullptr);
+}
+
+void Zoe::Move(float modifier)
+{
+    if (mGame->GetGamePlayState() != Game::GamePlayState::Playing)
+        return;
+
+    Vector2 movementDir = mInputMovementDir;
+
+    if (mGame->GetApplyGravityScene() && mRigidBodyComponent->GetApplyGravity())
+    {
+        movementDir.y = 0.f;
+        movementDir.Normalize();
+    }
+
+    float MAX_MOVE_X_SPEED_ON_AIR = 50.f;
+    float currentVelX = mRigidBodyComponent->GetVelocity().x;
+
+    if (!mRigidBodyComponent->GetOnGround() && 
+        Math::Abs(currentVelX) >= MAX_MOVE_X_SPEED_ON_AIR &&
+        Math::Sign(currentVelX) == Math::Sign(movementDir.x)
+    )
+    {
+        return;
+    }
+
+    mRigidBodyComponent->ApplyForce(
+        movementDir * mForwardSpeed * modifier);
+}
+
+void Zoe::EndAerialAttack()
+{
+    mAerialAttackCollider->SetEnabled(false);
+    mBehaviorState = BehaviorState::Jumping;
+}
+
+bool Zoe::CheckHit()
+{
+    if (!mIsTryingToHit) return false;
+    if (mBehaviorState == BehaviorState::AerialAttacking) return false;
+    if (mBehaviorState == BehaviorState::Attacking) return false;
+    
+    bool onGround = mRigidBodyComponent->GetOnGround();
+
+    mBehaviorState = onGround ? BehaviorState::Attacking : BehaviorState::AerialAttacking;
+    mGame->GetAudio()->PlaySound("zoeSmash.wav");
+
+    if (!onGround)
+    {
+        return true;
+    }
+        
+    float ySpeed = mRigidBodyComponent->GetVerticalVelY(.3f);
+    mRigidBodyComponent->SumVelocity(Vector2(0.f, ySpeed));
+
+    return true;
 }
