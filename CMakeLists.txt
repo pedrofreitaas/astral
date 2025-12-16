@@ -138,7 +138,7 @@ if(MINGW)
     target_link_options(astral PRIVATE 
         -static-libgcc 
         -static-libstdc++ 
-        -mwindows # Hides the console window
+        # -mwindows # Hides the console window
     )
 endif()
 
