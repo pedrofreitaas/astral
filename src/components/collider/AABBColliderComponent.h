@@ -51,10 +51,14 @@ public:
     Vector2 GetMin() const;
     Vector2 GetMax() const;
     Vector2 GetCenter() const;
+
     int GetWidth() const { return mWidth; }
     int GetHeight() const { return mHeight; }
     Vector2 GetOffset() const { return mOffset; }
+
     void SetOffset(const Vector2& offset) { mOffset = offset; }
+    void SetSize(int width, int height) { mWidth = width; mHeight = height; }
+
     ColliderLayer GetLayer() const { return mLayer; }
     bool IsTangible() const { return mIsTangible; }
     void SetIsTangible(bool isTangible) { mIsTangible = isTangible; }
