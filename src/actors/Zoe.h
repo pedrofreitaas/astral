@@ -145,4 +145,6 @@ private:
     bool mAbilitiesLocked, mMovementLocked;
 
     void Jump();
+    void CheckDodge(); 
+    void DodgeEnd();
 };

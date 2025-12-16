@@ -418,11 +418,7 @@ void Zoe::ManageState()
             break;
         }
 
-        if (mIsTryingToDodge)
-        {
-            mBehaviorState = BehaviorState::Dodging;
-            break;
-        }
+        CheckDodge();
 
         if (mIsTryingToHit)
         {
@@ -476,11 +472,7 @@ void Zoe::ManageState()
             break;
         }
 
-        if (mIsTryingToDodge)
-        {
-            mBehaviorState = BehaviorState::Dodging;
-            break;
-        }
+        CheckDodge();
 
         if (mIsTryingToHit)
         {
@@ -534,8 +526,6 @@ void Zoe::ManageState()
         break;
 
     case BehaviorState::Dodging:
-        mColliderComponent->SetIgnoreLayers(
-            Zoe::IGNORED_LAYERS_DODGE);
         break;
 
     case BehaviorState::AerialAttacking:
@@ -742,9 +732,7 @@ void Zoe::AnimationEndCallback(std::string animationName)
 
     if (animationName == "dodging")
     {
-        mBehaviorState = BehaviorState::Idle;
-        mColliderComponent->SetIgnoreLayers(
-            Zoe::IGNORED_LAYERS_DEFAULT);
+        DodgeEnd();
         return;
     }
 
@@ -868,4 +856,28 @@ bool Zoe::IsMovementLocked() const {
 
 void Zoe::SetMovementLocked(bool locked) { 
     mMovementLocked = locked; 
+}
+
+void Zoe::CheckDodge()
+{
+    if (!mIsTryingToDodge) return;
+
+    mBehaviorState = BehaviorState::Dodging;
+    mColliderComponent->SetIgnoreLayers(Zoe::IGNORED_LAYERS_DODGE);
+    mColliderComponent->SetOffset(Vector2(25, 25));
+    mColliderComponent->SetSize(13, 15);
+}
+
+void Zoe::DodgeEnd()
+{
+    if (mBehaviorState != BehaviorState::Dodging) return;
+
+    mBehaviorState = BehaviorState::Idle;
+
+    Vector2 currentPos = GetPosition();
+    SetPosition(Vector2(currentPos.x, currentPos.y - 5));
+
+    mColliderComponent->SetIgnoreLayers(Zoe::IGNORED_LAYERS_DEFAULT);
+    mColliderComponent->SetOffset(Vector2(27, 21));
+    mColliderComponent->SetSize(10, 24);
 }
