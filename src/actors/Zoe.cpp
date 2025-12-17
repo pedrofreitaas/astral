@@ -431,13 +431,8 @@ void Zoe::ManageState()
 
     case BehaviorState::Moving:
     {
-        if (mIsTryingToJump && mGame->GetApplyGravityScene())
-        {
-            Jump();
-            break;
-        }
-
-        CheckDodge();
+        if ( CheckJump() ) break;
+        if ( CheckDodge() ) break;
 
         if (CheckHit()) break;
 
@@ -468,13 +463,9 @@ void Zoe::ManageState()
 
     case BehaviorState::Idle:
     {
-        if (mIsTryingToJump && mGame->GetApplyGravityScene())
-        {
-            Jump();
-            break;
-        }
+        if ( CheckJump() ) break;
 
-        CheckDodge();
+        if ( CheckDodge() ) break;
 
         if (CheckHit()) break;
 
@@ -811,13 +802,19 @@ void Zoe::TakeDamage(const Vector2 &knockback)
     }
 }
 
-void Zoe::Jump()
+bool Zoe::CheckJump()
 {
+    if (!mGame->GetApplyGravityScene())
+        return false;
+    
+    if (!mIsTryingToJump)
+        return false;
+    
     if (mBehaviorState == BehaviorState::Jumping)
-        return;
+        return false;
     
     if (mBehaviorState == BehaviorState::Falling)
-        return;
+        return false;
 
     float jumpForce = mRigidBodyComponent->GetVerticalVelY(5);
     float horizontalDir = Math::Sign(mRigidBodyComponent->GetVelocity().x);
@@ -829,6 +826,8 @@ void Zoe::Jump()
         Vector2(.0f, jumpForce));
 
     mBehaviorState = BehaviorState::Jumping;
+
+    return true;
 }
 
 void Zoe::TakeSithAttack1(const float minOverlap, AABBColliderComponent *other)
@@ -877,20 +876,22 @@ void Zoe::SetMovementLocked(bool locked)
     mMovementLocked = locked;
 }
 
-void Zoe::CheckDodge()
+bool Zoe::CheckDodge()
 {
     if (!mIsTryingToDodge || mBehaviorState == BehaviorState::Dodging)
-        return;
+        return false;
 
     if (mDodgeCooldownTimer != nullptr && mTimerComponent->checkTimerRemaining(mDodgeCooldownTimer) > 0.f)
     {
-        return;
+        return false;
     }
 
     mBehaviorState = BehaviorState::Dodging;
     mColliderComponent->SetIgnoreLayers(Zoe::IGNORED_LAYERS_DODGE);
     mColliderComponent->SetOffset(Vector2(25, 25));
     mColliderComponent->SetSize(13, 15);
+
+    return true;
 }
 
 void Zoe::DodgeEnd()
