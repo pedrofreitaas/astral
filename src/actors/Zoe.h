@@ -3,39 +3,8 @@
 #include "Projectile.h"
 #include "Collider.h"
 #include "../components/collider/AABBColliderComponent.h"
-#include <SDL.h>
-
-class Ventania : public Actor
-{
-public:
-    Ventania(Game* game, Vector2 playerCenter, Vector2 playerMoveDir, float forwardSpeed = .0f);
-
-private:    
-    class DrawAnimatedComponent *mDrawAnimatedComponent;
-    void AnimationEndCallback(std::string animationName);
-};
-
-class Fireball : public Projectile
-{
-    int MAX_RICOCHETS = 3;
-
-public:
-    Fireball(
-        class Game* game, Vector2 position, 
-        Vector2 direction, float speed, Actor* shooter
-    );
-
-private:
-    void ManageAnimations();
-    void AnimationEndCallback(std::string animationName);
-
-    void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
-    void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
-
-    void Kill() override;
-
-    int mRicochetsCount;
-};
+const SDL_Rect DEFAULT_BB = SDL_Rect({22, 18, 20, 27});
+const SDL_Rect DODGE_BB = SDL_Rect({25, 25, 13, 15});
 
 class Zoe : public Actor
 {

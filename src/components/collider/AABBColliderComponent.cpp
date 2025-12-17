@@ -312,3 +312,10 @@ bool AABBColliderComponent::CheckLayerIgnored(ColliderLayer layer) const
     }
     return false;
 }   
+
+void AABBColliderComponent::SetBB(const SDL_Rect *rect)
+{
+    mOffset = Vector2((float)rect->x, (float)rect->y);
+    mWidth = rect->w;
+    mHeight = rect->h;
+}

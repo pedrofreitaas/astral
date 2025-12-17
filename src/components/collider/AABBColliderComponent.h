@@ -58,6 +58,7 @@ public:
 
     void SetOffset(const Vector2& offset) { mOffset = offset; }
     void SetSize(int width, int height) { mWidth = width; mHeight = height; }
+    void SetBB(const SDL_Rect *rect);
 
     ColliderLayer GetLayer() const { return mLayer; }
     bool IsTangible() const { return mIsTangible; }

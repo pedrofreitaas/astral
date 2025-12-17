@@ -239,8 +239,10 @@ Zoe::Zoe(
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
 
-    mColliderComponent = new AABBColliderComponent(this, 27, 21, 10, 24, // previous 27, 39, 13, 24
-                                                   ColliderLayer::Player);
+    mColliderComponent = new AABBColliderComponent(
+        this, 
+        DEFAULT_BB.x, DEFAULT_BB.y, DEFAULT_BB.w, DEFAULT_BB.h,
+        ColliderLayer::Player);
 
     mTimerComponent = new TimerComponent(this);
 
@@ -875,8 +877,7 @@ bool Zoe::CheckDodge()
 
     mBehaviorState = BehaviorState::Dodging;
     mColliderComponent->SetIgnoreLayers(Zoe::IGNORED_LAYERS_DODGE);
-    mColliderComponent->SetOffset(Vector2(25, 25));
-    mColliderComponent->SetSize(13, 15);
+    mColliderComponent->SetBB(&DODGE_BB);
 
     return true;
 }
@@ -892,8 +893,7 @@ void Zoe::DodgeEnd()
     SetPosition(Vector2(currentPos.x, currentPos.y - 5));
 
     mColliderComponent->SetIgnoreLayers(Zoe::IGNORED_LAYERS_DEFAULT);
-    mColliderComponent->SetOffset(Vector2(27, 21));
-    mColliderComponent->SetSize(10, 24);
+    mColliderComponent->SetBB(&DEFAULT_BB);
 
     mDodgeCooldownTimer = mTimerComponent->AddTimer(Zoe::DODGE_COOLDOWN, nullptr);
 }
