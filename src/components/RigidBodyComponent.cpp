@@ -22,6 +22,7 @@ RigidBodyComponent::RigidBodyComponent(class Actor* owner, float mass, float fri
         ,mAcceleration(Vector2::Zero)
         ,mNotAppliedAcceleration(Vector2::Zero)
         ,mIsOnGround(false)
+        ,mIsOnWall(false)
         ,hasProcessedAppliedForceThisFrame(false)
 {
     if (mMass <= 0.f) {

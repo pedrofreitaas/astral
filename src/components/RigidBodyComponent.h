@@ -47,7 +47,7 @@ private:
     // Physical properties
     float mFrictionCoefficient;
     float mMass;
-    bool mIsOnGround;
+    bool mIsOnGround, mIsOnWall;
 
     Vector2 mVelocity;
     Vector2 mAcceleration, mNotAppliedAcceleration;
