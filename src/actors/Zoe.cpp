@@ -433,8 +433,7 @@ void Zoe::ManageState()
     {
         if ( CheckJump() ) break;
         if ( CheckDodge() ) break;
-
-        if (CheckHit()) break;
+        if ( CheckHit() ) break;
 
         if (!mRigidBodyComponent->GetOnGround())
         {
@@ -450,9 +449,7 @@ void Zoe::ManageState()
 
         Move();
 
-        if (
-            mRigidBodyComponent->GetVelocity().x == 0.f &&
-            mRigidBodyComponent->GetVelocity().y == 0.f)
+        if (mInputMovementDir.x == 0.f && mInputMovementDir.y == 0.f) 
         {
             mBehaviorState = BehaviorState::Idle;
             break;
@@ -467,7 +464,7 @@ void Zoe::ManageState()
 
         if ( CheckDodge() ) break;
 
-        if (CheckHit()) break;
+        if ( CheckHit() ) break;
 
         if (!mRigidBodyComponent->GetOnGround())
         {
@@ -475,17 +472,7 @@ void Zoe::ManageState()
             break;
         }
 
-        Vector2 movementDir = mInputMovementDir;
-
-        if (
-            movementDir.x != 0 || movementDir.y != 0)
-        {
-            mBehaviorState = BehaviorState::Moving;
-            break;
-        }
-
-        if (mRigidBodyComponent->GetVelocity().x != 0.f ||
-            mRigidBodyComponent->GetVelocity().y != 0.f)
+        if (mInputMovementDir.x != 0 || mInputMovementDir.y != 0)
         {
             mBehaviorState = BehaviorState::Moving;
             break;
