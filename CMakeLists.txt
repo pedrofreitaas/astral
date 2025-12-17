@@ -35,6 +35,10 @@ add_executable(astral
     src/components/draw/DrawSpriteComponent.h
     src/actors/Zoe.cpp
     src/actors/Zoe.h
+    src/actors/ZoeFireball.cpp
+    src/actors/ZoeFireball.h
+    src/actors/Ventania.h
+    src/actors/Ventania.cpp
     src/components/collider/AABBColliderComponent.cpp
     src/components/collider/AABBColliderComponent.h
     src/components/draw/DrawAnimatedComponent.cpp

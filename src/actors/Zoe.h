@@ -1,8 +1,23 @@
 #pragma once
+#include <SDL.h>
 #include "Actor.h"
 #include "Projectile.h"
 #include "Collider.h"
+#include "Ventania.h"
 #include "../components/collider/AABBColliderComponent.h"
+#include "Tile.h"
+#include "ZoeFireball.h"
+#include "../core/Game.h"
+#include "../components/draw/DrawAnimatedComponent.h"
+#include "../ui/DialogueSystem.h"
+#include "../components/TimerComponent.h"
+#include "./Collider.h"
+#include "./traps/Spikes.h"
+#include "./traps/Spear.h"
+#include "./traps/Shuriken.h"
+#include "../libs/Math.h"
+#include "enemies/Sith.h"
+
 const SDL_Rect DEFAULT_BB = SDL_Rect({22, 18, 20, 27});
 const SDL_Rect DODGE_BB = SDL_Rect({25, 25, 13, 15});
 

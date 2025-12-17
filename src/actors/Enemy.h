@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Actor.h"
+#include "ZoeFireball.h"
 #include <SDL.h>
 
 class Enemy : public Actor
