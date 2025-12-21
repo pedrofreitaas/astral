@@ -51,8 +51,8 @@ void Game::LoadMainMenu()
     mainMenu->AddTransparentButton(
         playButtonPos,
         playButtonSize,
-        [this]()
-        { SetGameScene(GameScene::Bedroom); });
+        // [this]() { SetGameScene(GameScene::Bedroom); });
+        [this]() { SetGameScene(GameScene::Tests); });
     
     mainMenu->AddImage(
         "../assets/Sprites/Menu/playButton.png",
@@ -369,6 +369,24 @@ void Game::LoadFirstLevel()
 
     mZoe->SetAbilitiesLocked(true);
     StartCutscene("Intro");
+}
+
+void Game::LoadTestsLevel()
+{
+    mHUD = new HUD(this, Game::FONT_PATH_INTER);
+
+    SetApplyGravityScene(true);
+    SetCameraCenterToLogicalWindowSizeCenter();
+
+    SetMap("tests.json");
+
+    SetBackgroundImage(
+        "../assets/Levels/Backgrounds/galaxy.png",
+        Vector2(0.0f, 0.0f),
+        Vector2(mWindowWidth, mWindowHeight),
+        false);
+
+    mAudio->PlaySound("level1Theme.ogg", true);
 }
 
 void Game::LoadDeathScreen()

@@ -53,6 +53,7 @@ public:
         Bedroom,
         BedroomPortal,
         Level1,
+        Tests,
         DeathScreen,
         EndDemo
     };
@@ -102,6 +103,7 @@ public:
     void LoadBedroom();
     void LoadBedroomPortal();
     void LoadFirstLevel();
+    void LoadTestsLevel();
     void LoadDeathScreen();
     void LoadEndDemoScene();
 
