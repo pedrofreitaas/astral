@@ -55,6 +55,8 @@ Zoe::Zoe(
         1.f);
 
     mAerialAttackCollider->SetEnabled(false);
+
+    mCoyoteTimer = mTimerComponent->AddNotRemovableTimer(0.1f, nullptr);
 }
 
 Zoe::~Zoe()
@@ -169,6 +171,12 @@ void Zoe::ManageState()
             mBehaviorState = BehaviorState::Idle;
         }
 
+        if ( IsPressingAgainstWall() != 0 )
+        {
+            mBehaviorState = BehaviorState::Clinging;
+            break;
+        }
+
         if (mRigidBodyComponent->GetVelocity().y > 0.f)
         {
             mBehaviorState = BehaviorState::Falling;
@@ -187,9 +195,17 @@ void Zoe::ManageState()
         break;
 
     case BehaviorState::Falling:
+        if ( CheckJump() ) break;
+
         if (mRigidBodyComponent->GetOnGround())
         {
             mBehaviorState = BehaviorState::Idle;
+            break;
+        }
+
+        if ( IsPressingAgainstWall() != 0 )
+        {
+            mBehaviorState = BehaviorState::Clinging;
             break;
         }
 
@@ -221,13 +237,14 @@ void Zoe::ManageState()
             break;
         }
 
-        Move();
-
         if (mInputMovementDir.x == 0.f && mInputMovementDir.y == 0.f) 
         {
             mBehaviorState = BehaviorState::Idle;
             break;
         }
+
+        mTimerComponent->Restart(mCoyoteTimer);
+        Move();
 
         break;
     }
@@ -257,6 +274,8 @@ void Zoe::ManageState()
             mBehaviorState = BehaviorState::Charging;
             break;
         }
+
+        mTimerComponent->Restart(mCoyoteTimer);
 
         break;
     }
@@ -295,6 +314,30 @@ void Zoe::ManageState()
         break;
     }
 
+    case BehaviorState::Clinging: {
+        if (mRigidBodyComponent->GetOnGround())
+        {
+            mBehaviorState = BehaviorState::Idle;
+            break;
+        }
+
+        if (mTryingToTriggerVentania && !mIsVentaniaOnCooldown)
+        {
+            TriggerVentania();
+            break;
+        }
+        
+        if (IsPressingAgainstWall() == 0)
+        {
+            mBehaviorState = BehaviorState::Falling;
+            break;
+        }
+
+        mRigidBodyComponent->ApplyForce(Vector2(0.f, -GRAVITY * .4f));
+
+        break;
+    }
+
     default:
         mBehaviorState = BehaviorState::Idle;
         break;
@@ -313,12 +356,12 @@ void Zoe::OnUpdate(float deltaTime)
 
     if (mRigidBodyComponent->GetVelocity().x > 0.0f)
     {
-        SetRotation(0.0f);
+        SetRotation(mBehaviorState != BehaviorState::Clinging ? 0.0f : Math::Pi);
     }
 
     else if (mRigidBodyComponent->GetVelocity().x < 0.0f)
     {
-        SetRotation(Math::Pi);
+        SetRotation(mBehaviorState != BehaviorState::Clinging ? Math::Pi : 0.0f);
     }
 
     mColliderComponent->MaintainInMap();
@@ -388,6 +431,11 @@ void Zoe::ManageAnimations()
     case BehaviorState::AerialAttacking:
         mDrawComponent->SetAnimation("aerial-crush");
         mDrawComponent->SetAnimFPS(12.0f);
+        break;
+    
+    case BehaviorState::Clinging:
+        mDrawComponent->SetAnimation("dodging");
+        mDrawComponent->SetAnimFPS(1.75f);
         break;
 
     default:
@@ -570,11 +618,13 @@ bool Zoe::CheckJump()
     
     if (!mIsTryingToJump)
         return false;
-    
+
     if (mBehaviorState == BehaviorState::Jumping)
         return false;
     
-    if (mBehaviorState == BehaviorState::Falling)
+    bool coyoteExpired = mTimerComponent->checkTimerRemaining(mCoyoteTimer) <= 0.f;
+
+    if (mBehaviorState == BehaviorState::Falling && coyoteExpired)
         return false;
 
     float jumpForce = mRigidBodyComponent->GetVerticalVelY(5);
@@ -724,4 +774,20 @@ bool Zoe::CheckHit()
     mRigidBodyComponent->SumVelocity(Vector2(0.f, ySpeed));
 
     return true;
+}
+
+int Zoe::IsPressingAgainstWall()
+{
+    int closeToWall = mColliderComponent->IsCloseToTileWallHorizontally(1.f);
+
+    if (closeToWall == 0)
+        return 0;
+
+    if (closeToWall == -1 && mInputMovementDir.x < 0.f)
+        return -1;
+
+    if (closeToWall == 1 && mInputMovementDir.x > 0.f)
+        return 1;
+
+    return 0;
 }

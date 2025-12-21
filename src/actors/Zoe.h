@@ -127,6 +127,8 @@ private:
 
     Collider *mAttackCollider, *mAerialAttackCollider;
 
+    Timer *mCoyoteTimer;
+
     SoundHandle mDamageSoundHandle;
 
     bool mAbilitiesLocked, mMovementLocked;
@@ -137,4 +139,6 @@ private:
     bool CheckHit();
     void DodgeEnd();
     void EndAerialAttack();
+
+    int IsPressingAgainstWall();
 };
