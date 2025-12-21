@@ -26,13 +26,14 @@ Zoe::Zoe(
         static_cast<int>(DrawLayerPosition::Player) + 1);
 
     mDrawComponent->AddAnimation("idle", 0, 8);
-    mDrawComponent->AddAnimation("ground-crush", 9, 16);
-    mDrawComponent->AddAnimation("blink", 17, 20);
-    mDrawComponent->AddAnimation("jump", 20, 22);
-    mDrawComponent->AddAnimation("run", 23, 28);
-    mDrawComponent->AddAnimation("hurt", {29});
-    mDrawComponent->AddAnimation("dodging", {30});
-    mDrawComponent->AddAnimation("aerial-crush", 31, 40);
+    mDrawComponent->AddAnimation("ground-crush", 9, 14);
+    mDrawComponent->AddAnimation("blink", 15, 19);
+    mDrawComponent->AddAnimation("jump", {20, 21});
+    mDrawComponent->AddAnimation("run", 22, 26);
+    mDrawComponent->AddAnimation("hurt", {27});
+    mDrawComponent->AddAnimation("dodging", {28});
+    mDrawComponent->AddAnimation("aerial-crush", 29, 38);
+    mDrawComponent->AddAnimation("clinging", 39, 41);
 
     mDrawComponent->SetAnimation("idle");
 
@@ -434,8 +435,8 @@ void Zoe::ManageAnimations()
         break;
     
     case BehaviorState::Clinging:
-        mDrawComponent->SetAnimation("dodging");
-        mDrawComponent->SetAnimFPS(1.75f);
+        mDrawComponent->SetAnimation("clinging");
+        mDrawComponent->SetAnimFPS(8.f);
         break;
 
     default:
