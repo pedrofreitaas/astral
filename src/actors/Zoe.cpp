@@ -29,11 +29,12 @@ Zoe::Zoe(
     mDrawComponent->AddAnimation("ground-crush", 9, 14);
     mDrawComponent->AddAnimation("blink", 15, 19);
     mDrawComponent->AddAnimation("jump", {20, 21});
-    mDrawComponent->AddAnimation("run", 22, 26);
-    mDrawComponent->AddAnimation("hurt", {27});
-    mDrawComponent->AddAnimation("dodging", {28});
-    mDrawComponent->AddAnimation("aerial-crush", 29, 38);
-    mDrawComponent->AddAnimation("clinging", 39, 41);
+    mDrawComponent->AddAnimation("run", 22, 25);
+    mDrawComponent->AddAnimation("hurt", {26});
+    mDrawComponent->AddAnimation("dodging", {27});
+    mDrawComponent->AddAnimation("aerial-crush", 28, 37);
+    mDrawComponent->AddAnimation("clinging", {38, 39, 40});
+    mDrawComponent->AddAnimation("charging", 41, 46);
 
     mDrawComponent->SetAnimation("idle");
 
@@ -395,13 +396,8 @@ void Zoe::ManageAnimations()
         mDrawComponent->SetAnimFPS(4.f);
         break;
     case BehaviorState::Charging:
-        mDrawComponent->SetAnimation("blink");
-        mDrawComponent->SetAnimFPS(4.0f);
-
-        if (mDrawComponent->GetCurrentSprite() == 3)
-        {
-            FireFireball();
-        }
+        mDrawComponent->SetAnimation("charging");
+        mDrawComponent->SetAnimFPS(8.0f);
 
         break;
 
@@ -523,8 +519,10 @@ void Zoe::AnimationEndCallback(std::string animationName)
         return;
     }
 
-    if (animationName == "blink" && mTryingToFireFireball)
+    if (animationName == "charging" && mTryingToFireFireball)
     {
+        FireFireball();
+        
         mBehaviorState = BehaviorState::Idle;
         return;
     }
