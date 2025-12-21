@@ -500,12 +500,18 @@ void Game::UpdateCamera()
     case CameraCenter::Point:
         center = mCameraCenterPos;
         break;
-    case CameraCenter::LogicalWindowSizeCenter:
-        center = GetBoxCenter(
-            mZoe->GetCenter(),
-            static_cast<float>(mWindowWidth), 
-            static_cast<float>(mWindowHeight));
-        break;
+    case CameraCenter::LogicalWindowSizeCenter: {
+            if (!mZoe) 
+            {
+                throw std::runtime_error("Zoe actor is null when trying to center camera to logical window size center.");
+            }
+            
+            center = GetBoxCenter(
+                mZoe->GetCenter(),
+                static_cast<float>(mWindowWidth), 
+                static_cast<float>(mWindowHeight));
+            break;
+        }
     }
 
     float cameraX = center.x - mWindowWidth / 2.0f;
