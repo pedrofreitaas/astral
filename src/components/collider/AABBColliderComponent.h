@@ -76,6 +76,8 @@ public:
     bool CheckLayerIgnored(ColliderLayer layer) const;
     std::vector<ColliderLayer> GetIgnoredLayers() const { return mIgnoredLayers; }
 
+    int IsCloseToTileWallHorizontally(float distance);
+
 private:
     float GetMinVerticalOverlap(AABBColliderComponent* b) const;
     float GetMinHorizontalOverlap(AABBColliderComponent* b) const;

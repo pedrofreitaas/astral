@@ -319,3 +319,46 @@ void AABBColliderComponent::SetBB(const SDL_Rect *rect)
     mWidth = rect->w;
     mHeight = rect->h;
 }
+
+// Checks if there is a tile wall within the specified horizontal distance
+// -1 for left, 0 for none, 1 for right
+// distance must be bigger than episilon used in collision resolution
+int AABBColliderComponent::IsCloseToTileWallHorizontally(float distance)
+{
+    if (!mIsEnabled)
+        return false;
+
+    Vector2 center = GetCenter();
+    Vector2 size = Vector2((float)mWidth, (float)mHeight);
+
+    // Use spatial hashing to get nearby colliders
+    auto colliders = mOwner->GetGame()->GetNearbyColliders(center, 2);
+
+    std::sort(colliders.begin(), colliders.end(), [this](AABBColliderComponent *a, AABBColliderComponent *b)
+              { return Math::Abs((a->GetCenter() - GetCenter()).LengthSq() < (b->GetCenter() - GetCenter()).LengthSq()); });
+
+    for (auto &collider : colliders)
+    {
+        if (collider == this || !collider->IsEnabled())
+            continue;
+        
+        if (collider->GetLayer() != ColliderLayer::Blocks)
+            continue;
+        
+        if (collider->IsSegmentIntersecting(
+                Vector2(center.x - size.x - distance, center.y),
+                Vector2(center.x, center.y)))
+        {
+            return -1;
+        }
+
+        if (collider->IsSegmentIntersecting(
+                Vector2(center.x, center.y),
+                Vector2(center.x + size.x + distance, center.y)))
+        {
+            return 1;
+        }
+    }
+
+    return 0;
+}
