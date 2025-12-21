@@ -6,6 +6,8 @@
 #include "Component.h"
 #include "../libs/Math.h"
 
+const float GRAVITY = 980.0f;
+
 class RigidBodyComponent : public Component
 {
 public:
@@ -47,7 +49,7 @@ private:
     // Physical properties
     float mFrictionCoefficient;
     float mMass;
-    bool mIsOnGround, mIsOnWall;
+    bool mIsOnGround;
 
     Vector2 mVelocity;
     Vector2 mAcceleration, mNotAppliedAcceleration;

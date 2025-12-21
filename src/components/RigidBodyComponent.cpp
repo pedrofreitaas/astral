@@ -10,7 +10,6 @@
 
 const float MAX_SPEED_X = 750.0f;
 const float MAX_SPEED_Y = 750.0f;
-const float GRAVITY = 980.0f;
 
 RigidBodyComponent::RigidBodyComponent(class Actor* owner, float mass, float friction, bool applyGravity, int updateOrder)
         :Component(owner, updateOrder)
@@ -22,7 +21,6 @@ RigidBodyComponent::RigidBodyComponent(class Actor* owner, float mass, float fri
         ,mAcceleration(Vector2::Zero)
         ,mNotAppliedAcceleration(Vector2::Zero)
         ,mIsOnGround(false)
-        ,mIsOnWall(false)
         ,hasProcessedAppliedForceThisFrame(false)
 {
     if (mMass <= 0.f) {
