@@ -51,7 +51,7 @@ public:
         class Game* game, 
         std::function<Actor*()> targetActorFunc,
         std::function<Vector2()> getTargetPosFunc, 
-        float speed,
+        float speed=450.f,
         bool spin=false,
         float maxTime=5.f);
 
