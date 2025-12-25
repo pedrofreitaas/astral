@@ -484,8 +484,8 @@ void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *oth
 
     if (other->GetLayer() == ColliderLayer::Enemy && minOverlap > 0.f)
     {
-        float ySpeed = mRigidBodyComponent->GetVerticalVelY(3);
-        mRigidBodyComponent->SumVelocity(Vector2(0.f, ySpeed));
+        float ySpeed = mRigidBodyComponent->GetJumpImpulseY(3);
+        mRigidBodyComponent->ApplyImpulse(Vector2(0.f, ySpeed));
         return;
     }
 
@@ -576,7 +576,7 @@ void Zoe::TriggerVentania()
     if (mIsVentaniaOnCooldown)
         return;
 
-    mRigidBodyComponent->SetVelocity(Vector2(0.f, 0.f));
+    mRigidBodyComponent->ResetVelocity();
 
     Vector2 ventaniaDir = mInputMovementDir.LengthSq() > 0.f ? mInputMovementDir : Vector2(0.f, 1.f);
 
@@ -626,14 +626,11 @@ bool Zoe::CheckJump()
     if (mBehaviorState == BehaviorState::Falling && coyoteExpired)
         return false;
 
-    float jumpForce = mRigidBodyComponent->GetVerticalVelY(5);
+    float jumpForce = mRigidBodyComponent->GetJumpImpulseY(5);
     float horizontalDir = Math::Sign(mRigidBodyComponent->GetVelocity().x);
 
-    mRigidBodyComponent->ApplyForce(
-        Vector2(horizontalDir * mForwardSpeed, 0.f));
-
-    mRigidBodyComponent->SumVelocity(
-        Vector2(.0f, jumpForce));
+    mRigidBodyComponent->ApplyImpulse(
+        Vector2(horizontalDir * 10.f, jumpForce));
 
     mBehaviorState = BehaviorState::Jumping;
 
@@ -769,8 +766,8 @@ bool Zoe::CheckHit()
         return true;
     }
         
-    float ySpeed = mRigidBodyComponent->GetVerticalVelY(.3f);
-    mRigidBodyComponent->SumVelocity(Vector2(0.f, ySpeed));
+    float ySpeed = mRigidBodyComponent->GetJumpImpulseY(.5f);
+    mRigidBodyComponent->ApplyImpulse(Vector2(0.f, ySpeed));
 
     return true;
 }
