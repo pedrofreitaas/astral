@@ -239,8 +239,7 @@ void Actor::TakeDamage(const Vector2 &knockback)
     auto rigidBody = GetComponent<RigidBodyComponent>();
     if (rigidBody)
     {
-        rigidBody->SetVelocity(Vector2(0.f,0.f));
-        rigidBody->ApplyForce(knockback);
+        rigidBody->ApplyImpulse(knockback);
     }
 
     if (mLifes <= 0)
