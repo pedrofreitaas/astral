@@ -272,8 +272,8 @@ void AIMovementComponent::Jump(bool isFollowingPath)
     if (rb->GetOnGround() && mTypeOfMovement == TypeOfMovement::Walker)
     {
         float xSpeed = rb->GetVelocity().x;
-        float ySpeed = rb->GetVerticalVelY(mJumpForceInBlocks);
-        rb->SumVelocity(Vector2(0.f, ySpeed));
+        float ySpeed = rb->GetJumpImpulseY(mJumpForceInBlocks);
+        rb->ApplyImpulse(Vector2(0.f, ySpeed));
         SetMovementState(
             isFollowingPath ? MovementState::FollowingPathJumping : MovementState::Jumping);
     }
