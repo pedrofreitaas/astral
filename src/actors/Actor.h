@@ -44,9 +44,9 @@ enum class BehaviorState // For AI behaviors/animations
 class Actor
 {
 public:
-    float SPIKE_KNOCKBACK_FORCE = 1.f;
-    float SPEAR_KNOCKBACK_FORCE = 1.f;
-    float SHURIKEN_KNOCKBACK_FORCE = 1.f;
+    float SPIKE_KNOCKBACK_FORCE = 160.f;
+    float SPEAR_KNOCKBACK_FORCE = 140.f;
+    float SHURIKEN_KNOCKBACK_FORCE = 200.f;
 
     Actor(class Game* game, int lives=3, bool mustAlwaysUpdate = false);
     virtual ~Actor();
