@@ -28,16 +28,7 @@ public:
         Attack2
     };
 
-    float PROJECTICLE_COOLDOWN = 12.f;
-    float PROJECTILE_SPEED = 1.f;
-
-    float ATTACK1_COOLDOWN = 3.f;
-    float ATTACK1_EXTRA_SPEED = 1.f;
-    
-    float ATTACK2_COOLDOWN = 12.f;
-    float ATTACK2_EXTRA_SPEED = 1.f;
-
-    explicit Sith(Game* game, float forwardSpeed, const Vector2& position);
+    explicit Sith(Game* game, const Vector2& position);
 
     void ManageState() override;
     void AnimationEndCallback(std::string animationName) override;

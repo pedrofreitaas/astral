@@ -66,8 +66,8 @@ void SithProjectile::ManageAnimations()
 
 // Sith
 
-Sith::Sith(Game *game, float forwardSpeed, const Vector2 &position)
-    : Enemy(game, forwardSpeed, position),
+Sith::Sith(Game *game, const Vector2 &position)
+    : Enemy(game, position),
       mIsProjectileOnCooldown(false), mIsAttack1OnCooldown(false), mIsAttack2OnCooldown(false),
       mCurrentAttack(Attacks::None), mAttack1Collider(nullptr), mAttack2Collider(nullptr)
 {
@@ -87,6 +87,7 @@ Sith::Sith(Game *game, float forwardSpeed, const Vector2 &position)
 
     mTimerComponent = new TimerComponent(this);
 
+    float forwardSpeed = game->GetConfig()->Get<float>("SITH.SPEED");
     mAIMovementComponent = new AIMovementComponent(
         this,
         forwardSpeed,
@@ -139,7 +140,9 @@ void Sith::Attack1()
     mCurrentAttack = Attacks::Attack1;
 
     SetAttack1OnCooldown(true);
-    mTimerComponent->AddTimer(Sith::ATTACK1_COOLDOWN, [this]()
+    float cooldown = mGame->GetConfig()->Get<float>("SITH.ATTACK1_COOLDOWN");
+
+    mTimerComponent->AddTimer(cooldown, [this]()
                               { SetAttack1OnCooldown(false); });
 }
 
@@ -155,7 +158,8 @@ void Sith::Attack2()
     mAttack2Collider->SetEnabled(true);
 
     SetAttack2OnCooldown(true);
-    mTimerComponent->AddTimer(Sith::ATTACK2_COOLDOWN, [this]()
+    float cooldown = mGame->GetConfig()->Get<float>("SITH.ATTACK2_COOLDOWN");
+    mTimerComponent->AddTimer(cooldown, [this]()
                               { SetAttack2OnCooldown(false); });
 }
 
@@ -164,15 +168,18 @@ void Sith::FireProjectile()
     if (mIsProjectileOnCooldown)
         return;
 
+    float projectileSpeed = mGame->GetConfig()->Get<float>("SITH.PROJECTILE_SPEED");
+
     auto projectile = new SithProjectile(
         mGame,
         GetPosition() + GetProjectileOffset(),
         GetGame()->GetZoe()->GetCenter(),
-        Sith::PROJECTILE_SPEED,
+        projectileSpeed,
         this);
 
     SetProjectileOnCooldown(true);
-    mTimerComponent->AddTimer(Sith::PROJECTICLE_COOLDOWN, [this]()
+    float cooldown = mGame->GetConfig()->Get<float>("SITH.PROJECTILE_COOLDOWN");
+    mTimerComponent->AddTimer(cooldown, [this]()
                               { SetProjectileOnCooldown(false); });
 }
 
@@ -237,12 +244,14 @@ void Sith::ManageState()
 
         if (mCurrentAttack == Attacks::Attack1)
         {
-            mAIMovementComponent->BoostToPlayer(Sith::ATTACK1_EXTRA_SPEED);
+            float extraSpeed = mGame->GetConfig()->Get<float>("SITH.ATTACK1_EXTRA_SPEED");
+            mAIMovementComponent->BoostToPlayer(extraSpeed);
         }
 
         else if (mCurrentAttack == Attacks::Attack2)
         {
-            mAIMovementComponent->BoostToPlayer(Sith::ATTACK2_EXTRA_SPEED);
+            float extraSpeed = mGame->GetConfig()->Get<float>("SITH.ATTACK2_EXTRA_SPEED");
+            mAIMovementComponent->BoostToPlayer(extraSpeed);
             Vector2 attackColliderPosition = GetCenter() - Vector2(15.f, 15.f);
             mAttack2Collider->SetPosition(attackColliderPosition);
         }

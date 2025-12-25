@@ -8,7 +8,7 @@
 #include "../Actor.h"
 
 Quasar::Quasar(Game *game, float forwardSpeed, const Vector2 &center)
-    : Enemy(game, forwardSpeed, center)
+    : Enemy(game, center)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f);
     mColliderComponent = new AABBColliderComponent(

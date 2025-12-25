@@ -19,6 +19,8 @@ add_executable(astral
     src/libs/Random.cpp
     src/actors/Actor.cpp
     src/components/Component.cpp
+    src/core/Config.h
+    src/core/Config.cpp
     src/core/Game.h
     src/core/Game.cpp
     src/core/ScenesLoading.cpp
