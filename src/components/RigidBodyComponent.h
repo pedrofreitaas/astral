@@ -18,19 +18,22 @@ public:
     void Update(float deltaTime) override;
 
     const Vector2& GetVelocity() const { return mVelocity; }
-    void SetVelocity(const Vector2& velocity) { mVelocity = velocity; }
-    void SumVelocity(const Vector2& velocity) { mVelocity += velocity; }
+    void ResetVelocity() { mVelocity = Vector2(0,0); }
+    void ResetVelocityX() { mVelocity.x = 0; }
+    void ResetVelocityY() { mVelocity.y = 0; }
 
     const Vector2& GetAcceleration() const { return mAcceleration; }
-    void SetAcceleration(const Vector2& acceleration) { mAcceleration = acceleration; }
+    void ResetAcceleration() { mAcceleration = Vector2(0,0); }
 
     void SetApplyGravity(const bool applyGravity) { mApplyGravity = applyGravity; }
     void SetApplyFriction(const bool applyFriction) { mApplyFriction = applyFriction;  }
 
     void ApplyForce(const Vector2 &force);
+    void ApplyImpulse(const Vector2 &impulse);
+
     bool GetOnGround() { return mIsOnGround; }
 
-    float GetVerticalVelY(float totalBlocks);
+    float GetJumpImpulseY(float totalBlocks);
 
     int SpeedHDir() {
         if (mVelocity.x == 0) return 0;
@@ -39,7 +42,6 @@ public:
     }
 
     bool GetApplyGravity() const { return mApplyGravity; }
-
     Vector2 GetAppliedForce() const { return mAcceleration * mMass; }
 
 private:
@@ -52,7 +54,5 @@ private:
     bool mIsOnGround;
 
     Vector2 mVelocity;
-    Vector2 mAcceleration, mNotAppliedAcceleration;
-
-    bool hasProcessedAppliedForceThisFrame;
+    Vector2 mAcceleration;
 };

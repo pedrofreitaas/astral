@@ -19,51 +19,45 @@ RigidBodyComponent::RigidBodyComponent(class Actor* owner, float mass, float fri
         ,mFrictionCoefficient(friction)
         ,mVelocity(Vector2::Zero)
         ,mAcceleration(Vector2::Zero)
-        ,mNotAppliedAcceleration(Vector2::Zero)
         ,mIsOnGround(false)
-        ,hasProcessedAppliedForceThisFrame(false)
 {
     if (mMass <= 0.f) {
         throw std::invalid_argument("Mass must be greater than zero");
     }
 }
 
+// Force changes acceleration
+// Continues application over time
 void RigidBodyComponent::ApplyForce(const Vector2 &force) {
-    if (hasProcessedAppliedForceThisFrame) {
-        mNotAppliedAcceleration += force * (1.f/mMass);
-        return;
-    }
-
     mAcceleration += force * (1.f/mMass);
+}
+
+// Impulse changes velocity directly
+// Should be applied in a single frame
+void RigidBodyComponent::ApplyImpulse(const Vector2 &impulse) {
+    mVelocity += impulse * (1.f/mMass);
 }
 
 void RigidBodyComponent::Update(float deltaTime)
 {
-    ApplyForce(mNotAppliedAcceleration); // apply any not applied acceleration from last frame
-    mNotAppliedAcceleration = Vector2::Zero;
-
     bool sceneAppliesGravity = mOwner->GetGame()->GetApplyGravityScene();
     bool applyGravity = mApplyGravity && sceneAppliesGravity;
     
-    // Apply gravity acceleration
     if(applyGravity) ApplyForce(Vector2(0.f, GRAVITY));
 
-    // Apply friction
     if (mApplyFriction && mIsOnGround) ApplyForce(Vector2(-mFrictionCoefficient * mVelocity));
 
     // Euler Integration
     mVelocity += mAcceleration * deltaTime;
-    hasProcessedAppliedForceThisFrame = true;
 
-    // Clamp velocity
     mVelocity.x = Math::Clamp<float>(mVelocity.x, -MAX_SPEED_X, MAX_SPEED_X);
     mVelocity.y = Math::Clamp<float>(mVelocity.y, -MAX_SPEED_Y, MAX_SPEED_Y);
 
-    if (Math::NearZero(mVelocity.x, 1.f)) {
+    if (Math::NearZero(mVelocity.x, .01f)) {
         mVelocity.x = 0.f;
     }
 
-    if (Math::NearZero(mVelocity.y, 1.f)) {
+    if (Math::NearZero(mVelocity.y, .01f)) {
         mVelocity.y = 0.f;
     }
 
@@ -85,12 +79,11 @@ void RigidBodyComponent::Update(float deltaTime)
     }
 
     mAcceleration = Vector2::Zero;
-    hasProcessedAppliedForceThisFrame = false;
 }
 
-float RigidBodyComponent::GetVerticalVelY(float totalBlocks) {
+float RigidBodyComponent::GetJumpImpulseY(float totalBlocks) {
     const float height = totalBlocks * Game::TILE_SIZE;
-    const float v0 = std::sqrt(2.0f * GRAVITY * height); GRAVITY;
+    const float v0 = std::sqrt(2.0f * GRAVITY * height);
 
-    return -mMass * v0; // small extra force to counter minor losses
+    return -mMass * v0;
 }
