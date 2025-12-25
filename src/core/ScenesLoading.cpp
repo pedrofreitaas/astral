@@ -52,7 +52,7 @@ void Game::LoadMainMenu()
         playButtonPos,
         playButtonSize,
         // [this]() { SetGameScene(GameScene::Bedroom); });
-        [this]() { SetGameScene(GameScene::Tests); });
+        [this]() { SetGameScene(GameScene::Level1); });
     
     mainMenu->AddImage(
         "../assets/Sprites/Menu/playButton.png",
@@ -188,22 +188,19 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this](){ return GetZoe(); },
-        [this](){return Vector2(GetZoe()->GetCenter().x + 64.f, GetZoe()->GetCenter().y);},
-        100.0f));
+        [this](){return Vector2(GetZoe()->GetCenter().x + 64.f, GetZoe()->GetCenter().y);}));
 
     steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this](){ return GetZoe(); },
-        [this](){return Vector2(GetZoe()->GetCenter().x - 2.f, GetZoe()->GetCenter().y);},
-        20.0f));
+        [this](){return Vector2(GetZoe()->GetCenter().x - 2.f, GetZoe()->GetCenter().y);}));
 
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this](){ return GetZoe(); },
-        [this](){return Vector2(GetZoe()->GetCenter().x + 4.f, GetZoe()->GetCenter().y);},
-        20.0f));
+        [this](){return Vector2(GetZoe()->GetCenter().x + 4.f, GetZoe()->GetCenter().y);}));
 
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
 
@@ -221,8 +218,7 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this](){ return GetStar(); },
-        [this](){ return Vector2(330.f, 530.f); },
-        250.0f));
+        [this](){ return Vector2(330.f, 530.f); }));
 
     dialogue = {
         "Uma estrela? Ela parece estar indo para algum lugar?",
@@ -232,8 +228,7 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this](){ return GetStar(); },
-        [this](){ return Vector2(730.f, 330.f); },
-        320.0f));
+        [this](){ return Vector2(730.f, 330.f); }));
 
     dialogue = {
         "Espere! Volte aqui!",

@@ -10,8 +10,8 @@ MoveStep::MoveStep(
     class Game* game, 
     std::function<Actor*()> targetActorFunc,
     std::function<Vector2()> getTargetPosFunc,
-    float speed, bool spin, float maxTime)
-    : 
+    float speed, bool spin, float maxTime
+): 
     Step(game, maxTime), mSpeed(speed), 
     mGetTargetActor(std::move(targetActorFunc)), 
     mGetTargetPos(std::move(getTargetPosFunc)),
@@ -53,10 +53,10 @@ void MoveStep::Update(float deltaTime)
     Vector2 toTarget = mTargetPos - actorCenter;
     float distanceToTarget = toTarget.Length();
     
+    // Close enough to target
     if (distanceToTarget < 1e-3f)
     {
-        // Close enough to target
-        rb->SetVelocity(Vector2::Zero);
+        rb->ResetVelocity();
         mTargetActor->SetPosition(mTargetPos - actorCenterOffset);
         SetComplete();
         return;
@@ -72,14 +72,14 @@ void MoveStep::Update(float deltaTime)
 
     Vector2 direction = toTarget;
     direction.Normalize();
-    Vector2 desiredVelocity = direction * mSpeed;
-    rb->SetVelocity(desiredVelocity);
+    Vector2 desiredForce = direction * mSpeed;
+    rb->ApplyForce(desiredForce);
     
     // Check if we would overshoot the target in this frame
-    if (distanceToTarget < desiredVelocity.Length() * deltaTime)
+    if (distanceToTarget < desiredForce.Length() * deltaTime)
     {
         // Snap to target and complete step
-        rb->SetVelocity(Vector2::Zero);
+        rb->ResetVelocity();
         mTargetActor->SetPosition(mTargetPos - actorCenterOffset);
         SetComplete();
     }
@@ -87,7 +87,7 @@ void MoveStep::Update(float deltaTime)
     // check if movement resulted in getting out of the camera
     if (!mGame->ActorOnCamera(mTargetActor))
     {
-        rb->SetVelocity(Vector2::Zero);
+        rb->ResetVelocity();
         SetComplete();
     }
 }
