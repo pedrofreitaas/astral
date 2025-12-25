@@ -153,7 +153,7 @@ void AABBColliderComponent::ResolveHorizontalCollisions(RigidBodyComponent *rigi
     constexpr float epsilon = 0.001f; // Small separation buffer
     float adjustment = minXOverlap + (minXOverlap > 0 ? epsilon : -epsilon);
     mOwner->SetPosition(mOwner->GetPosition() - Vector2(adjustment, 0.0f));    
-    rigidBody->SetVelocity(Vector2(0.f, rigidBody->GetVelocity().y));
+    rigidBody->ResetVelocityX();
 }
 
 void AABBColliderComponent::ResolveVerticalCollisions(RigidBodyComponent *rigidBody, const float minYOverlap)
@@ -161,7 +161,7 @@ void AABBColliderComponent::ResolveVerticalCollisions(RigidBodyComponent *rigidB
     constexpr float epsilon = 0.001f; // Small separation buffer
     float adjustment = minYOverlap + (minYOverlap > 0 ? epsilon : -epsilon);
     mOwner->SetPosition(mOwner->GetPosition() - Vector2(0.0f, adjustment));
-    rigidBody->SetVelocity(Vector2(rigidBody->GetVelocity().x, 0.f));
+    rigidBody->ResetVelocityY();
 }
 
 bool AABBColliderComponent::IsOnCamera()
