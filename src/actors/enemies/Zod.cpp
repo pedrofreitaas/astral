@@ -74,7 +74,7 @@ void ZodProjectile::OnUpdate(float deltaTime)
 //
 
 Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
-    : Enemy(game, forwardSpeed, position), mProjectileOnCooldown(false)
+    : Enemy(game, position), mProjectileOnCooldown(false)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f);
     mColliderComponent = new AABBColliderComponent(
@@ -119,15 +119,18 @@ void Zod::FireProjectile()
     if (mProjectileOnCooldown)
         return;
 
+    float speed = mGame->GetConfig()->Get<float>("ZOD.PROJECTILE_SPEED");
+
     auto projectile = new ZodProjectile(
         mGame,
         GetPosition() + GetProjectileOffset(),
         GetGame()->GetZoe()->GetCenter(),
-        Zod::PROJECTILE_SPEED,
+        speed,
         this);
 
     mProjectileOnCooldown = true;
-    mTimerComponent->AddTimer(Zod::PROJECTICLE_COOLDOWN, [this]() {
+    float cooldown = mGame->GetConfig()->Get<float>("ZOD.PROJECTICLE_COOLDOWN");
+    mTimerComponent->AddTimer(cooldown, [this]() {
         mProjectileOnCooldown = false;
     });
 }

@@ -10,7 +10,7 @@ public:
     float PLAYER_ATTACK_KNOCKBACK_FORCE = 2000.f;
     float FIREBALL_KNOCKBACK_FORCE = 12000.f;
 
-    explicit Enemy(Game *game, float forwardSpeed, const Vector2 &position);
+    explicit Enemy(Game *game, const Vector2 &position);
     ~Enemy() override;
 
     void OnUpdate(float deltaTime) override;

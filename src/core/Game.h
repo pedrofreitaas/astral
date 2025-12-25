@@ -18,6 +18,7 @@
 #include "Map.h"
 #include "Tileset.h"
 #include "./Cutscene.h"
+#include "Config.h"
 
 template <typename F>
 auto TimeCheckerWrapper(F&& func) {
@@ -203,7 +204,11 @@ public:
 
     std::vector<class Enemy *> GetEnemies(const Vector2 &min, const Vector2 &max);
 
+    Config *GetConfig() { return mConfig; }
+
 private:
+    Config *mConfig;
+
     void SetCameraCenterToLogicalWindowSizeCenter() {
         mCameraCenter = CameraCenter::LogicalWindowSizeCenter;
         mCameraCenterPos = Vector2(.0f, .0f);

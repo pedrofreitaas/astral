@@ -6,7 +6,7 @@
 #include "Actor.h"
 #include "Collider.h"
 
-Enemy::Enemy(Game *game, float forwardSpeed, const Vector2 &position)
+Enemy::Enemy(Game *game, const Vector2 &position)
     : Actor(game)
 {
     mGame->AddEnemy(this);

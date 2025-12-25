@@ -1,0 +1,23 @@
+{
+    "SPIKE_KNOCKBACK_FORCE": 160.0,
+    "SPEAR_KNOCKBACK_FORCE": 140.0,
+    "SHURIKEN_KNOCKBACK_FORCE": 200.0,
+
+    "SITH": {
+        "HEALTH": 3,
+        "SPEED": 1500,
+        "PROJECTILE_COOLDOWN": 12,
+        "PROJECTILE_SPEED": 1,
+        "ATTACK1_COOLDOWN": 3,
+        "ATTACK1_EXTRA_SPEED": 1,
+        "ATTACK2_COOLDOWN": 12,
+        "ATTACK2_EXTRA_SPEED": 1
+    },
+
+    "ZOD": {
+        "HEALTH": 5,
+        "SPEED": 1200,
+        "PROJECTILE_COOLDOWN": 10,
+        "PROJECTILE_SPEED": 1.5
+    }
+}

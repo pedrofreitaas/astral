@@ -138,6 +138,9 @@ bool Game::Initialize()
     // Start random number generator
     Random::Init();
 
+    mConfig = new Config();
+    mConfig->Initialize("config.json");
+
     // Initialize game systems
     mAudio = new AudioSystem();
     mSpatialHashing = new SpatialHashing(TILE_SIZE,
