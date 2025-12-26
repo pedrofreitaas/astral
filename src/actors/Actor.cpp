@@ -264,7 +264,9 @@ void Actor::TakeSpikeHit(const Vector2 &SpikeBaseCenter)
     Vector2 knockback = Vector2(knockbackX, -1.f);
     knockback.Normalize();
 
-    TakeDamage(knockback * Actor::SPIKE_KNOCKBACK_FORCE);
+    float spikeKnockb = mGame->GetConfig()->Get<float>("SPIKE_KNOCKBACK_FORCE");
+
+    TakeDamage(knockback * spikeKnockb);
 }
 
 void Actor::TakeSpearHit(const Vector2 &SpearTipCenter)
@@ -274,7 +276,9 @@ void Actor::TakeSpearHit(const Vector2 &SpearTipCenter)
     Vector2 knockback = Vector2(knockbackX, -1.f);
     knockback.Normalize();
 
-    TakeDamage(knockback * Actor::SPEAR_KNOCKBACK_FORCE);
+    float spearKnockb = mGame->GetConfig()->Get<float>("SPEAR_KNOCKBACK_FORCE");
+
+    TakeDamage(knockback * spearKnockb);
 }
 
 void Actor::TakeShurikenHit(const Vector2 &ShurikenCenter)
@@ -284,5 +288,7 @@ void Actor::TakeShurikenHit(const Vector2 &ShurikenCenter)
     Vector2 knockback = Vector2(knockbackX, -1.f);
     knockback.Normalize();
 
-    TakeDamage(knockback * Actor::SHURIKEN_KNOCKBACK_FORCE);
+    float shurikenKnockb = mGame->GetConfig()->Get<float>("SHURIKEN_KNOCKBACK_FORCE");
+
+    TakeDamage(knockback * shurikenKnockb);
 }
