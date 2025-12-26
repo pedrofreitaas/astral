@@ -6,7 +6,7 @@
 
 UIImage::UIImage(const std::string &imagePath, const Vector2 &pos, const Vector2 &size, const Vector3 &color)
     : UIElement(pos, size, color),
-      mTexture(nullptr)
+      mTexture(nullptr), mAngle(0.0f)
 {
     // Load the image texture
     SDL_Surface *surface = IMG_Load(imagePath.c_str());
@@ -35,7 +35,7 @@ UIImage::~UIImage()
     }
 }
 
-void UIImage::Draw(SDL_Renderer *renderer, const Vector2 &screenPos, float spinAngle)
+void UIImage::Draw(SDL_Renderer *renderer, const Vector2 &screenPos)
 {
     if (mTexture == nullptr)
     {
@@ -60,7 +60,7 @@ void UIImage::Draw(SDL_Renderer *renderer, const Vector2 &screenPos, float spinA
         mTexture, 
         nullptr, 
         &destRect, 
-        spinAngle, 
+        mAngle, 
         &center, 
         SDL_FLIP_NONE
     );

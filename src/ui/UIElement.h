@@ -11,9 +11,9 @@ class UIElement {
 public:
     UIElement(const Vector2 &pos, const Vector2 &size, const Vector3 &color);
 
-    // Getters/setters
-    const Vector2& GetPosition() const { return mPosition; }
-    void SetPosition(const Vector2 &pos) { mPosition = pos; }
+    const Vector2& GetPosition() const;
+    const Vector2& GetCenter() const;
+    void SetPosition(const Vector2 &pos);
 
     const Vector2& GetSize() const { return mSize; }
     void SetSize(const Vector2 &size) { mSize = size; }

@@ -37,6 +37,7 @@ public:
 	virtual void Draw(class SDL_Renderer *renderer);
 	virtual void HandleKeyPress(int key);
 	virtual void HandleMouseClick(int button, int x, int y);
+	virtual void HandleControllerButtonA(const Vector2 &clickPos);
 
     // Set state to closing
 	void Close();
@@ -55,6 +56,8 @@ public:
 	UIImage* AddCursor(const std::string& imagePath, const Vector2& pos, const Vector2& dims, const Vector3& color = Color::White);
 	UIImage* AddBackground(const std::string& imagePath, const Vector2& pos, const Vector2& dims, const Vector3& color = Color::White);
 
+	UICursor* GetCursor() const;
+	
 protected:
     // Sets the mouse mode to relative or not
 	class Game* mGame;

@@ -54,7 +54,9 @@ UIScreen::~UIScreen()
 
 void UIScreen::Update(float deltaTime)
 {
-	
+	for (auto t : mCursors) {
+        t->Update(deltaTime);
+    }
 }
 
 void UIScreen::Draw(SDL_Renderer *renderer)
@@ -76,8 +78,7 @@ void UIScreen::Draw(SDL_Renderer *renderer)
     }
 
     for (auto t : mCursors) {
-        Vector2 mousePos = mGame->GetLogicalMousePos();
-        t->Draw(renderer, mousePos);
+        t->Draw(renderer, mPos);
     }
 }
 
@@ -184,7 +185,7 @@ UIImage* UIScreen::AddImage(const std::string &imagePath, const Vector2 &pos, co
 
 UIImage* UIScreen::AddCursor(const std::string &imagePath, const Vector2 &pos, const Vector2 &dims, const Vector3 &color)
 {
-    auto img = new UICursor(imagePath, pos, dims, color);
+    auto img = new UICursor(mGame, imagePath, pos, dims, color);
     mCursors.emplace_back(img);
     return img;
 }
@@ -194,4 +195,21 @@ UIImage* UIScreen::AddBackground(const std::string &imagePath, const Vector2 &po
     auto img = new UIImage(imagePath, pos, dims, color);
     mBackground.emplace_back(img);
     return img;
+}
+
+void UIScreen::HandleControllerButtonA(const Vector2& clickPos)
+{
+    for (auto b : mButtons) {
+        if (b->IsInside(clickPos - mPos)) {
+            b->OnClick();
+            break; // Assuming only one button can be clicked at a time
+        }
+    }
+}
+
+UICursor* UIScreen::GetCursor() const
+{
+    if (mCursors.empty())
+        return nullptr;
+    return mCursors[0];
 }

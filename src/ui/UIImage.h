@@ -16,8 +16,12 @@ public:
 
     ~UIImage();
 
-    void Draw(SDL_Renderer* renderer, const Vector2 &screenPos, float spinAngle=0.0f);
+    void Draw(SDL_Renderer* renderer, const Vector2 &screenPos);
+
+    void SetAngle(float angle) { mAngle = angle; }
+    float GetAngle() const { return mAngle; }
 
 private:
     SDL_Texture* mTexture; // Texture for the image
+    float mAngle;
 };

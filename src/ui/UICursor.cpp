@@ -1,10 +1,12 @@
 #include "UICursor.h"
 
-UICursor::UICursor(const std::string &imagePath,
-                   const Vector2 &initialMousePos,
+UICursor::UICursor(Game* game,
+                   const std::string &imagePath,
+                   const Vector2 &initialPos,
                    const Vector2 &size,
                    const Vector3 &color)
-    : UIImage(imagePath, initialMousePos, size, color), mSpinningAngle(0.0f), mPreviousPos(initialMousePos)
+    : UIImage(imagePath, initialPos, size, color),
+      mGame(game), mSpeed(Vector2::Zero), mFowardSpeed(320.0f)
 {
 }
 
@@ -12,20 +14,16 @@ UICursor::~UICursor()
 {
 }
 
-void UICursor::Draw(SDL_Renderer *renderer, const Vector2 &mousePos)
+void UICursor::Update(float deltaTime)
 {
-    Vector2 drawPos = mousePos - mSize * 0.5f;
+    mSpeed = mGame->getNormalizedControlerPad();
+    mPosition += mSpeed * mFowardSpeed * deltaTime;
 
-    float distance = (drawPos - mPreviousPos).Length();
-    if (distance > 0.1f) {
-        drawPos = Vector2::Lerp(mPreviousPos, drawPos, 0.25f);
-        float spinningAngle = distance * 0.25f;
-        mSpinningAngle += spinningAngle;
-        if (mSpinningAngle >= 360.0f)
-            mSpinningAngle -= 360.0f;
+    if (mSpeed.LengthSq() <= 0.f) return;
+
+    SetAngle(GetAngle() + mFowardSpeed * deltaTime * 3.8);
+    if (GetAngle() >= 360.0f)
+    {
+        SetAngle(GetAngle() - 360.0f);
     }
-
-    UIImage::Draw(renderer, drawPos, mSpinningAngle);
-
-    mPreviousPos = drawPos;
 }
