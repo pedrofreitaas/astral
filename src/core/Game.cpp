@@ -295,6 +295,24 @@ void Game::ProcessInput()
         }
     }
 
+    SDL_GameController *controller = GetController();
+
+    // Check if the Return key has been pressed to pause/unpause the game
+    if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_START) &&
+        GetGamePlayState() == GamePlayState::Playing)
+    {
+        TogglePause();
+    }
+
+    if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_A) && !mUIStack.empty())
+    {
+        UICursor *cursor = mUIStack.back()->GetCursor();
+        if (cursor) 
+        {
+            mUIStack.back()->HandleControllerButtonA(cursor->GetCenter());
+        }
+    }
+
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
@@ -317,27 +335,12 @@ void Game::ProcessInput()
                 mUIStack.back()->HandleKeyPress(event.key.keysym.sym);
             }
 
-            HandleKeyPressActors(event.key.keysym.sym, event.key.repeat == 0);
-
-            // Check if the Return key has been pressed to pause/unpause the game
-            if (event.key.keysym.sym == SDLK_RETURN && 
-                GetGamePlayState() == GamePlayState::Playing)
-            {
-                TogglePause();
-            }
+            HandleKeyPressActors(event.key.keysym.sym, event.key.repeat == 0);            
 
             break;
-
+        
         case SDL_MOUSEBUTTONDOWN:
-            // Handle mouse click for UI screens
-            if (!mUIStack.empty())
-            {
-                Vector2 logicalMouseClick = GetLogicalMousePos();
-                mUIStack.back()->HandleMouseClick(
-                    event.button.button,
-                    logicalMouseClick.x,
-                    logicalMouseClick.y);
-            }
+            break;
         }
     }
 
