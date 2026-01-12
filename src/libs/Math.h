@@ -274,6 +274,16 @@ public:
 			vec.x * sinAngle + vec.y * cosAngle);
 	}
 
+	static Vector2 RotateVec(const Vector2 &vec, float angleDegrees)
+	{
+		float angleRadians = angleDegrees * (Math::Pi / 180.0f);
+		float cosAngle = Math::Cos(angleRadians);
+		float sinAngle = Math::Sin(angleRadians);
+		return Vector2(
+			vec.x * cosAngle - vec.y * sinAngle,
+			vec.x * sinAngle + vec.y * cosAngle);
+	}
+
 	// Transform vector by matrix
 	static Vector2 Transform(const Vector2 &vec, const class Matrix3 &mat, float w = 1.0f);
 
