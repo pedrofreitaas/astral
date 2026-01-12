@@ -1059,3 +1059,31 @@ void Game::EndDemoCheck()
         isEnding = true;
     }
 }
+
+Vector2 Game::getNormalizedControlerPad()
+{
+    SDL_GameController *controller = GetController();
+
+    float padX = 0.0f;
+    float padY = 0.0f;
+
+    int rawX = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
+    int rawY = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
+
+    const int DEADZONE = 2000;
+
+    if (SDL_abs(rawX) < DEADZONE)
+        rawX = 0;
+    if (SDL_abs(rawY) < DEADZONE)
+        rawY = 0;
+
+    const float MAX_AXIS = 32767.0f;
+
+    padX = rawX / MAX_AXIS;
+    padY = rawY / MAX_AXIS;
+
+    Vector2 normalizedPad = Vector2(padX, padY);
+    normalizedPad.Normalize();
+
+    return normalizedPad;
+}

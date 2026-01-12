@@ -206,6 +206,8 @@ public:
 
     Config *GetConfig() { return mConfig; }
 
+    Vector2 getNormalizedControlerPad();
+
 private:
     Config *mConfig;
 
