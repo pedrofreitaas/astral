@@ -1,6 +1,6 @@
 { "frames": [
    {
-    "filename": "Sprite-0002 0.",
+    "filename": "texture 0.png",
     "frame": { "x": 0, "y": 0, "w": 17, "h": 17 },
     "rotated": false,
     "trimmed": false,
@@ -9,7 +9,7 @@
     "duration": 100
    },
    {
-    "filename": "Sprite-0002 1.",
+    "filename": "texture 1.png",
     "frame": { "x": 17, "y": 0, "w": 17, "h": 17 },
     "rotated": false,
     "trimmed": false,
@@ -18,7 +18,7 @@
     "duration": 100
    },
    {
-    "filename": "Sprite-0002 2.",
+    "filename": "texture 2.png",
     "frame": { "x": 34, "y": 0, "w": 17, "h": 17 },
     "rotated": false,
     "trimmed": false,
@@ -27,7 +27,7 @@
     "duration": 100
    },
    {
-    "filename": "Sprite-0002 3.",
+    "filename": "texture 3.png",
     "frame": { "x": 51, "y": 0, "w": 17, "h": 17 },
     "rotated": false,
     "trimmed": false,
@@ -36,7 +36,7 @@
     "duration": 100
    },
    {
-    "filename": "Sprite-0002 4.",
+    "filename": "texture 4.png",
     "frame": { "x": 68, "y": 0, "w": 17, "h": 17 },
     "rotated": false,
     "trimmed": false,
@@ -55,7 +55,7 @@
   "frameTags": [
   ],
   "layers": [
-   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }
   ],
   "slices": [
   ]
