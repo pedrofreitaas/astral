@@ -738,7 +738,10 @@ void Game::GenerateOutput()
         ui->Draw(mRenderer);
     }
 
-    SDL_RenderSetLogicalSize(mRenderer, mRealWindowWidth, mRealWindowHeight);
+    if (SDL_RenderSetLogicalSize(mRenderer, mRealWindowWidth, mRealWindowHeight) != 0)
+    {
+        throw std::runtime_error("Failed to set real size: " + std::string(SDL_GetError()));
+    }
 
     // draw dialogue system without scaling to avoid blurriness
     mDialogueSystem->Draw(mRenderer);
