@@ -171,7 +171,7 @@ void MapObject::SpawnEntity()
         new Zoe(mGame, 2000.0f, GetCenter());
         break;
     case EntityCode::Sith:
-        new Sith(mGame, 1500.f, GetCenter());
+        new Sith(mGame, GetCenter());
         break;
     case EntityCode::Zod:
         new Zod(mGame, 1200.f, GetCenter());
