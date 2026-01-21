@@ -20,6 +20,7 @@ RigidBodyComponent::RigidBodyComponent(class Actor* owner, float mass, float fri
         ,mVelocity(Vector2::Zero)
         ,mAcceleration(Vector2::Zero)
         ,mIsOnGround(false)
+        ,mGravityScale(1.0f)
 {
     if (mMass <= 0.f) {
         throw std::invalid_argument("Mass must be greater than zero");
@@ -43,7 +44,7 @@ void RigidBodyComponent::Update(float deltaTime)
     bool sceneAppliesGravity = mOwner->GetGame()->GetApplyGravityScene();
     bool applyGravity = mApplyGravity && sceneAppliesGravity;
     
-    if(applyGravity) ApplyForce(Vector2(0.f, GRAVITY));
+    if(applyGravity) ApplyForce(Vector2(0.f, GRAVITY * mGravityScale));
 
     if (mApplyFriction && mIsOnGround) ApplyForce(Vector2(-mFrictionCoefficient * mVelocity));
 

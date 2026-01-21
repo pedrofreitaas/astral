@@ -44,6 +44,13 @@ public:
     bool GetApplyGravity() const { return mApplyGravity; }
     Vector2 GetAppliedForce() const { return mAcceleration * mMass; }
 
+    void SetGravityScale(float scale) { 
+        if (scale < 0.f) scale = 0.f;
+        if (scale > 1.f) scale = 1.f;
+        
+        mGravityScale = scale; 
+    }
+
 private:
     bool mApplyGravity;
     bool mApplyFriction;
@@ -52,6 +59,7 @@ private:
     float mFrictionCoefficient;
     float mMass;
     bool mIsOnGround;
+    float mGravityScale;
 
     Vector2 mVelocity;
     Vector2 mAcceleration;
