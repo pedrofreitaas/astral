@@ -72,6 +72,8 @@ void DrawAnimatedComponent::Draw(SDL_Renderer *renderer, const Vector3 &modColor
         static_cast<int>(mOwner->GetPosition().y - mOwner->GetGame()->GetCameraPos().y),
         srcRect->w * mScaleFactor,
         srcRect->h * mScaleFactor};
+    
+    std::string ownerType = this->mOwner->GetType();
 
     // Calculate pivot point
     SDL_Point pivotPoint;
