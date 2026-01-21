@@ -7,6 +7,7 @@
 #include "../components/collider/AABBColliderComponent.h"
 #include "Tile.h"
 #include "ZoeFireball.h"
+#include "Nevasca.h"
 #include "../core/Game.h"
 #include "../components/draw/DrawAnimatedComponent.h"
 #include "../ui/DialogueSystem.h"
@@ -30,7 +31,8 @@ class Zoe : public Actor
     };
 
     std::vector<ColliderLayer> IGNORED_LAYERS_DEFAULT = {
-        ColliderLayer::PlayerAttack
+        ColliderLayer::PlayerAttack,
+        ColliderLayer::Nevasca
     };
     
     float FIREBALL_SPEED = 20000.f;
@@ -41,19 +43,14 @@ class Zoe : public Actor
 
     float DODGE_COOLDOWN = 1.0f;
 
-    float DEFAULT_KNOCKBACK_FORCE = 2400.f;
-    
-    SDL_Scancode FIREBALL_KEY = SDL_SCANCODE_Q;
-    SDL_Scancode VENTANIA_KEY = SDL_SCANCODE_E;
-    SDL_Scancode JUMP_KEY = SDL_SCANCODE_SPACE;
-    SDL_Scancode HIT_KEY = SDL_SCANCODE_R;
-    SDL_Scancode DODGE_KEY = SDL_SCANCODE_LSHIFT;
-    
+    float DEFAULT_KNOCKBACK_FORCE = 1.f;
+        
     SDL_GameControllerButton DODGE_BUTTON = SDL_CONTROLLER_BUTTON_B;
     SDL_GameControllerButton FIREBALL_BUTTON = SDL_CONTROLLER_BUTTON_Y;
     SDL_GameControllerButton VENTANIA_BUTTON = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
     SDL_GameControllerButton JUMP_BUTTON = SDL_CONTROLLER_BUTTON_A;
     SDL_GameControllerButton HIT_BUTTON = SDL_CONTROLLER_BUTTON_X;
+    SDL_GameControllerAxis NEVASCA_AXIS = SDL_CONTROLLER_AXIS_TRIGGERRIGHT;
 
 public:
     explicit Zoe(Game* game, float forwardSpeed, const Vector2 &center);
@@ -78,6 +75,14 @@ public:
         else {
             return Vector2(12.f,36.f);
         }
+    }
+
+    Vector2 GetNevascaOffset() {
+        if (GetRotation() == 0.f) {
+            return GetCenter() + Vector2(5.f, -5.f);
+        }
+
+        return GetCenter() + Vector2(5.f, -5.f);
     }
 
     void TakeDamage(const Vector2 &knockback = Vector2(0.f, 0.f)) override;
@@ -114,7 +119,9 @@ private:
     void ManageAnimations();
 
     Vector2 mInputMovementDir;
-    bool mIsTryingToHit, mIsTryingToDodge, mIsTryingToJump;
+    bool mIsTryingToHit, mIsTryingToDodge, mIsTryingToJump, mIsTryingToNevasca;
+    bool mIsFiringNevasca;
+    float mNevascaTimer;
     Timer* mDodgeCooldownTimer;
 
     void FireFireball();
@@ -129,7 +136,7 @@ private:
 
     Timer *mCoyoteTimer;
 
-    SoundHandle mDamageSoundHandle;
+    SoundHandle mDamageSoundHandle, mNevascaSoundHandle;
 
     bool mAbilitiesLocked, mMovementLocked;
 
@@ -139,6 +146,7 @@ private:
     bool CheckHit();
     void DodgeEnd();
     void EndAerialAttack();
+    bool CheckNevasca();
 
     int IsPressingAgainstWall();
 };

@@ -8,15 +8,16 @@
 Projectile::Projectile(
     class Game* game, Vector2 position, 
     Vector2 target, float speed,
-    Actor* shooter
+    Actor* shooter,
+    float mDieTime
 ): Actor(game), mTarget(target), mSpeed(speed), 
-   mKnockbackIntensity(10.f), mDirection(Vector2::Zero), mShooter(shooter)
+   mKnockbackIntensity(10.f), mDirection(Vector2::Zero), mShooter(shooter), mDieTime(mDieTime)
 {
     SetPosition(position);
 
     mTimerComponent = new TimerComponent(this);
 
-    mTimerComponent->AddTimer(MAX_DIE_TIME, [this]() {
+    mTimerComponent->AddTimer(mDieTime, [this]() {
         Kill();
     });
 }
@@ -26,13 +27,12 @@ void Projectile::OnUpdate(float deltaTime) {
 
     if (mBehaviorState == BehaviorState::Dying)
     {
-        mRigidBodyComponent->SetVelocity(Vector2::Zero);
+        mRigidBodyComponent->ResetVelocity();
         return;
     }
     
-    Vector2 movement = mDirection * mSpeed * deltaTime;
-    mRigidBodyComponent->SetVelocity(movement);
-
+    Vector2 movForce = mDirection * mSpeed * deltaTime;
+    mRigidBodyComponent->ApplyForce(movForce);
 }
 
 void Projectile::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) {

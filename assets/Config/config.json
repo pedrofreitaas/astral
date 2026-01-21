@@ -19,5 +19,14 @@
         "SPEED": 1200,
         "PROJECTILE_COOLDOWN": 10,
         "PROJECTILE_SPEED": 1.5
+    },
+
+    "ZOE": {
+        "POWERS": {
+            "NEVASCA": {
+                "RATE_PER_SECOND": 15,
+                "SPEED": 70
+            }
+        }
     }
 }

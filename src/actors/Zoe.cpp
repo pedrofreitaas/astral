@@ -7,7 +7,8 @@ Zoe::Zoe(
       mIsVentaniaOnCooldown(false), mTryingToTriggerVentania(false),
       mIsTryingToHit(false), mAttackCollider(nullptr), mIsTryingToDodge(false),
       mInputMovementDir(0.f, 0.f), mMovementLocked(false), mAbilitiesLocked(false),
-      mDamageSoundHandle(SoundHandle::Invalid), mIsTryingToJump(false)
+      mDamageSoundHandle(SoundHandle::Invalid), mIsTryingToJump(false), mNevascaSoundHandle(SoundHandle::Invalid),
+      mIsTryingToNevasca(false), mIsFiringNevasca(false), mNevascaTimer(0.f)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
 
@@ -80,7 +81,6 @@ void Zoe::OnProcessInput(const uint8_t *state)
     }
 
     SDL_GameController *controller = GetGame()->GetController();
-    const bool hasController = controller && SDL_GameControllerGetAttached(controller);
 
     if (mAbilitiesLocked)
     {
@@ -89,24 +89,17 @@ void Zoe::OnProcessInput(const uint8_t *state)
         mIsTryingToHit = false;
         mTryingToFireFireball = false;
         mTryingToTriggerVentania = false;
+        mIsTryingToNevasca = false;
     }
 
-    else if (hasController)
+    else
     {
         mIsTryingToHit = SDL_GameControllerGetButton(controller, Zoe::HIT_BUTTON);
         mTryingToFireFireball = SDL_GameControllerGetButton(controller, Zoe::FIREBALL_BUTTON);
         mTryingToTriggerVentania = SDL_GameControllerGetButton(controller, Zoe::VENTANIA_BUTTON);
         mIsTryingToDodge = SDL_GameControllerGetButton(controller, Zoe::DODGE_BUTTON);
         mIsTryingToJump = SDL_GameControllerGetButton(controller, Zoe::JUMP_BUTTON);
-    }
-
-    else
-    {
-        mIsTryingToHit = state[Zoe::HIT_KEY];
-        mTryingToFireFireball = state[Zoe::FIREBALL_KEY];
-        mTryingToTriggerVentania = state[Zoe::VENTANIA_KEY];
-        mIsTryingToDodge = state[Zoe::DODGE_KEY];
-        mIsTryingToJump = state[Zoe::JUMP_KEY];
+        mIsTryingToNevasca = SDL_GameControllerGetAxis(controller, Zoe::NEVASCA_AXIS) > 0;
     }
 
     if (mMovementLocked)
@@ -115,36 +108,9 @@ void Zoe::OnProcessInput(const uint8_t *state)
         return;
     }
 
-    float padX = 0.0f;
-    float padY = 0.0f;
+    Vector2 pads = mGame->getNormalizedControlerPad();
 
-    if (hasController)
-    {
-        int rawX = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
-        int rawY = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
-
-        const int DEADZONE = 2000;
-
-        if (SDL_abs(rawX) < DEADZONE)
-            rawX = 0;
-        if (SDL_abs(rawY) < DEADZONE)
-            rawY = 0;
-
-        const float MAX_AXIS = 32767.0f;
-
-        padX = rawX / MAX_AXIS;
-        padY = rawY / MAX_AXIS;
-
-        mInputMovementDir = Vector2(padX, padY);
-    }
-
-    else
-    {
-        float kbX = static_cast<float>(state[SDL_SCANCODE_D] - state[SDL_SCANCODE_A]);
-        float kbY = static_cast<float>(state[SDL_SCANCODE_S] - state[SDL_SCANCODE_W]);
-
-        mInputMovementDir = Vector2(kbX, kbY);
-    }
+    mInputMovementDir = Vector2(pads.x, pads.y);
 
     float lengthSq = mInputMovementDir.LengthSq();
     if (lengthSq > 0.0f)
@@ -161,6 +127,8 @@ void Zoe::OnHandleKeyPress(const int key, const bool isPressed)
 
 void Zoe::ManageState()
 {
+    bool isCutscene = mGame->GetGamePlayState() == Game::GamePlayState::PlayingCutscene;
+
     switch (mBehaviorState)
     {
     case BehaviorState::Dying:
@@ -227,6 +195,12 @@ void Zoe::ManageState()
         if ( CheckDodge() ) break;
         if ( CheckHit() ) break;
 
+        if ( CheckNevasca() ) 
+        {
+            mBehaviorState = BehaviorState::Idle;
+            break;
+        }
+
         if (!mRigidBodyComponent->GetOnGround())
         {
             mBehaviorState = BehaviorState::Jumping;
@@ -239,7 +213,13 @@ void Zoe::ManageState()
             break;
         }
 
-        if (mInputMovementDir.x == 0.f && mInputMovementDir.y == 0.f) 
+        if (!isCutscene && mInputMovementDir.x == 0.f && mInputMovementDir.y == 0.f) 
+        {
+            mBehaviorState = BehaviorState::Idle;
+            break;
+        }
+
+        if (isCutscene && mRigidBodyComponent->GetVelocity().x == 0.f && mRigidBodyComponent->GetVelocity().y == 0.f)
         {
             mBehaviorState = BehaviorState::Idle;
             break;
@@ -259,13 +239,21 @@ void Zoe::ManageState()
 
         if ( CheckHit() ) break;
 
+        if ( CheckNevasca() ) break;
+
         if (!mRigidBodyComponent->GetOnGround())
         {
             mBehaviorState = BehaviorState::Jumping;
             break;
         }
 
-        if (mInputMovementDir.x != 0 || mInputMovementDir.y != 0)
+        if (!isCutscene && (mInputMovementDir.x != 0 || mInputMovementDir.y != 0))
+        {
+            mBehaviorState = BehaviorState::Moving;
+            break;
+        }
+
+        if (isCutscene && (mRigidBodyComponent->GetVelocity().x != 0.f || mRigidBodyComponent->GetVelocity().y != 0.f))
         {
             mBehaviorState = BehaviorState::Moving;
             break;
@@ -368,6 +356,26 @@ void Zoe::OnUpdate(float deltaTime)
 
     mColliderComponent->MaintainInMap();
     ManageAnimations();
+
+    // Nevasca
+    bool wasFiringNevasca = mIsFiringNevasca;
+
+    mIsFiringNevasca = mIsFiringNevasca && mIsTryingToNevasca;
+    
+    if (!mIsFiringNevasca && mNevascaSoundHandle.IsValid() &&
+        mGame->GetAudio()->GetSoundState(mNevascaSoundHandle) == SoundState::Playing)
+    {
+        mGame->GetAudio()->StopSound(mNevascaSoundHandle);
+    }
+    
+    else if (mIsFiringNevasca)
+    {
+        mNevascaTimer += deltaTime;
+        
+        if (!wasFiringNevasca) {
+            mNevascaTimer = 0.f;
+        }
+    }
 }
 
 void Zoe::ManageAnimations()
@@ -786,4 +794,59 @@ int Zoe::IsPressingAgainstWall()
         return 1;
 
     return 0;
+}
+
+bool Zoe::CheckNevasca()
+{
+    if (!mIsTryingToNevasca)
+    {
+        return false;
+    }
+
+    if (mBehaviorState != BehaviorState::Idle)
+    {
+        return false;
+    }
+
+    mIsFiringNevasca = true;
+
+    Vector2 nevascaDir = mInputMovementDir;
+
+    if (nevascaDir.LengthSq() == 0.f)
+    {
+        nevascaDir = GetForward();
+    }
+
+    float ratePerSecond = mGame->GetConfig()->Get<int>("ZOE.POWERS.NEVASCA.RATE_PER_SECOND");
+
+    float rate = 1.f / ratePerSecond;
+
+    float dissipationAngle = 15.f;
+    std::vector<Vector2> dirs = {
+        nevascaDir,
+        Vector2::RotateVec(nevascaDir, dissipationAngle),
+        Vector2::RotateVec(nevascaDir, -dissipationAngle)
+    };
+
+    while (mNevascaTimer >= rate)
+    {
+        mNevascaTimer -= rate;
+        
+        for (const Vector2& dir : dirs)
+        {
+            new Nevasca(
+                mGame,
+                GetNevascaOffset(),
+                dir,
+                this);
+        }
+    }
+    
+    if (!mNevascaSoundHandle.IsValid() ||
+        mGame->GetAudio()->GetSoundState(mNevascaSoundHandle) == SoundState::Stopped)
+    {
+        mNevascaSoundHandle = mGame->GetAudio()->PlaySound("nevasca.wav");
+    }
+
+    return true;
 }

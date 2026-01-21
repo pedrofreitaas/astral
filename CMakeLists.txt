@@ -39,6 +39,8 @@ add_executable(astral
     src/actors/Zoe.h
     src/actors/ZoeFireball.cpp
     src/actors/ZoeFireball.h
+    src/actors/Nevasca.cpp
+    src/actors/Nevasca.h
     src/actors/Ventania.h
     src/actors/Ventania.cpp
     src/components/collider/AABBColliderComponent.cpp

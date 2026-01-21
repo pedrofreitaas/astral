@@ -32,6 +32,7 @@ enum class ColliderLayer
     SithAttack1,
     SithAttack2,
     Quasar,
+    Nevasca,
 };
 
 class AABBColliderComponent : public Component
