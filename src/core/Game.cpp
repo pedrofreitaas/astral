@@ -671,6 +671,15 @@ void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
 
     // Swap front buffer and back buffer
     SDL_RenderPresent(mRenderer);
+
+    SDL_Log("Actors on camera: %d", static_cast<int>(actorsOnCamera.size()));
+
+    int componentsOnCamera = 0;
+    for (auto actor : actorsOnCamera)
+    {
+        componentsOnCamera += static_cast<int>(actor->HowManyComponents());
+    }
+    SDL_Log("Components on camera: %d", componentsOnCamera);
 }
 
 void Game::GenerateOutput()
