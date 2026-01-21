@@ -25,6 +25,7 @@ Actor::Actor(Game* game, int lives, bool mustAlwaysUpdate)
         , mBehaviorState(BehaviorState::Idle)
         , mLifes(lives)
         , mInvincible(false)
+        , mType("generic")
 {
     mGame->AddActor(this);
     

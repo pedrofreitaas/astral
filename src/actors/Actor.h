@@ -129,6 +129,10 @@ public:
 
     void LogState();
 
+    int HowManyComponents() const { return static_cast<int>(mComponents.size()); }
+
+    const std::string& GetType() const { return mType; }
+
 protected:
     class Game* mGame;
 
@@ -140,6 +144,8 @@ protected:
     void TakeSpikeHit(const Vector2 &SpikeBaseCenter);
     void TakeSpearHit(const Vector2 &SpearTipCenter);
     void TakeShurikenHit(const Vector2 &ShurikenCenter);
+
+    std::string mType;
 
     // Actor's state
     ActorState mState;
