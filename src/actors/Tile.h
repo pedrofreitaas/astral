@@ -1,12 +1,30 @@
 #pragma once
 
 #include "Actor.h"
-#include "../components/draw/DrawComponent.h"
 #include <string>
+#include "../components/draw/DrawComponent.h"
+#include "./Snow.h"
+
+enum class SnowDirection;
+
+const int FREEZING_RATE = 1.f;
 
 class Tile : public Actor
 {
 private:
+    void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
+    void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
+    void OnUpdate(float deltaTime) override;
+
+    float mFreezingCount;
+    bool mIsFrozen;
+
+    SnowDirection mLastSnowCollision;
+
+    void Freeze();
+    void StopFreeze();
+
+    class Snow *mSnow;
 
 public:
     Tile(
