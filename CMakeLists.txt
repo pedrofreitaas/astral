@@ -49,6 +49,8 @@ add_executable(astral
     src/components/draw/DrawAnimatedComponent.h
     src/components/ai/AIMovementComponent.cpp
     src/components/ai/AIMovementComponent.h
+    src/actors/Snow.h
+    src/actors/Snow.cpp
     src/actors/Tile.cpp
     src/actors/Tile.h
     src/actors/Star.cpp
