@@ -92,6 +92,8 @@ public:
     void Shutdown();
     void Quit() { mIsRunning = false; }
 
+    float GetDtLastFrame() { return mDeltatime; }
+
     // Actor functions
     void UpdateActors(float deltaTime);
     void AddActor(class Actor *actor);
@@ -298,6 +300,7 @@ private:
     CameraCenter mCameraCenter;
     Vector2 mCameraCenterPos;
     bool mMaintainCameraInMap;
+    float mDeltatime;
 
     void DrawDebugInfo(std::vector<class Actor *> &actorsOnCamera);
 

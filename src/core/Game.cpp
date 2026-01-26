@@ -44,7 +44,7 @@ Game::Game()
       mDebugMode(false), mEnemies(), mStar(nullptr), mApplyGravityScene(true),
       mCameraCenter(CameraCenter::Zoe), mMaintainCameraInMap(true), mCameraCenterPos(Vector2::Zero),
       mController(nullptr), mMustAlwaysUpdateActors(), mPreviousGameState(GamePlayState::Playing),
-      mRealWindowHeight(0), mRealWindowWidth(0)
+      mRealWindowHeight(0), mRealWindowWidth(0), mDeltatime(0.f)
 {
     mWindowWidth = 640;
     mWindowHeight = 352;
@@ -425,10 +425,10 @@ void Game::UpdateGame()
     {
     };
 
-    float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
-    if (deltaTime > 0.05f)
+    mDeltatime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
+    if (mDeltatime > 0.05f)
     {
-        deltaTime = 0.05f;
+        mDeltatime = 0.05f;
     }
 
     mTicksCount = SDL_GetTicks();
@@ -436,19 +436,19 @@ void Game::UpdateGame()
     if (mGamePlayState == GamePlayState::Playing ||
         mGamePlayState == GamePlayState::PlayingCutscene)
     {
-        UpdateActors(deltaTime);
+        UpdateActors(mDeltatime);
     }
 
     if (mGamePlayState == GamePlayState::PlayingCutscene && mCurrentCutscene)
     {
-        mCurrentCutscene->Update(deltaTime);
+        mCurrentCutscene->Update(mDeltatime);
     }
 
-    mAudio->Update(deltaTime);
+    mAudio->Update(mDeltatime);
 
     if (mGamePlayState == GamePlayState::Dialogue)
     {
-        GetDialogueSystem()->Update(deltaTime);
+        GetDialogueSystem()->Update(mDeltatime);
     }
 
     // Reinsert UI screens
@@ -456,7 +456,7 @@ void Game::UpdateGame()
     {
         if (ui->GetState() == UIScreen::UIState::Active)
         {
-            ui->Update(deltaTime);
+            ui->Update(mDeltatime);
         }
     }
 
@@ -477,14 +477,14 @@ void Game::UpdateGame()
 
     if (mGameScene != GameScene::MainMenu && mGameScene != GameScene::DeathScreen && mHUD && mZoe)
     {
-        mHUD->SetFPS(static_cast<int>(1.0f / deltaTime));
+        mHUD->SetFPS(static_cast<int>(1.0f / mDeltatime));
         mHUD->SetLife(mZoe->GetLifes());
         mHUD->SetLoadingBarProgress(
             mZoe->CheckFireballOnCooldown(),
             mZoe->GetFireballCooldownProgress());
     }
 
-    UpdateSceneManager(deltaTime);
+    UpdateSceneManager(mDeltatime);
     UpdateCamera();
 
     EndDemoCheck();
