@@ -23,5 +23,5 @@ public:
         SnowDirection dir
     );
 
-    void Unspawn();
+    void Kill() override;
 };

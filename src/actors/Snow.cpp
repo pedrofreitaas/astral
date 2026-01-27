@@ -26,7 +26,7 @@ Snow::Snow(
     mPosition = center - Vector2(18,18);
 }
 
-void Snow::Unspawn()
+void Snow::Kill()
 {
     SetState(ActorState::Destroy);
 }
