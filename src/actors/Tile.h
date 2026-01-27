@@ -7,24 +7,17 @@
 
 enum class SnowDirection;
 
-const int FREEZING_RATE = 1.f;
-
 class Tile : public Actor
 {
 private:
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnUpdate(float deltaTime) override;
-
-    float mFreezingCount;
-    bool mIsFrozen;
-
-    SnowDirection mLastSnowCollision;
-
-    void Freeze();
-    void StopFreeze();
-
+    void StopFreeze() override;
+    void Freeze() override;
+    
     class Snow *mSnow;
+    SnowDirection mLastSnowCollision;
 
 public:
     Tile(

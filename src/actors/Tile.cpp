@@ -11,8 +11,7 @@ Tile::Tile(
     int width, int height,
     int boundBoxWidth, int boundBoxHeight,
     int boundBoxOffsetX, int boundBoxOffsetY,
-    const DrawLayerPosition &layer) : Actor(game), mFreezingCount(0), mIsFrozen(false),
-                                      mSnow(nullptr), mLastSnowCollision(SnowDirection::UP)
+    const DrawLayerPosition &layer) : Actor(game), mSnow(nullptr), mLastSnowCollision(SnowDirection::UP)
 {
     if (!tilesetTexture)
     {
@@ -47,7 +46,9 @@ void Tile::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *
 {
     if (other->GetLayer() == ColliderLayer::Nevasca && !mIsFrozen)
     {
-        mFreezingCount += mGame->GetDtLastFrame() * FREEZING_RATE * 10.f; // gravity causes more VERTICAL collisions, so this is to keep a similar sensation of freezing
+        // gravity causes more VERTICAL collisions, so this is to keep a similar sensation of freezing,
+        // so we need a bigger increment when colliding horizontally
+        IncreaseFreezing(10.f);
         mLastSnowCollision = minOverlap > 0 ? SnowDirection::RIGHT :SnowDirection::LEFT;
     }
 }
@@ -56,34 +57,14 @@ void Tile::OnVerticalCollision(const float minOverlap, AABBColliderComponent *ot
 {
     if (other->GetLayer() == ColliderLayer::Nevasca && !mIsFrozen)
     {
-        mFreezingCount += mGame->GetDtLastFrame() * FREEZING_RATE;
+        IncreaseFreezing();
         mLastSnowCollision = minOverlap > 0 ? SnowDirection::DOWN : SnowDirection::UP;
     }
 }
 
 void Tile::OnUpdate(float deltatime)
 {
-    if (mIsFrozen && mFreezingCount > 0.f)
-    {
-        mFreezingCount -= deltatime * (FREEZING_RATE * .33f);
-        return;
-    }
-
-    mFreezingCount -= deltatime * (FREEZING_RATE * .5f);
-
-    if (mFreezingCount <= 0.f)
-    {
-        mFreezingCount = 0.f;
-        StopFreeze();
-        return;
-    }
-    
-    if (mFreezingCount >= 1.f)
-    {
-        mFreezingCount = 1.f;
-        Freeze();
-        return;
-    }
+    Actor::OnUpdate(deltatime);
 }
 
 void Tile::Freeze()
@@ -104,7 +85,7 @@ void Tile::StopFreeze()
 {
     if (!mIsFrozen) return;
 
-    mSnow->Unspawn();
+    mSnow->Kill();
     mSnow = nullptr;
 
     mIsFrozen = false;
