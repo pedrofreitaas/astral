@@ -22,6 +22,8 @@ void Enemy::OnUpdate(float deltaTime)
     ManageState();
     ManageAnimations();
     mColliderComponent->MaintainInMap();
+
+    Actor::OnUpdate(deltaTime);
 }
 
 bool Enemy::PlayerOnSight(float distance, float angle)
