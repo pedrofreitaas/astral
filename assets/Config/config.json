@@ -19,7 +19,7 @@
         "HEALTH": 5,
         "SPEED": 1200,
         "PROJECTILE_COOLDOWN": 10,
-        "PROJECTILE_SPEED": 1.5
+        "PROJECTILE_SPEED": 1200
     },
 
     "ZOE": {
