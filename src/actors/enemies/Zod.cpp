@@ -121,6 +121,12 @@ void Zod::ManageState()
     case BehaviorState::Dying:
         break;
 
+    case BehaviorState::Freezing:
+        break;
+
+    case BehaviorState::Frozen:
+        break;
+
     default:
         mBehaviorState = BehaviorState::Asleep;
         break;
@@ -151,6 +157,12 @@ void Zod::AnimationEndCallback(std::string animationName)
 
     if (animationName == "dying") {
         SetState(ActorState::Destroy);
+    }
+
+    if (animationName == "freezing")
+    {
+        mBehaviorState = BehaviorState::Frozen;
+        return;
     }
 }
 
@@ -184,6 +196,14 @@ void Zod::ManageAnimations()
         mDrawComponent->SetAnimation("dying");
         mDrawComponent->SetAnimFPS(10.f);
         break;
+    case BehaviorState::Freezing:
+        mDrawComponent->SetAnimation("freeze");
+        mDrawComponent->SetAnimFPS(6.f);
+        break;
+    case BehaviorState::Frozen:
+        mDrawComponent->SetAnimation("frozen");
+        mDrawComponent->SetAnimFPS(0.f);
+        break;
     default:
         mDrawComponent->SetAnimation("asleep");
         break;
@@ -202,4 +222,20 @@ void Zod::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* o
     Enemy::OnHorizontalCollision(minOverlap, other);
     
     Actor::OnHorizontalCollision(minOverlap, other);
+}
+
+void Zod::Freeze()
+{
+    if (mIsFrozen) return;
+
+    mBehaviorState = BehaviorState::Freezing;
+    mAIMovementComponent->SetEnabled(false);
+}
+
+void Zod::StopFreeze()
+{
+    if (!mIsFrozen) return;
+
+    mBehaviorState = BehaviorState::Idle;
+    mAIMovementComponent->SetEnabled(true);
 }

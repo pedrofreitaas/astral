@@ -22,6 +22,9 @@ public:
         }
     }
 
+    void Freeze() override;
+    void StopFreeze() override;
+
 private:
     void ManageState() override;
     void AnimationEndCallback(std::string animationName) override;
