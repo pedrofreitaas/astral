@@ -126,6 +126,33 @@
                  "width":32,
                  "x":448.667,
                  "y":304.833
+                }, 
+                {
+                 "height":21.6667,
+                 "id":4,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"entity_code",
+                         "type":"int",
+                         "value":2
+                        }, 
+                        {
+                         "name":"event",
+                         "type":"string",
+                         "value":"atStart"
+                        }, 
+                        {
+                         "name":"function_name",
+                         "type":"string",
+                         "value":"spawn_entity"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":124,
+                 "y":289.16665
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -145,7 +172,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":4,
+ "nextobjectid":5,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
