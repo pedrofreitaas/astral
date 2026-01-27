@@ -20,7 +20,7 @@ Nevasca::Nevasca(
         "../assets/Sprites/Zoe/Nevasca/texture.png", 
         "../assets/Sprites/Zoe/Nevasca/texture.json",
         nullptr,
-        static_cast<int>(DrawLayerPosition::Sky) - 1);
+        static_cast<int>(DrawLayerPosition::Player) - 1);
 
     mDrawAnimatedComponent->AddAnimation("0", {0});
     mDrawAnimatedComponent->AddAnimation("1", {1});
