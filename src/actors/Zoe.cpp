@@ -36,6 +36,7 @@ Zoe::Zoe(
     mDrawComponent->AddAnimation("aerial-crush", 28, 37);
     mDrawComponent->AddAnimation("clinging", {38, 39, 40});
     mDrawComponent->AddAnimation("charging", 41, 46);
+    mDrawComponent->AddAnimation("spraying", 44, 46);
 
     mDrawComponent->SetAnimation("idle");
 
@@ -194,12 +195,7 @@ void Zoe::ManageState()
         if ( CheckJump() ) break;
         if ( CheckDodge() ) break;
         if ( CheckHit() ) break;
-
-        if ( CheckNevasca() ) 
-        {
-            mBehaviorState = BehaviorState::Idle;
-            break;
-        }
+        if ( CheckNevasca() ) break;
 
         if (!mRigidBodyComponent->GetOnGround())
         {
@@ -382,10 +378,17 @@ void Zoe::ManageAnimations()
 {
     switch (mBehaviorState)
     {
-    case BehaviorState::Idle:
+    case BehaviorState::Idle: {
+        if (mIsFiringNevasca) {
+            mDrawComponent->SetAnimation("spraying");
+            mDrawComponent->SetAnimFPS(6.f);
+            break;
+        }
+
         mDrawComponent->SetAnimation("idle");
         mDrawComponent->SetAnimFPS(10.0f);
         break;
+    }
     case BehaviorState::Moving:
         mDrawComponent->SetAnimation("run");
         break;
@@ -847,6 +850,17 @@ bool Zoe::CheckNevasca()
     {
         mNevascaSoundHandle = mGame->GetAudio()->PlaySound("nevasca.wav");
     }
+
+    Vector2 pads = mGame->getNormalizedControlerPad();
+
+    if (pads.x > 0.f) {
+        SetRotation(0.f);
+    }
+    else if (pads.x < 0.f) {
+        SetRotation(Math::Pi);
+    }
+
+    mBehaviorState = BehaviorState::Idle;
 
     return true;
 }
