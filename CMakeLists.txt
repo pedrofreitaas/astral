@@ -67,6 +67,8 @@ add_executable(astral
     src/actors/traps/Shuriken.cpp
     src/actors/enemies/Zod.cpp
     src/actors/enemies/Zod.h
+    src/actors/enemies/ZodProjectile.cpp
+    src/actors/enemies/ZodProjectile.h
     src/actors/enemies/Sith.cpp
     src/actors/enemies/Sith.h
     src/actors/enemies/Quasar.cpp
