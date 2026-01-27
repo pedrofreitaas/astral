@@ -36,8 +36,8 @@ void DrawSpriteComponent::Draw(SDL_Renderer *renderer, const Vector3 &modColor)
     Vector2 cameraPos = mOwner->GetGame()->GetCameraPos();
 
     SDL_Rect srcrect = {
-        mOffset.x, 
-        mOffset.y,
+        static_cast<int>(mOffset.x),
+        static_cast<int>(mOffset.y),
         mWidth,
         mHeight
     };
