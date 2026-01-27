@@ -104,6 +104,13 @@ void Actor::OnHorizontalCollision(const float minOverlap, AABBColliderComponent*
         TakeShurikenHit(shuriken->GetCenter());
         return;
     }
+
+    if (other->GetLayer() == ColliderLayer::Nevasca && !mIsFrozen)
+    {
+        // gravity causes more VERTICAL collisions, so this is to keep a similar sensation of freezing,
+        // so we need a bigger increment when colliding horizontally
+        IncreaseFreezing(10.f);
+    }
 }
 
 void Actor::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) 
@@ -129,6 +136,11 @@ void Actor::OnVerticalCollision(const float minOverlap, AABBColliderComponent* o
         Shuriken *shuriken = static_cast<Shuriken*>(other->GetOwner());
         TakeShurikenHit(shuriken->GetCenter());
         return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Nevasca && !mIsFrozen)
+    {
+        IncreaseFreezing();
     }
 }
 

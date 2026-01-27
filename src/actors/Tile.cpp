@@ -46,9 +46,6 @@ void Tile::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *
 {
     if (other->GetLayer() == ColliderLayer::Nevasca && !mIsFrozen)
     {
-        // gravity causes more VERTICAL collisions, so this is to keep a similar sensation of freezing,
-        // so we need a bigger increment when colliding horizontally
-        IncreaseFreezing(10.f);
         mLastSnowCollision = minOverlap > 0 ? SnowDirection::RIGHT :SnowDirection::LEFT;
     }
 }
@@ -57,7 +54,6 @@ void Tile::OnVerticalCollision(const float minOverlap, AABBColliderComponent *ot
 {
     if (other->GetLayer() == ColliderLayer::Nevasca && !mIsFrozen)
     {
-        IncreaseFreezing();
         mLastSnowCollision = minOverlap > 0 ? SnowDirection::DOWN : SnowDirection::UP;
     }
 }
