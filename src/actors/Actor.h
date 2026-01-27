@@ -155,6 +155,8 @@ protected:
     Vector2 mPosition;
     float mScale;
     float mRotation;
+    float mFreezingCount;
+    bool mIsFrozen;
 
     // Components
     std::vector<class Component*> mComponents;
@@ -165,6 +167,11 @@ protected:
     bool mInvincible;
 
     class TimerComponent* mTimerComponent;
+
+    void UpdateFreezing();
+    void IncreaseFreezing(float modifier=1.f);
+    virtual void Freeze();
+    virtual void StopFreeze();
 
 private:
     friend class Component;

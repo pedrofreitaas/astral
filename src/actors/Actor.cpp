@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------
 // From Game Programming in C++ by Sanjay Madhav
 // Copyright (C) 2017 Sanjay Madhav. All rights reserved.
-// 
+//
 // Released under the BSD License
 // See LICENSE in root directory for full details.
 // ----------------------------------------------------------------
@@ -77,7 +77,7 @@ void Actor::Update(float deltaTime)
 
 void Actor::OnUpdate(float deltaTime)
 {
-
+    UpdateFreezing();
 }
 
 void Actor::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) 
@@ -292,4 +292,45 @@ void Actor::TakeShurikenHit(const Vector2 &ShurikenCenter)
     float shurikenKnockb = mGame->GetConfig()->Get<float>("SHURIKEN_KNOCKBACK_FORCE");
 
     TakeDamage(knockback * shurikenKnockb);
+}
+
+void Actor::Freeze()
+{
+}
+
+void Actor::StopFreeze()
+{
+}
+
+void Actor::IncreaseFreezing(float modifier)
+{
+    mFreezingCount += mGame->GetDtLastFrame() * mGame->GetConfig()->Get<float>("FREEZING_RATE") * modifier;
+};
+
+void Actor::UpdateFreezing()
+{
+    float freezingRate = mGame->GetConfig()->Get<float>("FREEZING_RATE");
+    float dt = mGame->GetDtLastFrame();
+
+    if (mIsFrozen && mFreezingCount > 0.f)
+    {
+        mFreezingCount -= dt * (freezingRate * .33f);
+        return;
+    }
+
+    mFreezingCount -= dt * (freezingRate * .5f);
+
+    if (mFreezingCount <= 0.f)
+    {
+        mFreezingCount = 0.f;
+        StopFreeze();
+        return;
+    }
+
+    if (mFreezingCount >= 1.f)
+    {
+        mFreezingCount = 1.f;
+        Freeze();
+        return;
+    }
 }
