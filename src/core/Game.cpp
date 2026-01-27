@@ -430,6 +430,9 @@ void Game::UpdateGame()
     {
         mDeltatime = 0.05f;
     }
+    else if (mDeltatime < 0.0167) {
+        mDeltatime = 0.0167f;
+    }
 
     mTicksCount = SDL_GetTicks();
 
