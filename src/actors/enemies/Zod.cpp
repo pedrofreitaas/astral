@@ -40,6 +40,8 @@ Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
     mDrawComponent->AddAnimation("moving", 8, 15);
     mDrawComponent->AddAnimation("charging", 16, 19);
     mDrawComponent->AddAnimation("dying", 20, 25);
+    mDrawComponent->AddAnimation("freeze", 26, 30);
+    mDrawComponent->AddAnimation("frozen", {30});
 
     mDrawComponent->SetAnimation("asleep");
 
