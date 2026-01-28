@@ -71,6 +71,8 @@ add_executable(astral
     src/actors/enemies/ZodProjectile.h
     src/actors/enemies/Sith.cpp
     src/actors/enemies/Sith.h
+    src/actors/enemies/SithProjectile.cpp
+    src/actors/enemies/SithProjectile.h
     src/actors/enemies/Quasar.cpp
     src/actors/enemies/Quasar.h
     src/actors/Portal.cpp

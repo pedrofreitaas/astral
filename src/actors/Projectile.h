@@ -7,8 +7,7 @@ class Projectile : public Actor
 {    
 public:
     Projectile(
-        class Game* game, Vector2 position, 
-        Vector2 target, float speed,
+        class Game* game, Vector2 position,
         Actor* shooter, float mDieTime=3.f
     );
 
@@ -20,6 +19,9 @@ protected:
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
 
+    // Should be called at the end of the subclass constructor
+    void Fire(const Vector2& direction, float speed);
+
     class TimerComponent* GetTimer() const { return mTimerComponent; };
 
     virtual void ManageAnimations() = 0;
@@ -28,10 +30,7 @@ protected:
     class RigidBodyComponent* mRigidBodyComponent;
     class AABBColliderComponent* mColliderComponent;
     class DrawAnimatedComponent* mDrawAnimatedComponent;
-    
-    Vector2 mTarget, mDirection;
     float mKnockbackIntensity;
-    float mSpeed;
 
     Actor *mShooter;
     float mDieTime;

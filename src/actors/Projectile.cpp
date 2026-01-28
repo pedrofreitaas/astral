@@ -6,12 +6,11 @@
 #include "../components/TimerComponent.h"
 
 Projectile::Projectile(
-    class Game* game, Vector2 position, 
-    Vector2 target, float speed,
+    class Game* game, 
+    Vector2 position,
     Actor* shooter,
     float mDieTime
-): Actor(game), mTarget(target), mSpeed(speed), 
-   mKnockbackIntensity(10.f), mDirection(Vector2::Zero), mShooter(shooter), mDieTime(mDieTime)
+): Actor(game), mKnockbackIntensity(10.f), mShooter(shooter), mDieTime(mDieTime)
 {
     SetPosition(position);
 
@@ -22,6 +21,11 @@ Projectile::Projectile(
     });
 }
 
+void Projectile::Fire(const Vector2& direction, float speed) {
+    Vector2 normalizedDirection = Vector2::Normalize(direction);
+    mRigidBodyComponent->ApplyImpulse(normalizedDirection * speed);
+}
+
 void Projectile::OnUpdate(float deltaTime) {
     ManageAnimations();
 
@@ -30,9 +34,6 @@ void Projectile::OnUpdate(float deltaTime) {
         mRigidBodyComponent->ResetVelocity();
         return;
     }
-    
-    Vector2 movForce = mDirection * mSpeed * deltaTime;
-    mRigidBodyComponent->ApplyForce(movForce);
 }
 
 void Projectile::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) {

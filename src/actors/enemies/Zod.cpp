@@ -58,7 +58,7 @@ void Zod::FireProjectile()
 
     float speed = mGame->GetConfig()->Get<float>("ZOD.PROJECTILE_SPEED");
 
-    auto projectile = new ZodProjectile(
+    new ZodProjectile(
         mGame,
         GetPosition() + GetProjectileOffset(),
         GetGame()->GetZoe()->GetCenter(),
@@ -66,7 +66,9 @@ void Zod::FireProjectile()
         this);
 
     mProjectileOnCooldown = true;
+    
     float cooldown = mGame->GetConfig()->Get<float>("ZOD.PROJECTILE_COOLDOWN");
+    
     mTimerComponent->AddTimer(cooldown, [this]() {
         mProjectileOnCooldown = false;
     });

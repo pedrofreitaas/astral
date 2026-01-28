@@ -14,7 +14,8 @@
 
 Fireball::Fireball(
     class Game *game, Vector2 position,
-    Vector2 dir, float speed, Actor *shooter) : Projectile(game, position, Vector2(0.f, 0.f), speed, shooter), mRicochetsCount(0)
+    Vector2 dir, Actor *shooter
+) : Projectile(game, position, shooter), mRicochetsCount(0)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Zoe/Fireball/texture.png";
     const std::string spriteSheetData = "../assets/Sprites/Zoe/Fireball/texture.json";
@@ -43,14 +44,13 @@ Fireball::Fireball(
 
     SetPosition(position - mDrawAnimatedComponent->GetHalfSpriteSize());
 
-    mDirection = dir;
-    mDirection.Normalize();
-
-    float directionAngle = Math::Atan2(mDirection.y, mDirection.x);
+    float directionAngle = Math::Atan2(dir.y, dir.x);
     float originalAngle = Math::Atan2(0.f, 1.f);
     directionAngle -= originalAngle;
 
     SetRotation(directionAngle);
+
+    Fire(dir, game->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.SPEED"));
 }
 
 void Fireball::AnimationEndCallback(std::string animationName)
@@ -80,12 +80,20 @@ void Fireball::OnHorizontalCollision(const float minOverlap, AABBColliderCompone
     if (mBehaviorState != BehaviorState::Moving)
         return;
 
+    if (other->GetLayer() == ColliderLayer::Enemy)
+    {
+        Kill();
+    }
+
+    Vector2 mVel = mRigidBodyComponent->GetVelocity();
+        mVel.Normalize();
+
     if (other->GetLayer() == ColliderLayer::Player)
     {
         mRicochetsCount++;
 
         Vector2 reflection = Vector2::Reflect(
-            mDirection,
+            mVel,
             Vector2(Math::Sign(minOverlap), 0.f));
 
         reflection.Normalize();
@@ -93,19 +101,16 @@ void Fireball::OnHorizontalCollision(const float minOverlap, AABBColliderCompone
         Vector2 zoeSpeed = other->GetOwner()->GetComponent<RigidBodyComponent>()->GetVelocity();
         zoeSpeed.Normalize();
 
-        mDirection = reflection + zoeSpeed * 0.5f;
+        Vector2 newDirection = reflection + zoeSpeed * 0.5f;
 
-        float directionAngle = Math::Atan2(mDirection.y, mDirection.x);
+        float directionAngle = Math::Atan2(newDirection.y, newDirection.x);
         float originalAngle = Math::Atan2(0.f, 1.f);
         directionAngle -= originalAngle;
         SetRotation(directionAngle);
 
-        return;
-    }
+        Fire(newDirection, mRigidBodyComponent->GetVelocity().Length());
 
-    if (other->GetLayer() == ColliderLayer::Enemy)
-    {
-        Kill();
+        return;
     }
 
     if (other->GetLayer() == ColliderLayer::Blocks)
@@ -117,18 +122,19 @@ void Fireball::OnHorizontalCollision(const float minOverlap, AABBColliderCompone
         }
 
         Vector2 reflection = Vector2::Reflect(
-            mDirection,
+            mVel,
             Vector2(Math::Sign(minOverlap), 0.f));
 
         reflection.Normalize();
 
-        mDirection = reflection;
+        Vector2 newDirection = reflection;
 
-        float directionAngle = Math::Atan2(mDirection.y, mDirection.x);
+        float directionAngle = Math::Atan2(newDirection.y, newDirection.x);
         float originalAngle = Math::Atan2(0.f, 1.f);
         directionAngle -= originalAngle;
 
         SetRotation(directionAngle);
+        Fire(newDirection, mGame->GetConfig()->Get<float>("FIREBALL.SPEED"));
     }
 }
 
@@ -136,11 +142,19 @@ void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent
 {
     if (mBehaviorState != BehaviorState::Moving)
         return;
+    
+    if (mRicochetsCount >= MAX_RICOCHETS || other->GetLayer() == ColliderLayer::Enemy)
+    {
+        Kill();
+    }
+
+    Vector2 mVel = mRigidBodyComponent->GetVelocity();
+    mVel.Normalize();
 
     if (other->GetLayer() == ColliderLayer::Player)
     {
         Vector2 reflection = Vector2::Reflect(
-            mDirection,
+            mVel,
             Vector2(Math::Sign(minOverlap), 0.f));
 
         reflection.Normalize();
@@ -148,19 +162,15 @@ void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent
         Vector2 zoeSpeed = other->GetOwner()->GetComponent<RigidBodyComponent>()->GetVelocity();
         zoeSpeed.Normalize();
 
-        mDirection = reflection + zoeSpeed * 0.5f;
+        Vector2 newDirection = reflection + zoeSpeed * 0.5f;
 
-        float directionAngle = Math::Atan2(mDirection.y, mDirection.x);
+        float directionAngle = Math::Atan2(newDirection.y, newDirection.x);
         float originalAngle = Math::Atan2(0.f, 1.f);
         directionAngle -= originalAngle;
         SetRotation(directionAngle);
 
+        Fire(newDirection, mGame->GetConfig()->Get<float>("FIREBALL.SPEED"));
         return;
-    }
-
-    if (mRicochetsCount >= MAX_RICOCHETS || other->GetLayer() == ColliderLayer::Enemy)
-    {
-        Kill();
     }
 
     if (other->GetLayer() == ColliderLayer::Blocks)
@@ -168,18 +178,19 @@ void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent
         mRicochetsCount++;
 
         Vector2 reflection = Vector2::Reflect(
-            mDirection,
+            mVel,
             Vector2(0.f, Math::Sign(minOverlap)));
 
         reflection.Normalize();
 
-        mDirection = reflection;
+        Vector2 newDirection = reflection;
 
-        float directionAngle = Math::Atan2(mDirection.y, mDirection.x);
+        float directionAngle = Math::Atan2(newDirection.y, newDirection.x);
         float originalAngle = Math::Atan2(0.f, 1.f);
         directionAngle -= originalAngle;
 
         SetRotation(directionAngle);
+        Fire(newDirection, mGame->GetConfig()->Get<float>("FIREBALL.SPEED"));
     }
 }
 

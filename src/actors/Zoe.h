@@ -35,7 +35,6 @@ class Zoe : public Actor
         ColliderLayer::Nevasca
     };
     
-    float FIREBALL_SPEED = 20000.f;
     float FIREBALL_COOLDOWN = 4.f;
     
     float VETANIA_SPEED = 20000.f;

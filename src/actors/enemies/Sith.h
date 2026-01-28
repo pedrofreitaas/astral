@@ -5,19 +5,7 @@
 #include "../Projectile.h"
 #include "../../components/TimerComponent.h"
 #include "../Collider.h"
-
-class SithProjectile : public Projectile
-{
-public:
-    SithProjectile(
-        class Game* game, Vector2 position, 
-        Vector2 direction, float speed, Actor* sith
-    );
-
-private:
-    void ManageAnimations() override;
-    void AnimationEndCallback(std::string animationName);
-};
+#include "./SithProjectile.h"
 
 class Sith : public Enemy
 {

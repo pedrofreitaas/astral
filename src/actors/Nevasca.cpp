@@ -3,7 +3,7 @@
 Nevasca::Nevasca(
     Game* game, Vector2 position, 
     Vector2 direction, Actor* shooter
-) : Projectile(game, position, direction, 0.f, shooter, 1.5f)
+) : Projectile(game, position, shooter, 1.5f)
 {
     mType = "Nevasca";
     
@@ -38,11 +38,7 @@ Nevasca::Nevasca(
     mDrawAnimatedComponent->SetAnimFPS(0.f);
 
     SetPosition(position - mDrawAnimatedComponent->GetHalfSpriteSize());
-    mDirection = direction;
-    mDirection.Normalize();
-
-    mRigidBodyComponent->ApplyImpulse(mDirection *
-        game->GetConfig()->Get<float>("ZOE.POWERS.NEVASCA.SPEED"));
+    Fire(direction, game->GetConfig()->Get<float>("ZOE.POWERS.NEVASCA.SPEED"));
 }
 
 void Nevasca::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)

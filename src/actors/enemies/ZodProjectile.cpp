@@ -8,7 +8,7 @@
 
 ZodProjectile::ZodProjectile(
     Game* game, Vector2 position, Vector2 target, float speed, Actor* zod
-): Projectile(game, position, target, speed, zod)
+): Projectile(game, position, zod)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Enemies/Zod/Projectile/texture.png";
     const std::string spriteSheetData = "../assets/Sprites/Enemies/Zod/Projectile/texture.json";
@@ -39,9 +39,7 @@ ZodProjectile::ZodProjectile(
     mBehaviorState = BehaviorState::Moving;
 
     SetPosition(position - GetHalfSize());
-
-    mDirection = target - GetCenter();
-    mDirection.Normalize();
+    Fire(target - position, speed);
 }
 
 void ZodProjectile::ManageAnimations()

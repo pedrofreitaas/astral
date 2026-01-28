@@ -575,7 +575,6 @@ void Zoe::FireFireball()
         mGame,
         GetPosition() + GetFireballOffset(),
         fireballDir,
-        Zoe::FIREBALL_SPEED,
         this);
 
     mFireballCooldownTimer = mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this]() {});
