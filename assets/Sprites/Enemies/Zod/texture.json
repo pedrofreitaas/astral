@@ -268,6 +268,15 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 47, "h": 26 },
     "sourceSize": { "w": 47, "h": 26 },
     "duration": 100
+   },
+   {
+    "filename": "texture 30.png",
+    "frame": { "x": 1410, "y": 0, "w": 47, "h": 26 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 47, "h": 26 },
+    "sourceSize": { "w": 47, "h": 26 },
+    "duration": 100
    }
  ],
  "meta": {
@@ -275,7 +284,7 @@
   "version": "1.x-dev",
   "image": "texture.png",
   "format": "RGBA8888",
-  "size": { "w": 1410, "h": 26 },
+  "size": { "w": 1457, "h": 26 },
   "scale": "1",
   "frameTags": [
   ],
