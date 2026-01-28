@@ -44,7 +44,7 @@ Tile::Tile(
 
 void Tile::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    if (other->GetLayer() == ColliderLayer::Nevasca && !mIsFrozen)
+    if (other->GetLayer() == ColliderLayer::Nevasca && !IsFrozen())
     {
         mLastSnowCollision = minOverlap > 0 ? SnowDirection::RIGHT :SnowDirection::LEFT;
     }
@@ -52,7 +52,7 @@ void Tile::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *
 
 void Tile::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    if (other->GetLayer() == ColliderLayer::Nevasca && !mIsFrozen)
+    if (other->GetLayer() == ColliderLayer::Nevasca && !IsFrozen())
     {
         mLastSnowCollision = minOverlap > 0 ? SnowDirection::DOWN : SnowDirection::UP;
     }
@@ -65,7 +65,7 @@ void Tile::OnUpdate(float deltatime)
 
 void Tile::Freeze()
 {
-    if (mIsFrozen) return;
+    if (IsFrozen()) return;
 
     if (mSnow != nullptr) SDL_Log("Warning: freezing a object that has snow in memory.");
     
@@ -74,15 +74,15 @@ void Tile::Freeze()
         GetCenter(),
         mLastSnowCollision);
 
-    mIsFrozen = true;
+    mBehaviorState = BehaviorState::Frozen;
 }
 
 void Tile::StopFreeze()
 {
-    if (!mIsFrozen) return;
+    if (!IsFrozen()) return;
 
-    mSnow->Kill();
+    if (mSnow != nullptr) mSnow->Kill();
     mSnow = nullptr;
 
-    mIsFrozen = false;
+    mBehaviorState = BehaviorState::Idle;
 }
