@@ -9,8 +9,8 @@
 
 AABBColliderComponent::AABBColliderComponent(class Actor *owner, int dx, int dy, int w, int h,
                                              ColliderLayer layer, bool isTangible, int updateOrder)
-    : Component(owner, updateOrder), mOffset(Vector2((float)dx, (float)dy)), 
-    mWidth(w), mHeight(h), mLayer(layer), mIsTangible(isTangible)
+    : Component(owner, updateOrder), mOffset(Vector2((float)dx, (float)dy)),
+      mWidth(w), mHeight(h), mLayer(layer), mIsTangible(isTangible)
 {
 }
 
@@ -55,6 +55,24 @@ float AABBColliderComponent::GetMinHorizontalOverlap(AABBColliderComponent *b) c
     return (Math::Abs(left) < Math::Abs(right)) ? left : right;
 }
 
+void AABBColliderComponent::CallHorizontalCollisionCallbacks(const float overlap, class AABBColliderComponent *other, IgnoreOption thisColliderIgnoreOption, IgnoreOption otherColliderIgnoreOption)
+{
+    if (thisColliderIgnoreOption != IgnoreOption::IgnoreCallback)
+        mOwner->OnHorizontalCollision(overlap, other);
+
+    if (otherColliderIgnoreOption != IgnoreOption::IgnoreCallback)
+        other->GetOwner()->OnHorizontalCollision(-overlap, this);
+}
+
+void AABBColliderComponent::CallVerticalCollisionCallbacks(const float overlap, class AABBColliderComponent *other, IgnoreOption thisColliderIgnoreOption, IgnoreOption otherColliderIgnoreOption)
+{
+    if (thisColliderIgnoreOption != IgnoreOption::IgnoreCallback)
+        mOwner->OnVerticalCollision(overlap, other);
+
+    if (otherColliderIgnoreOption != IgnoreOption::IgnoreCallback)
+        other->GetOwner()->OnVerticalCollision(-overlap, this);
+}
+
 float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigidBody)
 {
     if (!mIsEnabled)
@@ -70,32 +88,38 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
     {
         if (collider == this || !collider->IsEnabled())
             continue;
-        
+
         if (collider->GetLayer() == mLayer)
             continue;
 
-        if (collider->CheckLayerIgnored(mLayer))
+        IgnoreOption otherColliderIgnoreOption = collider->CheckLayerIgnored(mLayer);
+
+        if (otherColliderIgnoreOption == IgnoreOption::Both)
             continue;
 
-        if (CheckLayerIgnored(collider->GetLayer()))
+        IgnoreOption thisColliderIgnoreOption = CheckLayerIgnored(collider->GetLayer());
+
+        if (thisColliderIgnoreOption == IgnoreOption::Both)
             continue;
 
-        if (Intersect(*collider))
+        if (!Intersect(*collider))
+            continue;
+
+        float overlap = GetMinHorizontalOverlap(collider);
+
+        bool bothTangible = collider->IsTangible() && mIsTangible;
+
+        if (
+            bothTangible &&
+            thisColliderIgnoreOption != IgnoreOption::IgnoreResolution)
         {
-            float overlap = GetMinHorizontalOverlap(collider);
-            
-            if (collider->IsTangible() && mIsTangible) {
-                ResolveHorizontalCollisions(rigidBody, overlap);
-                
-                // has to call both if collision is resolved here
-                mOwner->OnHorizontalCollision(overlap, collider);
-                collider->GetOwner()->OnHorizontalCollision(-overlap, this);
-                return overlap;
-            }
-            
-            mOwner->OnHorizontalCollision(overlap, collider);
-            collider->GetOwner()->OnHorizontalCollision(-overlap, this);
+            // it's important this happens before calling the callbacks
+            ResolveHorizontalCollisions(rigidBody, overlap);
+            CallHorizontalCollisionCallbacks(overlap, collider, thisColliderIgnoreOption, otherColliderIgnoreOption);
+            return overlap;
         }
+
+        CallHorizontalCollisionCallbacks(overlap, collider, thisColliderIgnoreOption, otherColliderIgnoreOption);
     }
 
     return 0.0f;
@@ -120,31 +144,36 @@ float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBo
         if (collider->GetLayer() == mLayer)
             continue;
 
-        if (collider->CheckLayerIgnored(mLayer))
+        IgnoreOption otherColliderIgnoreOption = collider->CheckLayerIgnored(mLayer);
+
+        if (otherColliderIgnoreOption == IgnoreOption::Both)
             continue;
 
-        if (CheckLayerIgnored(collider->GetLayer()))
+        IgnoreOption thisColliderIgnoreOption = CheckLayerIgnored(collider->GetLayer());
+
+        if (thisColliderIgnoreOption == IgnoreOption::Both)
             continue;
 
-        if (Intersect(*collider))
-        {            
-            float overlap = GetMinVerticalOverlap(collider);
-            
-            if (collider->IsTangible() && mIsTangible) {
-                ResolveVerticalCollisions(rigidBody, overlap);
+        if (!Intersect(*collider))
+            continue;
 
-                // has to call both if collision is resolved here
-                mOwner->OnVerticalCollision(overlap, collider);
-                collider->GetOwner()->OnVerticalCollision(-overlap, this);
-                
-                return overlap;
-            }
+        float overlap = GetMinVerticalOverlap(collider);
 
-            mOwner->OnVerticalCollision(overlap, collider);
-            collider->GetOwner()->OnVerticalCollision(-overlap, this);
+        bool bothTangible = collider->IsTangible() && mIsTangible;
+
+        if (
+            bothTangible &&
+            thisColliderIgnoreOption != IgnoreOption::IgnoreResolution)
+        {
+            // it's important this happens before calling the callbacks
+            ResolveVerticalCollisions(rigidBody, overlap);
+            CallVerticalCollisionCallbacks(overlap, collider, thisColliderIgnoreOption, otherColliderIgnoreOption);
+            return overlap;
         }
+
+        CallVerticalCollisionCallbacks(overlap, collider, thisColliderIgnoreOption, otherColliderIgnoreOption);
     }
-    
+
     return 0.0f;
 }
 
@@ -152,7 +181,7 @@ void AABBColliderComponent::ResolveHorizontalCollisions(RigidBodyComponent *rigi
 {
     constexpr float epsilon = 0.001f; // Small separation buffer
     float adjustment = minXOverlap + (minXOverlap > 0 ? epsilon : -epsilon);
-    mOwner->SetPosition(mOwner->GetPosition() - Vector2(adjustment, 0.0f));    
+    mOwner->SetPosition(mOwner->GetPosition() - Vector2(adjustment, 0.0f));
     rigidBody->ResetVelocityX();
 }
 
@@ -246,7 +275,7 @@ void AABBColliderComponent::MaintainInMap()
     }
 }
 
-bool AABBColliderComponent::IsSegmentIntersecting(const Vector2& a, const Vector2& b)
+bool AABBColliderComponent::IsSegmentIntersecting(const Vector2 &a, const Vector2 &b)
 {
     // choose number of sample points proportional to segment length
     float length = (b - a).Length();
@@ -270,7 +299,7 @@ bool AABBColliderComponent::IsSegmentIntersecting(const Vector2& a, const Vector
     return false;
 }
 
-bool AABBColliderComponent::IsCollidingRect(const SDL_Rect& rect) const
+bool AABBColliderComponent::IsCollidingRect(const SDL_Rect &rect) const
 {
     Vector2 min = GetMin();
     Vector2 max = GetMax();
@@ -281,37 +310,37 @@ bool AABBColliderComponent::IsCollidingRect(const SDL_Rect& rect) const
             max.y > rect.y);
 }
 
-void AABBColliderComponent::IgnoreLayer(ColliderLayer layer)
+void AABBColliderComponent::IgnoreLayer(ColliderLayer layer, IgnoreOption option)
 {
-    mIgnoredLayers.push_back(layer);
+    mIgnoredLayersOptions[layer] = option;
 }
 
-void AABBColliderComponent::IgnoreLayers(const std::vector<ColliderLayer>& layers)
+void AABBColliderComponent::IgnoreLayers(const std::vector<ColliderLayer> &layers, IgnoreOption option)
 {
-    for (const auto& layer : layers)
+    for (const auto &layer : layers)
     {
-        IgnoreLayer(layer);
+        IgnoreLayer(layer, option);
     }
 }
 
-void AABBColliderComponent::SetIgnoreLayers(const std::vector<ColliderLayer>& layers)
+void AABBColliderComponent::SetIgnoreLayers(const std::vector<ColliderLayer> &layers, IgnoreOption option)
 {
-    mIgnoredLayers.clear();
-    for (const auto& layer : layers)
+    mIgnoredLayersOptions.clear();
+    for (const auto &layer : layers)
     {
-        IgnoreLayer(layer);
+        IgnoreLayer(layer, option);
     }
 }
 
-bool AABBColliderComponent::CheckLayerIgnored(ColliderLayer layer) const
+IgnoreOption AABBColliderComponent::CheckLayerIgnored(ColliderLayer layer) const
 {
-    for (const auto& ignoredLayer : mIgnoredLayers)
+    if (mIgnoredLayersOptions.find(layer) != mIgnoredLayersOptions.end())
     {
-        if (ignoredLayer == layer)
-            return true;
+        return mIgnoredLayersOptions.at(layer);
     }
-    return false;
-}   
+
+    return IgnoreOption::None;
+}
 
 void AABBColliderComponent::SetBB(const SDL_Rect *rect)
 {
@@ -341,10 +370,10 @@ int AABBColliderComponent::IsCloseToTileWallHorizontally(float distance)
     {
         if (collider == this || !collider->IsEnabled())
             continue;
-        
+
         if (collider->GetLayer() != ColliderLayer::Blocks)
             continue;
-        
+
         if (collider->IsSegmentIntersecting(
                 Vector2(center.x - size.x - distance, center.y),
                 Vector2(center.x, center.y)))

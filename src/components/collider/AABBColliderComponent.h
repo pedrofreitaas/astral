@@ -35,6 +35,14 @@ enum class ColliderLayer
     Nevasca,
 };
 
+enum class IgnoreOption
+{
+    None, // this is for internal AABBColliderComponent use only
+    IgnoreResolution,
+    IgnoreCallback,
+    Both
+};
+
 class AABBColliderComponent : public Component
 {
 public:
@@ -71,11 +79,11 @@ public:
 
     bool IsCollidingRect(const SDL_Rect& rect) const;
 
-    void IgnoreLayer(ColliderLayer layer);
-    void IgnoreLayers(const std::vector<ColliderLayer>& layers);
-    void SetIgnoreLayers(const std::vector<ColliderLayer>& layers);
-    bool CheckLayerIgnored(ColliderLayer layer) const;
-    std::vector<ColliderLayer> GetIgnoredLayers() const { return mIgnoredLayers; }
+    void IgnoreLayer(ColliderLayer layer, IgnoreOption option = IgnoreOption::Both);
+    void IgnoreLayers(const std::vector<ColliderLayer>& layers, IgnoreOption option = IgnoreOption::Both);
+    void SetIgnoreLayers(const std::vector<ColliderLayer>& layers, IgnoreOption option = IgnoreOption::Both);
+    IgnoreOption CheckLayerIgnored(ColliderLayer layer) const;
+    std::map<ColliderLayer, IgnoreOption> GetIgnoredLayers() const { return mIgnoredLayersOptions; }
 
     int IsCloseToTileWallHorizontally(float distance);
 
@@ -86,6 +94,9 @@ private:
     void ResolveHorizontalCollisions(RigidBodyComponent *rigidBody, const float minOverlap);
     void ResolveVerticalCollisions(RigidBodyComponent *rigidBody, const float minOverlap);
 
+    void CallHorizontalCollisionCallbacks(const float overlap, class AABBColliderComponent* other, IgnoreOption thisColliderIgnoreOption, IgnoreOption otherColliderIgnoreOption);
+    void CallVerticalCollisionCallbacks(const float overlap, class AABBColliderComponent* other, IgnoreOption thisColliderIgnoreOption, IgnoreOption otherColliderIgnoreOption);
+
     Vector2 mOffset;
     int mWidth;
     int mHeight;
@@ -93,5 +104,5 @@ private:
 
     ColliderLayer mLayer;
 
-    std::vector<ColliderLayer> mIgnoredLayers;
+    std::map<ColliderLayer, IgnoreOption> mIgnoredLayersOptions;
 };
