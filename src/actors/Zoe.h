@@ -82,7 +82,7 @@ public:
             return GetCenter() + Vector2(5.f, -5.f);
         }
 
-        return GetCenter() + Vector2(5.f, -5.f);
+        return GetCenter() + Vector2(-2.f, -5.f);
     }
 
     void TakeDamage(const Vector2 &knockback = Vector2(0.f, 0.f)) override;
