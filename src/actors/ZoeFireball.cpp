@@ -134,7 +134,7 @@ void Fireball::OnHorizontalCollision(const float minOverlap, AABBColliderCompone
         directionAngle -= originalAngle;
 
         SetRotation(directionAngle);
-        Fire(newDirection, mGame->GetConfig()->Get<float>("FIREBALL.SPEED"));
+        Fire(newDirection, mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.SPEED"));
     }
 }
 
@@ -169,7 +169,7 @@ void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent
         directionAngle -= originalAngle;
         SetRotation(directionAngle);
 
-        Fire(newDirection, mGame->GetConfig()->Get<float>("FIREBALL.SPEED"));
+        Fire(newDirection, mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.SPEED"));
         return;
     }
 
@@ -190,7 +190,7 @@ void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent
         directionAngle -= originalAngle;
 
         SetRotation(directionAngle);
-        Fire(newDirection, mGame->GetConfig()->Get<float>("FIREBALL.SPEED"));
+        Fire(newDirection, mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.SPEED"));
     }
 }
 

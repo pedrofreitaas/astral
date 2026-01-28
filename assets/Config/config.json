@@ -19,7 +19,7 @@
         "HEALTH": 5,
         "SPEED": 1200,
         "PROJECTILE_COOLDOWN": 10,
-        "PROJECTILE_SPEED": 80
+        "PROJECTILE_SPEED": 130
     },
 
     "ZOE": {
@@ -29,7 +29,7 @@
                 "SPEED": 70
             },
             "FIREBALL": {
-                "SPEED": 110
+                "SPEED": 180
             }
         }
     }
