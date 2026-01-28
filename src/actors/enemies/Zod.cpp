@@ -10,11 +10,14 @@ Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
     : Enemy(game, position), mProjectileOnCooldown(false)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f);
+    
     mColliderComponent = new AABBColliderComponent(
         this,
         17, 8,
         10, 20,
         ColliderLayer::Enemy);
+    
+    mColliderComponent->IgnoreLayer(ColliderLayer::Nevasca, IgnoreOption::IgnoreResolution);
 
     mDrawComponent = new DrawAnimatedComponent(
         this,

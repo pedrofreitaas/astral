@@ -15,6 +15,8 @@ Nevasca::Nevasca(
         4, 4, 8, 8,
         ColliderLayer::Nevasca);
 
+    mColliderComponent->IgnoreLayer(ColliderLayer::Enemy, IgnoreOption::IgnoreResolution);
+
     mDrawAnimatedComponent = new DrawAnimatedComponent(
         this, 
         "../assets/Sprites/Zoe/Nevasca/texture.png", 
