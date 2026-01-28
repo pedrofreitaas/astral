@@ -8,7 +8,7 @@
         "HEALTH": 3,
         "SPEED": 1500,
         "PROJECTILE_COOLDOWN": 12,
-        "PROJECTILE_SPEED": 1,
+        "PROJECTILE_SPEED": 60,
         "ATTACK1_COOLDOWN": 3,
         "ATTACK1_EXTRA_SPEED": 1,
         "ATTACK2_COOLDOWN": 12,
@@ -19,7 +19,7 @@
         "HEALTH": 5,
         "SPEED": 1200,
         "PROJECTILE_COOLDOWN": 10,
-        "PROJECTILE_SPEED": 1200
+        "PROJECTILE_SPEED": 80
     },
 
     "ZOE": {
@@ -27,6 +27,9 @@
             "NEVASCA": {
                 "RATE_PER_SECOND": 15,
                 "SPEED": 70
+            },
+            "FIREBALL": {
+                "SPEED": 110
             }
         }
     }
