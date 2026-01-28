@@ -26,6 +26,7 @@ Actor::Actor(Game* game, int lives, bool mustAlwaysUpdate)
         , mLifes(lives)
         , mInvincible(false)
         , mType("generic")
+        , mFreezingCount(0.f)
 {
     mGame->AddActor(this);
     
@@ -105,11 +106,12 @@ void Actor::OnHorizontalCollision(const float minOverlap, AABBColliderComponent*
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Nevasca && !mIsFrozen)
+    if (other->GetLayer() == ColliderLayer::Nevasca && !IsFrozen())
     {
         // gravity causes more VERTICAL collisions, so this is to keep a similar sensation of freezing,
         // so we need a bigger increment when colliding horizontally
         IncreaseFreezing(10.f);
+        return;
     }
 }
 
@@ -138,9 +140,10 @@ void Actor::OnVerticalCollision(const float minOverlap, AABBColliderComponent* o
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Nevasca && !mIsFrozen)
+    if (other->GetLayer() == ColliderLayer::Nevasca && !IsFrozen())
     {
         IncreaseFreezing();
+        return;
     }
 }
 
@@ -324,7 +327,7 @@ void Actor::UpdateFreezing()
     float freezingRate = mGame->GetConfig()->Get<float>("FREEZING_RATE");
     float dt = mGame->GetDtLastFrame();
 
-    if (mIsFrozen && mFreezingCount > 0.f)
+    if (IsFrozen() && mFreezingCount > 0.f)
     {
         mFreezingCount -= dt * (freezingRate * .33f);
         return;

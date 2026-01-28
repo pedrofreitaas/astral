@@ -135,6 +135,8 @@ public:
 
     const std::string& GetType() const { return mType; }
 
+    bool IsFrozen() const { return mBehaviorState == BehaviorState::Frozen; }
+
 protected:
     class Game* mGame;
 
@@ -158,7 +160,6 @@ protected:
     float mScale;
     float mRotation;
     float mFreezingCount;
-    bool mIsFrozen;
 
     // Components
     std::vector<class Component*> mComponents;
