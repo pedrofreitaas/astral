@@ -107,7 +107,7 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent 
         Vector2 knockbackDir = GetCenter() - fireballCenter;
         knockbackDir.Normalize();
 
-        TakeDamage(knockbackDir * Enemy::FIREBALL_KNOCKBACK_FORCE);
+        TakeDamage(knockbackDir * mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.KNOCKBACK_FORCE"));
         return;
     }
 
@@ -130,7 +130,7 @@ void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent *o
         Vector2 knockbackDir = GetCenter() - fireballCenter;
         knockbackDir.Normalize();
 
-        TakeDamage(knockbackDir * Enemy::FIREBALL_KNOCKBACK_FORCE);
+        TakeDamage(knockbackDir * mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.KNOCKBACK_FORCE"));
         return;
     }
 
