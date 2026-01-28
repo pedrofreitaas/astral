@@ -34,14 +34,13 @@ Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
     mTimerComponent = new TimerComponent(this);
 
     mDrawComponent->AddAnimation("asleep", {0});
-    mDrawComponent->AddAnimation("waking", 1, 2);
-    mDrawComponent->AddAnimation("idle", 3, 5);
+    mDrawComponent->AddAnimation("waking", 1, 4);
+    mDrawComponent->AddAnimation("idle", 5, 6);
     mDrawComponent->AddAnimation("damage", 6, 7);
     mDrawComponent->AddAnimation("moving", 8, 15);
     mDrawComponent->AddAnimation("charging", 16, 19);
     mDrawComponent->AddAnimation("dying", 20, 25);
-    mDrawComponent->AddAnimation("freeze", 26, 30);
-    mDrawComponent->AddAnimation("frozen", {30});
+    mDrawComponent->AddAnimation("freeze", 26, 30, false);
 
     mDrawComponent->SetAnimation("asleep");
 
@@ -121,9 +120,6 @@ void Zod::ManageState()
     case BehaviorState::Dying:
         break;
 
-    case BehaviorState::Freezing:
-        break;
-
     case BehaviorState::Frozen:
         break;
 
@@ -158,12 +154,6 @@ void Zod::AnimationEndCallback(std::string animationName)
     if (animationName == "dying") {
         SetState(ActorState::Destroy);
     }
-
-    if (animationName == "freezing")
-    {
-        mBehaviorState = BehaviorState::Frozen;
-        return;
-    }
 }
 
 void Zod::ManageAnimations()
@@ -196,13 +186,9 @@ void Zod::ManageAnimations()
         mDrawComponent->SetAnimation("dying");
         mDrawComponent->SetAnimFPS(10.f);
         break;
-    case BehaviorState::Freezing:
+    case BehaviorState::Frozen:
         mDrawComponent->SetAnimation("freeze");
         mDrawComponent->SetAnimFPS(6.f);
-        break;
-    case BehaviorState::Frozen:
-        mDrawComponent->SetAnimation("frozen");
-        mDrawComponent->SetAnimFPS(0.f);
         break;
     default:
         mDrawComponent->SetAnimation("asleep");
@@ -226,16 +212,16 @@ void Zod::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* o
 
 void Zod::Freeze()
 {
-    if (mIsFrozen) return;
+    if (IsFrozen()) return;
 
-    mBehaviorState = BehaviorState::Freezing;
+    mBehaviorState = BehaviorState::Frozen;
     mAIMovementComponent->SetEnabled(false);
 }
 
 void Zod::StopFreeze()
 {
-    if (!mIsFrozen) return;
+    if (!IsFrozen()) return;
 
-    mBehaviorState = BehaviorState::Idle;
+    mBehaviorState = BehaviorState::Moving;
     mAIMovementComponent->SetEnabled(true);
 }
