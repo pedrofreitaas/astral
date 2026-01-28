@@ -44,16 +44,24 @@ Tile::Tile(
 
 void Tile::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
+    // Actor::OnHorizontalCollision(minOverlap, other);
+    // dont want some of the collisions checked above, so moving logic up.
+
     if (other->GetLayer() == ColliderLayer::Nevasca && !IsFrozen())
     {
-        mLastSnowCollision = minOverlap > 0 ? SnowDirection::RIGHT :SnowDirection::LEFT;
+        IncreaseFreezing(10.f);
+        mLastSnowCollision = minOverlap > 0 ? SnowDirection::RIGHT : SnowDirection::LEFT;
     }
 }
 
 void Tile::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
+    // Actor::OnVerticalCollision(minOverlap, other);
+    // dont want some of the collisions checked above, so moving logic up.
+    
     if (other->GetLayer() == ColliderLayer::Nevasca && !IsFrozen())
     {
+        IncreaseFreezing();
         mLastSnowCollision = minOverlap > 0 ? SnowDirection::DOWN : SnowDirection::UP;
     }
 }
