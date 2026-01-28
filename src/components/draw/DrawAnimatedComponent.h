@@ -41,6 +41,9 @@ public:
 
     // Add an animation of the corresponding name to the animation map
     void AddAnimation(const std::string& name, const std::vector<int>& images, bool isLoop=true);
+    
+    // Add an animation of the corresponding name to the animation map
+    // - end is inclusive
     void AddAnimation(const std::string& name, int begin, int end, bool isLoop=true);
 
     void Scale(int scale) {
