@@ -13,11 +13,14 @@ Sith::Sith(Game *game, const Vector2 &position)
       mCurrentAttack(Attacks::None), mAttack1Collider(nullptr), mAttack2Collider(nullptr)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f, false);
+    
     mColliderComponent = new AABBColliderComponent(
         this,
         19, 19,
         21, 21,
         ColliderLayer::Enemy);
+
+    mColliderComponent->IgnoreLayer(ColliderLayer::Nevasca, IgnoreOption::IgnoreResolution);
 
     mDrawComponent = new DrawAnimatedComponent(
         this,
@@ -37,12 +40,13 @@ Sith::Sith(Game *game, const Vector2 &position)
         5.f,
         .01f);
 
-    mDrawComponent->AddAnimation("moving", 0, 7);
-    mDrawComponent->AddAnimation("damage", 8, 11);
-    mDrawComponent->AddAnimation("death", 12, 15);
-    mDrawComponent->AddAnimation("attack", 16, 23);
-    mDrawComponent->AddAnimation("attack2", 24, 31);
-    mDrawComponent->AddAnimation("charging", 32, 37);
+    mDrawComponent->AddAnimation("moving", 0, 6);
+    mDrawComponent->AddAnimation("damage", 6, 7);
+    mDrawComponent->AddAnimation("death", 8, 12);
+    mDrawComponent->AddAnimation("attack", 13, 19);
+    mDrawComponent->AddAnimation("attack2", 20, 26);
+    mDrawComponent->AddAnimation("charging", 27, 32);
+    mDrawComponent->AddAnimation("freeze", 33, 37, false);
 
     mDrawComponent->SetAnimation("moving");
 
@@ -202,6 +206,8 @@ void Sith::ManageState()
         break;
     case BehaviorState::Dying:
         break;
+    case BehaviorState::Frozen:
+        break;
     default:
         mBehaviorState = BehaviorState::Asleep;
         break;
@@ -299,6 +305,10 @@ void Sith::ManageAnimations()
     case BehaviorState::TakingDamage:
         mDrawComponent->SetAnimation("damage");
         mDrawComponent->SetAnimFPS(9.f);
+        break;
+    case BehaviorState::Frozen:
+        mDrawComponent->SetAnimation("freeze");
+        mDrawComponent->SetAnimFPS(6.f);
         break;
     default:
         mDrawComponent->SetAnimation("moving");
