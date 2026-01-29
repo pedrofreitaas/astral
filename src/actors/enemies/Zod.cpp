@@ -214,19 +214,3 @@ void Zod::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* o
     
     Actor::OnHorizontalCollision(minOverlap, other);
 }
-
-void Zod::Freeze()
-{
-    if (IsFrozen()) return;
-
-    mBehaviorState = BehaviorState::Frozen;
-    mAIMovementComponent->SetEnabled(false);
-}
-
-void Zod::StopFreeze()
-{
-    if (!IsFrozen()) return;
-
-    mBehaviorState = BehaviorState::Moving;
-    mAIMovementComponent->SetEnabled(true);
-}

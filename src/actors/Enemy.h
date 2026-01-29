@@ -34,4 +34,7 @@ protected:
 
     bool PlayerOnSight(float distance = 100.f, float angle=0.f);
     bool PlayerOnFov(float minDistance = 20.f, float maxDistance=250.f);
+
+    void Freeze() override;
+    void StopFreeze() override;
 };

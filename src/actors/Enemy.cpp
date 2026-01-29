@@ -146,3 +146,19 @@ void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent *o
         return;
     }
 }
+
+void Enemy::Freeze()
+{
+    if (IsFrozen()) return;
+
+    mBehaviorState = BehaviorState::Frozen;
+    mAIMovementComponent->SetEnabled(false);
+}
+
+void Enemy::StopFreeze()
+{
+    if (!IsFrozen()) return;
+
+    mBehaviorState = BehaviorState::Moving;
+    mAIMovementComponent->SetEnabled(true);
+}
