@@ -30,7 +30,7 @@
             },
             "FIREBALL": {
                 "SPEED": 180,
-                "KNOCKBACK_FORCE": 80
+                "KNOCKBACK_FORCE": 300
             }
         }
     }
