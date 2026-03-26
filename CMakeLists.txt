@@ -1,16 +1,30 @@
 cmake_minimum_required(VERSION 3.26)
-
-project(astral)
+# Configurando o padrão c++
+set(CMAKE_CXX_COMPILER g++)
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# --- 1. Library Paths ---
-set(SDL2_ROOT        "C:/libs/SDL2/x86_64-w64-mingw32")
-set(SDL2_IMAGE_ROOT  "C:/libs/SDL2_image/x86_64-w64-mingw32")
-set(SDL2_TTF_ROOT    "C:/libs/SDL2_ttf/x86_64-w64-mingw32")
-set(SDL2_MIXER_ROOT  "C:/libs/SDL2_mixer/x86_64-w64-mingw32")
+# Configurando o nome e executável do projeto
+set(PROJECT_NAME "astral")
+project(${PROJECT_NAME})
 
-# --- 2. Source Files ---
+# Download and build SDL2 2.32.2
+include(FetchContent)
+FetchContent_Declare(SDL2
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+    GIT_TAG release-2.32.2
+)
+
+# Disable PipeWire to avoid compatibility issues
+set(SDL_PIPEWIRE OFF CACHE BOOL "" FORCE)
+
+FetchContent_MakeAvailable(SDL2)
+
+# Use PkgConfig to find SDL2_image, SDL2_ttf, SDL2_mixer
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
+pkg_check_modules(SDL2_TTF REQUIRED SDL2_ttf)
+pkg_check_modules(SDL2_MIXER REQUIRED SDL2_mixer)
+
 add_executable(astral
     src/Main.cpp
     src/libs/Math.h
@@ -115,74 +129,13 @@ add_executable(astral
     src/components/TimerComponent.h
 )
 
-# --- 3. Include Directories ---
-target_include_directories(astral PRIVATE
-    ${SDL2_ROOT}/include
-    ${SDL2_ROOT}/include/SDL2
-
-    ${SDL2_IMAGE_ROOT}/include
-    ${SDL2_IMAGE_ROOT}/include/SDL2
-
-    ${SDL2_TTF_ROOT}/include
-    ${SDL2_TTF_ROOT}/include/SDL2
-
-    ${SDL2_MIXER_ROOT}/include
-    ${SDL2_MIXER_ROOT}/include/SDL2
-)
-
-# --- 4. Link Directories ---
-target_link_directories(astral PRIVATE
-    ${SDL2_ROOT}/lib
-    ${SDL2_IMAGE_ROOT}/lib
-    ${SDL2_TTF_ROOT}/lib
-    ${SDL2_MIXER_ROOT}/lib
-)
-
-# --- 5. Link Libraries & Static Config ---
-target_link_libraries(astral PRIVATE
-    mingw32
-    SDL2main
-    SDL2
-    SDL2_image
-    SDL2_ttf
-    SDL2_mixer
-)
-
-if(MINGW)
-    target_link_options(astral PRIVATE 
-        -static-libgcc 
-        -static-libstdc++ 
-        # -mwindows # Hides the console window
-    )
-endif()
-
-# --- 6. Auto-Copy DLLs ---
-add_custom_command(TARGET astral POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E echo "Copying DLLs to build directory..."
-    
-    # SDL2
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different 
-        "${SDL2_ROOT}/bin/SDL2.dll" 
-        $<TARGET_FILE_DIR:astral>
-        
-    # SDL2 Image
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different 
-        "${SDL2_IMAGE_ROOT}/bin/SDL2_image.dll" 
-        $<TARGET_FILE_DIR:astral>
-        
-    # SDL2 TTF
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different 
-        "${SDL2_TTF_ROOT}/bin/SDL2_ttf.dll" 
-        $<TARGET_FILE_DIR:astral>
-        
-    # SDL2 Mixer
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different 
-        "${SDL2_MIXER_ROOT}/bin/SDL2_mixer.dll" 
-        $<TARGET_FILE_DIR:astral>
-)
+# Link libraries
+target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS} ${SDL2_MIXER_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 ${SDL2_IMAGE_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_MIXER_LIBRARIES})
+target_compile_options(${PROJECT_NAME} PRIVATE ${SDL2_CFLAGS_OTHER})
 
 add_custom_command(TARGET astral POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_SOURCE_DIR}/assets"
-    "$<TARGET_FILE_DIR:astral>/assets"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "${CMAKE_SOURCE_DIR}/gamecontrollerdb.txt"
+    $<TARGET_FILE_DIR:astral>
 )
