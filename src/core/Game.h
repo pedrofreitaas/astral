@@ -43,8 +43,6 @@ public:
     static const int TILE_SIZE = 32;
     static const int TRANSITION_TIME_BETWEEM_SCENES = 2;
     static const bool APPLY_GRAVITY_SCENE_DEFAULT = true;
-    const int CHAR_WIDTH = 6;
-    const int WORD_HEIGHT = 8;
     const std::string FONT_PATH_INTER = "../assets/Fonts/Inter.ttf";
     const std::string FONT_PATH_SMB = "../assets/Fonts/SMB.ttf";
 
