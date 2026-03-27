@@ -185,7 +185,7 @@ void Zod::ManageAnimations()
         break;
     case BehaviorState::TakingDamage:
         mDrawComponent->SetAnimation("damage");
-        mDrawComponent->SetAnimFPS(9.f);
+        mDrawComponent->SetAnimFPS(5.f);
         break;
     case BehaviorState::Dying:
         mDrawComponent->SetAnimation("dying");
