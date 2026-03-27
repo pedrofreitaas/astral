@@ -27,6 +27,7 @@ Actor::Actor(Game* game, int lives, bool mustAlwaysUpdate)
         , mInvincible(false)
         , mType("generic")
         , mFreezingCount(0.f)
+        , mTimerComponent(nullptr)
 {
     mGame->AddActor(this);
     
@@ -245,18 +246,34 @@ void Actor::LogState()
     }
 }
 
-void Actor::TakeDamage(const Vector2 &knockback)
+// Applies knockback as impulse.
+// Dont apply if dont have a rigidbody.
+void Actor::TakeKnockback(const Vector2 &knockback)
 {
-    if (mBehaviorState == BehaviorState::Dying || mInvincible)
+    if (mBehaviorState == BehaviorState::Dying)
         return;
-
-    mLifes--;
 
     auto rigidBody = GetComponent<RigidBodyComponent>();
     if (rigidBody)
     {
         rigidBody->ApplyImpulse(knockback);
     }
+}
+
+// Reduces life in one.
+// Damage isnt applied for invincible actors, and if already dying.
+// Always call Actor::TakeDamage() in overrides, and put specific logic before it.
+// If need logic to be performed when actor was damaged, please use the OnDamageCallback.
+// Its actors's responsability to get vulnerable again, using the SetInvincibilityOff.
+void Actor::TakeDamage()
+{
+    if (mBehaviorState == BehaviorState::Dying)
+        return;
+
+    if (mInvincible)
+        return;
+
+    mLifes--;
 
     if (mLifes <= 0)
     {
@@ -266,6 +283,10 @@ void Actor::TakeDamage(const Vector2 &knockback)
 
     mBehaviorState = BehaviorState::TakingDamage;
     mInvincible = true;
+
+    if (mOnDamageCallback) {
+        mOnDamageCallback();
+    }
 }
 
 Vector2 Actor::GetHalfSize() const
@@ -282,7 +303,8 @@ void Actor::TakeSpikeHit(const Vector2 &SpikeBaseCenter)
 
     float spikeKnockb = mGame->GetConfig()->Get<float>("SPIKE_KNOCKBACK_FORCE");
 
-    TakeDamage(knockback * spikeKnockb);
+    TakeDamage();
+    TakeKnockback(knockback * spikeKnockb);
 }
 
 void Actor::TakeSpearHit(const Vector2 &SpearTipCenter)
@@ -294,7 +316,8 @@ void Actor::TakeSpearHit(const Vector2 &SpearTipCenter)
 
     float spearKnockb = mGame->GetConfig()->Get<float>("SPEAR_KNOCKBACK_FORCE");
 
-    TakeDamage(knockback * spearKnockb);
+    TakeDamage();
+    TakeKnockback(knockback * spearKnockb);
 }
 
 void Actor::TakeShurikenHit(const Vector2 &ShurikenCenter)
@@ -306,7 +329,8 @@ void Actor::TakeShurikenHit(const Vector2 &ShurikenCenter)
 
     float shurikenKnockb = mGame->GetConfig()->Get<float>("SHURIKEN_KNOCKBACK_FORCE");
 
-    TakeDamage(knockback * shurikenKnockb);
+    TakeDamage();
+    TakeKnockback(knockback * shurikenKnockb);
 }
 
 void Actor::Freeze()
@@ -349,3 +373,16 @@ void Actor::UpdateFreezing()
         return;
     }
 }
+
+void Actor::SetInvincibilityOff() {
+    mInvincible = false;
+}
+
+void Actor::SetInvincibilityOn() {
+    SDL_Log("Warning: Setting invincibility on. Dont forget to set it off again when needed.");
+    mInvincible = true;
+}
+
+void Actor::SetOnDamageCallback(std::function<void()> callback) { 
+    mOnDamageCallback = callback; 
+};

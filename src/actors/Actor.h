@@ -49,8 +49,8 @@ public:
     Actor(class Game* game, int lives=3, bool mustAlwaysUpdate = false);
     virtual ~Actor();
 
-    // it's actor's responsibility to become not invicible again
-    virtual void TakeDamage(const Vector2 &knockback = Vector2(0.f, 0.f));
+    void TakeKnockback(const Vector2 &knockback = Vector2(0.f, 0.f));
+    virtual void TakeDamage();
 
     void SetLifes(int lives) { mLifes = lives; }
     int GetLifes() { return mLifes; }
@@ -167,7 +167,6 @@ protected:
     // Game specific
     bool mIsOnGround;
     int mLifes;
-    bool mInvincible;
 
     class TimerComponent* mTimerComponent;
 
@@ -176,10 +175,17 @@ protected:
     virtual void Freeze();
     virtual void StopFreeze();
 
+    void SetOnDamageCallback(std::function<void()> callback);
+    void SetInvincibilityOff();
+    void SetInvincibilityOn();
+
 private:
     friend class Component;
 
     // Adds component to Actor (this is automatically called
     // in the component constructor)
     void AddComponent(class Component* c);
+
+    std::function<void()> mOnDamageCallback;
+    bool mInvincible;
 };
