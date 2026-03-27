@@ -4,6 +4,10 @@
     "SHURIKEN_KNOCKBACK_FORCE": 200.0,
     "FREEZING_RATE": 1.0,
 
+    "ENEMY": {
+        "PLAYER_KNOCKBACK_FORCE": 300.0
+    },
+
     "SITH": {
         "HEALTH": 3,
         "SPEED": 1500,
