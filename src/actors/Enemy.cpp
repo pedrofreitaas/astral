@@ -101,19 +101,20 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent 
 
     if (other->GetLayer() == ColliderLayer::Fireball)
     {
-        Fireball *fireball = static_cast<Fireball*>(other->GetOwner());
-        Vector2 fireballCenter = fireball->GetCenter();
-
-        Vector2 knockbackDir = GetCenter() - fireballCenter;
-        knockbackDir.Normalize();
-
-        TakeDamage(knockbackDir * mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.KNOCKBACK_FORCE"));
+        TakeDamage();
+        TakeKnockback(
+            Vector2(Math::Sign(-minOverlap) * mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.KNOCKBACK_FORCE"), 0.f)
+        );
+        
         return;
     }
 
     if (other->GetLayer() == ColliderLayer::PlayerAttack)
     {
-        TakeDamage(Vector2(-minOverlap, 1.f) * Enemy::PLAYER_ATTACK_KNOCKBACK_FORCE);
+        TakeDamage();
+        TakeKnockback(
+            Vector2(Math::Sign(-minOverlap) * mGame->GetConfig()->Get<float>("ENEMY.PLAYER_KNOCKBACK_FORCE"), 0.f)
+        );
         return;
     }
 }
@@ -124,25 +125,22 @@ void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent *o
 
     if (other->GetLayer() == ColliderLayer::Fireball)
     {
-        Fireball *fireball = static_cast<Fireball*>(other->GetOwner());
-        Vector2 fireballCenter = fireball->GetCenter();
-
-        Vector2 knockbackDir = GetCenter() - fireballCenter;
-        knockbackDir.Normalize();
-
-        TakeDamage(knockbackDir * mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.KNOCKBACK_FORCE"));
+        TakeDamage();
+        // dont apply knockback on stomp.
         return;
     }
 
     if (other->GetLayer() == ColliderLayer::Player && minOverlap < 0.f)
     {
         TakeDamage();
+        // dont apply knockback on stomp.
         return;
     }
 
     if (other->GetLayer() == ColliderLayer::PlayerAttack)
-    {
+    {               
         TakeDamage();
+        // dont apply knockback on vertical attack.
         return;
     }
 }

@@ -182,7 +182,7 @@ void Sith::ManageState()
     }
 
     case BehaviorState::Attacking:
-        mInvincible = true; // animation must end to disable colliders (cannot be interrupted by dmg)
+        SetInvincibilityOn(); // animation must end to disable colliders (cannot be interrupted by dmg)
 
         if (mCurrentAttack == Attacks::Attack1)
         {
@@ -229,7 +229,7 @@ void Sith::AnimationEndCallback(std::string animationName)
         if (mAttack1Collider)
             mAttack1Collider->Dismiss();
         mAttack1Collider = nullptr;
-        mInvincible = false;
+        SetInvincibilityOff();
     }
 
     else if (animationName == "attack2")
@@ -237,7 +237,7 @@ void Sith::AnimationEndCallback(std::string animationName)
         mBehaviorState = BehaviorState::Moving;
         mCurrentAttack = Attacks::None;
         mAttack2Collider->SetEnabled(false);
-        mInvincible = false;
+        SetInvincibilityOff();
     }
 
     else if (animationName == "death")
@@ -248,7 +248,7 @@ void Sith::AnimationEndCallback(std::string animationName)
     else if (animationName == "damage")
     {
         mBehaviorState = BehaviorState::Moving;
-        mInvincible = false;
+        SetInvincibilityOff();
     }
 }
 

@@ -64,7 +64,6 @@ public:
 
     void Kill() override;
     void ManageState();
-    void SetInvincible(bool invincible) { mInvincible = invincible; }
     void AnimationEndCallback(std::string animationName);
     
     Vector2 GetFireballOffset() {
@@ -84,7 +83,7 @@ public:
         return GetCenter() + Vector2(-2.f, -5.f);
     }
 
-    void TakeDamage(const Vector2 &knockback = Vector2(0.f, 0.f)) override;
+    void TakeDamage() override;
 
     bool IsMovementLocked() const;
     void SetMovementLocked(bool locked);
@@ -148,4 +147,6 @@ private:
     bool CheckNevasca();
 
     int IsPressingAgainstWall();
+
+    void OnDamageCallback();
 };

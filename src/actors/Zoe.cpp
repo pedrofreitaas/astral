@@ -61,6 +61,8 @@ Zoe::Zoe(
     mAerialAttackCollider->SetEnabled(false);
 
     mCoyoteTimer = mTimerComponent->AddNotRemovableTimer(0.1f, nullptr);
+
+    SetOnDamageCallback(std::bind(&Zoe::OnDamageCallback, this));
 }
 
 Zoe::~Zoe()
@@ -284,11 +286,6 @@ void Zoe::ManageState()
 
     case BehaviorState::AerialAttacking:
     {
-        if (!mAerialAttackCollider->IsEnabled())
-        {
-            mAerialAttackCollider->SetEnabled(true);
-        }
-
         Vector2 attackColliderPosition = GetCenter() - Vector2(20, 30);
         mAerialAttackCollider->SetPosition(attackColliderPosition);
         
@@ -415,20 +412,6 @@ void Zoe::ManageAnimations()
     case BehaviorState::Attacking:
         mDrawComponent->SetAnimation("ground-crush");
         mDrawComponent->SetAnimFPS(12.0f);
-
-        if (mDrawComponent->GetCurrentSprite() == 5 && mAttackCollider == nullptr)
-        {
-            mAttackCollider = new Collider(
-                mGame,
-                this,
-                GetCenter() + (GetRotation() == 0.f ? Vector2(11, -3) : Vector2(-22, -6)),
-                Vector2(14, 14),
-                [this](bool collided, const float minOverlap, AABBColliderComponent *other) {},
-                DismissOn::Both,
-                ColliderLayer::PlayerAttack,
-                {ColliderLayer::Player},
-                .5f);
-        }
         break;
 
     case BehaviorState::Dodging:
@@ -478,7 +461,8 @@ void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *o
 
     if (other->GetLayer() == ColliderLayer::Quasar)
     {
-        TakeDamage(Vector2(Math::Sign(-minOverlap), 1.f) * Zoe::DEFAULT_KNOCKBACK_FORCE * 6.f);
+        TakeDamage();
+        TakeKnockback(Vector2(Math::Sign(-minOverlap), 1.f) * Zoe::DEFAULT_KNOCKBACK_FORCE * 6.f);
         return;
     }
 
@@ -526,7 +510,7 @@ void Zoe::AnimationEndCallback(std::string animationName)
     if (animationName == "hurt")
     {
         mBehaviorState = BehaviorState::Idle;
-        mInvincible = false;
+        SetInvincibilityOff();
         return;
     }
 
@@ -604,20 +588,25 @@ void Zoe::TriggerVentania()
     mGame->GetAudio()->PlaySound("ventania.wav");
 }
 
-void Zoe::TakeDamage(const Vector2 &knockback)
+void Zoe::OnDamageCallback()
+{
+    if (
+        !mDamageSoundHandle.IsValid() || 
+        mGame->GetAudio()->GetSoundState(mDamageSoundHandle) == SoundState::Stopped
+    )
+    {
+        mDamageSoundHandle = mGame->GetAudio()->PlaySound("zoeTakeDamage.wav");
+    }
+}
+
+void Zoe::TakeDamage()
 {
     if (mBehaviorState == BehaviorState::Dodging)
     {
         return;
     }
 
-    Actor::TakeDamage(knockback);
-
-    if (!mDamageSoundHandle.IsValid() ||
-        mGame->GetAudio()->GetSoundState(mDamageSoundHandle) == SoundState::Stopped)
-    {
-        mDamageSoundHandle = mGame->GetAudio()->PlaySound("zoeTakeDamage.wav");
-    }
+    Actor::TakeDamage();
 }
 
 bool Zoe::CheckJump()
@@ -656,7 +645,8 @@ void Zoe::TakeSithAttack1(const float minOverlap, AABBColliderComponent *other)
 
     float modifier = 2.f * Zoe::DEFAULT_KNOCKBACK_FORCE;
 
-    TakeDamage(Vector2(xDiff, 1.f) * modifier);
+    TakeDamage();
+    TakeKnockback(Vector2(xDiff, 1.f) * modifier);
     return;
 }
 
@@ -669,7 +659,8 @@ void Zoe::TakeSithAttack2(const float minOverlap, AABBColliderComponent *other)
 
     float modifier = 5.f * Zoe::DEFAULT_KNOCKBACK_FORCE;
 
-    TakeDamage(Vector2(xDiff, 1.f) * modifier);
+    TakeDamage();
+    TakeKnockback(Vector2(xDiff, 1.f) * modifier);
     return;
 }
 
@@ -771,13 +762,30 @@ bool Zoe::CheckHit()
     mBehaviorState = onGround ? BehaviorState::Attacking : BehaviorState::AerialAttacking;
     mGame->GetAudio()->PlaySound("zoeSmash.wav");
 
-    if (!onGround)
+    if (onGround && mAttackCollider == nullptr)
     {
+        mAttackCollider = new Collider(
+            mGame,
+            this,
+            GetCenter() + (GetRotation() == 0.f ? Vector2(11, -3) : Vector2(-22, -6)),
+            Vector2(14, 14),
+            nullptr,
+            DismissOn::Both,
+            ColliderLayer::PlayerAttack,
+            {ColliderLayer::Player},
+            .75f,
+            nullptr,
+            false
+        );
+
         return true;
     }
-        
+
     float ySpeed = mRigidBodyComponent->GetJumpImpulseY(.5f);
     mRigidBodyComponent->ApplyImpulse(Vector2(0.f, ySpeed));
+    
+    mAerialAttackCollider->SetEnabled(true);
+    // this collider moves with player in manageState
 
     return true;
 }

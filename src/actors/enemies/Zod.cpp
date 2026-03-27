@@ -152,7 +152,7 @@ void Zod::AnimationEndCallback(std::string animationName)
     if (animationName == "damage")
     {
         mBehaviorState = BehaviorState::Moving;
-        mInvincible = false;
+        SetInvincibilityOff();
         return;
     }
 
