@@ -11,8 +11,10 @@
 
 enum class DismissOn {
     Collision,
-    Time,
+    Time, // 
+    // Collision or Time
     Both,
+    // Only manually dismissed
     None
 };
 
