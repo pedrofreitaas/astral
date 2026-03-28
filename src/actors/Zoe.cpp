@@ -758,7 +758,8 @@ bool Zoe::CheckHit()
             {ColliderLayer::Player},
             .75f,
             nullptr,
-            false
+            false,
+            std::bind(&Zoe::GetCenter, this)
         );
 
         return true;
