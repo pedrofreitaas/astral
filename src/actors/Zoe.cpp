@@ -431,6 +431,7 @@ void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *o
     if (other->GetLayer() == ColliderLayer::EnemyProjectile)
     {
         TakeDamage();
+        TakeKnockback(Vector2(Math::Sign(-minOverlap), 0.f) * mGame->GetConfig()->Get<float>("ZOE.KNOCKBACK_FORCE"));
         return;
     }
 
