@@ -38,6 +38,8 @@ ZodProjectile::ZodProjectile(
     
     mBehaviorState = BehaviorState::Moving;
 
+    target.y = position.y; // project target onto horizontal plane of projectile
+
     SetPosition(position - GetHalfSize());
     Fire(target - position, speed);
 }
