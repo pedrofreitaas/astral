@@ -170,7 +170,7 @@ void Zod::ManageAnimations()
         break;
     case BehaviorState::Waking:
         mDrawComponent->SetAnimation("waking");
-        mDrawComponent->SetAnimFPS(3.f);
+        mDrawComponent->SetAnimFPS(4.5f);
         break;
     case BehaviorState::Idle:
         mDrawComponent->SetAnimation("idle");
@@ -189,7 +189,7 @@ void Zod::ManageAnimations()
         break;
     case BehaviorState::Dying:
         mDrawComponent->SetAnimation("dying");
-        mDrawComponent->SetAnimFPS(10.f);
+        mDrawComponent->SetAnimFPS(9.f);
         break;
     case BehaviorState::Frozen:
         mDrawComponent->SetAnimation("freeze");
