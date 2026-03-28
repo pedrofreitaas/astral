@@ -143,7 +143,6 @@ private:
     bool CheckDodge(); 
     bool CheckHit();
     void DodgeEnd();
-    void EndAerialAttack();
     bool CheckNevasca();
 
     int IsPressingAgainstWall();

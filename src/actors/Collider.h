@@ -33,7 +33,9 @@ public:
         std::vector<ColliderLayer> ignoredLayers = {},
         float timeToDismiss = 0.f,
         std::function<void()> dismissCallback = nullptr,
-        bool isTangible = true);
+        bool isTangible = true,
+        std::function<Vector2()> getPivot = nullptr
+    );
 
     void Dismiss();
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
@@ -41,6 +43,8 @@ public:
     bool IsEnabled() const;
     void SetEnabled(bool enabled);
     Actor* GetOwnerActor() const { return mOwner; }
+
+    void OnUpdate(float deltaTime) override;
 
 private:
     std::function<void(bool collided, const float minOverlap, AABBColliderComponent *other)> mCollideCallback;
@@ -51,4 +55,7 @@ private:
     class AABBColliderComponent* mColliderComponent;
     class TimerComponent* mTimerComponent;
     Actor* mOwner;
+
+    std::function<Vector2()> mGetPivot;
+    Vector2 mToPivot;
 };

@@ -11,13 +11,16 @@ Collider::Collider(
     std::vector<ColliderLayer> ignoredLayers,
     float timeToDismiss,
     std::function<void()> dismissCallback,
-    bool isTangible
-): Actor(game), 
+    bool isTangible,
+    std::function<Vector2()> getPivot
+): Actor(game),
    mOwner(owner),
    mCollideCallback(std::move(collideCallback)),
    mDismissOn(dismissOn), 
    mTimeToDismiss(timeToDismiss),
-   mDismissCallback(std::move(dismissCallback))
+   mDismissCallback(std::move(dismissCallback)),
+   mGetPivot(std::move(getPivot)),
+   mToPivot(Vector2(0.f, 0.f))
 {
     mColliderComponent = new AABBColliderComponent(
         this,
@@ -44,6 +47,10 @@ Collider::Collider(
     }
 
     SetPosition(position);
+
+    if (mGetPivot) {
+        mToPivot = position - mGetPivot();
+    }
 }
 
 void Collider::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) 
@@ -87,4 +94,11 @@ void Collider::SetEnabled(bool enabled)
 bool Collider::IsEnabled() const
 {
     return mColliderComponent->IsEnabled();
+}
+
+void Collider::OnUpdate(float deltaTime)
+{
+    if (mGetPivot) {
+        SetPosition(mGetPivot() + mToPivot);
+    }
 }

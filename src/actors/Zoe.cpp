@@ -8,7 +8,7 @@ Zoe::Zoe(
       mIsTryingToHit(false), mAttackCollider(nullptr), mIsTryingToDodge(false),
       mInputMovementDir(0.f, 0.f), mMovementLocked(false), mAbilitiesLocked(false),
       mDamageSoundHandle(SoundHandle::Invalid), mIsTryingToJump(false), mNevascaSoundHandle(SoundHandle::Invalid),
-      mIsTryingToNevasca(false), mIsFiringNevasca(false), mNevascaTimer(0.f)
+      mIsTryingToNevasca(false), mIsFiringNevasca(false), mNevascaTimer(0.f), mAerialAttackCollider(nullptr)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
 
@@ -46,19 +46,6 @@ Zoe::Zoe(
     SetPosition(center - GetHalfSize());
 
     mGame->SetZoe(this);
-
-    mAerialAttackCollider = new Collider(
-        mGame,
-        this,
-        GetCenter() - Vector2(20, 30),
-        Vector2(40, 40),
-        [this](bool collided, const float minOverlap, AABBColliderComponent *other) {},
-        DismissOn::None,
-        ColliderLayer::PlayerAttack,
-        {ColliderLayer::Player},
-        1.f);
-
-    mAerialAttackCollider->SetEnabled(false);
 
     mCoyoteTimer = mTimerComponent->AddNotRemovableTimer(0.1f, nullptr);
 
@@ -285,13 +272,13 @@ void Zoe::ManageState()
         break;
 
     case BehaviorState::AerialAttacking:
-    {
-        Vector2 attackColliderPosition = GetCenter() - Vector2(20, 30);
-        mAerialAttackCollider->SetPosition(attackColliderPosition);
-        
+    {   
         if (mRigidBodyComponent->GetOnGround())
         {
-            EndAerialAttack();
+            mBehaviorState = BehaviorState::Idle;
+            mAerialAttackCollider->Dismiss();
+            mAerialAttackCollider = nullptr;
+            break;
         }
 
         break;
@@ -522,6 +509,12 @@ void Zoe::AnimationEndCallback(std::string animationName)
         return;
     }
 
+    if (animationName == "dodging")
+    {
+        DodgeEnd();
+        return;
+    }
+
     if (animationName == "ground-crush")
     {
         mBehaviorState = BehaviorState::Idle;
@@ -530,15 +523,11 @@ void Zoe::AnimationEndCallback(std::string animationName)
         return;
     }
 
-    if (animationName == "dodging")
-    {
-        DodgeEnd();
-        return;
-    }
-
     if (animationName == "aerial-crush")
     {
-        EndAerialAttack();
+        mBehaviorState = BehaviorState::Jumping;
+        mAerialAttackCollider->Dismiss();
+        mAerialAttackCollider = nullptr;
         return;
     }
 }
@@ -745,12 +734,6 @@ void Zoe::Move(float modifier)
         movementDir * mForwardSpeed * modifier);
 }
 
-void Zoe::EndAerialAttack()
-{
-    mAerialAttackCollider->SetEnabled(false);
-    mBehaviorState = BehaviorState::Jumping;
-}
-
 bool Zoe::CheckHit()
 {
     if (!mIsTryingToHit) return false;
@@ -762,7 +745,7 @@ bool Zoe::CheckHit()
     mBehaviorState = onGround ? BehaviorState::Attacking : BehaviorState::AerialAttacking;
     mGame->GetAudio()->PlaySound("zoeSmash.wav");
 
-    if (onGround && mAttackCollider == nullptr)
+    if (onGround)
     {
         mAttackCollider = new Collider(
             mGame,
@@ -783,9 +766,22 @@ bool Zoe::CheckHit()
 
     float ySpeed = mRigidBodyComponent->GetJumpImpulseY(.5f);
     mRigidBodyComponent->ApplyImpulse(Vector2(0.f, ySpeed));
-    
-    mAerialAttackCollider->SetEnabled(true);
+
     // this collider moves with player in manageState
+    mAerialAttackCollider = new Collider(
+        mGame,
+        this,
+        GetCenter() - Vector2(20, 30),
+        Vector2(40, 40),
+        nullptr,
+        DismissOn::Time,
+        ColliderLayer::PlayerAttack,
+        {ColliderLayer::Player},
+        1.25f,
+        nullptr,
+        false,
+        std::bind(&Zoe::GetCenter, this)
+    );
 
     return true;
 }
