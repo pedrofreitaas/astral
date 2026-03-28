@@ -261,12 +261,17 @@ void Actor::TakeKnockback(const Vector2 &knockback)
 }
 
 // Reduces life in one.
-// Damage isnt applied for invincible actors, and if already dying.
+// Damage isnt applied for frozen actors.
+// Damage isnt applied for invincible actors.
+// Damage isnt applied for actors that are already dying.
 // Always call Actor::TakeDamage() in overrides, and put specific logic before it.
 // If need logic to be performed when actor was damaged, please use the OnDamageCallback.
 // Its actors's responsability to get vulnerable again, using the SetInvincibilityOff.
 void Actor::TakeDamage()
 {
+    if (mBehaviorState == BehaviorState::Frozen)
+        return;
+
     if (mBehaviorState == BehaviorState::Dying)
         return;
 
