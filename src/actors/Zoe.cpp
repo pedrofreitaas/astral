@@ -580,6 +580,8 @@ void Zoe::TriggerVentania()
 
 void Zoe::OnDamageCallback()
 {
+    mGame->SetCameraCenterToShake(0.125f, 1.5f);
+
     if (
         !mDamageSoundHandle.IsValid() || 
         mGame->GetAudio()->GetSoundState(mDamageSoundHandle) == SoundState::Stopped
@@ -740,6 +742,8 @@ bool Zoe::CheckHit()
     if (!mIsTryingToHit) return false;
     if (mBehaviorState == BehaviorState::AerialAttacking) return false;
     if (mBehaviorState == BehaviorState::Attacking) return false;
+
+    mGame->SetCameraCenterToShake(0.25f);
     
     bool onGround = mRigidBodyComponent->GetOnGround();
 

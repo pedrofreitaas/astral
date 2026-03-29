@@ -44,7 +44,7 @@ Game::Game()
       mDebugMode(false), mEnemies(), mStar(nullptr), mApplyGravityScene(true),
       mCameraCenter(CameraCenter::Zoe), mMaintainCameraInMap(true), mCameraCenterPos(Vector2::Zero),
       mController(nullptr), mMustAlwaysUpdateActors(), mPreviousGameState(GamePlayState::Playing),
-      mRealWindowHeight(0), mRealWindowWidth(0), mDeltatime(0.f)
+      mRealWindowHeight(0), mRealWindowWidth(0), mDeltatime(0.f), mShakeCounter(0.f), mShakeIntensity(3.f)
 {
     mWindowWidth = 640;
     mWindowHeight = 352;
@@ -501,26 +501,41 @@ void Game::UpdateCamera()
     if (mMap == nullptr)
         return;
 
-
+    Vector2 shakeOffset = Vector2::Zero;
     Vector2 center;
     switch (mCameraCenter)
     {
-    case CameraCenter::Zoe:
-        center = mZoe->GetCenter();
-        break;
-    case CameraCenter::Point:
-        center = mCameraCenterPos;
-        break;
-    case CameraCenter::LogicalWindowSizeCenter: {
-            if (!mZoe) 
+        case CameraCenter::Zoe:
+            center = mZoe->GetCenter();
+            break;
+        case CameraCenter::Point:
+            center = mCameraCenterPos;
+            break;
+        case CameraCenter::LogicalWindowSizeCenter: {
+            if (!mZoe)
             {
                 throw std::runtime_error("Zoe actor is null when trying to center camera to logical window size center.");
             }
-            
+
             center = GetBoxCenter(
                 mZoe->GetCenter(),
-                static_cast<float>(mWindowWidth), 
+                static_cast<float>(mWindowWidth),
                 static_cast<float>(mWindowHeight));
+            break;
+        }
+        case CameraCenter::Shaking: {
+            center = mZoe->GetCenter();
+            shakeOffset = Vector2(
+                Math::RandRangeInt(-mShakeIntensity, mShakeIntensity),
+                Math::RandRangeInt(-mShakeIntensity, mShakeIntensity)
+            );
+
+            mShakeCounter -= mDeltatime;
+
+            if (mShakeCounter <= 0.f)
+            {
+                SetCameraCenterToZoe();
+            }
             break;
         }
     }
@@ -532,11 +547,8 @@ void Game::UpdateCamera()
 
     if (!mMaintainCameraInMap)
     {
-        mCameraPos.x = cameraX;
-        mCameraPos.y = cameraY;
-
-        mCameraPos.x = mCameraPos.x;
-        mCameraPos.y = mCameraPos.y;
+        mCameraPos.x = cameraX + shakeOffset.x;
+        mCameraPos.y = cameraY + shakeOffset.y;
         return;
     };
 
@@ -545,6 +557,10 @@ void Game::UpdateCamera()
 
     mCameraPos.x = std::max(0.0f, mCameraPos.x);
     mCameraPos.y = std::max(0.0f, mCameraPos.y);
+
+    // Apply shake offset after clamping so it's always visible
+    mCameraPos.x += shakeOffset.x;
+    mCameraPos.y += shakeOffset.y;
 }
 
 void Game::UpdateActors(float deltaTime)

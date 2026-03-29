@@ -61,7 +61,8 @@ public:
     {
         Zoe,
         Point,
-        LogicalWindowSizeCenter
+        LogicalWindowSizeCenter,
+        Shaking,
     };
 
     enum class SceneManagerState
@@ -208,6 +209,12 @@ public:
 
     Vector2 getNormalizedControlerPad();
 
+    void SetCameraCenterToShake(float duration, float intensity = 3.f) {
+        mCameraCenter = CameraCenter::Shaking;
+        mShakeCounter = duration;
+        mShakeIntensity = intensity;
+    }
+
 private:
     Config *mConfig;
 
@@ -308,4 +315,6 @@ private:
 
     bool isEnding;
     void EndDemoCheck();
+
+    float mShakeCounter, mShakeIntensity;
 };
