@@ -27,6 +27,16 @@ RigidBodyComponent::RigidBodyComponent(class Actor* owner, float mass, float fri
     }
 }
 
+void RigidBodyComponent::ApplyFriction() {        
+    float friction = mFrictionCoefficient;
+
+    if (mOwner->GetIsSlidingOnSnow()) {
+        friction *= 0.35f; // Reduce friction when sliding on snow
+    }
+
+    ApplyForce(Vector2(-friction * mVelocity));
+}
+
 // Force changes acceleration
 // Continues application over time
 void RigidBodyComponent::ApplyForce(const Vector2 &force) {
@@ -44,9 +54,9 @@ void RigidBodyComponent::Update(float deltaTime)
     bool sceneAppliesGravity = mOwner->GetGame()->GetApplyGravityScene();
     bool applyGravity = mApplyGravity && sceneAppliesGravity;
     
-    if(applyGravity) ApplyForce(Vector2(0.f, GRAVITY * mGravityScale));
+    if (applyGravity) ApplyForce(Vector2(0.f, GRAVITY * mGravityScale));
 
-    if (mApplyFriction && mIsOnGround) ApplyForce(Vector2(-mFrictionCoefficient * mVelocity));
+    if (mApplyFriction && mIsOnGround) ApplyFriction();
 
     // Euler Integration
     mVelocity += mAcceleration * deltaTime;

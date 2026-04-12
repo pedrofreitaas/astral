@@ -63,4 +63,6 @@ private:
 
     Vector2 mVelocity;
     Vector2 mAcceleration;
+
+    void ApplyFriction();
 };
