@@ -146,6 +146,19 @@ void Actor::OnVerticalCollision(const float minOverlap, AABBColliderComponent* o
         IncreaseFreezing();
         return;
     }
+
+    if (other->GetLayer() == ColliderLayer::Blocks && minOverlap > 0.f)
+    {
+        Tile *tile = static_cast<Tile *>(other->GetOwner());
+
+        if (tile->IsFrozen()) {
+            isSlidingOnSnow = true;
+        } else {
+            isSlidingOnSnow = false;
+        }
+
+        return;
+    }
 }
 
 void Actor::Kill()
