@@ -94,7 +94,10 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
 
     for (auto &collider : colliders)
     {
-        if (collider == this || !collider->IsEnabled())
+        // if (collider == this) -> == mLayer already checks for this
+        //     continue;
+
+        if (!collider->IsEnabled())
             continue;
 
         if (collider->GetLayer() == mLayer)
@@ -146,7 +149,10 @@ float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBo
 
     for (auto &collider : colliders)
     {
-        if (collider == this || !collider->IsEnabled())
+        // if (collider == this) -> == mLayer already checks for this
+        //     continue;
+
+        if (!collider->IsEnabled())
             continue;
 
         if (collider->GetLayer() == mLayer)
