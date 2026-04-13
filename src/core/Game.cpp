@@ -480,11 +480,7 @@ void Game::UpdateGame()
 
     if (mGameScene != GameScene::MainMenu && mGameScene != GameScene::DeathScreen && mHUD && mZoe)
     {
-        mHUD->SetFPS(static_cast<int>(1.0f / mDeltatime));
-        mHUD->SetLife(mZoe->GetLifes());
-        mHUD->SetLoadingBarProgress(
-            mZoe->CheckFireballOnCooldown(),
-            mZoe->GetFireballCooldownProgress());
+        mHUD->Update(mDeltatime);
     }
 
     UpdateSceneManager(mDeltatime);

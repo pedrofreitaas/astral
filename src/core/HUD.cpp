@@ -59,12 +59,14 @@ HUD::HUD(class Game* game, const std::string& fontName)
     {
         UIImage* img = AddImage(
             path,
-            Vector2(64.0f, 4.0f),
+            Vector2(.0f, .0f),
             Vector2(16.0f, 16.0f)
         );
         img->SetEnabled(false);
         mLoadingBarImages.push_back(img);
     }
+
+    mFireballLoadingBarOffset = Vector2(-24.0f, -24.0f);
 }
 
 HUD::~HUD()
@@ -97,7 +99,6 @@ void HUD::SetFPS(float fps)
     mFPSText->SetText(std::to_string(displayFPS));
 }
 
-
 void HUD::SetLife(int life) {
     life = std::max(0, std::min(life, 6));
     
@@ -106,12 +107,39 @@ void HUD::SetLife(int life) {
     }
 }
 
-void HUD::SetLoadingBarProgress(bool enabled, float progress) {
+void HUD::SetFireballLoadingBarProgress(bool enabled, float progress) {
     progress = std::max(0.f, std::min(1.f, progress));
+    
     int index = static_cast<int>(progress * (mLoadingBarImages.size() - 1));
     index = std::max(0, std::min(index, static_cast<int>(mLoadingBarImages.size() - 1)));
 
     for (int i = 0; i < mLoadingBarImages.size(); ++i) {
         mLoadingBarImages[i]->SetEnabled(enabled && (i == index));
     }
+}
+
+void HUD::UpdateFireballLoadingBar(bool enabled, float progress, Vector2 pos) {
+    SetFireballLoadingBarProgress(enabled, progress);
+    
+    for (int i = 0; i < mLoadingBarImages.size(); ++i) {
+        mLoadingBarImages[i]->SetPosition(pos);
+    }
+}
+
+void HUD::Update(float deltaTime) {
+    Zoe* zoe = dynamic_cast<Zoe*>(mGame->GetZoe());
+
+    if (!zoe) {
+        SDL_Log("Zoe actor not found in HUD update.");
+        return;
+    }
+    
+    SetFPS(static_cast<int>(1.0f / deltaTime));
+
+    SetLife(zoe->GetLifes());
+
+    UpdateFireballLoadingBar(
+        zoe->CheckFireballOnCooldown(),
+        zoe->GetFireballCooldownProgress(),
+        zoe->GetCenter() + mFireballLoadingBarOffset);
 }

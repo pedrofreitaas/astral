@@ -7,6 +7,7 @@
 #include <string>
 
 #include "../ui/UIScreen.h"
+#include "../actors/Zoe.h"
 
 class HUD : public UIScreen
 {
@@ -23,11 +24,16 @@ public:
 	void HandleMouseClick(int button, int x, int y) override;
     void SetLife(int life);
 
-    void SetLoadingBarProgress(bool enabled, float progress);
+    void SetFireballLoadingBarProgress(bool enabled, float progress);
+    void UpdateFireballLoadingBar(bool enabled, float progress, Vector2 pos);
+
+    void Update(float deltaTime) override;
 
 private:
     UIText* mFPSText;
 
     std::vector<UIImage*> mLifeImages, mLoadingBarImages;
     std::vector<UIImage*> mCooldownImages;
+
+    Vector2 mFireballLoadingBarOffset;
 };
