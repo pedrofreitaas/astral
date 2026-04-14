@@ -562,7 +562,7 @@ void Zoe::TriggerVentania()
 
     mRigidBodyComponent->ResetVelocity();
 
-    Vector2 ventaniaDir = mInputMovementDir.LengthSq() > 0.f ? mInputMovementDir : Vector2(0.f, 1.f);
+    Vector2 ventaniaDir = mInputMovementDir.LengthSq() > 0.f ? mInputMovementDir : GetForward();
 
     mRigidBodyComponent->ApplyForce(ventaniaDir * Zoe::VETANIA_SPEED);
 
