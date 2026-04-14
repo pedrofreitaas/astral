@@ -10,20 +10,21 @@ Projectile::Projectile(
     Vector2 position,
     Actor* shooter,
     float mDieTime
-): Actor(game), mKnockbackIntensity(10.f), mShooter(shooter), mDieTime(mDieTime)
+): Actor(game), mKnockbackIntensity(10.f), mShooter(shooter), mDieTime(mDieTime), 
+   mLastFireDirection(Vector2::Zero), mDieTimer(nullptr)
 {
     SetPosition(position);
 
     mTimerComponent = new TimerComponent(this);
 
-    mTimerComponent->AddTimer(mDieTime, [this]() {
+    mDieTimer = mTimerComponent->AddTimer(mDieTime, [this]() {
         Kill();
     });
 }
 
-void Projectile::Fire(const Vector2& direction, float speed) {
-    Vector2 normalizedDirection = Vector2::Normalize(direction);
-    mRigidBodyComponent->ApplyImpulse(normalizedDirection * speed);
+void Projectile::Fire(const Vector2& dirNormalized, float speed) {
+    mRigidBodyComponent->ApplyImpulse(dirNormalized * speed);
+    mLastFireDirection = dirNormalized;
 }
 
 void Projectile::OnUpdate(float deltaTime) {
