@@ -545,13 +545,13 @@ void Zoe::FireFireball()
         fireballDir = GetForward();
     }
 
-    auto projectile = new Fireball(
+    new Fireball(
         mGame,
         GetPosition() + GetFireballOffset(),
         fireballDir,
         this);
 
-    mFireballCooldownTimer = mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this]() {});
+    mFireballCooldownTimer = mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, nullptr);
     mGame->GetAudio()->PlaySound("fireball.wav");
 }
 
