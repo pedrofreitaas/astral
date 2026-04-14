@@ -91,17 +91,9 @@ public:
     bool IsAbilitiesLocked() const;
     void SetAbilitiesLocked(bool locked);
 
-    bool CheckFireballOnCooldown() {
-        return mFireballCooldownTimer && 
-               mTimerComponent->checkTimerRemaining(mFireballCooldownTimer) > 0.f;
-    }
+    bool CheckFireballOnCooldown();
 
-    float GetFireballCooldownProgress() {
-        if (mFireballCooldownTimer) {
-            return mTimerComponent->checkTimerRemaining(mFireballCooldownTimer) / FIREBALL_COOLDOWN;
-        }
-        return 1.f;
-    }
+    float GetFireballCooldownProgress();
 
     void TakeSithAttack1(const float minOverlap, AABBColliderComponent *other);
     void TakeSithAttack2(const float minOverlap, AABBColliderComponent *other);

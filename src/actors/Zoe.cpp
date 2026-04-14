@@ -533,6 +533,21 @@ void Zoe::AnimationEndCallback(std::string animationName)
     }
 }
 
+bool Zoe::CheckFireballOnCooldown()
+{
+    return mFireballCooldownTimer != nullptr && mTimerComponent->checkTimerRemaining(mFireballCooldownTimer) > 0.f;
+}
+
+float Zoe::GetFireballCooldownProgress()
+{
+    if (mFireballCooldownTimer)
+    {
+        return mTimerComponent->checkTimerRemaining(mFireballCooldownTimer) / FIREBALL_COOLDOWN;
+    }
+
+    return 1.f;
+}
+
 void Zoe::FireFireball()
 {
     if (CheckFireballOnCooldown())
@@ -551,7 +566,9 @@ void Zoe::FireFireball()
         fireballDir,
         this);
 
-    mFireballCooldownTimer = mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, nullptr);
+    mFireballCooldownTimer = mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this] {
+        mFireballCooldownTimer = nullptr;
+    });
     mGame->GetAudio()->PlaySound("fireball.wav");
 }
 
