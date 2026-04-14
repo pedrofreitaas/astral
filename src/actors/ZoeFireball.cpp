@@ -34,6 +34,7 @@ Fireball::Fireball(
         spriteSheetData,
         std::bind(&Fireball::AnimationEndCallback, this, std::placeholders::_1),
         static_cast<int>(DrawLayerPosition::Enemy) - 1);
+    
     mDrawAnimatedComponent->SetUsePivotForRotation(true);
 
     mDrawAnimatedComponent->AddAnimation("flying", 0, 28);
@@ -83,20 +84,23 @@ void Fireball::OnHorizontalCollision(const float minOverlap, AABBColliderCompone
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
         Kill();
+        return;
     }
 
-    Vector2 mVel = mRigidBodyComponent->GetVelocity();
-        mVel.Normalize();
+    Vector2 mVel = GetLastFireDirection();
+    mVel.Normalize();
+
+    Vector2 reflection = Vector2::Reflect(
+        mVel,
+        Vector2(Math::Sign(minOverlap), 0.f));
+
+    reflection.Normalize();
+
+    float speed = mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.SPEED");
 
     if (other->GetLayer() == ColliderLayer::Player)
     {
         mRicochetsCount++;
-
-        Vector2 reflection = Vector2::Reflect(
-            mVel,
-            Vector2(Math::Sign(minOverlap), 0.f));
-
-        reflection.Normalize();
 
         Vector2 zoeSpeed = other->GetOwner()->GetComponent<RigidBodyComponent>()->GetVelocity();
         zoeSpeed.Normalize();
@@ -108,7 +112,8 @@ void Fireball::OnHorizontalCollision(const float minOverlap, AABBColliderCompone
         directionAngle -= originalAngle;
         SetRotation(directionAngle);
 
-        Fire(newDirection, mRigidBodyComponent->GetVelocity().Length());
+        Fire(newDirection, speed);
+        mDieTimer->Restart();
 
         return;
     }
@@ -121,20 +126,14 @@ void Fireball::OnHorizontalCollision(const float minOverlap, AABBColliderCompone
             return;
         }
 
-        Vector2 reflection = Vector2::Reflect(
-            mVel,
-            Vector2(Math::Sign(minOverlap), 0.f));
-
-        reflection.Normalize();
-
-        Vector2 newDirection = reflection;
-
-        float directionAngle = Math::Atan2(newDirection.y, newDirection.x);
+        float directionAngle = Math::Atan2(reflection.y, reflection.x);
         float originalAngle = Math::Atan2(0.f, 1.f);
         directionAngle -= originalAngle;
 
         SetRotation(directionAngle);
-        Fire(newDirection, mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.SPEED"));
+        Fire(reflection, speed);
+
+        return;
     }
 }
 
@@ -146,19 +145,22 @@ void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent
     if (mRicochetsCount >= MAX_RICOCHETS || other->GetLayer() == ColliderLayer::Enemy)
     {
         Kill();
+        return;
     }
 
-    Vector2 mVel = mRigidBodyComponent->GetVelocity();
+    Vector2 mVel = GetLastFireDirection();
     mVel.Normalize();
+
+    Vector2 reflection = Vector2::Reflect(
+        mVel,
+        Vector2(0.f, Math::Sign(minOverlap)));
+
+    reflection.Normalize();
+
+    float speed = mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.SPEED");
 
     if (other->GetLayer() == ColliderLayer::Player)
     {
-        Vector2 reflection = Vector2::Reflect(
-            mVel,
-            Vector2(Math::Sign(minOverlap), 0.f));
-
-        reflection.Normalize();
-
         Vector2 zoeSpeed = other->GetOwner()->GetComponent<RigidBodyComponent>()->GetVelocity();
         zoeSpeed.Normalize();
 
@@ -169,7 +171,8 @@ void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent
         directionAngle -= originalAngle;
         SetRotation(directionAngle);
 
-        Fire(newDirection, mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.SPEED"));
+        Fire(newDirection, speed);
+        mDieTimer->Restart();
         return;
     }
 
@@ -177,20 +180,12 @@ void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent
     {
         mRicochetsCount++;
 
-        Vector2 reflection = Vector2::Reflect(
-            mVel,
-            Vector2(0.f, Math::Sign(minOverlap)));
-
-        reflection.Normalize();
-
-        Vector2 newDirection = reflection;
-
-        float directionAngle = Math::Atan2(newDirection.y, newDirection.x);
+        float directionAngle = Math::Atan2(reflection.y, reflection.x);
         float originalAngle = Math::Atan2(0.f, 1.f);
         directionAngle -= originalAngle;
 
         SetRotation(directionAngle);
-        Fire(newDirection, mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.SPEED"));
+        Fire(reflection, speed);
     }
 }
 
