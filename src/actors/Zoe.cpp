@@ -752,6 +752,8 @@ bool Zoe::CheckHit()
 
     if (onGround)
     {
+        mGame->SetCameraCenterToShake(0.25f);
+
         mAttackCollider = new Collider(
             mGame,
             this,
