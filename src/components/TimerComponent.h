@@ -12,6 +12,8 @@ public:
 
     Timer() : id(0), duration(0.f), elapsed(0.f), removable(false), callback(nullptr) {}
     Timer(int id, float dur, bool removable, std::function<void()> cb) : id(id), duration(dur), elapsed(0.f), removable(removable), callback(cb) {}
+
+    void Restart() { elapsed = 0.f; }
 };
 
 class TimerComponent : public Component
