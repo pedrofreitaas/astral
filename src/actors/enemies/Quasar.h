@@ -4,12 +4,11 @@
 #include "../Enemy.h"
 #include "../Projectile.h"
 #include "../../components/TimerComponent.h"
-#include "../Collider.h"
 
 class Quasar : public Enemy
 {
 public:
-    explicit Quasar(Game* game, float forwardSpeed, const Vector2& position);
+    explicit Quasar(Game* game, const Vector2& position);
 
     void ManageState() override;
     void AnimationEndCallback(std::string animationName) override;
@@ -17,4 +16,8 @@ public:
 
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
+
+private:
+    bool mAppliedImpulseInAttack;
+    Timer* mAttackTimerHandle;
 };

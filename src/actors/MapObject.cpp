@@ -189,7 +189,7 @@ void MapObject::SpawnEntity()
         new Portal(mGame, GetCenter());
         break;
     case EntityCode::Quasar:
-        new Quasar(mGame, 700.f, GetCenter());
+        new Quasar(mGame, GetCenter());
         break;
     default:
         throw std::runtime_error("MapObject unknown SpawnCode");
