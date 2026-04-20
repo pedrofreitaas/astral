@@ -26,6 +26,11 @@
         "PROJECTILE_SPEED": 150
     },
 
+    "QUASAR": {
+        "SPIKE_KNOCKBACK_FORCE": 350,
+        "SMASH_COOLDOWN": 3
+    },
+
     "ZOE": {
         "KNOCKBACK_FORCE": 250,
         "POWERS": {
