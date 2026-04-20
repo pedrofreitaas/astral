@@ -33,6 +33,7 @@ enum class ColliderLayer
     SithAttack2,
     Quasar,
     Nevasca,
+    QuasarAttack
 };
 
 enum class IgnoreOption
