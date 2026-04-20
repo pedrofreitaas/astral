@@ -1,0 +1,14 @@
+{ "columns":17,
+ "image":"..\/..\/..\/tiled\/tilesets\/Nebula-Terrain.png",
+ "imageheight":160,
+ "imagewidth":544,
+ "margin":0,
+ "name":"Nebula-Terrain",
+ "spacing":0,
+ "tilecount":85,
+ "tiledversion":"1.12.1",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}
