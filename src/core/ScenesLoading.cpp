@@ -376,7 +376,7 @@ void Game::LoadTestsLevel()
     SetMap("tests.json");
 
     SetBackgroundImage(
-        "../assets/Levels/Backgrounds/galaxy.png",
+        "../assets/Levels/Backgrounds/nebula.png",
         Vector2(0.0f, 0.0f),
         Vector2(mWindowWidth, mWindowHeight),
         false);
