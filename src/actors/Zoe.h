@@ -18,6 +18,7 @@
 #include "./traps/Shuriken.h"
 #include "../libs/Math.h"
 #include "enemies/Sith.h"
+#include "enemies/Quasar.h"
 
 const SDL_Rect DEFAULT_BB = SDL_Rect({22, 18, 20, 27});
 const SDL_Rect DODGE_BB = SDL_Rect({25, 25, 13, 15});

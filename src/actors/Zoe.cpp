@@ -450,7 +450,17 @@ void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *o
     if (other->GetLayer() == ColliderLayer::Quasar)
     {
         TakeDamage();
-        TakeKnockback(Vector2(Math::Sign(-minOverlap), 1.f) * Zoe::DEFAULT_KNOCKBACK_FORCE * 6.f);
+        
+        float knockbackForce = mGame->GetConfig()->Get<float>("QUASAR.SPIKE_KNOCKBACK_FORCE");
+        Quasar* quasar = static_cast<Quasar*>(other->GetOwner());
+
+        if (quasar->GetBehaviorState() == BehaviorState::Attacking) {
+            TakeKnockback(Vector2(Math::Sign(-minOverlap), -1) * knockbackForce);
+        }
+        else {
+            TakeKnockback(Vector2(Math::Sign(-minOverlap) *.7f, -.2f) * knockbackForce);
+        }
+
         return;
     }
 
@@ -487,6 +497,16 @@ void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *oth
     if (other->GetLayer() == ColliderLayer::SithAttack2)
     {
         TakeSithAttack2(minOverlap, other);
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Quasar)
+    {
+        TakeDamage();
+        
+        float knockbackForce = mGame->GetConfig()->Get<float>("QUASAR.SPIKE_KNOCKBACK_FORCE");
+        TakeKnockback(Vector2(1.f, Math::Sign(-minOverlap)) * knockbackForce);
+
         return;
     }
 
