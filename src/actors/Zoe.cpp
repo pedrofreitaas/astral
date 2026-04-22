@@ -31,12 +31,12 @@ Zoe::Zoe(
     mDrawComponent->AddAnimation("blink", 15, 19);
     mDrawComponent->AddAnimation("jump", {20, 21});
     mDrawComponent->AddAnimation("run", 22, 25);
-    mDrawComponent->AddAnimation("hurt", {26});
-    mDrawComponent->AddAnimation("dodging", {27});
-    mDrawComponent->AddAnimation("aerial-crush", 28, 37);
-    mDrawComponent->AddAnimation("clinging", {38, 39, 40});
-    mDrawComponent->AddAnimation("charging", 41, 46);
-    mDrawComponent->AddAnimation("spraying", 44, 46);
+    mDrawComponent->AddAnimation("hurt", 26, 29);
+    mDrawComponent->AddAnimation("dodging", {30});
+    mDrawComponent->AddAnimation("aerial-crush", 31, 40);
+    mDrawComponent->AddAnimation("clinging", 41, 43);
+    mDrawComponent->AddAnimation("charging", 44, 49);
+    mDrawComponent->AddAnimation("spraying", 50, 59);
 
     mDrawComponent->SetAnimation("idle");
 
@@ -388,7 +388,7 @@ void Zoe::ManageAnimations()
         break;
     case BehaviorState::TakingDamage:
         mDrawComponent->SetAnimation("hurt");
-        mDrawComponent->SetAnimFPS(4.f);
+        mDrawComponent->SetAnimFPS(14.f);
         break;
     case BehaviorState::Charging:
         mDrawComponent->SetAnimation("charging");
