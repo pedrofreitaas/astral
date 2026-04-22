@@ -4,8 +4,6 @@
   <export target="../../assets/Levels/Maps/tests.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/Terrain and Back Wall (32x32).tsx"/>
- <tileset firstgid="248" source="../../assets/Levels/Maps/Jungle.json"/>
- <tileset firstgid="308" source="../../assets/Levels/Tilesets/Dark-Swamp.json"/>
  <tileset firstgid="988" source="../tilesets/Nebula-Terrain.tsx"/>
  <layer id="1" name="behind_player" width="20" height="11">
   <data encoding="csv">
