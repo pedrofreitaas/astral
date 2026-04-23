@@ -1,5 +1,5 @@
 { "columns":6,
- "image":"C:\/Users\/freit\/Downloads\/Treasure Hunters\/Treasure Hunters\/Pirate Ship\/Sprites\/Tilesets\/Platforms (32x32).png",
+ "image":"..\/..\/..\/tiled\/tilesets\/Platforms (32x32).png",
  "imageheight":128,
  "imagewidth":192,
  "margin":0,
@@ -122,7 +122,7 @@
              "name":"",
              "objects":[
                     {
-                     "height":11,
+                     "height":11.9679370840895,
                      "id":1,
                      "name":"",
                      "rotation":0,
@@ -130,7 +130,7 @@
                      "visible":true,
                      "width":32,
                      "x":0,
-                     "y":1
+                     "y":0.0320629159104657
                     }],
              "opacity":1,
              "type":"objectgroup",
@@ -148,7 +148,7 @@
              "name":"",
              "objects":[
                     {
-                     "height":9,
+                     "height":10.0969953619681,
                      "id":1,
                      "name":"",
                      "rotation":0,
@@ -156,7 +156,7 @@
                      "visible":true,
                      "width":32,
                      "x":0,
-                     "y":1
+                     "y":-0.096995361968139
                     }],
              "opacity":1,
              "type":"objectgroup",
@@ -174,7 +174,7 @@
              "name":"",
              "objects":[
                     {
-                     "height":11,
+                     "height":11.9034079451502,
                      "id":1,
                      "name":"",
                      "rotation":0,
@@ -182,7 +182,7 @@
                      "visible":true,
                      "width":32,
                      "x":0,
-                     "y":1
+                     "y":0.0965920548497681
                     }],
              "opacity":1,
              "type":"objectgroup",
