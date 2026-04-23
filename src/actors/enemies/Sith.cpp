@@ -10,7 +10,7 @@
 Sith::Sith(Game *game, const Vector2 &position)
     : Enemy(game, position),
       mIsProjectileOnCooldown(false), mIsAttack1OnCooldown(false), mIsAttack2OnCooldown(false),
-      mCurrentAttack(Attacks::None), mAttack1Collider(nullptr), mAttack2Collider(nullptr)
+      mCurrentAttack(Attacks::None), mAttack1Collider(nullptr), mAttack2Collider(nullptr), mHasAppliedAttackBoost(false)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f, false);
     
@@ -71,6 +71,7 @@ Sith::Sith(Game *game, const Vector2 &position)
         -1.f,
         nullptr,
         false);
+    
     mAttack2Collider->SetEnabled(false);
 }
 
@@ -89,6 +90,8 @@ void Sith::Attack1()
 
     mTimerComponent->AddTimer(cooldown, [this]()
                               { SetAttack1OnCooldown(false); });
+
+    mHasAppliedAttackBoost = false;
 }
 
 void Sith::Attack2()
@@ -106,6 +109,8 @@ void Sith::Attack2()
     float cooldown = mGame->GetConfig()->Get<float>("SITH.ATTACK2_COOLDOWN");
     mTimerComponent->AddTimer(cooldown, [this]()
                               { SetAttack2OnCooldown(false); });
+
+    mHasAppliedAttackBoost = false;
 }
 
 void Sith::FireProjectile()
@@ -181,23 +186,28 @@ void Sith::ManageState()
         break;
     }
 
-    case BehaviorState::Attacking:
+    case BehaviorState::Attacking: {
         SetInvincibilityOn(); // animation must end to disable colliders (cannot be interrupted by dmg)
 
-        if (mCurrentAttack == Attacks::Attack1)
+        int spriteIdx = mDrawComponent->GetCurrentSprite();
+
+        if (mCurrentAttack == Attacks::Attack1 && spriteIdx >= 1 && !mHasAppliedAttackBoost)
         {
+            mHasAppliedAttackBoost = true;
             float extraSpeed = mGame->GetConfig()->Get<float>("SITH.ATTACK1_EXTRA_SPEED");
             mAIMovementComponent->BoostToPlayer(extraSpeed);
         }
 
-        else if (mCurrentAttack == Attacks::Attack2)
+        else if (mCurrentAttack == Attacks::Attack2 && spriteIdx >= 4 && !mHasAppliedAttackBoost)
         {
+            mHasAppliedAttackBoost = true;
             float extraSpeed = mGame->GetConfig()->Get<float>("SITH.ATTACK2_EXTRA_SPEED");
             mAIMovementComponent->BoostToPlayer(extraSpeed);
-            Vector2 attackColliderPosition = GetCenter() - Vector2(15.f, 15.f);
-            mAttack2Collider->SetPosition(attackColliderPosition);
         }
+        
         break;
+    }
+
     case BehaviorState::Charging:
         if (!PlayerOnSight(sightDistance))
             mBehaviorState = BehaviorState::Moving;

@@ -49,4 +49,5 @@ private:
     TimerComponent *mTimerComponent;
 
     Collider *mAttack1Collider, *mAttack2Collider;
+    bool mHasAppliedAttackBoost;
 };
