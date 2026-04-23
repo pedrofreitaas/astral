@@ -64,7 +64,7 @@ void MoveStep::Update(float deltaTime)
 
     if (mSpin)
     {
-        mSpinAngle += 360.f * deltaTime;
+        mSpinAngle += 360.f * 1.3 * deltaTime;
         if (mSpinAngle >= 360.f)
             mSpinAngle -= 360.f;
         mTargetActor->SetRotation(mSpinAngle);
@@ -72,11 +72,12 @@ void MoveStep::Update(float deltaTime)
 
     Vector2 direction = toTarget;
     direction.Normalize();
-    Vector2 desiredForce = direction * mSpeed;
-    rb->ApplyForce(desiredForce);
-    
+    Vector2 desiredVelocity = direction * mSpeed;
+    rb->ResetVelocity();
+    rb->ApplyImpulse(desiredVelocity);
+
     // Check if we would overshoot the target in this frame
-    if (distanceToTarget < desiredForce.Length() * deltaTime)
+    if (distanceToTarget < desiredVelocity.Length() * deltaTime)
     {
         // Snap to target and complete step
         rb->ResetVelocity();

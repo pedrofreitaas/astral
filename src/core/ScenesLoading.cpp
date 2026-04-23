@@ -51,7 +51,7 @@ void Game::LoadMainMenu()
     mainMenu->AddTransparentButton(
         playButtonPos,
         playButtonSize,
-        [this]() { SetGameScene(GameScene::Bedroom); });
+        [this]() { SetGameScene(GameScene::Level1); });
         // [this]() { SetGameScene(GameScene::Tests); });
     
     mainMenu->AddImage(
@@ -188,19 +188,22 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this](){ return GetZoe(); },
-        [this](){return Vector2(GetZoe()->GetCenter().x + 64.f, GetZoe()->GetCenter().y);}));
+        [this](){return Vector2(GetZoe()->GetCenter().x + 64.f, GetZoe()->GetCenter().y);},
+        80.f));
 
     steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this](){ return GetZoe(); },
-        [this](){return Vector2(GetZoe()->GetCenter().x - 2.f, GetZoe()->GetCenter().y);}));
+        [this](){return Vector2(GetZoe()->GetCenter().x - 2.f, GetZoe()->GetCenter().y);},
+        20.f));
 
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this](){ return GetZoe(); },
-        [this](){return Vector2(GetZoe()->GetCenter().x + 4.f, GetZoe()->GetCenter().y);}));
+        [this](){return Vector2(GetZoe()->GetCenter().x + 4.f, GetZoe()->GetCenter().y);},
+        20.f));
 
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
 
