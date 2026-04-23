@@ -672,10 +672,8 @@ void Zoe::TakeSithAttack1(const float minOverlap, AABBColliderComponent *other)
 
     float xDiff = Math::Sign(GetCenter().x - sith->GetCenter().x);
 
-    float modifier = 2.f * Zoe::DEFAULT_KNOCKBACK_FORCE;
-
     TakeDamage();
-    TakeKnockback(Vector2(xDiff, 1.f) * modifier);
+    TakeKnockback(Vector2(xDiff, 1.f) * 2 * mGame->GetConfig()->Get<float>("ZOE.KNOCKBACK_FORCE"));
     return;
 }
 
@@ -686,10 +684,8 @@ void Zoe::TakeSithAttack2(const float minOverlap, AABBColliderComponent *other)
 
     float xDiff = Math::Sign(GetCenter().x - sith->GetCenter().x);
 
-    float modifier = 5.f * Zoe::DEFAULT_KNOCKBACK_FORCE;
-
     TakeDamage();
-    TakeKnockback(Vector2(xDiff, 1.f) * modifier);
+    TakeKnockback(Vector2(xDiff, 1.f) * 3.5 * mGame->GetConfig()->Get<float>("ZOE.KNOCKBACK_FORCE"));
     return;
 }
 

@@ -14,9 +14,9 @@
         "PROJECTILE_COOLDOWN": 12,
         "PROJECTILE_SPEED": 60,
         "ATTACK1_COOLDOWN": 3,
-        "ATTACK1_EXTRA_SPEED": 1,
+        "ATTACK1_EXTRA_SPEED": 400,
         "ATTACK2_COOLDOWN": 12,
-        "ATTACK2_EXTRA_SPEED": 1
+        "ATTACK2_EXTRA_SPEED": 500
     },
 
     "ZOD": {
