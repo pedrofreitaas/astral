@@ -520,7 +520,16 @@ void Game::UpdateCamera()
             break;
         }
         case CameraCenter::Shaking: {
-            center = mZoe->GetCenter();
+            if (!mZoe)
+            {
+                throw std::runtime_error("Zoe actor is null when trying to center camera to logical window size center.");
+            }
+
+            center = GetBoxCenter(
+                mZoe->GetCenter(),
+                static_cast<float>(mWindowWidth),
+                static_cast<float>(mWindowHeight));
+            
             shakeOffset = Vector2(
                 Math::RandRangeInt(-mShakeIntensity, mShakeIntensity),
                 Math::RandRangeInt(-mShakeIntensity, mShakeIntensity)
