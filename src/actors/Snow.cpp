@@ -23,7 +23,7 @@ Snow::Snow(
         3 * Math::PiOver2
     );
 
-    mPosition = center - Vector2(18,18);
+    SetPosition(center - Vector2(18,18));
 }
 
 void Snow::Kill()
