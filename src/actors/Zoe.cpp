@@ -375,6 +375,7 @@ void Zoe::ManageAnimations()
     }
     case BehaviorState::Moving:
         mDrawComponent->SetAnimation("run");
+        mDrawComponent->SetAnimFPS(10.0f);
         break;
     case BehaviorState::Jumping:
         mDrawComponent->SetAnimation("jump");
