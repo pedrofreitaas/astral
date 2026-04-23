@@ -396,5 +396,5 @@ void AIMovementComponent::BoostToPlayer(float intensity)
     boostDirection.Normalize();
 
     Vector2 boostForce = boostDirection * intensity;
-    rb->ApplyForce(boostForce);
+    rb->ApplyImpulse(boostForce);
 }
