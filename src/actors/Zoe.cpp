@@ -36,7 +36,7 @@ Zoe::Zoe(
     mDrawComponent->AddAnimation("aerial-crush", 31, 40);
     mDrawComponent->AddAnimation("clinging", 41, 43);
     mDrawComponent->AddAnimation("charging", 44, 49);
-    mDrawComponent->AddAnimation("spraying", 50, 59);
+    mDrawComponent->AddAnimation("spraying", 47, 49);
 
     mDrawComponent->SetAnimation("idle");
 
