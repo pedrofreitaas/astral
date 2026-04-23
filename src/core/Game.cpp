@@ -530,7 +530,7 @@ void Game::UpdateCamera()
 
             if (mShakeCounter <= 0.f)
             {
-                SetCameraCenterToZoe();
+                SetCameraCenterToLogicalWindowSizeCenter();
             }
             break;
         }
