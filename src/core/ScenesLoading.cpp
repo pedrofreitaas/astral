@@ -238,12 +238,6 @@ void Game::LoadFirstLevel()
         this, [this]()
         { return GetStar(); }));
 
-    AddCutscene("Intro",
-                std::move(steps),
-                [this]() {});
-
-    steps.clear();
-
     dialogue = {
         "Oi Zoe! Seja bem vinda ao Espaco Astral!"
     };
@@ -258,22 +252,23 @@ void Game::LoadFirstLevel()
         "Se acalme garota, por enquanto nao ha muito a fazer a nao ser seguir a estrela que voce acabou de ver.",
         "Ela e a chave para voce descobrir o que esta fazendo aqui.",
     };
+    
     steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
 
-    AddCutscene("introduction",
+    AddCutscene("Intro",
                 std::move(steps),
                 [this](){
                     this->GetZoe()->SetAbilitiesLocked(false);
                 });
-
-    steps.clear();
     
     steps.clear();
+
     dialogue = {
         "Parabens Zoe! Voce pegou bem o basico.",
         "Continue seguindo a estrela para descobrir mais sobre esse lugar misterioso.",
         "A partir de agora a minha ajuda nao serve de muito mais, entao boa sorte! Voce vai precisar..."
     };
+    
     steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
 
     AddCutscene("exit_tutorial",

@@ -383,13 +383,6 @@
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
-  <object id="92" x="218.933" y="620.668" width="213.633" height="42.663">
-   <properties>
-    <property name="cutscene_name" value="introduction"/>
-    <property name="event" value="enter"/>
-    <property name="function_name" value="play_cutscene"/>
-   </properties>
-  </object>
   <object id="97" x="626.206" y="388.668" width="11.3603" height="88.913">
    <properties>
     <property name="cutscene_name" value="exit_tutorial"/>

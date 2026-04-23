@@ -1166,33 +1166,6 @@
                  "y":288.167
                 }, 
                 {
-                 "height":42.663,
-                 "id":92,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"cutscene_name",
-                         "type":"string",
-                         "value":"introduction"
-                        }, 
-                        {
-                         "name":"event",
-                         "type":"string",
-                         "value":"enter"
-                        }, 
-                        {
-                         "name":"function_name",
-                         "type":"string",
-                         "value":"play_cutscene"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":213.633,
-                 "x":218.933,
-                 "y":620.668
-                }, 
-                {
                  "height":88.913,
                  "id":97,
                  "name":"",
