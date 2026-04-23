@@ -10,7 +10,7 @@
 
     "SITH": {
         "HEALTH": 3,
-        "SPEED": 1500,
+        "SPEED": 900,
         "PROJECTILE_COOLDOWN": 12,
         "PROJECTILE_SPEED": 60,
         "ATTACK1_COOLDOWN": 3,
