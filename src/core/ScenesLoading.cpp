@@ -51,8 +51,8 @@ void Game::LoadMainMenu()
     mainMenu->AddTransparentButton(
         playButtonPos,
         playButtonSize,
-        // [this]() { SetGameScene(GameScene::Bedroom); });
-        [this]() { SetGameScene(GameScene::Tests); });
+        [this]() { SetGameScene(GameScene::Bedroom); });
+        // [this]() { SetGameScene(GameScene::Tests); });
     
     mainMenu->AddImage(
         "../assets/Sprites/Menu/playButton.png",
@@ -206,8 +206,7 @@ void Game::LoadFirstLevel()
 
     dialogue = {
         "O que... o que e isso?",
-        "Onde estou? Parece que estou no espaco.",
-        "Mas algo esta errado, eu sou uma pessoa comum, eu nao deveria estar aqui."};
+        "Onde estou? Parece que estou no espaco."};
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
     steps.push_back(std::make_unique<SpawnStep>(
@@ -258,7 +257,6 @@ void Game::LoadFirstLevel()
     dialogue = {
         "Se acalme garota, por enquanto nao ha muito a fazer a nao ser seguir a estrela que voce acabou de ver.",
         "Ela e a chave para voce descobrir o que esta fazendo aqui.",
-        "Voce pode apertar 'A' para saltar as plataformas e chegar la em cima.",
     };
     steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
 
@@ -269,40 +267,6 @@ void Game::LoadFirstLevel()
                 });
 
     steps.clear();
-
-    dialogue = {
-        "Muito bem, alem de pular, voce tambem pode usar um impulso para se mover mais rapido.",
-        "Aperte 'RB' enquanto esta no ar, se quiser ver como funciona.",
-    };
-    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
-
-    AddCutscene("jumped_first_platform",
-                std::move(steps),
-                [this](){});
-
-    steps.clear();
-    dialogue = {
-        "Voce tambem pode atacar inimigos com golpes corpo a corpo, apertando 'X'.",
-        "Voce pode se desviar apertando 'B' no momento correto para evitar danos.",
-    };
-    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
-
-    AddCutscene("jumped_second_platform",
-                std::move(steps),
-                [this](){});
-    
-    steps.clear();
-    dialogue = {
-        "Por fim mas nao menos importante, voce consegue lancar bolas de fogo magicas.",
-        "Aperte 'Y' para lancar uma bola de fogo.",
-        "Elas tem um tempo de carregamento ate poderem ser usadas novamente.",
-        "Ah, eu quase esqueci, essas bolas de fogo refletem em superficies solidas, e nao causam dano a voce.",
-    };
-    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
-
-    AddCutscene("jumped_third_platform",
-                std::move(steps),
-                [this](){});
     
     steps.clear();
     dialogue = {
@@ -351,8 +315,6 @@ void Game::LoadFirstLevel()
     dialogue = {
         "Opa, opa, opa...",
         "Esse e o Quasar, um golem de energia que protege o Espaco Astral.",
-        "Voce deu sorte dele estar dormindo hoje.",
-        "Nao acho que voce vai conseguir acorda-lo, mas se ele acordar, corra!"
     };
     steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
 
