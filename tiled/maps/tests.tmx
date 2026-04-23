@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="20" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="7">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="7">
  <editorsettings>
   <export target="../../assets/Levels/Maps/tests.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/Terrain and Back Wall (32x32).tsx"/>
- <tileset firstgid="988" source="../tilesets/Nebula-Terrain.tsx"/>
+ <tileset firstgid="248" source="../tilesets/Nebula-Terrain.tsx"/>
  <layer id="1" name="behind_player" width="20" height="11">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -22,17 +22,17 @@
  </layer>
  <layer id="2" name="blocks" width="20" height="11">
   <data encoding="csv">
-1015,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1015,
-1007,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1005,
-1007,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1005,
-1007,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1005,
-1007,0,0,0,0,1060,0,0,0,0,0,0,0,0,0,0,1060,0,0,1005,
-1007,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1005,
-1007,0,0,0,1056,1057,1058,0,0,0,0,0,0,1056,1057,1058,0,0,0,1005,
-1007,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1005,
-1007,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1005,
-1007,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1005,
-1065,989,989,989,989,989,989,989,989,989,989,989,989,989,989,989,989,989,989,1066
+275,283,283,283,283,283,283,283,283,283,283,283,283,283,283,283,283,283,283,275,
+267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
+267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
+267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
+267,0,0,0,0,320,0,0,0,0,0,0,0,0,0,0,320,0,0,265,
+267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
+267,0,0,0,316,317,318,0,0,0,0,0,0,316,317,318,0,0,0,265,
+267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
+267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
+267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
+325,249,249,249,249,249,249,249,249,249,249,249,249,249,249,249,249,249,249,326
 </data>
  </layer>
  <layer id="3" name="above_player" width="20" height="11">
@@ -67,11 +67,11 @@
   </object>
   <object id="6" x="137.473" y="251.359" width="66" height="63">
    <properties>
-    <property name="entity_code" type="int" value="7"/>
+    <property name="entity_code" type="int" value="1"/>
     <property name="event" value="atStart"/>
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="5" name="en_collider_objects"/>
+ <objectgroup id="5" name="en_collider_objects" visible="0"/>
 </map>
