@@ -213,9 +213,23 @@ public:
         mCameraCenter = CameraCenter::Shaking;
         mShakeCounter = duration;
         mShakeIntensity = intensity;
+    };
+
+    void SetPortal(Actor *portal) {
+        if (mPortal != nullptr) {
+            SDL_Log("Portal already set");
+            return;
+        }
+
+        mPortal = portal;
+    }
+
+    Actor* GetPortal() {
+        return mPortal;
     }
 
 private:
+    Actor* mPortal;
     Config *mConfig;
 
     void SetCameraCenterToLogicalWindowSizeCenter() {

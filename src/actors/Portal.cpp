@@ -25,4 +25,6 @@ Portal::Portal(Game *game, const Vector2 &center)
     mDrawComponent->SetAnimation("idle");
 
     SetPosition(center - GetHalfSize());
+
+    mGame->SetPortal(this);
 }

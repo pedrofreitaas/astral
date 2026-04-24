@@ -185,6 +185,10 @@ void Game::LoadFirstLevel()
 
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
 
+    steps.push_back(std::make_unique<UnspawnStep>(
+        this, [this]()
+        { return GetPortal(); }));
+
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this](){ return GetZoe(); },
@@ -223,8 +227,7 @@ void Game::LoadFirstLevel()
         [this](){ return Vector2(330.f, 530.f); }));
 
     dialogue = {
-        "Uma estrela? Ela parece estar indo para algum lugar?",
-        "Nao tenho outra opcao, tenho que segui-la."};
+        "Uma estrela? Ela parece estar indo para algum lugar?"};
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
     steps.push_back(std::make_unique<MoveStep>(
@@ -233,8 +236,7 @@ void Game::LoadFirstLevel()
         [this](){ return Vector2(730.f, 330.f); }));
 
     dialogue = {
-        "Espere! Volte aqui!",
-        "Onde sera que ela foi? Preciso saber se ela esta me levando para algum lugar..."};
+        "Espere! Volte aqui!"};
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
     steps.push_back(std::make_unique<UnspawnStep>(
@@ -252,8 +254,8 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
     dialogue = {
-        "Se acalme garota, por enquanto nao ha muito a fazer a nao ser seguir a estrela que voce acabou de ver.",
-        "Ela e a chave para voce descobrir o que esta fazendo aqui.",
+        "Se acalme garota, ainda nao e hora de responder sua perguntas.",
+        "Acho que você ja sabe o que tem que fazer!"
     };
     
     steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
@@ -263,37 +265,14 @@ void Game::LoadFirstLevel()
                 [this](){
                     this->GetZoe()->SetAbilitiesLocked(false);
                 });
-    
-    steps.clear();
-
-    dialogue = {
-        "Parabens Zoe! Voce pegou bem o basico.",
-        "Continue seguindo a estrela para descobrir mais sobre esse lugar misterioso.",
-        "A partir de agora a minha ajuda nao serve de muito mais, entao boa sorte! Voce vai precisar..."
-    };
-    
-    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
-
-    AddCutscene("exit_tutorial",
-                std::move(steps),
-                [this](){});
 
     steps.clear();
-    dialogue = {
-        "Ha? O que e aquilo?",
-        "O que quer que seja nao me parece amigavel..."
-    };
-    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
-    AddCutscene("see_sith",
-                std::move(steps),
-                [this](){});
-
-    steps.clear();
     dialogue = {
         "Parece que esses desafios foram muito faceis para voce!",
         "Acho que voce vai se sair muito bem nos proximos!"
     };
+
     steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
 
     dialogue = {
@@ -301,6 +280,7 @@ void Game::LoadFirstLevel()
         "Espero que tenha gostado do que viu ate agora, novas funcionalidades e conteudos estarao disponiveis na versao completa do jogo.",
         "Nos vemos em breve!"
     };
+
     steps.push_back(std::make_unique<DialogueStep>(this, "Desenvolvedor", dialogue));
 
     AddCutscene("endDemo",
@@ -312,7 +292,7 @@ void Game::LoadFirstLevel()
     steps.clear();
     dialogue = {
         "Opa, opa, opa...",
-        "Esse e o Quasar, um golem de energia que protege o Espaco Astral.",
+        "Esse e o Quasar, um golem que protege o Espaco Astral.",
     };
     steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
 
