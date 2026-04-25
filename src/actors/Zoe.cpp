@@ -264,6 +264,10 @@ void Zoe::ManageState()
         }
         break;
 
+    case BehaviorState::Dashing:
+        mRigidBodyComponent->SetApplyGravity(false);
+        break;
+
     case BehaviorState::TakingDamage:
         break;
 
@@ -417,6 +421,10 @@ void Zoe::ManageAnimations()
     case BehaviorState::Clinging:
         mDrawComponent->SetAnimation("clinging");
         mDrawComponent->SetAnimFPS(8.f);
+        break;
+
+    case BehaviorState::Dashing:
+        mDrawComponent->SetAnimation("jump");
         break;
 
     default:
@@ -595,27 +603,60 @@ void Zoe::FireFireball()
     mGame->GetAudio()->PlaySound("fireball.wav");
 }
 
+static Vector2 SnapVentaniaDir(Vector2 dir)
+{
+    // Right, Right-Up, Up, Left-Up, Left
+    static const Vector2 DIRS[] = {
+        Vector2( 1.f,      0.f     ),
+        Vector2( 0.7071f, -0.7071f ),
+        Vector2( 0.f,     -1.f     ),
+        Vector2(-0.7071f, -0.7071f ),
+        Vector2(-1.f,      0.f     ),
+    };
+
+    float bestDot = -2.f;
+    Vector2 best = DIRS[0];
+    for (const Vector2& d : DIRS)
+    {
+        float dot = dir.x * d.x + dir.y * d.y;
+        if (dot > bestDot) { bestDot = dot; best = d; }
+    }
+    return best;
+}
+
 void Zoe::TriggerVentania()
 {
     if (mIsVentaniaOnCooldown)
         return;
 
+    Vector2 rawDir = mInputMovementDir.LengthSq() > 0.f ? mInputMovementDir : GetForward();
+    Vector2 dir = SnapVentaniaDir(rawDir);
+    float speed = mGame->GetConfig()->Get<float>("ZOE.POWERS.VENTANIA.SPEED");
+
     mRigidBodyComponent->ResetVelocity();
-
-    Vector2 ventaniaDir = mInputMovementDir.LengthSq() > 0.f ? mInputMovementDir : GetForward();
-
-    mRigidBodyComponent->ApplyForce(ventaniaDir * Zoe::VETANIA_SPEED);
+    mRigidBodyComponent->ApplyImpulse(dir * speed);
 
     new Ventania(
         GetGame(),
         GetCenter(),
-        ventaniaDir);
+        dir);
 
     SetVentaniaOnCooldown(true);
     mTimerComponent->AddTimer(Zoe::VETANIA_COOLDOWN, [this]()
                               { SetVentaniaOnCooldown(false); });
 
     mGame->GetAudio()->PlaySound("ventania.wav");
+
+    mBehaviorState = BehaviorState::Dashing;
+
+    mTimerComponent->AddTimer(0.2f, [this]()
+    {
+        if (mBehaviorState == BehaviorState::Dashing)
+        {
+            mBehaviorState = BehaviorState::Falling;
+            mRigidBodyComponent->SetApplyGravity(true);
+        }
+    });
 }
 
 void Zoe::OnDamageCallback()
