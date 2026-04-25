@@ -41,6 +41,9 @@
             "FIREBALL": {
                 "SPEED": 180,
                 "KNOCKBACK_FORCE": 300
+            },
+            "VENTANIA": {
+                "SPEED": 800
             }
         }
     }
