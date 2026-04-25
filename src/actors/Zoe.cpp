@@ -150,7 +150,7 @@ void Zoe::ManageState()
 
         if (CheckHit()) break;
 
-        Move(.125f);
+        Move(1.3f);
 
         break;
 
@@ -176,6 +176,8 @@ void Zoe::ManageState()
         }
 
         if (CheckHit()) break;
+
+        Move(1.3f);
 
         break;
 
