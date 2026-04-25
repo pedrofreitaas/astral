@@ -699,10 +699,9 @@ bool Zoe::CheckJump()
         return false;
 
     float jumpForce = mRigidBodyComponent->GetJumpImpulseY(5);
-    float horizontalDir = Math::Sign(mRigidBodyComponent->GetVelocity().x);
 
     mRigidBodyComponent->ApplyImpulse(
-        Vector2(horizontalDir * 10.f, jumpForce));
+        Vector2(0.f, jumpForce));
 
     mBehaviorState = BehaviorState::Jumping;
 
