@@ -309,7 +309,11 @@ void Zoe::ManageState()
             break;
         }
 
-        mRigidBodyComponent->ApplyForce(Vector2(0.f, -GRAVITY * .4f));
+        float mYSpeed = mRigidBodyComponent->GetVelocity().y;
+
+        if (mYSpeed > 0.f) { // compensate gravity while falling
+            mRigidBodyComponent->ApplyForce(Vector2(0.f, -GRAVITY * .9f));
+        }
 
         break;
     }
