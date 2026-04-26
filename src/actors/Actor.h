@@ -47,7 +47,7 @@ enum class BehaviorState // For AI behaviors/animations
 class Actor
 {
 public:
-    Actor(class Game* game, int lives=3, bool mustAlwaysUpdate = false);
+    Actor(class Game* game, int lives=3, bool mustAlwaysUpdate = false, std::string type="generic");
     virtual ~Actor();
 
     void TakeKnockback(const Vector2 &knockback = Vector2(0.f, 0.f));

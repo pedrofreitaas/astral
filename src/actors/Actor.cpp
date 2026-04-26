@@ -15,7 +15,7 @@
 #include "./traps/Shuriken.h"
 #include "../libs/Math.h"
 
-Actor::Actor(Game* game, int lives, bool mustAlwaysUpdate)
+Actor::Actor(Game* game, int lives, bool mustAlwaysUpdate, std::string type)
         : mState(ActorState::Active)
         , mPosition(Vector2::Zero)
         , mScale(1.0f)
@@ -25,7 +25,7 @@ Actor::Actor(Game* game, int lives, bool mustAlwaysUpdate)
         , mBehaviorState(BehaviorState::Idle)
         , mLifes(lives)
         , mInvincible(false)
-        , mType("generic")
+        , mType(type)
         , mFreezingCount(0.f)
         , mTimerComponent(nullptr)
 {
