@@ -149,7 +149,7 @@ void Enemy::Freeze()
 {
     if (IsFrozen()) return;
 
-    mBehaviorState = BehaviorState::Frozen;
+    SetBehaviorState(BehaviorState::Frozen);
     mAIMovementComponent->SetEnabled(false);
 }
 
@@ -157,6 +157,6 @@ void Enemy::StopFreeze()
 {
     if (!IsFrozen()) return;
 
-    mBehaviorState = BehaviorState::Moving;
+    SetBehaviorState(BehaviorState::Moving);
     mAIMovementComponent->SetEnabled(true);
 }

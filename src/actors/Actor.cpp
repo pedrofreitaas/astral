@@ -295,11 +295,11 @@ void Actor::TakeDamage()
 
     if (mLifes <= 0)
     {
-        mBehaviorState = BehaviorState::Dying;
+        SetBehaviorState(BehaviorState::Dying);
         return;
     }
 
-    mBehaviorState = BehaviorState::TakingDamage;
+    SetBehaviorState(BehaviorState::TakingDamage);
     mInvincible = true;
 
     if (mOnDamageCallback) {

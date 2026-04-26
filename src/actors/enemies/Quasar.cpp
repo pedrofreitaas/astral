@@ -43,7 +43,7 @@ Quasar::Quasar(Game *game, const Vector2 &center)
 
     mDrawComponent->SetAnimation("asleep");
 
-    mBehaviorState = BehaviorState::Asleep;
+    SetBehaviorState(BehaviorState::Asleep);
 
     SetPosition(center - GetHalfSize());
 }
@@ -63,7 +63,7 @@ void Quasar::ManageState()
         case BehaviorState::Asleep:
             if (distanceToZoeSQ <= 45000.f)
             {
-                mBehaviorState = BehaviorState::Moving;
+                SetBehaviorState(BehaviorState::Moving);
             }
 
             break;
@@ -83,7 +83,7 @@ void Quasar::ManageState()
                  mTimerComponent->checkTimerRemaining(mAttackTimerHandle) <= 0.f)
             ) {
                 mAppliedImpulseInAttack = false;
-                mBehaviorState = BehaviorState::Attacking;
+                SetBehaviorState(BehaviorState::Attacking);
                 
                 mAttackTimerHandle = mTimerComponent->AddTimer(
                     mGame->GetConfig()->Get<float>("QUASAR.SMASH_COOLDOWN"), 
@@ -116,7 +116,7 @@ void Quasar::ManageState()
         }
 
         default:
-            mBehaviorState = BehaviorState::Asleep;
+            SetBehaviorState(BehaviorState::Asleep);
             break;
     }
 }
@@ -124,13 +124,13 @@ void Quasar::ManageState()
 void Quasar::AnimationEndCallback(std::string animationName)
 {
     if (animationName == "attack") {
-        mBehaviorState = BehaviorState::Moving;
+        SetBehaviorState(BehaviorState::Moving);
         return;
     }
 
     if (animationName == "hit")
     {
-        mBehaviorState = BehaviorState::Moving;
+        SetBehaviorState(BehaviorState::Moving);
         SetInvincibilityOff();
         return;
     }

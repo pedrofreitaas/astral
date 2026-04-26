@@ -41,7 +41,7 @@ Fireball::Fireball(
     mDrawAnimatedComponent->AddAnimation("dying", 29, 48);
 
     mDrawAnimatedComponent->SetAnimation("flying");
-    mBehaviorState = BehaviorState::Moving;
+    SetBehaviorState(BehaviorState::Moving);
 
     SetPosition(position - mDrawAnimatedComponent->GetHalfSpriteSize());
 

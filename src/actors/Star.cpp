@@ -36,16 +36,16 @@ void Star::ManageState()
     {
         case BehaviorState::Idle:
             if (mRigidBodyComponent->GetVelocity().Length() > 0.1f)
-                mBehaviorState = BehaviorState::Moving;
+                SetBehaviorState(BehaviorState::Moving);
             break;
         
         case BehaviorState::Moving:
             if (mRigidBodyComponent->GetVelocity().Length() < 0.1f)
-                mBehaviorState = BehaviorState::Idle;
+                SetBehaviorState(BehaviorState::Idle);
             break;
         
         default:
-            mBehaviorState = BehaviorState::Idle;           
+            SetBehaviorState(BehaviorState::Idle);           
             break;
     }
 }

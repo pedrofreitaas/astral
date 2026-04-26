@@ -82,7 +82,7 @@ void Tile::Freeze()
         GetCenter(),
         mLastSnowCollision);
 
-    mBehaviorState = BehaviorState::Frozen;
+    SetBehaviorState(BehaviorState::Frozen);
 }
 
 void Tile::StopFreeze()
@@ -92,5 +92,5 @@ void Tile::StopFreeze()
     if (mSnow != nullptr) mSnow->Kill();
     mSnow = nullptr;
 
-    mBehaviorState = BehaviorState::Idle;
+    SetBehaviorState(BehaviorState::Idle);
 }

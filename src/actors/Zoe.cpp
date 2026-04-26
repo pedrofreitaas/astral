@@ -132,20 +132,20 @@ void Zoe::ManageState()
     case BehaviorState::Jumping:
         if (mRigidBodyComponent->GetOnGround())
         {
-            mBehaviorState = BehaviorState::Idle;
+            SetBehaviorState(BehaviorState::Idle);
             break;
         }
 
         if (IsPressingAgainstWall() != 0)
         {
             mRigidBodyComponent->ResetVelocityY();
-            mBehaviorState = BehaviorState::Clinging;
+            SetBehaviorState(BehaviorState::Clinging);
             break;
         }
 
         if (mRigidBodyComponent->GetVelocity().y > 0.f)
         {
-            mBehaviorState = BehaviorState::Falling;
+            SetBehaviorState(BehaviorState::Falling);
             break;
         }
 
@@ -165,14 +165,14 @@ void Zoe::ManageState()
     case BehaviorState::Falling:
         if (mRigidBodyComponent->GetOnGround())
         {
-            mBehaviorState = BehaviorState::Idle;
+            SetBehaviorState(BehaviorState::Idle);
             break;
         }
 
         if (IsPressingAgainstWall() != 0)
         {
             mRigidBodyComponent->ResetVelocityY();
-            mBehaviorState = BehaviorState::Clinging;
+            SetBehaviorState(BehaviorState::Clinging);
             break;
         }
 
@@ -205,25 +205,25 @@ void Zoe::ManageState()
 
         if (!mRigidBodyComponent->GetOnGround())
         {
-            mBehaviorState = BehaviorState::Jumping;
+            SetBehaviorState(BehaviorState::Jumping);
             break;
         }
 
         if (mTryingToFireFireball && !CheckFireballOnCooldown())
         {
-            mBehaviorState = BehaviorState::Charging;
+            SetBehaviorState(BehaviorState::Charging);
             break;
         }
 
         if (!isCutscene && mInputMovementDir.x == 0.f && mInputMovementDir.y == 0.f)
         {
-            mBehaviorState = BehaviorState::Idle;
+            SetBehaviorState(BehaviorState::Idle);
             break;
         }
 
         if (isCutscene && mRigidBodyComponent->GetVelocity().x == 0.f && mRigidBodyComponent->GetVelocity().y == 0.f)
         {
-            mBehaviorState = BehaviorState::Idle;
+            SetBehaviorState(BehaviorState::Idle);
             break;
         }
 
@@ -249,25 +249,25 @@ void Zoe::ManageState()
 
         if (!mRigidBodyComponent->GetOnGround())
         {
-            mBehaviorState = BehaviorState::Jumping;
+            SetBehaviorState(BehaviorState::Jumping);
             break;
         }
 
         if (!isCutscene && (mInputMovementDir.x != 0 || mInputMovementDir.y != 0))
         {
-            mBehaviorState = BehaviorState::Moving;
+            SetBehaviorState(BehaviorState::Moving);
             break;
         }
 
         if (isCutscene && (mRigidBodyComponent->GetVelocity().x != 0.f || mRigidBodyComponent->GetVelocity().y != 0.f))
         {
-            mBehaviorState = BehaviorState::Moving;
+            SetBehaviorState(BehaviorState::Moving);
             break;
         }
 
         if (mTryingToFireFireball && !CheckFireballOnCooldown())
         {
-            mBehaviorState = BehaviorState::Charging;
+            SetBehaviorState(BehaviorState::Charging);
             break;
         }
 
@@ -279,7 +279,7 @@ void Zoe::ManageState()
     case BehaviorState::Charging:
         if (!mTryingToFireFireball)
         {
-            mBehaviorState = BehaviorState::Idle;
+            SetBehaviorState(BehaviorState::Idle);
         }
         break;
 
@@ -291,7 +291,7 @@ void Zoe::ManageState()
         {
             mRigidBodyComponent->ResetVelocity();
             mRigidBodyComponent->SetApplyGravity(true);
-            mBehaviorState = BehaviorState::Falling;
+            SetBehaviorState(BehaviorState::Falling);
             break;
         }
 
@@ -302,7 +302,7 @@ void Zoe::ManageState()
     {
         if (mRigidBodyComponent->GetOnGround())
         {
-            mBehaviorState = BehaviorState::Idle;
+            SetBehaviorState(BehaviorState::Idle);
             mAerialAttackCollider->Dismiss();
             mAerialAttackCollider = nullptr;
             break;
@@ -315,7 +315,7 @@ void Zoe::ManageState()
     {
         if (mRigidBodyComponent->GetOnGround())
         {
-            mBehaviorState = BehaviorState::Idle;
+            SetBehaviorState(BehaviorState::Idle);
             break;
         }
 
@@ -327,7 +327,7 @@ void Zoe::ManageState()
 
         if (IsPressingAgainstWall() == 0)
         {
-            mBehaviorState = BehaviorState::Falling;
+            SetBehaviorState(BehaviorState::Falling);
             break;
         }
 
@@ -351,7 +351,7 @@ void Zoe::ManageState()
         break;
 
     default:
-        mBehaviorState = BehaviorState::Idle;
+        SetBehaviorState(BehaviorState::Idle);
         break;
     }
 }
@@ -569,7 +569,7 @@ void Zoe::AnimationEndCallback(std::string animationName)
 {
     if (animationName == "hurt")
     {
-        mBehaviorState = BehaviorState::Idle;
+        SetBehaviorState(BehaviorState::Idle);
         SetInvincibilityOff();
         return;
     }
@@ -578,7 +578,7 @@ void Zoe::AnimationEndCallback(std::string animationName)
     {
         FireFireball();
 
-        mBehaviorState = BehaviorState::Idle;
+        SetBehaviorState(BehaviorState::Idle);
         return;
     }
 
@@ -590,7 +590,7 @@ void Zoe::AnimationEndCallback(std::string animationName)
 
     if (animationName == "ground-crush")
     {
-        mBehaviorState = BehaviorState::Idle;
+        SetBehaviorState(BehaviorState::Idle);
         mAttackCollider->Dismiss();
         mAttackCollider = nullptr;
         return;
@@ -598,7 +598,7 @@ void Zoe::AnimationEndCallback(std::string animationName)
 
     if (animationName == "aerial-crush")
     {
-        mBehaviorState = BehaviorState::Jumping;
+        SetBehaviorState(BehaviorState::Jumping);
         mAerialAttackCollider->Dismiss();
         mAerialAttackCollider = nullptr;
         return;
@@ -694,7 +694,7 @@ void Zoe::TriggerVentania()
 
     mGame->GetAudio()->PlaySound("ventania.wav");
 
-    mBehaviorState = BehaviorState::Dashing;
+    SetBehaviorState(BehaviorState::Dashing);
 
     mDashGravityDisableTimer->Restart();
 }
@@ -746,7 +746,7 @@ bool Zoe::CheckJump()
     mRigidBodyComponent->ApplyImpulse(
         Vector2(0.f, jumpForce));
 
-    mBehaviorState = BehaviorState::Jumping;
+    SetBehaviorState(BehaviorState::Jumping);
 
     return true;
 }
@@ -805,7 +805,7 @@ bool Zoe::CheckDodge()
         return false;
     }
 
-    mBehaviorState = BehaviorState::Dodging;
+    SetBehaviorState(BehaviorState::Dodging);
     mColliderComponent->SetIgnoreLayers(Zoe::IGNORED_LAYERS_DODGE);
     mColliderComponent->SetBB(&DODGE_BB);
 
@@ -817,7 +817,7 @@ void Zoe::DodgeEnd()
     if (mBehaviorState != BehaviorState::Dodging)
         return;
 
-    mBehaviorState = BehaviorState::Idle;
+    SetBehaviorState(BehaviorState::Idle);
 
     Vector2 currentPos = GetPosition();
     SetPosition(Vector2(currentPos.x, currentPos.y - 5));
@@ -868,7 +868,7 @@ bool Zoe::CheckHit()
 
     bool onGround = mRigidBodyComponent->GetOnGround();
 
-    mBehaviorState = onGround ? BehaviorState::Attacking : BehaviorState::AerialAttacking;
+    SetBehaviorState(onGround ? BehaviorState::Attacking : BehaviorState::AerialAttacking);
     mGame->GetAudio()->PlaySound("zoeSmash.wav");
 
     if (onGround)
@@ -991,7 +991,7 @@ bool Zoe::CheckNevasca()
         SetRotation(Math::Pi);
     }
 
-    mBehaviorState = BehaviorState::Idle;
+    SetBehaviorState(BehaviorState::Idle);
 
     return true;
 }

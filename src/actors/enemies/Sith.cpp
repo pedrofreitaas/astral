@@ -50,7 +50,7 @@ Sith::Sith(Game *game, const Vector2 &position)
 
     mDrawComponent->SetAnimation("moving");
 
-    mBehaviorState = BehaviorState::Moving;
+    SetBehaviorState(BehaviorState::Moving);
     SetPosition(position);
 
     mAttack2Collider = new Collider(
@@ -82,7 +82,7 @@ void Sith::Attack1()
         mBehaviorState == BehaviorState::Charging)
         return;
 
-    mBehaviorState = BehaviorState::Attacking;
+    SetBehaviorState(BehaviorState::Attacking);
     mCurrentAttack = Attacks::Attack1;
 
     SetAttack1OnCooldown(true);
@@ -101,7 +101,7 @@ void Sith::Attack2()
         mBehaviorState == BehaviorState::Charging)
         return;
 
-    mBehaviorState = BehaviorState::Attacking;
+    SetBehaviorState(BehaviorState::Attacking);
     mCurrentAttack = Attacks::Attack2;
     mAttack2Collider->SetEnabled(true);
 
@@ -157,7 +157,7 @@ void Sith::ManageState()
 
         if (PlayerOnSight(sightDistance) && !mIsProjectileOnCooldown)
         {
-            mBehaviorState = BehaviorState::Charging;
+            SetBehaviorState(BehaviorState::Charging);
             break;
         }
 
@@ -210,7 +210,7 @@ void Sith::ManageState()
 
     case BehaviorState::Charging:
         if (!PlayerOnSight(sightDistance))
-            mBehaviorState = BehaviorState::Moving;
+            SetBehaviorState(BehaviorState::Moving);
         break;
     case BehaviorState::TakingDamage:
         break;
@@ -219,7 +219,7 @@ void Sith::ManageState()
     case BehaviorState::Frozen:
         break;
     default:
-        mBehaviorState = BehaviorState::Asleep;
+        SetBehaviorState(BehaviorState::Asleep);
         break;
     }
 }
@@ -229,12 +229,12 @@ void Sith::AnimationEndCallback(std::string animationName)
     if (animationName == "charging")
     {
         FireProjectile();
-        mBehaviorState = BehaviorState::Moving;
+        SetBehaviorState(BehaviorState::Moving);
     }
 
     else if (animationName == "attack")
     {
-        mBehaviorState = BehaviorState::Moving;
+        SetBehaviorState(BehaviorState::Moving);
         mCurrentAttack = Attacks::None;
         if (mAttack1Collider)
             mAttack1Collider->Dismiss();
@@ -244,7 +244,7 @@ void Sith::AnimationEndCallback(std::string animationName)
 
     else if (animationName == "attack2")
     {
-        mBehaviorState = BehaviorState::Moving;
+        SetBehaviorState(BehaviorState::Moving);
         mCurrentAttack = Attacks::None;
         mAttack2Collider->SetEnabled(false);
         SetInvincibilityOff();
@@ -257,7 +257,7 @@ void Sith::AnimationEndCallback(std::string animationName)
 
     else if (animationName == "damage")
     {
-        mBehaviorState = BehaviorState::Moving;
+        SetBehaviorState(BehaviorState::Moving);
         SetInvincibilityOff();
     }
 }

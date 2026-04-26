@@ -47,7 +47,7 @@ Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
 
     mDrawComponent->SetAnimation("asleep");
 
-    mBehaviorState = BehaviorState::Asleep;
+    SetBehaviorState(BehaviorState::Asleep);
     SetPosition(position);
 }
 
@@ -88,7 +88,7 @@ void Zod::ManageState()
     switch (mBehaviorState)
     {
     case BehaviorState::Asleep:
-        if (distanceSQToZoe < 40000.f) mBehaviorState = BehaviorState::Waking;
+        if (distanceSQToZoe < 40000.f) SetBehaviorState(BehaviorState::Waking);
         break;
     case BehaviorState::Waking:
         break;
@@ -102,7 +102,7 @@ void Zod::ManageState()
             SetRotation(Math::Pi);
 
         if (PlayerOnSight(viewDistance) && !mProjectileOnCooldown) {
-            mBehaviorState = BehaviorState::Charging;
+            SetBehaviorState(BehaviorState::Charging);
             break;
         }
 
@@ -116,7 +116,7 @@ void Zod::ManageState()
     }
     
     case BehaviorState::Charging:
-        if (!PlayerOnSight(viewDistance)) mBehaviorState = BehaviorState::Moving;
+        if (!PlayerOnSight(viewDistance)) SetBehaviorState(BehaviorState::Moving);
         break;
 
     case BehaviorState::TakingDamage:
@@ -129,7 +129,7 @@ void Zod::ManageState()
         break;
 
     default:
-        mBehaviorState = BehaviorState::Asleep;
+        SetBehaviorState(BehaviorState::Asleep);
         break;
     }
 }
@@ -138,20 +138,20 @@ void Zod::AnimationEndCallback(std::string animationName)
 {
     if (animationName == "waking")
     {
-        mBehaviorState = BehaviorState::Moving;
+        SetBehaviorState(BehaviorState::Moving);
         return;
     }
 
     if (animationName == "charging")
     {
         FireProjectile();
-        mBehaviorState = BehaviorState::Moving;
+        SetBehaviorState(BehaviorState::Moving);
         return;
     }
 
     if (animationName == "damage")
     {
-        mBehaviorState = BehaviorState::Moving;
+        SetBehaviorState(BehaviorState::Moving);
         SetInvincibilityOff();
         return;
     }

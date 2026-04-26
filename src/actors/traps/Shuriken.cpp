@@ -26,7 +26,7 @@ Shuriken::Shuriken(Game *game, const Vector2 &position)
     mDrawComponent->SetAnimation("spinning");
 
     SetPosition(position);
-    mBehaviorState = BehaviorState::Moving;
+    SetBehaviorState(BehaviorState::Moving);
 }
 
 void Shuriken::ManageState()
@@ -36,7 +36,7 @@ void Shuriken::ManageState()
     case BehaviorState::Moving:
         break;
     default:
-        mBehaviorState = BehaviorState::Moving;
+        SetBehaviorState(BehaviorState::Moving);
         break;
     }
 }

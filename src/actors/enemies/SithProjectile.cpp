@@ -37,7 +37,7 @@ SithProjectile::SithProjectile(
     mDrawAnimatedComponent->AddAnimation("dying", 3, 7);
 
     mDrawAnimatedComponent->SetAnimation("flying");
-    mBehaviorState = BehaviorState::Moving;
+    SetBehaviorState(BehaviorState::Moving);
 
     SetPosition(position - GetHalfSize());
 

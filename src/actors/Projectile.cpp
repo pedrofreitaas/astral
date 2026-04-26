@@ -52,5 +52,5 @@ void Projectile::OnHorizontalCollision(const float minOverlap, AABBColliderCompo
 }
 
 void Projectile::Kill() { 
-    mBehaviorState = BehaviorState::Dying; 
+    SetBehaviorState(BehaviorState::Dying); 
 }

@@ -57,7 +57,7 @@ void Spikes::ManageState()
     case BehaviorState::Attacking:
         break;
     default:
-        mBehaviorState = BehaviorState::Idle;
+        SetBehaviorState(BehaviorState::Idle);
         break;
     }
 }
@@ -66,7 +66,7 @@ void Spikes::AnimationEndCallback(std::string animationName)
 {
     if (animationName == "spiking")
     {
-        mBehaviorState = BehaviorState::Idle;
+        SetBehaviorState(BehaviorState::Idle);
         mSpikeCollider->SetEnabled(false);
 
         mTimerComponent->AddTimer(
@@ -109,7 +109,7 @@ void Spikes::Trigger()
         return;
     }
 
-    mBehaviorState = BehaviorState::Attacking;
+    SetBehaviorState(BehaviorState::Attacking);
     mSpikeCollider->SetEnabled(true);
 }
 

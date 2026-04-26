@@ -36,7 +36,7 @@ ZodProjectile::ZodProjectile(
     mDrawAnimatedComponent->AddAnimation("flying", 0, 3);
     mDrawAnimatedComponent->SetAnimation("flying");
     
-    mBehaviorState = BehaviorState::Moving;
+    SetBehaviorState(BehaviorState::Moving);
 
     target.y = position.y; // project target onto horizontal plane of projectile
 

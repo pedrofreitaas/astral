@@ -56,7 +56,7 @@ void Spear::ManageState()
     case BehaviorState::Attacking:
         break;
     default:
-        mBehaviorState = BehaviorState::Idle;
+        SetBehaviorState(BehaviorState::Idle);
         break;
     }
 }
@@ -65,7 +65,7 @@ void Spear::AnimationEndCallback(std::string animationName)
 {
     if (animationName == "spiking")
     {
-        mBehaviorState = BehaviorState::Idle;
+        SetBehaviorState(BehaviorState::Idle);
         mTimerComponent->AddTimer(Spear::TRIGGER_COOLDOWN, [this]()
                                   { Trigger(); });
     }
@@ -125,7 +125,7 @@ void Spear::Trigger()
         return;
     }
 
-    mBehaviorState = BehaviorState::Attacking;
+    SetBehaviorState(BehaviorState::Attacking);
 }
 
 Vector2 Spear::GetTipCenter() const
