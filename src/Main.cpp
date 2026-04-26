@@ -9,19 +9,32 @@
 #include "core/Game.h"
 #define SDL_MAIN_HANDLED
 
-//Screen dimension constants
-// const int SCREEN_WIDTH = 1920;
-// const int SCREEN_HEIGHT = 1080;
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+
+static Game* gGame = nullptr;
+
+void emscripten_loop()
+{
+    gGame->ProcessInput();
+    gGame->UpdateGame();
+    gGame->GenerateOutput();
+}
+#endif
 
 int main(int argc, char** argv)
 {
     Game game = Game();
     bool success = game.Initialize();
 
-    if (!success) throw std::runtime_error("Failed to initialize game.");
+    if (!success) return 1;
 
+#ifdef __EMSCRIPTEN__
+    gGame = &game;
+    emscripten_set_main_loop(emscripten_loop, 0, 1);
+#else
     game.RunLoop();
-
     game.Shutdown();
+#endif
     return 0;
 }

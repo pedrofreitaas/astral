@@ -89,6 +89,9 @@ public:
     bool Initialize();
     void RunLoop();
     void Shutdown();
+    void ProcessInput();
+    void UpdateGame();
+    void GenerateOutput();
     void Quit() { mIsRunning = false; }
 
     float GetDtLastFrame() { return mDeltatime; }
@@ -248,10 +251,7 @@ private:
         mMaintainCameraInMap = newValue;
     }
 
-    void ProcessInput();
-    void UpdateGame();
     void UpdateCamera();
-    void GenerateOutput();
 
     // Scene Manager
     void UpdateSceneManager(float deltaTime);
