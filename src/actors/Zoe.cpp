@@ -123,6 +123,13 @@ void Zoe::ManageState()
 {
     bool isCutscene = mGame->GetGamePlayState() == Game::GamePlayState::PlayingCutscene;
 
+    if (
+        mPreviousBehaviorState == BehaviorState::Dashing && 
+        !mRigidBodyComponent->GetApplyGravity()
+    ) {
+        mRigidBodyComponent->SetApplyGravity(true);
+    }
+    
     switch (mBehaviorState)
     {
     case BehaviorState::Dying:
