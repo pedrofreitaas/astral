@@ -80,6 +80,7 @@ fabric.properties
 .DS_Store
 
 build/
+embuild/
 
 .env
 
