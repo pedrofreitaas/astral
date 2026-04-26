@@ -34,7 +34,7 @@ void RigidBodyComponent::ApplyFriction() {
         friction *= 0.35f; // Reduce friction when sliding on snow
     }
 
-    ApplyForce(Vector2(-friction * mVelocity));
+    ApplyForce(Vector2(mVelocity.x, 0.f) * -friction);
 }
 
 // Force changes acceleration
