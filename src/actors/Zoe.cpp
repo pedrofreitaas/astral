@@ -2,18 +2,19 @@
 
 Zoe::Zoe(
     Game *game, const float forwardSpeed, const Vector2 &center)
-    : Actor(game, 6, true), mForwardSpeed(forwardSpeed),
+    : Actor(game, 6, true, "zoe"), mForwardSpeed(forwardSpeed),
       mTryingToFireFireball(false), mFireballCooldownTimer(), mDodgeCooldownTimer(),
       mIsVentaniaOnCooldown(false), mTryingToTriggerVentania(false),
       mIsTryingToHit(false), mAttackCollider(nullptr), mIsTryingToDodge(false),
       mInputMovementDir(0.f, 0.f), mMovementLocked(false), mAbilitiesLocked(false),
       mDamageSoundHandle(SoundHandle::Invalid), mIsTryingToJump(false), mNevascaSoundHandle(SoundHandle::Invalid),
-      mIsTryingToNevasca(false), mIsFiringNevasca(false), mNevascaTimer(0.f), mAerialAttackCollider(nullptr)
+      mIsTryingToNevasca(false), mIsFiringNevasca(false), mNevascaTimer(0.f), mAerialAttackCollider(nullptr),
+      mCoyoteTimer(nullptr), mDashGravityDisableTimer(nullptr)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
 
     mColliderComponent = new AABBColliderComponent(
-        this, 
+        this,
         DEFAULT_BB.x, DEFAULT_BB.y, DEFAULT_BB.w, DEFAULT_BB.h,
         ColliderLayer::Player);
 
@@ -48,6 +49,9 @@ Zoe::Zoe(
     mGame->SetZoe(this);
 
     mCoyoteTimer = mTimerComponent->AddNotRemovableTimer(0.1f, nullptr);
+
+    // making this timer longer results in a buggy dash.
+    mDashGravityDisableTimer = mTimerComponent->AddNotRemovableTimer(0.1f, nullptr);
 
     SetOnDamageCallback(std::bind(&Zoe::OnDamageCallback, this));
 }
@@ -129,10 +133,12 @@ void Zoe::ManageState()
         if (mRigidBodyComponent->GetOnGround())
         {
             mBehaviorState = BehaviorState::Idle;
+            break;
         }
 
-        if ( IsPressingAgainstWall() != 0 )
+        if (IsPressingAgainstWall() != 0)
         {
+            mRigidBodyComponent->ResetVelocityY();
             mBehaviorState = BehaviorState::Clinging;
             break;
         }
@@ -140,6 +146,7 @@ void Zoe::ManageState()
         if (mRigidBodyComponent->GetVelocity().y > 0.f)
         {
             mBehaviorState = BehaviorState::Falling;
+            break;
         }
 
         if (mTryingToTriggerVentania && !mIsVentaniaOnCooldown)
@@ -148,26 +155,29 @@ void Zoe::ManageState()
             break;
         }
 
-        if (CheckHit()) break;
+        if (CheckHit())
+            break;
 
         Move(1.3f);
 
         break;
 
     case BehaviorState::Falling:
-        if ( CheckJump() ) break;
-
         if (mRigidBodyComponent->GetOnGround())
         {
             mBehaviorState = BehaviorState::Idle;
             break;
         }
 
-        if ( IsPressingAgainstWall() != 0 )
+        if (IsPressingAgainstWall() != 0)
         {
+            mRigidBodyComponent->ResetVelocityY();
             mBehaviorState = BehaviorState::Clinging;
             break;
         }
+
+        if (CheckJump())
+            break;
 
         if (mTryingToTriggerVentania && !mIsVentaniaOnCooldown)
         {
@@ -175,7 +185,8 @@ void Zoe::ManageState()
             break;
         }
 
-        if (CheckHit()) break;
+        if (CheckHit())
+            break;
 
         Move(1.3f);
 
@@ -183,10 +194,14 @@ void Zoe::ManageState()
 
     case BehaviorState::Moving:
     {
-        if ( CheckJump() ) break;
-        if ( CheckDodge() ) break;
-        if ( CheckHit() ) break;
-        if ( CheckNevasca() ) break;
+        if (CheckJump())
+            break;
+        if (CheckDodge())
+            break;
+        if (CheckHit())
+            break;
+        if (CheckNevasca())
+            break;
 
         if (!mRigidBodyComponent->GetOnGround())
         {
@@ -200,7 +215,7 @@ void Zoe::ManageState()
             break;
         }
 
-        if (!isCutscene && mInputMovementDir.x == 0.f && mInputMovementDir.y == 0.f) 
+        if (!isCutscene && mInputMovementDir.x == 0.f && mInputMovementDir.y == 0.f)
         {
             mBehaviorState = BehaviorState::Idle;
             break;
@@ -220,13 +235,17 @@ void Zoe::ManageState()
 
     case BehaviorState::Idle:
     {
-        if ( CheckJump() ) break;
+        if (CheckJump())
+            break;
 
-        if ( CheckDodge() ) break;
+        if (CheckDodge())
+            break;
 
-        if ( CheckHit() ) break;
+        if (CheckHit())
+            break;
 
-        if ( CheckNevasca() ) break;
+        if (CheckNevasca())
+            break;
 
         if (!mRigidBodyComponent->GetOnGround())
         {
@@ -265,20 +284,22 @@ void Zoe::ManageState()
         break;
 
     case BehaviorState::Dashing:
-        mRigidBodyComponent->SetApplyGravity(false);
-        break;
+    {
+        mRigidBodyComponent->SetApplyGravity(false); //onground check is diff when gravity is off.
 
-    case BehaviorState::TakingDamage:
-        break;
+        if (mTimerComponent->checkTimerRemaining(mDashGravityDisableTimer) <= 0.f)
+        {
+            mRigidBodyComponent->ResetVelocity();
+            mRigidBodyComponent->SetApplyGravity(true);
+            mBehaviorState = BehaviorState::Falling;
+            break;
+        }
 
-    case BehaviorState::Attacking:
         break;
-
-    case BehaviorState::Dodging:
-        break;
+    }
 
     case BehaviorState::AerialAttacking:
-    {   
+    {
         if (mRigidBodyComponent->GetOnGround())
         {
             mBehaviorState = BehaviorState::Idle;
@@ -290,7 +311,8 @@ void Zoe::ManageState()
         break;
     }
 
-    case BehaviorState::Clinging: {
+    case BehaviorState::Clinging:
+    {
         if (mRigidBodyComponent->GetOnGround())
         {
             mBehaviorState = BehaviorState::Idle;
@@ -302,7 +324,7 @@ void Zoe::ManageState()
             TriggerVentania();
             break;
         }
-        
+
         if (IsPressingAgainstWall() == 0)
         {
             mBehaviorState = BehaviorState::Falling;
@@ -311,12 +333,22 @@ void Zoe::ManageState()
 
         float mYSpeed = mRigidBodyComponent->GetVelocity().y;
 
-        if (mYSpeed > 0.f) { // compensate gravity while falling
-            mRigidBodyComponent->ApplyForce(Vector2(0.f, -GRAVITY * .9f));
+        if (mYSpeed > 0.f)
+        { // compensate gravity while falling
+            mRigidBodyComponent->ApplyForce(Vector2(0.f, -GRAVITY * .97f));
         }
 
         break;
     }
+
+    case BehaviorState::TakingDamage:
+        break;
+
+    case BehaviorState::Attacking:
+        break;
+
+    case BehaviorState::Dodging:
+        break;
 
     default:
         mBehaviorState = BehaviorState::Idle;
@@ -351,18 +383,19 @@ void Zoe::OnUpdate(float deltaTime)
     bool wasFiringNevasca = mIsFiringNevasca;
 
     mIsFiringNevasca = mIsFiringNevasca && mIsTryingToNevasca;
-    
+
     if (!mIsFiringNevasca && mNevascaSoundHandle.IsValid() &&
         mGame->GetAudio()->GetSoundState(mNevascaSoundHandle) == SoundState::Playing)
     {
         mGame->GetAudio()->StopSound(mNevascaSoundHandle);
     }
-    
+
     else if (mIsFiringNevasca)
     {
         mNevascaTimer += deltaTime;
-        
-        if (!wasFiringNevasca) {
+
+        if (!wasFiringNevasca)
+        {
             mNevascaTimer = 0.f;
         }
     }
@@ -372,8 +405,10 @@ void Zoe::ManageAnimations()
 {
     switch (mBehaviorState)
     {
-    case BehaviorState::Idle: {
-        if (mIsFiringNevasca) {
+    case BehaviorState::Idle:
+    {
+        if (mIsFiringNevasca)
+        {
             mDrawComponent->SetAnimation("spraying");
             mDrawComponent->SetAnimFPS(6.f);
             break;
@@ -421,7 +456,7 @@ void Zoe::ManageAnimations()
         mDrawComponent->SetAnimation("aerial-crush");
         mDrawComponent->SetAnimFPS(12.0f);
         break;
-    
+
     case BehaviorState::Clinging:
         mDrawComponent->SetAnimation("clinging");
         mDrawComponent->SetAnimFPS(8.f);
@@ -465,15 +500,17 @@ void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *o
     if (other->GetLayer() == ColliderLayer::Quasar)
     {
         TakeDamage();
-        
-        float knockbackForce = mGame->GetConfig()->Get<float>("QUASAR.SPIKE_KNOCKBACK_FORCE");
-        Quasar* quasar = static_cast<Quasar*>(other->GetOwner());
 
-        if (quasar->GetBehaviorState() == BehaviorState::Attacking) {
+        float knockbackForce = mGame->GetConfig()->Get<float>("QUASAR.SPIKE_KNOCKBACK_FORCE");
+        Quasar *quasar = static_cast<Quasar *>(other->GetOwner());
+
+        if (quasar->GetBehaviorState() == BehaviorState::Attacking)
+        {
             TakeKnockback(Vector2(Math::Sign(-minOverlap), -1) * knockbackForce);
         }
-        else {
-            TakeKnockback(Vector2(Math::Sign(-minOverlap) *.7f, -.2f) * knockbackForce);
+        else
+        {
+            TakeKnockback(Vector2(Math::Sign(-minOverlap) * .7f, -.2f) * knockbackForce);
         }
 
         return;
@@ -518,7 +555,7 @@ void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *oth
     if (other->GetLayer() == ColliderLayer::Quasar)
     {
         TakeDamage();
-        
+
         float knockbackForce = mGame->GetConfig()->Get<float>("QUASAR.SPIKE_KNOCKBACK_FORCE");
         TakeKnockback(Vector2(1.f, Math::Sign(-minOverlap)) * knockbackForce);
 
@@ -540,7 +577,7 @@ void Zoe::AnimationEndCallback(std::string animationName)
     if (animationName == "charging" && mTryingToFireFireball)
     {
         FireFireball();
-        
+
         mBehaviorState = BehaviorState::Idle;
         return;
     }
@@ -601,9 +638,8 @@ void Zoe::FireFireball()
         fireballDir,
         this);
 
-    mFireballCooldownTimer = mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this] {
-        mFireballCooldownTimer = nullptr;
-    });
+    mFireballCooldownTimer = mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this]
+                                                       { mFireballCooldownTimer = nullptr; });
     mGame->GetAudio()->PlaySound("fireball.wav");
 }
 
@@ -611,19 +647,23 @@ static Vector2 SnapVentaniaDir(Vector2 dir)
 {
     // Right, Right-Up, Up, Left-Up, Left
     static const Vector2 DIRS[] = {
-        Vector2( 1.f,      0.f     ),
-        Vector2( 0.7071f, -0.7071f ),
-        Vector2( 0.f,     -1.f     ),
-        Vector2(-0.7071f, -0.7071f ),
-        Vector2(-1.f,      0.f     ),
+        Vector2(1.f, 0.f),
+        Vector2(0.7071f, -0.7071f),
+        Vector2(0.f, -1.f),
+        Vector2(-0.7071f, -0.7071f),
+        Vector2(-1.f, 0.f),
     };
 
     float bestDot = -2.f;
     Vector2 best = DIRS[0];
-    for (const Vector2& d : DIRS)
+    for (const Vector2 &d : DIRS)
     {
         float dot = dir.x * d.x + dir.y * d.y;
-        if (dot > bestDot) { bestDot = dot; best = d; }
+        if (dot > bestDot)
+        {
+            bestDot = dot;
+            best = d;
+        }
     }
     return best;
 }
@@ -631,6 +671,9 @@ static Vector2 SnapVentaniaDir(Vector2 dir)
 void Zoe::TriggerVentania()
 {
     if (mIsVentaniaOnCooldown)
+        return;
+
+    if (!mTryingToTriggerVentania)
         return;
 
     Vector2 rawDir = mInputMovementDir.LengthSq() > 0.f ? mInputMovementDir : GetForward();
@@ -653,14 +696,7 @@ void Zoe::TriggerVentania()
 
     mBehaviorState = BehaviorState::Dashing;
 
-    mTimerComponent->AddTimer(0.2f, [this]()
-    {
-        if (mBehaviorState == BehaviorState::Dashing)
-        {
-            mBehaviorState = BehaviorState::Falling;
-            mRigidBodyComponent->SetApplyGravity(true);
-        }
-    });
+    mDashGravityDisableTimer->Restart();
 }
 
 void Zoe::OnDamageCallback()
@@ -668,9 +704,8 @@ void Zoe::OnDamageCallback()
     mGame->SetCameraCenterToShake(0.125f, 1.5f);
 
     if (
-        !mDamageSoundHandle.IsValid() || 
-        mGame->GetAudio()->GetSoundState(mDamageSoundHandle) == SoundState::Stopped
-    )
+        !mDamageSoundHandle.IsValid() ||
+        mGame->GetAudio()->GetSoundState(mDamageSoundHandle) == SoundState::Stopped)
     {
         mDamageSoundHandle = mGame->GetAudio()->PlaySound("zoeTakeDamage.wav");
     }
@@ -690,19 +725,23 @@ bool Zoe::CheckJump()
 {
     if (!mGame->GetApplyGravityScene())
         return false;
-    
+
     if (!mIsTryingToJump)
         return false;
 
     if (mBehaviorState == BehaviorState::Jumping)
         return false;
-    
-    bool coyoteExpired = mTimerComponent->checkTimerRemaining(mCoyoteTimer) <= 0.f;
+
+    float coyoteTimeRemaining = mTimerComponent->checkTimerRemaining(mCoyoteTimer);
+
+    bool coyoteExpired = coyoteTimeRemaining <= 0.f;
 
     if (mBehaviorState == BehaviorState::Falling && coyoteExpired)
         return false;
 
-    float jumpForce = mRigidBodyComponent->GetJumpImpulseY(5);
+    mRigidBodyComponent->ResetVelocity();
+
+    float jumpForce = mRigidBodyComponent->GetJumpImpulseY(3);
 
     mRigidBodyComponent->ApplyImpulse(
         Vector2(0.f, jumpForce));
@@ -802,13 +841,12 @@ void Zoe::Move(float modifier)
         movementDir.Normalize();
     }
 
-    float MAX_MOVE_X_SPEED_ON_AIR = 50.f;
+    float MAX_MOVE_X_SPEED_ON_AIR = 120.f;
     float currentVelX = mRigidBodyComponent->GetVelocity().x;
 
-    if (!mRigidBodyComponent->GetOnGround() && 
+    if (!mRigidBodyComponent->GetOnGround() &&
         Math::Abs(currentVelX) >= MAX_MOVE_X_SPEED_ON_AIR &&
-        Math::Sign(currentVelX) == Math::Sign(movementDir.x)
-    )
+        Math::Sign(currentVelX) == Math::Sign(movementDir.x))
     {
         return;
     }
@@ -819,12 +857,15 @@ void Zoe::Move(float modifier)
 
 bool Zoe::CheckHit()
 {
-    if (!mIsTryingToHit) return false;
-    if (mBehaviorState == BehaviorState::AerialAttacking) return false;
-    if (mBehaviorState == BehaviorState::Attacking) return false;
+    if (!mIsTryingToHit)
+        return false;
+    if (mBehaviorState == BehaviorState::AerialAttacking)
+        return false;
+    if (mBehaviorState == BehaviorState::Attacking)
+        return false;
 
     mGame->SetCameraCenterToShake(0.25f);
-    
+
     bool onGround = mRigidBodyComponent->GetOnGround();
 
     mBehaviorState = onGround ? BehaviorState::Attacking : BehaviorState::AerialAttacking;
@@ -846,8 +887,7 @@ bool Zoe::CheckHit()
             .75f,
             nullptr,
             false,
-            std::bind(&Zoe::GetCenter, this)
-        );
+            std::bind(&Zoe::GetCenter, this));
 
         return true;
     }
@@ -868,8 +908,7 @@ bool Zoe::CheckHit()
         1.25f,
         nullptr,
         false,
-        std::bind(&Zoe::GetCenter, this)
-    );
+        std::bind(&Zoe::GetCenter, this));
 
     return true;
 }
@@ -919,14 +958,13 @@ bool Zoe::CheckNevasca()
     std::vector<Vector2> dirs = {
         nevascaDir,
         Vector2::RotateVec(nevascaDir, dissipationAngle),
-        Vector2::RotateVec(nevascaDir, -dissipationAngle)
-    };
+        Vector2::RotateVec(nevascaDir, -dissipationAngle)};
 
     while (mNevascaTimer >= rate)
     {
         mNevascaTimer -= rate;
-        
-        for (const Vector2& dir : dirs)
+
+        for (const Vector2 &dir : dirs)
         {
             new Nevasca(
                 mGame,
@@ -935,7 +973,7 @@ bool Zoe::CheckNevasca()
                 this);
         }
     }
-    
+
     if (!mNevascaSoundHandle.IsValid() ||
         mGame->GetAudio()->GetSoundState(mNevascaSoundHandle) == SoundState::Stopped)
     {
@@ -944,10 +982,12 @@ bool Zoe::CheckNevasca()
 
     Vector2 pads = mGame->getNormalizedControlerPad();
 
-    if (pads.x > 0.f) {
+    if (pads.x > 0.f)
+    {
         SetRotation(0.f);
     }
-    else if (pads.x < 0.f) {
+    else if (pads.x < 0.f)
+    {
         SetRotation(Math::Pi);
     }
 

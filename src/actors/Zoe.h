@@ -114,6 +114,7 @@ private:
     bool mIsFiringNevasca;
     float mNevascaTimer;
     Timer* mDodgeCooldownTimer;
+    Timer* mDashGravityDisableTimer;
 
     void FireFireball();
     bool mTryingToFireFireball;
