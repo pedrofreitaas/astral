@@ -143,6 +143,11 @@ public:
 protected:
     class Game* mGame;
 
+    void SetBehaviorState(BehaviorState state) { 
+        mPreviousBehaviorState = mBehaviorState;
+        mBehaviorState = state; 
+    }
+
     // Any actor-specific update code (overridable)
     virtual void OnUpdate(float deltaTime);
     virtual void OnProcessInput(const Uint8* keyState);
@@ -156,7 +161,7 @@ protected:
 
     // Actor's state
     ActorState mState;
-    BehaviorState mBehaviorState;
+    BehaviorState mBehaviorState, mPreviousBehaviorState;
 
     // Transform
     Vector2 mPosition;
