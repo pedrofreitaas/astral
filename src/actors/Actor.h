@@ -22,26 +22,26 @@ enum class ActorState
 
 enum class BehaviorState // For AI behaviors/animations
 {
-    Asleep,
-    Waking,
-    Idle,
-    Moving,
-    Charging,
-    Attacking, 
-    AerialAttacking,
-    Dodging,
-    Stunned,
-    Jumping,
-    Falling,
-    Dying,
-    Provoking,
-    Fleeing,
-    Wandering,
-    TakingDamage,
-    Clinging,
-    Freezing,
-    Frozen,
-    Dashing
+    Asleep = 0,
+    Waking = 1,
+    Idle = 2,
+    Moving = 3,
+    Charging = 4,
+    Attacking = 5,
+    AerialAttacking = 6,
+    Dodging = 7,
+    Stunned = 8,
+    Jumping = 9,
+    Falling = 10,
+    Dying = 11,
+    Provoking = 12,
+    Fleeing = 13,
+    Wandering = 14,
+    TakingDamage = 15,
+    Clinging = 16,
+    Freezing = 17,
+    Frozen = 18,
+    Dashing = 19
 };
 
 class Actor
