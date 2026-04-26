@@ -128,14 +128,14 @@
                  "y":304.833
                 }, 
                 {
-                 "height":63,
-                 "id":6,
+                 "height":59.5342053358248,
+                 "id":7,
                  "name":"",
                  "properties":[
                         {
                          "name":"entity_code",
                          "type":"int",
-                         "value":1
+                         "value":3
                         }, 
                         {
                          "name":"event",
@@ -150,9 +150,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":66,
-                 "x":137.473,
-                 "y":251.359
+                 "width":67.8355652444721,
+                 "x":64.4108792691789,
+                 "y":81.1848333852383
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -172,7 +172,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":7,
+ "nextobjectid":8,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
