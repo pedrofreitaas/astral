@@ -7,8 +7,6 @@
 
 class Fireball : public Projectile
 {
-    int MAX_RICOCHETS = 3;
-
 public:
     Fireball(
         class Game* game, Vector2 position, 

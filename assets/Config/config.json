@@ -40,7 +40,8 @@
             },
             "FIREBALL": {
                 "SPEED": 180,
-                "KNOCKBACK_FORCE": 300
+                "KNOCKBACK_FORCE": 350,
+                "MAX_RICOCHETS": 3
             },
             "VENTANIA": {
                 "SPEED": 900
