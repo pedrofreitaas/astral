@@ -112,8 +112,12 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent 
     if (other->GetLayer() == ColliderLayer::PlayerAttack)
     {
         TakeDamage();
+
         TakeKnockback(
-            Vector2(Math::Sign(-minOverlap) * mGame->GetConfig()->Get<float>("ENEMY.PLAYER_KNOCKBACK_FORCE"), 0.f)
+            Vector2(
+                Math::Sign(-minOverlap) * mGame->GetConfig()->Get<float>("ENEMY.PLAYER_KNOCKBACK_FORCE"), 
+                0.f
+            )
         );
         return;
     }
@@ -130,17 +134,36 @@ void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent *o
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Player && minOverlap < 0.f)
+    // stomp behavior
+    if (
+        other->GetLayer() == ColliderLayer::Player && 
+        minOverlap > 0.f &&
+        mAIMovementComponent != nullptr &&
+        mAIMovementComponent->GetMovementType() == TypeOfMovement::Walker
+    )
     {
-        TakeDamage();
-        // dont apply knockback on stomp.
+        Vector2 dist = GetCenter() - other->GetCenter();
+        dist.Normalize();
+
+        // just to avoid enemy stuck above damaging player on stomp.
+        TakeKnockback(dist * mGame->GetConfig()->Get<float>("ENEMY.PLAYER_KNOCKBACK_FORCE"));
+
         return;
     }
 
     if (other->GetLayer() == ColliderLayer::PlayerAttack)
     {               
         TakeDamage();
-        // dont apply knockback on vertical attack.
+
+        // min overlap here is vertical, not left or right
+        int left = GetCenter().x < other->GetCenter().x ? -1 : 1;
+
+        TakeKnockback(
+            Vector2(
+                left * mGame->GetConfig()->Get<float>("ENEMY.PLAYER_KNOCKBACK_FORCE"), 
+                0.f
+            )
+        );
         return;
     }
 }

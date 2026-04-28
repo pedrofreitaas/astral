@@ -523,26 +523,28 @@ void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *o
         return;
     }
 
+    if (other->GetLayer() == ColliderLayer::Enemy)
+    {
+        TakeDamage();
+        TakeKnockback(Vector2(Math::Sign(-minOverlap), 0.f) * mGame->GetConfig()->Get<float>("ZOE.KNOCKBACK_FORCE"));
+        return;
+    }
+
     Actor::OnHorizontalCollision(minOverlap, other);
 }
 
 void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    if (other->GetLayer() == ColliderLayer::EnemyProjectile)
+    if (
+        other->GetLayer() == ColliderLayer::EnemyProjectile || 
+        other->GetLayer() == ColliderLayer::Enemy
+    )
     {
-        TakeDamage();
-        return;
-    }
+        Vector2 dist = GetCenter() - other->GetCenter();
+        dist.Normalize();
 
-    if (other->GetLayer() == ColliderLayer::Enemy && minOverlap > 0.f)
-    {
-        float ySpeed = mRigidBodyComponent->GetJumpImpulseY(3);
-        mRigidBodyComponent->ApplyImpulse(Vector2(0.f, ySpeed));
-        return;
-    }
+        TakeKnockback(dist * mGame->GetConfig()->Get<float>("ZOE.KNOCKBACK_FORCE"));
 
-    if (other->GetLayer() == ColliderLayer::Enemy && minOverlap < 0.f)
-    {
         TakeDamage();
         return;
     }
