@@ -337,6 +337,12 @@ void Zoe::ManageState()
     }
 
     case BehaviorState::Clinging: {
+        if (!IsPressingAgainstWall())
+        {
+            SetBehaviorState(BehaviorState::Falling);
+            break;
+        }
+
         if (mRigidBodyComponent->GetOnGround())
         {
             SetBehaviorState(BehaviorState::Idle);
@@ -349,24 +355,24 @@ void Zoe::ManageState()
             break;
         }
 
-        if (IsPressingAgainstWall() == 0)
-        {
-            SetBehaviorState(BehaviorState::Falling);
-            break;
-        }
-
         if (mTryingToFireFireball && !CheckFireballOnCooldown())
         {
             SetBehaviorState(BehaviorState::Charging);
             break;
         }
-
+        
         float mYSpeed = mRigidBodyComponent->GetVelocity().y;
 
-        if (mYSpeed > 0.f)
-        { // compensate gravity while falling
+        if (mYSpeed > 0.f) // compensate gravity while falling
+        {
             mRigidBodyComponent->ApplyForce(Vector2(0.f, -GRAVITY * .97f));
         }
+
+        int left = mColliderComponent->IsCloseToTileWallHorizontally(1.f) == -1;
+
+        SetRotation(left ? 0.f : Math::Pi);
+
+        mIsVentaniaOnCooldown = false; // always reset ventania.
 
         break;
     }
@@ -702,6 +708,17 @@ void Zoe::TriggerVentania()
 
     Vector2 rawDir = mInputMovementDir.LengthSq() > 0.f ? mInputMovementDir : GetForward();
     Vector2 dir = SnapVentaniaDir(rawDir);
+
+    // distance param has to be bigger than IsPressingAgainstWall!
+    int closeToWall = mColliderComponent->IsCloseToTileWallHorizontally(3.f);
+
+    if (
+        closeToWall != 0 && dir.x == 0 && dir.y == -1 || 
+        (closeToWall == dir.x)
+    ) {
+        return;
+    }
+
     float speed = mGame->GetConfig()->Get<float>("ZOE.POWERS.VENTANIA.SPEED");
 
     mRigidBodyComponent->ResetVelocity();
@@ -754,6 +771,9 @@ bool Zoe::CheckJump()
         return false;
 
     if (mBehaviorState == BehaviorState::Jumping)
+        return false;
+
+    if (mBehaviorState == BehaviorState::Clinging)
         return false;
 
     float coyoteTimeRemaining = mTimerComponent->checkTimerRemaining(mCoyoteTimer);
@@ -902,7 +922,7 @@ bool Zoe::CheckHit()
         mAttackCollider = new Collider(
             mGame,
             this,
-            GetCenter() + (GetRotation() == 0.f ? Vector2(11, -13) : Vector2(-22, -16)),
+            GetCenter() + (GetRotation() == 0.f ? Vector2(11, -16) : Vector2(-25, -16)),
             Vector2(14, 24),
             nullptr,
             DismissOn::Both,
