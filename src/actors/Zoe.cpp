@@ -885,8 +885,8 @@ bool Zoe::CheckHit()
         mAttackCollider = new Collider(
             mGame,
             this,
-            GetCenter() + (GetRotation() == 0.f ? Vector2(11, -3) : Vector2(-22, -6)),
-            Vector2(14, 14),
+            GetCenter() + (GetRotation() == 0.f ? Vector2(11, -13) : Vector2(-22, -16)),
+            Vector2(14, 24),
             nullptr,
             DismissOn::Both,
             ColliderLayer::PlayerAttack,
