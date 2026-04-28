@@ -267,8 +267,10 @@ void Actor::TakeKnockback(const Vector2 &knockback)
         return;
 
     auto rigidBody = GetComponent<RigidBodyComponent>();
+    
     if (rigidBody)
     {
+        rigidBody->ResetVelocity();
         rigidBody->ApplyImpulse(knockback);
     }
 }
