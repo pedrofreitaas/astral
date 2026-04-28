@@ -165,6 +165,12 @@ void Zoe::ManageState()
         if (CheckHit())
             break;
 
+        if (mTryingToFireFireball && !CheckFireballOnCooldown())
+        {
+            SetBehaviorState(BehaviorState::Charging);
+            break;
+        }
+
         Move(1.3f);
 
         break;
@@ -194,6 +200,12 @@ void Zoe::ManageState()
 
         if (CheckHit())
             break;
+
+        if (mTryingToFireFireball && !CheckFireballOnCooldown())
+        {
+            SetBehaviorState(BehaviorState::Charging);
+            break;
+        }
 
         Move(1.3f);
 
@@ -284,6 +296,12 @@ void Zoe::ManageState()
     }
 
     case BehaviorState::Charging:
+        if (!mRigidBodyComponent->GetOnGround())
+        {
+            mRigidBodyComponent->ResetVelocity();
+            // no break here.
+        }
+
         if (!mTryingToFireFireball)
         {
             SetBehaviorState(BehaviorState::Idle);
@@ -318,8 +336,7 @@ void Zoe::ManageState()
         break;
     }
 
-    case BehaviorState::Clinging:
-    {
+    case BehaviorState::Clinging: {
         if (mRigidBodyComponent->GetOnGround())
         {
             SetBehaviorState(BehaviorState::Idle);
@@ -335,6 +352,12 @@ void Zoe::ManageState()
         if (IsPressingAgainstWall() == 0)
         {
             SetBehaviorState(BehaviorState::Falling);
+            break;
+        }
+
+        if (mTryingToFireFireball && !CheckFireballOnCooldown())
+        {
+            SetBehaviorState(BehaviorState::Charging);
             break;
         }
 
@@ -445,8 +468,7 @@ void Zoe::ManageAnimations()
         break;
     case BehaviorState::Charging:
         mDrawComponent->SetAnimation("charging");
-        mDrawComponent->SetAnimFPS(8.0f);
-
+        mDrawComponent->SetAnimFPS(32.0f);
         break;
 
     case BehaviorState::Attacking:
@@ -634,17 +656,10 @@ void Zoe::FireFireball()
     if (CheckFireballOnCooldown())
         return;
 
-    Vector2 fireballDir = mInputMovementDir;
-
-    if (fireballDir.LengthSq() == 0.f)
-    {
-        fireballDir = GetForward();
-    }
-
     new Fireball(
         mGame,
         GetPosition() + GetFireballOffset(),
-        fireballDir,
+        GetForward(),
         this);
 
     mFireballCooldownTimer = mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this]
