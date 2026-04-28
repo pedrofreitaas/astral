@@ -43,6 +43,8 @@ public:
         mMovementState = state;
     }
 
+    TypeOfMovement GetMovementType() const { return mTypeOfMovement; }
+
     void LogState();
 
     std::vector<SDL_Rect> GetPath() const { return mPath; }
