@@ -96,34 +96,31 @@ void MapObject::OnUpdate(float deltaTime)
     // do logic before because components update before actor update
     float distanceToPlayerSQ = (mGame->GetZoe()->GetCenter() - GetCenter()).LengthSq();
 
+    // if - return isnt welcome here, because there is a final operation.
+
     if (mEvent == "in" && mIsPlayerInside)
     {
         CallMyFunction();
-        return;
     }
     
-    if (mEvent == "out" && !mIsPlayerInside)
+    else if (mEvent == "out" && !mIsPlayerInside)
     {
         CallMyFunction();
-        return;
     }
         
-    if (mEvent == "enter" && mIsPlayerInside && !mWasPlayerInside)
+    else if (mEvent == "enter" && mIsPlayerInside && !mWasPlayerInside)
     {
         CallMyFunction();
-        return;
     }
         
-    if (mEvent == "exit" && !mIsPlayerInside && mWasPlayerInside)
+    else if (mEvent == "exit" && !mIsPlayerInside && mWasPlayerInside)
     {
         CallMyFunction();
-        return;
     }
     
-    if (mEvent == "closeToCenter" && distanceToPlayerSQ <= mCloseToCenterDistanceSQ)
+    else if (mEvent == "closeToCenter" && distanceToPlayerSQ <= mCloseToCenterDistanceSQ)
     {
         CallMyFunction();
-        return;
     }
 
     mWasPlayerInside = mIsPlayerInside;
