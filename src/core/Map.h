@@ -1,14 +1,18 @@
 #pragma once
 
+#include <SDL.h>
 #include <string>
 #include <map>
 #include <string>
+#include <fstream>
+#include "./Game.h"
 #include "../libs/Json.h"
 #include "./Tileset.h"
 #include "../actors/MapObject.h"
 #include "../actors/Tile.h"
 #include "../libs/Math.h"
 #include "../actors/Collider.h"
+#include "../actors/Torch.h"
 
 class Game;
 

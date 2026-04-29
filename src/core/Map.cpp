@@ -1,7 +1,4 @@
-#include <SDL.h>
-#include <fstream>
 #include "./Map.h"
-#include "./Game.h"
 
 std::map<std::string, Tileset> Map::LoadAllAvailableTilesets(const std::string &baseTilesetsPath)
 {
@@ -54,6 +51,18 @@ void Map::LoadTilesLayer(std::vector<std::pair<std::string, int>> &nameToFirstGI
 
 		if (gid == 0)
 			continue;
+
+		if (gid == 333) // torch
+		{
+			new Torch(
+				mGame,
+				Vector2(
+					(tileIdx % mWidthInTiles) * 32 + 16, 
+					std::floor(tileIdx * 1.0f / mWidthInTiles) * 32 + 16
+				)
+			);
+			continue;
+		}
 
 		std::string tilesetName = "";
 		int firstGID = 0;

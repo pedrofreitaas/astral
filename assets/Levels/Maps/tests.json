@@ -6,13 +6,13 @@
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 333, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 333, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":11,
          "id":1,
@@ -97,62 +97,8 @@
                  "type":"",
                  "visible":true,
                  "width":64,
-                 "x":294.667,
-                 "y":247.333
-                }, 
-                {
-                 "height":13,
-                 "id":3,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"entity_code",
-                         "type":"int",
-                         "value":5
-                        }, 
-                        {
-                         "name":"event",
-                         "type":"string",
-                         "value":"atStart"
-                        }, 
-                        {
-                         "name":"function_name",
-                         "type":"string",
-                         "value":"spawn_entity"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":448.667,
-                 "y":304.833
-                }, 
-                {
-                 "height":59.5342053358248,
-                 "id":7,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"entity_code",
-                         "type":"int",
-                         "value":3
-                        }, 
-                        {
-                         "name":"event",
-                         "type":"string",
-                         "value":"atStart"
-                        }, 
-                        {
-                         "name":"function_name",
-                         "type":"string",
-                         "value":"spawn_entity"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":67.8355652444721,
-                 "x":64.4108792691789,
-                 "y":81.1848333852383
+                 "x":302,
+                 "y":255.666
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -172,7 +118,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":8,
+ "nextobjectid":10,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -185,6 +131,10 @@
         {
          "firstgid":248,
          "source":"..\/..\/..\/tiled\/tilesets\/Nebula-Terrain.tsx"
+        }, 
+        {
+         "firstgid":333,
+         "source":"..\/..\/..\/tiled\/tilesets\/Torch.tsx"
         }],
  "tilewidth":32,
  "type":"map",
