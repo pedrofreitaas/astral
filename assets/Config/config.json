@@ -1,7 +1,12 @@
 {
-    "SPIKE_KNOCKBACK_FORCE": 160.0,
+    "SPIKE_KNOCKBACK_FORCE": 400.0,
+    "SPIKE_COOLDOWN": 1.75,
+
     "SPEAR_KNOCKBACK_FORCE": 140.0,
+    "SPEAR_COOLDOWN": 2.5,
+
     "SHURIKEN_KNOCKBACK_FORCE": 200.0,
+    
     "FREEZING_RATE": 1.0,
 
     "ENEMY": {
@@ -35,6 +40,7 @@
         "LIFE_POINTS": 6,
         "MAX_DEATHS": 3,
         "KNOCKBACK_FORCE": 250,
+        "DODGE_COOLDOWN": 1.0,
         "POWERS": {
             "NEVASCA": {
                 "RATE_PER_SECOND": 15,
@@ -43,10 +49,12 @@
             "FIREBALL": {
                 "SPEED": 180,
                 "KNOCKBACK_FORCE": 350,
-                "MAX_RICOCHETS": 3
+                "MAX_RICOCHETS": 3,
+                "COOLDOWN": 4
             },
             "VENTANIA": {
-                "SPEED": 900
+                "SPEED": 900,
+                "COOLDOWN": 0.75
             }
         }
     }
