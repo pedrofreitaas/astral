@@ -805,8 +805,6 @@ bool Zoe::CheckJump()
     if (mBehaviorState == BehaviorState::Falling && coyoteExpired)
         return false;
 
-    mRigidBodyComponent->ResetVelocity();
-
     float jumpForce = mRigidBodyComponent->GetJumpImpulseY(3);
 
     mRigidBodyComponent->ApplyImpulse(
