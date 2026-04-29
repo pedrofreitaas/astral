@@ -626,7 +626,6 @@ void Zoe::AnimationEndCallback(std::string animationName)
     if (animationName == "hurt")
     {
         SetBehaviorState(BehaviorState::Idle);
-        SetInvincibilityOff();
         return;
     }
 
@@ -769,6 +768,10 @@ void Zoe::OnDamageCallback()
     {
         mDamageSoundHandle = mGame->GetAudio()->PlaySound("zoeTakeDamage.wav");
     }
+
+    SetInvincibilityOn();
+    mTimerComponent->AddTimer(0.75f, [this]()
+                             { SetInvincibilityOff(); });
 }
 
 void Zoe::TakeDamage()

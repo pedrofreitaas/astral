@@ -293,6 +293,9 @@ void Actor::TakeDamage()
     if (mInvincible)
         return;
 
+    if (mBehaviorState == BehaviorState::TakingDamage)
+        return;
+
     mLifes--;
 
     if (mLifes <= 0)
