@@ -19,6 +19,7 @@
 #include "../libs/Math.h"
 #include "enemies/Sith.h"
 #include "enemies/Quasar.h"
+#include "../core/Checkpoint.h"
 
 const SDL_Rect DEFAULT_BB = SDL_Rect({22, 18, 20, 27});
 const SDL_Rect DODGE_BB = SDL_Rect({25, 25, 13, 15});
@@ -35,15 +36,14 @@ class Zoe : public Actor
         ColliderLayer::PlayerAttack,
         ColliderLayer::Nevasca
     };
+
+    int mDeaths;
     
     float FIREBALL_COOLDOWN = 4.f;
     
-    float VETANIA_SPEED = 20000.f;
     float VETANIA_COOLDOWN = 0.75f;
 
     float DODGE_COOLDOWN = 1.0f;
-
-    float DEFAULT_KNOCKBACK_FORCE = 1.f;
         
     SDL_GameControllerButton DODGE_BUTTON = SDL_CONTROLLER_BUTTON_B;
     SDL_GameControllerButton FIREBALL_BUTTON = SDL_CONTROLLER_BUTTON_Y;
@@ -52,9 +52,14 @@ class Zoe : public Actor
     SDL_GameControllerButton HIT_BUTTON = SDL_CONTROLLER_BUTTON_X;
     SDL_GameControllerAxis NEVASCA_AXIS = SDL_CONTROLLER_AXIS_TRIGGERRIGHT;
 
+    Checkpoint *mCurrentCheckpoint;
+
 public:
     explicit Zoe(Game* game, float forwardSpeed, const Vector2 &center);
     ~Zoe();
+
+    void SetCheckpoint(const Vector2 &position);
+    Checkpoint* GetCurrentCheckpoint() const;
 
     void OnProcessInput(const Uint8* keyState) override;
     void OnUpdate(float deltaTime) override;

@@ -32,6 +32,7 @@
 #include "../actors/Star.h"
 #include "../actors/Enemy.h"
 #include "../actors/Portal.h"
+#include "../actors/enemies/Zod.h"
 
 Game::Game()
     : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true),
@@ -337,6 +338,16 @@ void Game::ProcessInput()
             }
 
             HandleKeyPressActors(event.key.keysym.sym, event.key.repeat == 0);            
+
+            switch (event.key.keysym.sym) {
+                case SDLK_SPACE:
+                    new Zod(this, 1200.f, Vector2(310.f, 120.f));
+                    break;
+                
+                case SDLK_b:
+                    new Sith(this, Vector2(310.f, 120.f));
+                    break;
+            }
 
             break;
         
@@ -1117,4 +1128,26 @@ Vector2 Game::getNormalizedControlerPad()
     normalizedPad.Normalize();
 
     return normalizedPad;
+}
+
+// -----
+
+Checkpoint* Game::GetCurrentCheckpoint() const
+{
+    if (mZoe == nullptr)
+    {
+        return nullptr;
+    }
+
+    return mZoe->GetCurrentCheckpoint();
+}
+
+void Game::SetCheckpoint(const Vector2& position)
+{
+    if (mZoe == nullptr)
+    {
+        return;
+    }
+
+    mZoe->SetCheckpoint(position);
 }

@@ -32,6 +32,8 @@
     },
 
     "ZOE": {
+        "LIFE_POINTS": 6,
+        "MAX_DEATHS": 3,
         "KNOCKBACK_FORCE": 250,
         "POWERS": {
             "NEVASCA": {

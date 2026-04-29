@@ -19,6 +19,7 @@
 #include "Tileset.h"
 #include "./Cutscene.h"
 #include "Config.h"
+#include "Checkpoint.h"
 
 template <typename F>
 auto TimeCheckerWrapper(F&& func) {
@@ -93,6 +94,9 @@ public:
     void UpdateGame();
     void GenerateOutput();
     void Quit() { mIsRunning = false; }
+
+    void SetCheckpoint(const Vector2 &position);
+    Checkpoint* GetCurrentCheckpoint() const;
 
     float GetDtLastFrame() { return mDeltatime; }
 

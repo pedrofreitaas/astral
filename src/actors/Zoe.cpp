@@ -2,14 +2,14 @@
 
 Zoe::Zoe(
     Game *game, const float forwardSpeed, const Vector2 &center)
-    : Actor(game, 6, true, "zoe"), mForwardSpeed(forwardSpeed),
+    : Actor(game, game->GetConfig()->Get<int>("ZOE.LIFE_POINTS"), true, "zoe"), mForwardSpeed(forwardSpeed),
       mTryingToFireFireball(false), mFireballCooldownTimer(), mDodgeCooldownTimer(),
       mIsVentaniaOnCooldown(false), mTryingToTriggerVentania(false),
       mIsTryingToHit(false), mAttackCollider(nullptr), mIsTryingToDodge(false),
       mInputMovementDir(0.f, 0.f), mMovementLocked(false), mAbilitiesLocked(false),
       mDamageSoundHandle(SoundHandle::Invalid), mIsTryingToJump(false), mNevascaSoundHandle(SoundHandle::Invalid),
       mIsTryingToNevasca(false), mIsFiringNevasca(false), mNevascaTimer(0.f), mAerialAttackCollider(nullptr),
-      mCoyoteTimer(nullptr), mDashGravityDisableTimer(nullptr)
+      mCoyoteTimer(nullptr), mDashGravityDisableTimer(nullptr), mCurrentCheckpoint(nullptr), mDeaths(0)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
 
@@ -508,7 +508,26 @@ void Zoe::ManageAnimations()
 
 void Zoe::Kill()
 {
-    mGame->SetGameScene(Game::GameScene::DeathScreen);
+    if (mBehaviorState == BehaviorState::Dead)
+        return;
+    
+    SetBehaviorState(BehaviorState::Dead);
+    
+    int maxDeaths = mGame->GetConfig()->Get<int>("ZOE.MAX_DEATHS");
+
+    SDL_Log("Zoe died! Total deaths: %d", mDeaths + 1);
+
+    if (mDeaths >= maxDeaths || GetCurrentCheckpoint() == nullptr) {
+        SDL_Log("Max deaths reached! Game Over.");
+        mGame->SetGameScene(Game::GameScene::DeathScreen);
+        return;
+    }
+
+    SDL_Log("Respawning at checkpoint. Deaths: %d/%d", mDeaths + 1, maxDeaths);
+    mDeaths++;
+    SetPosition(GetCurrentCheckpoint()->position - GetHalfSize());
+    SetLifes(mGame->GetConfig()->Get<int>("ZOE.LIFE_POINTS"));
+    SetBehaviorState(BehaviorState::Idle);
 }
 
 void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
@@ -1038,4 +1057,17 @@ bool Zoe::CheckNevasca()
     SetBehaviorState(BehaviorState::Idle);
 
     return true;
+}
+
+void Zoe::SetCheckpoint(const Vector2 &position) {
+    if (mCurrentCheckpoint == nullptr) {
+        mCurrentCheckpoint = new Checkpoint(position);
+        return;
+    }
+    
+    mCurrentCheckpoint->position = position;
+}
+
+Checkpoint* Zoe::GetCurrentCheckpoint() const { 
+    return mCurrentCheckpoint; 
 }

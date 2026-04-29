@@ -115,6 +115,9 @@ add_executable(astral
     src/core/Cutscene.cpp
     src/core/Steps.cpp
     src/components/TimerComponent.h
+    src/core/Checkpoint.h
+    src/actors/Torch.h
+    src/actors/Torch.cpp
 )
 
 if(EMSCRIPTEN)

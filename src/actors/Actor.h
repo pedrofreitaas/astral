@@ -41,7 +41,8 @@ enum class BehaviorState // For AI behaviors/animations
     Clinging = 16,
     Freezing = 17,
     Frozen = 18,
-    Dashing = 19
+    Dashing = 19,
+    Dead = 20
 };
 
 class Actor
