@@ -27,7 +27,8 @@ Spikes::Spikes(Game *game, const Vector2 &position)
 
     mDrawComponent->SetAnimation("idle");
 
-    mTimerComponent->AddTimer(Spikes::TRIGGER_COOLDOWN, [this]()
+    float cooldown = mGame->GetConfig()->Get<float>("SPIKE_COOLDOWN");
+    mTimerComponent->AddTimer(cooldown, [this]()
                               { Trigger(); });
 
     SetPosition(position - GetHalfSize());
@@ -69,8 +70,10 @@ void Spikes::AnimationEndCallback(std::string animationName)
         SetBehaviorState(BehaviorState::Idle);
         mSpikeCollider->SetEnabled(false);
 
+        float cooldown = mGame->GetConfig()->Get<float>("SPIKE_COOLDOWN");
+
         mTimerComponent->AddTimer(
-            Spikes::TRIGGER_COOLDOWN, [this]()
+            cooldown, [this]()
             { Trigger(); });
     }
 }

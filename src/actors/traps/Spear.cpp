@@ -27,7 +27,9 @@ Spear::Spear(Game *game, const Vector2 &position)
 
     mDrawComponent->SetAnimation("idle");
 
-    mTimerComponent->AddTimer(Spear::TRIGGER_COOLDOWN, [this]()
+    float cooldown = mGame->GetConfig()->Get<float>("SPEAR_COOLDOWN");
+    
+    mTimerComponent->AddTimer(cooldown, [this]()
                               { Trigger(); });
 
     mTipCollider = new Collider(
@@ -66,7 +68,8 @@ void Spear::AnimationEndCallback(std::string animationName)
     if (animationName == "spiking")
     {
         SetBehaviorState(BehaviorState::Idle);
-        mTimerComponent->AddTimer(Spear::TRIGGER_COOLDOWN, [this]()
+        float cooldown = mGame->GetConfig()->Get<float>("SPEAR_COOLDOWN");
+        mTimerComponent->AddTimer(cooldown, [this]()
                                   { Trigger(); });
     }
 }

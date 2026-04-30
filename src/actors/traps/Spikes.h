@@ -11,7 +11,6 @@
 class Spikes : public Actor
 {
 public:
-    const float TRIGGER_COOLDOWN = .75f;
 
     explicit Spikes(Game* game, const Vector2& position);
 
