@@ -669,7 +669,8 @@ float Zoe::GetFireballCooldownProgress()
 {
     if (mFireballCooldownTimer)
     {
-        return mTimerComponent->checkTimerRemaining(mFireballCooldownTimer) / FIREBALL_COOLDOWN;
+        float cooldown = mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.COOLDOWN");
+        return mTimerComponent->checkTimerRemaining(mFireballCooldownTimer) / cooldown;
     }
 
     return 1.f;
@@ -686,7 +687,8 @@ void Zoe::FireFireball()
         GetForward(),
         this);
 
-    mFireballCooldownTimer = mTimerComponent->AddTimer(Zoe::FIREBALL_COOLDOWN, [this]
+    float cooldown = mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.COOLDOWN");
+    mFireballCooldownTimer = mTimerComponent->AddTimer(cooldown, [this]
                                                        { mFireballCooldownTimer = nullptr; });
     mGame->GetAudio()->PlaySound("fireball.wav");
 }
@@ -889,7 +891,8 @@ void Zoe::DodgeEnd()
     mColliderComponent->SetIgnoreLayers(Zoe::IGNORED_LAYERS_DEFAULT);
     mColliderComponent->SetBB(&DEFAULT_BB);
 
-    mDodgeCooldownTimer = mTimerComponent->AddTimer(Zoe::DODGE_COOLDOWN, nullptr);
+    float cooldown = mGame->GetConfig()->Get<float>("ZOE.DODGE_COOLDOWN");
+    mDodgeCooldownTimer = mTimerComponent->AddTimer(cooldown, nullptr);
 }
 
 void Zoe::Move(float modifier)

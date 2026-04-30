@@ -38,13 +38,7 @@ class Zoe : public Actor
     };
 
     int mDeaths;
-    
-    float FIREBALL_COOLDOWN = 4.f;
-    
-    float VETANIA_COOLDOWN = 0.75f;
 
-    float DODGE_COOLDOWN = 1.0f;
-        
     SDL_GameControllerButton DODGE_BUTTON = SDL_CONTROLLER_BUTTON_B;
     SDL_GameControllerButton FIREBALL_BUTTON = SDL_CONTROLLER_BUTTON_Y;
     SDL_GameControllerButton VENTANIA_BUTTON = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
