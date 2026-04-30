@@ -729,8 +729,8 @@ void Zoe::TriggerVentania()
     int closeToWall = mColliderComponent->IsCloseToTileWallHorizontally(3.f);
 
     if (
-        closeToWall != 0 && dir.x == 0 && dir.y == -1 || 
-        (closeToWall == dir.x)
+        closeToWall != 0 && dir.x == 0 && dir.y < 0 || 
+        (Math::Sign(closeToWall) == Math::Sign(dir.x))
     ) {
         return;
     }
@@ -746,7 +746,8 @@ void Zoe::TriggerVentania()
         dir);
 
     SetVentaniaOnCooldown(true);
-    mTimerComponent->AddTimer(Zoe::VETANIA_COOLDOWN, [this]()
+    float cooldown = mGame->GetConfig()->Get<float>("ZOE.POWERS.VENTANIA.COOLDOWN");
+    mTimerComponent->AddTimer(cooldown, [this]()
                               { SetVentaniaOnCooldown(false); });
 
     mGame->GetAudio()->PlaySound("ventania.wav");
