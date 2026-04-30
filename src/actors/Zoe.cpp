@@ -515,15 +515,11 @@ void Zoe::Kill()
     
     int maxDeaths = mGame->GetConfig()->Get<int>("ZOE.MAX_DEATHS");
 
-    SDL_Log("Zoe died! Total deaths: %d", mDeaths + 1);
-
     if (mDeaths >= maxDeaths || GetCurrentCheckpoint() == nullptr) {
-        SDL_Log("Max deaths reached! Game Over.");
         mGame->SetGameScene(Game::GameScene::DeathScreen);
         return;
     }
 
-    SDL_Log("Respawning at checkpoint. Deaths: %d/%d", mDeaths + 1, maxDeaths);
     mDeaths++;
     SetPosition(GetCurrentCheckpoint()->position - GetHalfSize());
     SetLifes(mGame->GetConfig()->Get<int>("ZOE.LIFE_POINTS"));
