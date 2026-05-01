@@ -40,7 +40,10 @@ public:
 
     int GetDrawOrder() const { return mDrawOrder; }
 
+    void SetOffset(const Vector2& offset) { mOffset = offset; }
+
 protected:
     bool mIsVisible;
     int mDrawOrder;
+    Vector2 mOffset;
 };

@@ -10,6 +10,7 @@ DrawComponent::DrawComponent(class Actor* owner, int drawOrder)
     :Component(owner)
     ,mDrawOrder(drawOrder)
     ,mIsVisible(true)
+    ,mOffset(0.0f, 0.0f)
 {
     // mOwner->GetGame()->AddDrawable(this);
 }
