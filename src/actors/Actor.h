@@ -60,7 +60,7 @@ public:
     // Reinsert function called from Game (not overridable)
     void Update(float deltaTime);
     // ProcessInput function called from Game (not overridable)
-    void ProcessInput(const Uint8* keyState);
+    void ProcessInput(const Uint8* keyState, const std::vector<SDL_Event>& events);
     // HandleKeyPress function called from Game (not overridable)
     void HandleKeyPress(const int key, const bool isPressed);
 
@@ -151,7 +151,7 @@ protected:
 
     // Any actor-specific update code (overridable)
     virtual void OnUpdate(float deltaTime);
-    virtual void OnProcessInput(const Uint8* keyState);
+    virtual void OnProcessInput(const Uint8* keyState, const std::vector<SDL_Event>& events);
     virtual void OnHandleKeyPress(const int key, const bool isPressed);
 
     void TakeSpikeHit(const Vector2 &SpikeBaseCenter);

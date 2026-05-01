@@ -20,6 +20,7 @@
 #include "enemies/Sith.h"
 #include "enemies/Quasar.h"
 #include "../core/Checkpoint.h"
+#include "./Item.h"
 
 const SDL_Rect DEFAULT_BB = SDL_Rect({22, 18, 20, 27});
 const SDL_Rect DODGE_BB = SDL_Rect({25, 25, 13, 15});
@@ -37,14 +38,26 @@ class Zoe : public Actor
         ColliderLayer::Nevasca
     };
 
+    std::map<Button, bool> mButtonBlocked = {
+        {Button::X, false},
+        {Button::A, false},
+        {Button::LT, false},
+        {Button::Y, false},
+        {Button::B, false},
+        {Button::RT, false},
+        {Button::LB, false},
+        {Button::RB, false}
+    };
+
     int mDeaths;
 
-    SDL_GameControllerButton DODGE_BUTTON = SDL_CONTROLLER_BUTTON_B;
-    SDL_GameControllerButton FIREBALL_BUTTON = SDL_CONTROLLER_BUTTON_Y;
-    SDL_GameControllerButton VENTANIA_BUTTON = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
-    SDL_GameControllerButton JUMP_BUTTON = SDL_CONTROLLER_BUTTON_A;
-    SDL_GameControllerButton HIT_BUTTON = SDL_CONTROLLER_BUTTON_X;
-    SDL_GameControllerAxis NEVASCA_AXIS = SDL_CONTROLLER_AXIS_TRIGGERRIGHT;
+    static constexpr SDL_GameControllerButton DODGE_BUTTON = SDL_CONTROLLER_BUTTON_B;
+    static constexpr SDL_GameControllerButton FIREBALL_BUTTON = SDL_CONTROLLER_BUTTON_Y;
+    static constexpr SDL_GameControllerButton VENTANIA_BUTTON = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
+    static constexpr SDL_GameControllerButton JUMP_BUTTON = SDL_CONTROLLER_BUTTON_A;
+    static constexpr SDL_GameControllerButton HIT_BUTTON = SDL_CONTROLLER_BUTTON_X;
+    static constexpr SDL_GameControllerAxis NEVASCA_AXIS = SDL_CONTROLLER_AXIS_TRIGGERRIGHT;
+    static constexpr SDL_GameControllerButton NEVASCA_BUTTON = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
 
     Checkpoint *mCurrentCheckpoint;
 
@@ -55,9 +68,28 @@ public:
     void SetCheckpoint(const Vector2 &position);
     Checkpoint* GetCurrentCheckpoint() const;
 
-    void OnProcessInput(const Uint8* keyState) override;
+    void BlockButton(Button button) { mButtonBlocked[button] = true; }
+    void UnblockButton(Button button) { mButtonBlocked[button] = false; }
+    bool IsButtonBlocked(Button button) { return mButtonBlocked[button]; }
+    bool IsSDLButtonBlocked(SDL_GameControllerButton sdlButton) { return mButtonBlocked[GetButtonFromSDL(sdlButton)]; }
+
+    void OnProcessInput(const Uint8* keyState, const std::vector<SDL_Event>& events) override;
     void OnUpdate(float deltaTime) override;
     void OnHandleKeyPress(const int key, const bool isPressed) override;
+
+    void OnJumpPressed();
+    void OnJumpReleased();
+    void OnAttackPressed();
+    void OnAttackReleased();
+    void OnDodgePressed();
+    void OnDodgeReleased();
+    void OnVentaniaPressed();
+    void OnVentaniaReleased();
+    void OnFireballPressed();
+    void OnFireballReleased();
+    void OnNevascaPressed();
+    void OnNevascaReleased();
+    void CheckAbilitiesKeys(const std::vector<SDL_Event>& events, SDL_GameController* controller);
 
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;

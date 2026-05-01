@@ -38,6 +38,7 @@ add_executable(astral
     src/components/draw/DrawSpriteComponent.cpp
     src/components/draw/DrawSpriteComponent.h
     src/actors/Zoe.cpp
+    src/actors/ZoeAbilities.cpp
     src/actors/Zoe.h
     src/actors/ZoeFireball.cpp
     src/actors/ZoeFireball.h

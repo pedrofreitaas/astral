@@ -104,7 +104,7 @@ public:
     void UpdateActors(float deltaTime);
     void AddActor(class Actor *actor);
     void RemoveActor(class Actor *actor);
-    void ProcessInputActors();
+    void ProcessInputActors(const std::vector<SDL_Event>& events);
     void HandleKeyPressActors(const int key, const bool isPressed);
 
     // Level functions

@@ -61,7 +61,7 @@ Zoe::~Zoe()
     mGame->SetZoe(nullptr);
 }
 
-void Zoe::OnProcessInput(const uint8_t *state)
+void Zoe::OnProcessInput(const uint8_t *state, const std::vector<SDL_Event> &events)
 {
     if (mGame->GetGamePlayState() != Game::GamePlayState::Playing)
     {
@@ -76,25 +76,7 @@ void Zoe::OnProcessInput(const uint8_t *state)
 
     SDL_GameController *controller = GetGame()->GetController();
 
-    if (mAbilitiesLocked)
-    {
-        mIsTryingToDodge = false;
-        mIsTryingToJump = false;
-        mIsTryingToHit = false;
-        mTryingToFireFireball = false;
-        mTryingToTriggerVentania = false;
-        mIsTryingToNevasca = false;
-    }
-
-    else
-    {
-        mIsTryingToHit = SDL_GameControllerGetButton(controller, Zoe::HIT_BUTTON);
-        mTryingToFireFireball = SDL_GameControllerGetButton(controller, Zoe::FIREBALL_BUTTON);
-        mTryingToTriggerVentania = SDL_GameControllerGetButton(controller, Zoe::VENTANIA_BUTTON);
-        mIsTryingToDodge = SDL_GameControllerGetButton(controller, Zoe::DODGE_BUTTON);
-        mIsTryingToJump = SDL_GameControllerGetButton(controller, Zoe::JUMP_BUTTON);
-        mIsTryingToNevasca = SDL_GameControllerGetAxis(controller, Zoe::NEVASCA_AXIS) > 0;
-    }
+    CheckAbilitiesKeys(events, controller);
 
     if (mMovementLocked)
     {
@@ -124,12 +106,12 @@ void Zoe::ManageState()
     bool isCutscene = mGame->GetGamePlayState() == Game::GamePlayState::PlayingCutscene;
 
     if (
-        mPreviousBehaviorState == BehaviorState::Dashing && 
-        !mRigidBodyComponent->GetApplyGravity()
-    ) {
+        mPreviousBehaviorState == BehaviorState::Dashing &&
+        !mRigidBodyComponent->GetApplyGravity())
+    {
         mRigidBodyComponent->SetApplyGravity(true);
     }
-    
+
     switch (mBehaviorState)
     {
     case BehaviorState::Dying:
@@ -310,7 +292,7 @@ void Zoe::ManageState()
 
     case BehaviorState::Dashing:
     {
-        mRigidBodyComponent->SetApplyGravity(false); //onground check is diff when gravity is off.
+        mRigidBodyComponent->SetApplyGravity(false); // onground check is diff when gravity is off.
 
         if (mTimerComponent->checkTimerRemaining(mDashGravityDisableTimer) <= 0.f)
         {
@@ -336,7 +318,8 @@ void Zoe::ManageState()
         break;
     }
 
-    case BehaviorState::Clinging: {
+    case BehaviorState::Clinging:
+    {
         if (!IsPressingAgainstWall())
         {
             SetBehaviorState(BehaviorState::Falling);
@@ -360,7 +343,7 @@ void Zoe::ManageState()
             SetBehaviorState(BehaviorState::Charging);
             break;
         }
-        
+
         float mYSpeed = mRigidBodyComponent->GetVelocity().y;
 
         if (mYSpeed > 0.f) // compensate gravity while falling
@@ -434,6 +417,12 @@ void Zoe::OnUpdate(float deltaTime)
         {
             mNevascaTimer = 0.f;
         }
+    }
+
+    // unblock all buttons
+    for (auto &entry : mButtonBlocked)
+    {
+        UnblockButton(entry.first);
     }
 }
 
@@ -510,12 +499,13 @@ void Zoe::Kill()
 {
     if (mBehaviorState == BehaviorState::Dead)
         return;
-    
+
     SetBehaviorState(BehaviorState::Dead);
-    
+
     int maxDeaths = mGame->GetConfig()->Get<int>("ZOE.MAX_DEATHS");
 
-    if (mDeaths >= maxDeaths || GetCurrentCheckpoint() == nullptr) {
+    if (mDeaths >= maxDeaths || GetCurrentCheckpoint() == nullptr)
+    {
         mGame->SetGameScene(Game::GameScene::DeathScreen);
         return;
     }
@@ -579,9 +569,8 @@ void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *o
 void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
     if (
-        other->GetLayer() == ColliderLayer::EnemyProjectile || 
-        other->GetLayer() == ColliderLayer::Enemy
-    )
+        other->GetLayer() == ColliderLayer::EnemyProjectile ||
+        other->GetLayer() == ColliderLayer::Enemy)
     {
         Vector2 dist = GetCenter() - other->GetCenter();
         dist.Normalize();
@@ -729,9 +718,9 @@ void Zoe::TriggerVentania()
     int closeToWall = mColliderComponent->IsCloseToTileWallHorizontally(3.f);
 
     if (
-        closeToWall != 0 && dir.x == 0 && dir.y < 0 || 
-        (Math::Sign(closeToWall) == Math::Sign(dir.x))
-    ) {
+        closeToWall != 0 && dir.x == 0 && dir.y < 0 ||
+        (Math::Sign(closeToWall) == Math::Sign(dir.x)))
+    {
         return;
     }
 
@@ -770,7 +759,7 @@ void Zoe::OnDamageCallback()
 
     SetInvincibilityOn();
     mTimerComponent->AddTimer(0.75f, [this]()
-                             { SetInvincibilityOff(); });
+                              { SetInvincibilityOff(); });
 }
 
 void Zoe::TakeDamage()
@@ -1060,15 +1049,18 @@ bool Zoe::CheckNevasca()
     return true;
 }
 
-void Zoe::SetCheckpoint(const Vector2 &position) {
-    if (mCurrentCheckpoint == nullptr) {
+void Zoe::SetCheckpoint(const Vector2 &position)
+{
+    if (mCurrentCheckpoint == nullptr)
+    {
         mCurrentCheckpoint = new Checkpoint(position);
         return;
     }
-    
+
     mCurrentCheckpoint->position = position;
 }
 
-Checkpoint* Zoe::GetCurrentCheckpoint() const { 
-    return mCurrentCheckpoint; 
+Checkpoint *Zoe::GetCurrentCheckpoint() const
+{
+    return mCurrentCheckpoint;
 }

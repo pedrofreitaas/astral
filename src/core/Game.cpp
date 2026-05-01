@@ -33,6 +33,7 @@
 #include "../actors/Enemy.h"
 #include "../actors/Portal.h"
 #include "../actors/enemies/Zod.h"
+#include "../actors/Item.h"
 
 Game::Game()
     : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true),
@@ -315,8 +316,12 @@ void Game::ProcessInput()
         }
     }
 
-    SDL_Event event;
-    while (SDL_PollEvent(&event))
+    std::vector<SDL_Event> events;
+    while (SDL_PollEvent(&events.emplace_back()))
+    {
+    }
+
+    for (const auto &event : events)
     {
         switch (event.type)
         {
@@ -347,10 +352,15 @@ void Game::ProcessInput()
                 case SDLK_b:
                     new Sith(this, Vector2(310.f, 120.f));
                     break;
+
+                case SDLK_n:
+                    Item::CreateNevascaItem(this, Vector2(300.f, 220.f), [](Item &item){
+                        SDL_Log("Nevasca item picked!");
+                    });
+                    break;
             }
 
             break;
-        
         case SDL_MOUSEBUTTONDOWN:
             break;
         }
@@ -358,7 +368,7 @@ void Game::ProcessInput()
 
     if (mGamePlayState == GamePlayState::Playing)
     {
-        ProcessInputActors();
+        ProcessInputActors(events);
     }
 
     if (mGamePlayState == GamePlayState::Dialogue)
@@ -368,7 +378,7 @@ void Game::ProcessInput()
     }
 }
 
-void Game::ProcessInputActors()
+void Game::ProcessInputActors(const std::vector<SDL_Event>& events)
 {
     const Uint8 *state = SDL_GetKeyboardState(nullptr);
 
@@ -391,7 +401,7 @@ void Game::ProcessInputActors()
 
     for (auto actor : toProcessActors)
     {
-        actor->ProcessInput(state);
+        actor->ProcessInput(state, events);
     }
 }
 

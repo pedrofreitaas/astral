@@ -166,7 +166,7 @@ void Actor::Kill()
 
 }
 
-void Actor::ProcessInput(const Uint8* keyState)
+void Actor::ProcessInput(const Uint8* keyState, const std::vector<SDL_Event>& events)
 {
     if (mState == ActorState::Active)
     {
@@ -175,7 +175,7 @@ void Actor::ProcessInput(const Uint8* keyState)
             comp->ProcessInput(keyState);
         }
 
-        OnProcessInput(keyState);
+        OnProcessInput(keyState, events);
     }
 }
 
@@ -194,7 +194,7 @@ void Actor::HandleKeyPress(const int key, const bool isPressed)
 
 }
 
-void Actor::OnProcessInput(const Uint8* keyState)
+void Actor::OnProcessInput(const Uint8* keyState, const std::vector<SDL_Event>& events)
 {
 
 }
