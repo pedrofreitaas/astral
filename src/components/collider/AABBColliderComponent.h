@@ -34,7 +34,8 @@ enum class ColliderLayer
     Quasar,
     Nevasca,
     QuasarAttack,
-    Torch
+    Torch,
+    Items
 };
 
 enum class IgnoreOption
