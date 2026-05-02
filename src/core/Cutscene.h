@@ -6,6 +6,7 @@
 #include "../libs/Math.h"
 #include "../actors/Actor.h"
 #include "../components/RigidBodyComponent.h"
+#include "../actors/Button.h"
 
 class Game;
 

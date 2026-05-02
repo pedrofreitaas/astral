@@ -106,6 +106,7 @@ add_executable(astral
     src/actors/Projectile.cpp
     src/actors/Collider.cpp
     src/actors/Collider.h
+    src/actors/Button.h
     src/actors/Item.h
     src/actors/Item.cpp
     src/ui/DialogueSystem.cpp
