@@ -291,7 +291,8 @@ void Zoe::DodgeEnd()
     mColliderComponent->SetBB(&DEFAULT_BB);
 
     float cooldown = mGame->GetConfig()->Get<float>("ZOE.DODGE_COOLDOWN");
-    mDodgeCooldownTimer = mTimerComponent->AddTimer(cooldown, nullptr);
+    mDodgeCooldownTimer = mTimerComponent->AddTimer(cooldown, [this]
+                                                    { mDodgeCooldownTimer = nullptr; });
 }
 
 void Zoe::FireFireball()
