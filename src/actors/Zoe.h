@@ -29,6 +29,7 @@ class Zoe : public Actor
 {
     friend class FireNevascaStep;
     friend class Game;
+    friend class Item;
 
     std::vector<ColliderLayer> IGNORED_LAYERS_DODGE = {
         ColliderLayer::Enemy,

@@ -128,6 +128,7 @@ public:
 
     // Audio functions
     class AudioSystem *GetAudio() { return mAudio; }
+    class HUD *GetHUD() { return mHUD; }
 
     // UI functions
     void PushUI(class UIScreen *screen) { mUIStack.emplace_back(screen); }

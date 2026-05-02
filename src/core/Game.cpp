@@ -354,9 +354,7 @@ void Game::ProcessInput()
                     break;
 
                 case SDLK_n:
-                    Item::CreateNevascaItem(this, Vector2(300.f, 220.f), [](Item &item){
-                        SDL_Log("Nevasca item picked!");
-                    });
+                    Item::CreateNevascaItem(this, Vector2(300.f, 220.f));
                     break;
             }
 

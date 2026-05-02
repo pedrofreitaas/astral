@@ -78,7 +78,7 @@ public:
     //default constructor
     Item() = default;
 
-    static Item* CreateNevascaItem(Game *game, const Vector2& position, PickHandler onPickCallback = nullptr);
+    static Item* CreateNevascaItem(Game *game, const Vector2& position);
     
 private:
     Item(

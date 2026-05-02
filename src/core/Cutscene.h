@@ -96,6 +96,36 @@ public:
     void PreUpdate() override {};
 };
 
+class UIAnimation;
+
+class SpawnUIAnimationStep : public Step {
+public:
+    SpawnUIAnimationStep(class Game* game, int animStart, int animEnd);
+    void PreUpdate() override {};
+    void Update(float deltaTime) override;
+    UIAnimation* GetAnimation() const { return mAnimation; }
+private:
+    int mAnimStart, mAnimEnd;
+    UIAnimation* mAnimation = nullptr;
+};
+
+class UnspawnUIAnimationStep : public Step {
+public:
+    UnspawnUIAnimationStep(class Game* game, std::function<UIAnimation*()> getAnim)
+        : Step(game), mGetAnimation(std::move(getAnim)) {}
+    void PreUpdate() override {};
+    void Update(float deltaTime) override;
+private:
+    std::function<UIAnimation*()> mGetAnimation;
+};
+
+class FireNevascaStep : public Step {
+public:
+    FireNevascaStep(class Game* game, float duration = 2.f) : Step(game, duration) {}
+    void PreUpdate() override;
+    void Update(float deltaTime) override;
+};
+
 class SoundStep : public Step {
 public:
     SoundStep(class Game* game, std::string soundFile, bool loop = false, float maxTime=5.f) 

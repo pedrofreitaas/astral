@@ -4,7 +4,10 @@
 #include "Cutscene.h"
 #include "Game.h"
 #include "../actors/Star.h"
+#include "../actors/Zoe.h"
 #include "../ui/DialogueSystem.h"
+#include "../ui/UIAnimation.h"
+#include "../core/HUD.h"
 
 MoveStep::MoveStep(
     class Game* game, 
@@ -140,6 +143,44 @@ void DialogueStep::Initialize()
             mGame->SetGamePlayState(Game::GamePlayState::PlayingCutscene);
             SetComplete();
         });
+}
+
+SpawnUIAnimationStep::SpawnUIAnimationStep(class Game* game, int animStart, int animEnd)
+    : Step(game, 0.f), mAnimStart(animStart), mAnimEnd(animEnd) {}
+
+void SpawnUIAnimationStep::Update(float deltaTime) {
+    if (GetIsComplete()) return;
+
+    Zoe* zoe = mGame->GetZoe();
+    Vector2 screenPos = zoe->GetCenter() - mGame->GetCameraPos();
+    screenPos += Vector2(-8.f, -30.f);
+
+    mAnimation = mGame->GetHUD()->AddAnimation(
+        "../assets/Sprites/Joystick/texture.png",
+        "../assets/Sprites/Joystick/texture.json",
+        screenPos, Vector2::Zero, 4.f,
+        mAnimStart, mAnimEnd);
+
+    SetComplete();
+}
+
+void UnspawnUIAnimationStep::Update(float deltaTime) {
+    if (GetIsComplete()) return;
+    mGame->GetHUD()->RemoveAnimation(mGetAnimation());
+    SetComplete();
+}
+
+void FireNevascaStep::PreUpdate() {
+    Zoe* zoe = mGame->GetZoe();
+    zoe->SetMana(mGame->GetConfig()->Get<float>("ZOE.MAX_MANA"));
+    zoe->OnNevascaPressed();
+}
+
+void FireNevascaStep::Update(float deltaTime) {
+    if (GetIsComplete()) return;
+    Step::Update(deltaTime);
+    if (GetIsComplete())
+        mGame->GetZoe()->OnNevascaReleased();
 }
 
 void SoundStep::Update(float deltaTime)

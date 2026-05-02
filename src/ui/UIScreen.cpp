@@ -239,3 +239,11 @@ UIAnimation* UIScreen::AddAnimation(
     mAnimations.emplace_back(anim);
     return anim;
 }
+
+void UIScreen::RemoveAnimation(UIAnimation* anim) {
+    auto it = std::find(mAnimations.begin(), mAnimations.end(), anim);
+    if (it != mAnimations.end()) {
+        delete *it;
+        mAnimations.erase(it);
+    }
+}
