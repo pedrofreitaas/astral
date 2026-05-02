@@ -9,7 +9,8 @@ Zoe::Zoe(
       mInputMovementDir(0.f, 0.f), mMovementLocked(false), mAbilitiesLocked(false),
       mDamageSoundHandle(SoundHandle::Invalid), mIsTryingToJump(false), mNevascaSoundHandle(SoundHandle::Invalid),
       mIsTryingToNevasca(false), mIsFiringNevasca(false), mNevascaTimer(0.f), mAerialAttackCollider(nullptr),
-      mCoyoteTimer(nullptr), mDashGravityDisableTimer(nullptr), mCurrentCheckpoint(nullptr), mDeaths(0)
+      mCoyoteTimer(nullptr), mDashGravityDisableTimer(nullptr), mCurrentCheckpoint(nullptr), mDeaths(0), 
+      mMana(game->GetConfig()->Get<float>("ZOE.MAX_MANA"))
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
 
@@ -54,6 +55,14 @@ Zoe::Zoe(
     mDashGravityDisableTimer = mTimerComponent->AddNotRemovableTimer(0.1f, nullptr);
 
     SetOnDamageCallback(std::bind(&Zoe::OnDamageCallback, this));
+
+    mManaRegenTimerHandle = mTimerComponent->AddNotRemovableTimer(
+        1.f, 
+        [this]() {
+            RegenerateMana();
+            mManaRegenTimerHandle->Restart();
+        }
+    );
 }
 
 Zoe::~Zoe()
@@ -788,4 +797,26 @@ void Zoe::SetCheckpoint(const Vector2 &position)
 Checkpoint *Zoe::GetCurrentCheckpoint() const
 {
     return mCurrentCheckpoint;
+}
+
+void Zoe::SetMana(float mana)
+{
+    mMana = mana;
+
+    if (mMana < 0.f)
+        mMana = 0.f;
+
+    if (mMana > mGame->GetConfig()->Get<float>("ZOE.MAX_MANA"))
+        mMana = mGame->GetConfig()->Get<float>("ZOE.MAX_MANA");
+}
+
+void Zoe::ConsumeMana(float amount)
+{
+    SetMana(mMana - amount);
+}
+
+void Zoe::RegenerateMana()
+{
+    SetMana(mMana + mGame->GetConfig()->Get<float>("ZOE.MANA_REGEN_RATE_PER_SECOND"));
+    SDL_Log("Mana: %f", mMana);
 }

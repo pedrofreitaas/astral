@@ -37,6 +37,8 @@
     },
 
     "ZOE": {
+        "MAX_MANA": 100.0,
+        "MANA_REGEN_RATE_PER_SECOND": 5.0,
         "LIFE_POINTS": 6,
         "MAX_DEATHS": 3,
         "KNOCKBACK_FORCE": 250,
@@ -50,7 +52,8 @@
                 "SPEED": 180,
                 "KNOCKBACK_FORCE": 350,
                 "MAX_RICOCHETS": 3,
-                "COOLDOWN": 4
+                "COOLDOWN": 4,
+                "MANA_COST": 55.0
             },
             "VENTANIA": {
                 "SPEED": 900,

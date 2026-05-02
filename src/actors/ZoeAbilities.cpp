@@ -303,6 +303,13 @@ void Zoe::FireFireball()
     if (CheckFireballOnCooldown())
         return;
 
+    float manaCost = mGame->GetConfig()->Get<float>("ZOE.POWERS.FIREBALL.MANA_COST");
+
+    if (!HasMana(manaCost))
+        return;
+
+    ConsumeMana(manaCost);
+
     new Fireball(
         mGame,
         GetPosition() + GetFireballOffset(),

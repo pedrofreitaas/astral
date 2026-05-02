@@ -130,8 +130,17 @@ public:
     void TakeSithAttack1(const float minOverlap, AABBColliderComponent *other);
     void TakeSithAttack2(const float minOverlap, AABBColliderComponent *other);
 
+    float GetMana() const { return mMana; }
+
 private:
-    float mForwardSpeed;
+    float mForwardSpeed, mMana;
+
+    bool HasMana(float amount) const { return mMana >= amount; }
+    void ConsumeMana(float amount);
+    void SetMana(float mana);
+    void RegenerateMana();
+
+    Timer* mManaRegenTimerHandle;
 
     class TimerComponent *mTimerComponent;
     class RigidBodyComponent* mRigidBodyComponent;
