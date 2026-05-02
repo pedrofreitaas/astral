@@ -4,7 +4,7 @@ Zoe::Zoe(
     Game *game, const float forwardSpeed, const Vector2 &center)
     : Actor(game, game->GetConfig()->Get<int>("ZOE.LIFE_POINTS"), true, "zoe"), mForwardSpeed(forwardSpeed),
       mTryingToFireFireball(false), mFireballCooldownTimer(), mDodgeCooldownTimer(),
-      mIsVentaniaOnCooldown(false), mTryingToTriggerVentania(false),
+      mLandedAfterVentania(false), mTryingToTriggerVentania(false),
       mIsTryingToHit(false), mAttackCollider(nullptr), mIsTryingToDodge(false),
       mInputMovementDir(0.f, 0.f), mMovementLocked(false), mAbilitiesLocked(false),
       mDamageSoundHandle(SoundHandle::Invalid), mIsTryingToJump(false), mNevascaSoundHandle(SoundHandle::Invalid),
@@ -147,7 +147,7 @@ void Zoe::ManageState()
             break;
         }
 
-        if (mTryingToTriggerVentania && !mIsVentaniaOnCooldown)
+        if (mTryingToTriggerVentania && mLandedAfterVentania)
         {
             TriggerVentania();
             break;
@@ -183,7 +183,7 @@ void Zoe::ManageState()
         if (CheckJump())
             break;
 
-        if (mTryingToTriggerVentania && !mIsVentaniaOnCooldown)
+        if (mTryingToTriggerVentania && mLandedAfterVentania)
         {
             TriggerVentania();
             break;
@@ -239,6 +239,7 @@ void Zoe::ManageState()
 
         mTimerComponent->Restart(mCoyoteTimer);
         Move();
+        SetLandedAfterVentania(true);
 
         break;
     }
@@ -282,6 +283,7 @@ void Zoe::ManageState()
         }
 
         mTimerComponent->Restart(mCoyoteTimer);
+        SetLandedAfterVentania(true);
 
         break;
     }
@@ -341,7 +343,7 @@ void Zoe::ManageState()
             break;
         }
 
-        if (mTryingToTriggerVentania && !mIsVentaniaOnCooldown)
+        if (mTryingToTriggerVentania && mLandedAfterVentania)
         {
             TriggerVentania();
             break;
@@ -364,7 +366,7 @@ void Zoe::ManageState()
 
         SetRotation(left ? 0.f : Math::Pi);
 
-        mIsVentaniaOnCooldown = false; // always reset ventania.
+        SetLandedAfterVentania(true);
 
         break;
     }
@@ -813,10 +815,16 @@ void Zoe::SetMana(float mana)
 void Zoe::ConsumeMana(float amount)
 {
     SetMana(mMana - amount);
+    mConsumedManaThisFrame = true;
 }
 
 void Zoe::RegenerateMana()
 {
+    if (mConsumedManaThisFrame)
+    {
+        mConsumedManaThisFrame = false; // this logic could be in update loop also.
+        return;
+    }
+
     SetMana(mMana + mGame->GetConfig()->Get<float>("ZOE.MANA_REGEN_RATE_PER_SECOND"));
-    SDL_Log("Mana: %f", mMana);
 }

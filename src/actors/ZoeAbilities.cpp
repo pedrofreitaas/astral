@@ -192,7 +192,7 @@ static Vector2 SnapVentaniaDir(Vector2 dir)
 
 void Zoe::TriggerVentania()
 {
-    if (mIsVentaniaOnCooldown)
+    if (!mLandedAfterVentania)
         return;
 
     if (!mTryingToTriggerVentania)
@@ -221,10 +221,7 @@ void Zoe::TriggerVentania()
         GetCenter(),
         dir);
 
-    SetVentaniaOnCooldown(true);
-    float cooldown = mGame->GetConfig()->Get<float>("ZOE.POWERS.VENTANIA.COOLDOWN");
-    mTimerComponent->AddTimer(cooldown, [this]()
-                              { SetVentaniaOnCooldown(false); });
+    SetLandedAfterVentania(false);
 
     mGame->GetAudio()->PlaySound("ventania.wav");
 
