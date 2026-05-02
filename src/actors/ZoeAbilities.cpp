@@ -205,7 +205,9 @@ void Zoe::TriggerVentania()
     int closeToWall = mColliderComponent->IsCloseToTileWallHorizontally(2.f);
 
     if (
-        (Math::Sign(closeToWall) == Math::Sign(dir.x)))
+        Math::Sign(closeToWall) == Math::Sign(dir.x) && 
+        closeToWall != 0 // must allow upwards when not close to wall.
+    )
     {
         return;
     }
