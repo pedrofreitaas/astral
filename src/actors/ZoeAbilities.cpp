@@ -352,6 +352,15 @@ bool Zoe::CheckNevasca()
 
     while (mNevascaTimer >= rate)
     {
+        if (HasMana(mGame->GetConfig()->Get<float>("ZOE.POWERS.NEVASCA.MANA_COST")))
+        {
+            ConsumeMana(mGame->GetConfig()->Get<float>("ZOE.POWERS.NEVASCA.MANA_COST"));
+        }
+        else
+        {
+            return false;
+        }
+
         mNevascaTimer -= rate;
 
         for (const Vector2 &dir : dirs)

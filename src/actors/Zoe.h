@@ -134,6 +134,7 @@ public:
 
 private:
     float mForwardSpeed, mMana;
+    bool mConsumedManaThisFrame;
 
     bool HasMana(float amount) const { return mMana >= amount; }
     void ConsumeMana(float amount);
@@ -161,8 +162,8 @@ private:
     Timer* mFireballCooldownTimer;
 
     void TriggerVentania();
-    void SetVentaniaOnCooldown(bool onCooldown) { mIsVentaniaOnCooldown = onCooldown; }
-    bool mIsVentaniaOnCooldown, mTryingToTriggerVentania;
+    void SetLandedAfterVentania(bool landed) { mLandedAfterVentania = landed; }
+    bool mLandedAfterVentania, mTryingToTriggerVentania;
 
     Collider *mAttackCollider, *mAerialAttackCollider;
 

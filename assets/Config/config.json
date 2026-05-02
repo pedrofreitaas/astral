@@ -38,7 +38,7 @@
 
     "ZOE": {
         "MAX_MANA": 100.0,
-        "MANA_REGEN_RATE_PER_SECOND": 5.0,
+        "MANA_REGEN_RATE_PER_SECOND": 15.0,
         "LIFE_POINTS": 6,
         "MAX_DEATHS": 3,
         "KNOCKBACK_FORCE": 250,
@@ -46,7 +46,8 @@
         "POWERS": {
             "NEVASCA": {
                 "RATE_PER_SECOND": 15,
-                "SPEED": 70
+                "SPEED": 70,
+                "MANA_COST": 3.0
             },
             "FIREBALL": {
                 "SPEED": 180,
