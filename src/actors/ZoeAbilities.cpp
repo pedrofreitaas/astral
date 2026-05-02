@@ -83,9 +83,9 @@ void Zoe::CheckAbilitiesKeys(const std::vector<SDL_Event>& events, SDL_GameContr
     // these abilities should be reset every frame - to avoid keeping them pressed for trigger
     mIsTryingToJump = false;
     mIsTryingToHit = false;
-    mTryingToFireFireball = false;
     mIsTryingToDodge = false;
     // mTryingToTriggerVentania = false; - this should be per frame, but there is BUG - TODO
+    // mTryingToFireFireball = false; - this must be because there is a charging part.
     // mIsTryingToNevasca = false; - isnt per frame!
 
     if (mAbilitiesLocked || controller == nullptr) return;
