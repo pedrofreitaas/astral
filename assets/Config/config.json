@@ -43,6 +43,10 @@
         "MAX_DEATHS": 3,
         "KNOCKBACK_FORCE": 250,
         "DODGE_COOLDOWN": 1.0,
+        "IS_VENTANIA_ALLOWED": true,
+        "IS_DODGE_ALLOWED": true,
+        "IS_FIREBALL_ALLOWED": true,
+        "IS_NEVASCA_ALLOWED": false,
         "POWERS": {
             "NEVASCA": {
                 "RATE_PER_SECOND": 15,

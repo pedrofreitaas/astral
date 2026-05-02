@@ -10,7 +10,11 @@ Zoe::Zoe(
       mDamageSoundHandle(SoundHandle::Invalid), mIsTryingToJump(false), mNevascaSoundHandle(SoundHandle::Invalid),
       mIsTryingToNevasca(false), mIsFiringNevasca(false), mNevascaTimer(0.f), mAerialAttackCollider(nullptr),
       mCoyoteTimer(nullptr), mDashGravityDisableTimer(nullptr), mCurrentCheckpoint(nullptr), mDeaths(0), 
-      mMana(game->GetConfig()->Get<float>("ZOE.MAX_MANA"))
+      mMana(game->GetConfig()->Get<float>("ZOE.MAX_MANA")), mConsumedManaThisFrame(false), 
+      mIsDodgeAllowed(game->GetConfig()->Get<bool>("ZOE.IS_DODGE_ALLOWED")), 
+      mIsVentaniaAllowed(game->GetConfig()->Get<bool>("ZOE.IS_VENTANIA_ALLOWED")),
+      mIsFireballAllowed(game->GetConfig()->Get<bool>("ZOE.IS_FIREBALL_ALLOWED")),
+      mIsNevascaAllowed(game->GetConfig()->Get<bool>("ZOE.IS_NEVASCA_ALLOWED"))
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
 
@@ -147,16 +151,15 @@ void Zoe::ManageState()
             break;
         }
 
-        if (mTryingToTriggerVentania && mLandedAfterVentania)
+        if (CheckVentania())
         {
-            TriggerVentania();
             break;
         }
 
         if (CheckHit())
             break;
 
-        if (mTryingToFireFireball && !CheckFireballOnCooldown())
+        if (mTryingToFireFireball && !CheckFireballOnCooldown() && mIsFireballAllowed)
         {
             SetBehaviorState(BehaviorState::Charging);
             break;
@@ -183,16 +186,15 @@ void Zoe::ManageState()
         if (CheckJump())
             break;
 
-        if (mTryingToTriggerVentania && mLandedAfterVentania)
+        if (CheckVentania())
         {
-            TriggerVentania();
             break;
         }
 
         if (CheckHit())
             break;
 
-        if (mTryingToFireFireball && !CheckFireballOnCooldown())
+        if (mTryingToFireFireball && !CheckFireballOnCooldown() && mIsFireballAllowed)
         {
             SetBehaviorState(BehaviorState::Charging);
             break;
@@ -219,7 +221,7 @@ void Zoe::ManageState()
             break;
         }
 
-        if (mTryingToFireFireball && !CheckFireballOnCooldown())
+        if (mTryingToFireFireball && !CheckFireballOnCooldown() && mIsFireballAllowed)
         {
             SetBehaviorState(BehaviorState::Charging);
             break;
@@ -276,7 +278,7 @@ void Zoe::ManageState()
             break;
         }
 
-        if (mTryingToFireFireball && !CheckFireballOnCooldown())
+        if (mTryingToFireFireball && !CheckFireballOnCooldown() && mIsFireballAllowed)
         {
             SetBehaviorState(BehaviorState::Charging);
             break;
@@ -343,13 +345,12 @@ void Zoe::ManageState()
             break;
         }
 
-        if (mTryingToTriggerVentania && mLandedAfterVentania)
+        if (CheckVentania())
         {
-            TriggerVentania();
             break;
         }
 
-        if (mTryingToFireFireball && !CheckFireballOnCooldown())
+        if (mTryingToFireFireball && !CheckFireballOnCooldown() && mIsFireballAllowed)
         {
             SetBehaviorState(BehaviorState::Charging);
             break;

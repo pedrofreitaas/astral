@@ -27,6 +27,9 @@ const SDL_Rect DODGE_BB = SDL_Rect({25, 25, 13, 15});
 
 class Zoe : public Actor
 {
+    friend class FireNevascaStep;
+    friend class Game;
+
     std::vector<ColliderLayer> IGNORED_LAYERS_DODGE = {
         ColliderLayer::Enemy,
         ColliderLayer::EnemyProjectile,
@@ -132,13 +135,20 @@ public:
 
     float GetMana() const { return mMana; }
 
+    void SetIsFireballAllowed(bool allowed) { mIsFireballAllowed = allowed; }
+    void SetIsDodgeAllowed(bool allowed) { mIsDodgeAllowed = allowed; }
+    void SetIsVentaniaAllowed(bool allowed) { mIsVentaniaAllowed = allowed; }
+    void SetIsNevascaAllowed(bool allowed) { mIsNevascaAllowed = allowed; }
+
+protected:
+    void SetMana(float mana);
+
 private:
     float mForwardSpeed, mMana;
     bool mConsumedManaThisFrame;
 
     bool HasMana(float amount) const { return mMana >= amount; }
     void ConsumeMana(float amount);
-    void SetMana(float mana);
     void RegenerateMana();
 
     Timer* mManaRegenTimerHandle;
@@ -157,11 +167,13 @@ private:
     Timer* mDodgeCooldownTimer;
     Timer* mDashGravityDisableTimer;
 
+    bool mIsFireballAllowed, mIsDodgeAllowed, mIsVentaniaAllowed, mIsNevascaAllowed;
+
     void FireFireball();
     bool mTryingToFireFireball;
     Timer* mFireballCooldownTimer;
 
-    void TriggerVentania();
+    bool CheckVentania();
     void SetLandedAfterVentania(bool landed) { mLandedAfterVentania = landed; }
     bool mLandedAfterVentania, mTryingToTriggerVentania;
 

@@ -190,13 +190,16 @@ static Vector2 SnapVentaniaDir(Vector2 dir)
     return best;
 }
 
-void Zoe::TriggerVentania()
+bool Zoe::CheckVentania()
 {
-    if (!mLandedAfterVentania)
-        return;
+    if (!mTryingToTriggerVentania) 
+        return false;
 
-    if (!mTryingToTriggerVentania)
-        return;
+    if (!mLandedAfterVentania)
+        return false;
+    
+    if (!mIsVentaniaAllowed)
+        return false;
 
     Vector2 rawDir = mInputMovementDir.LengthSq() > 0.f ? mInputMovementDir : GetForward();
     Vector2 dir = SnapVentaniaDir(rawDir);
@@ -209,7 +212,7 @@ void Zoe::TriggerVentania()
         closeToWall != 0 // must allow upwards when not close to wall.
     )
     {
-        return;
+        return false;
     }
 
     float speed = mGame->GetConfig()->Get<float>("ZOE.POWERS.VENTANIA.SPEED");
@@ -229,6 +232,7 @@ void Zoe::TriggerVentania()
     SetBehaviorState(BehaviorState::Dashing);
 
     mDashGravityDisableTimer->Restart();
+    return true;
 }
 
 bool Zoe::CheckJump()
@@ -264,6 +268,9 @@ bool Zoe::CheckJump()
 
 bool Zoe::CheckDodge()
 {
+    if (!mIsDodgeAllowed)
+        return false;
+    
     if (!mIsTryingToDodge || mBehaviorState == BehaviorState::Dodging)
         return false;
 
@@ -323,6 +330,9 @@ void Zoe::FireFireball()
 
 bool Zoe::CheckNevasca()
 {
+    if (!mIsNevascaAllowed)
+        return false;
+
     if (!mIsTryingToNevasca)
     {
         return false;
