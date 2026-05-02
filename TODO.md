@@ -1,4 +1,4 @@
-1. camera shaking ✅
-2. snow sliding ✅
-3. quasar en.
-- stomp attack
+1. Ventania Item + Animation
+2. Dodge Item + Animation
+3. Revamp Levels
+4. Zathura
