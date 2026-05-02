@@ -202,10 +202,9 @@ void Zoe::TriggerVentania()
     Vector2 dir = SnapVentaniaDir(rawDir);
 
     // distance param has to be bigger than IsPressingAgainstWall!
-    int closeToWall = mColliderComponent->IsCloseToTileWallHorizontally(3.f);
+    int closeToWall = mColliderComponent->IsCloseToTileWallHorizontally(2.f);
 
     if (
-        closeToWall != 0 && dir.x == 0 && dir.y < 0 ||
         (Math::Sign(closeToWall) == Math::Sign(dir.x)))
     {
         return;
