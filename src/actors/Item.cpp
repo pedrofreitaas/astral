@@ -14,33 +14,110 @@ Item *Item::CreateNevascaItem(Game *game, const Vector2 &position)
       [game](Item &item)
       {
         std::vector<std::unique_ptr<Step>> steps;
-        
+
         steps.push_back(std::make_unique<MoveStep>(
             game,
-            [game]() { return game->GetZoe(); },
-            [game]() { return Vector2(game->GetZoe()->GetCenter().x + 32.f, game->GetZoe()->GetCenter().y); },
+            [game]()
+            { return game->GetZoe(); },
+            [game]()
+            { return Vector2(game->GetZoe()->GetCenter().x + 32.f, game->GetZoe()->GetCenter().y); },
             80.f));
 
-        auto spawnAnim = std::make_unique<SpawnUIAnimationStep>(game, 20, 23);
-        SpawnUIAnimationStep *spawnAnimPtr = spawnAnim.get();
+        auto spawnAnim = std::make_unique<SpawnJoystickButtonStep>(game, Button::RT);
+        SpawnJoystickButtonStep *spawnAnimPtr = spawnAnim.get();
         steps.push_back(std::move(spawnAnim));
 
         steps.push_back(std::make_unique<FireNevascaStep>(game, 2.f));
-        
-        steps.push_back(std::make_unique<UnspawnUIAnimationStep>(game, [spawnAnimPtr]()
-            { return spawnAnimPtr->GetAnimation(); }));
-        
-          std::vector<std::string> dialogue = {"O que e isso? Que frio..."};
+
+        std::vector<std::string> dialogue = {"O que e isso? Que frio..."};
         steps.push_back(std::make_unique<DialogueStep>(game, "Zoe", dialogue));
-        
+
         game->AddCutscene("nevasca_acquisition", std::move(steps), nullptr);
-        
+
         game->GetZoe()->SetIsNevascaAllowed(true);
-        
+
         game->StartCutscene("nevasca_acquisition");
       },
       Button::RT,
       0, 4, 5);
+}
+
+Item *Item::CreateFireballItem(Game *game, const Vector2 &position)
+{
+  return new Item(
+      game,
+      position,
+      "../assets/Sprites/Items/Flame/texture.png",
+      "../assets/Sprites/Items/Flame/texture.json",
+      32, 32,
+      [game](Item &item)
+      {
+        std::vector<std::unique_ptr<Step>> steps;
+
+        auto spawnAnim = std::make_unique<SpawnJoystickButtonStep>(game, Button::Y);
+        SpawnJoystickButtonStep *spawnAnimPtr = spawnAnim.get();
+        steps.push_back(std::move(spawnAnim));
+        
+        steps.push_back(std::make_unique<LaunchFireballStep>(game, 1.f));
+
+        steps.push_back(std::make_unique<MoveStep>(
+            game,
+            [game]()
+            { return game->GetZoe(); },
+            [game]()
+            { return Vector2(game->GetZoe()->GetCenter().x + 15.f, game->GetZoe()->GetCenter().y); },
+            80.f));
+
+        steps.push_back(std::make_unique<WaitStep>(game, 0.5f));
+        steps.push_back(std::make_unique<MoveStep>(
+            game,
+            [game]()
+            { return game->GetZoe(); },
+            [game]()
+            { return Vector2(game->GetZoe()->GetCenter().x - 4.f, game->GetZoe()->GetCenter().y); },
+            20.f));
+
+        steps.push_back(std::make_unique<WaitStep>(game, 1.f));
+        steps.push_back(std::make_unique<MoveStep>(
+            game,
+            [game]()
+            { return game->GetZoe(); },
+            [game]()
+            { return Vector2(game->GetZoe()->GetCenter().x + 4.f, game->GetZoe()->GetCenter().y); },
+            20.f));
+
+        steps.push_back(std::make_unique<WaitStep>(game, 1.f));
+
+        std::vector<std::string> dialogue = {
+            "Muito cuidado para nao me queimar."};
+        steps.push_back(std::make_unique<DialogueStep>(game, "Zoe", dialogue));
+
+        game->AddCutscene("fireball_acquisition", std::move(steps), nullptr);
+
+        game->GetZoe()->SetIsFireballAllowed(true);
+
+        game->StartCutscene("fireball_acquisition");
+      },
+      Button::Y,
+      0, 9, 14);
+}
+
+Item *Item::CreateVentaniaItem(Game *game, const Vector2 &position)
+{
+  return new Item(
+      game,
+      position,
+      "../assets/Sprites/Zoe/Ventania/texture.png",
+      "../assets/Sprites/Zoe/Ventania/texture.json",
+      32, 16,
+      nullptr,
+      Button::RB,
+      0, 5, 5);
+}
+
+Item *Item::CreateDodgeItem(Game *game, const Vector2 &position)
+{
+  return nullptr;
 }
 
 Item::Item(

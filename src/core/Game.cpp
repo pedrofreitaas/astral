@@ -356,12 +356,25 @@ void Game::ProcessInput()
                 case SDLK_n:
                     Item::CreateNevascaItem(this, Vector2(300.f, 220.f));
                     break;
+                
+                case SDLK_v:
+                    Item::CreateVentaniaItem(this, Vector2(300.f, 220.f));
+                    break;
+
+                case SDLK_m:
+                    Item::CreateFireballItem(this, Vector2(300.f, 220.f));
+                    break;
             }
 
             break;
         case SDL_MOUSEBUTTONDOWN:
             break;
         }
+    }
+
+    if (mGamePlayState == GamePlayState::PlayingCutscene && mCurrentCutscene)
+    {
+        mCurrentCutscene->OnProcessInput(events);
     }
 
     if (mGamePlayState == GamePlayState::Playing)

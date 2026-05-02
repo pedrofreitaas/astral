@@ -45,7 +45,7 @@
         "DODGE_COOLDOWN": 1.0,
         "IS_VENTANIA_ALLOWED": true,
         "IS_DODGE_ALLOWED": true,
-        "IS_FIREBALL_ALLOWED": true,
+        "IS_FIREBALL_ALLOWED": false,
         "IS_NEVASCA_ALLOWED": false,
         "POWERS": {
             "NEVASCA": {

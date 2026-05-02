@@ -5,6 +5,7 @@
 #include <utility>
 #include <string>
 #include "Actor.h"
+#include "Button.h"
 #include "../core/Game.h"
 #include "../components/draw/DrawAnimatedComponent.h"
 #include "../components/collider/AABBColliderComponent.h"
@@ -19,6 +20,9 @@ public:
     Item() = default;
 
     static Item* CreateNevascaItem(Game *game, const Vector2& position);
+    static Item* CreateVentaniaItem(Game *game, const Vector2& position);
+    static Item* CreateFireballItem(Game *game, const Vector2& position);
+    static Item* CreateDodgeItem(Game *game, const Vector2& position);
     
 private:
     Item(
