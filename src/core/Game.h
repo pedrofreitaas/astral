@@ -235,6 +235,10 @@ public:
         return mPortal;
     }
 
+    const Vector3& GetModColor() const {
+        return mModColor;
+    }
+
 private:
     Actor* mPortal;
     Config *mConfig;

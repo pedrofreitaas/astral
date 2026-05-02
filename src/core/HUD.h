@@ -23,6 +23,7 @@ public:
     void HandleKeyPress(int key) override;
 	void HandleMouseClick(int button, int x, int y) override;
     void SetLife(int life);
+    void SetMana(float mana);
 
     void SetFireballLoadingBarProgress(bool enabled, float progress);
     void UpdateFireballLoadingBar(bool enabled, float progress, Vector2 pos);
@@ -31,9 +32,9 @@ public:
 
 private:
     UIText* mFPSText;
+    UIAnimation *mPlayerFrameAnimation;
 
-    std::vector<UIImage*> mLifeImages, mLoadingBarImages;
-    std::vector<UIImage*> mCooldownImages;
+    std::vector<UIImage*> mLifeImages, mLoadingBarImages, mCooldownImages, mManaBarImages;
 
     Vector2 mFireballLoadingBarOffset;
 };

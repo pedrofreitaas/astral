@@ -21,7 +21,6 @@ HUD::HUD(class Game* game, const std::string& fontName)
 
     // index 0..6  -> life value 0..6
     std::vector<std::string> lifeImagePaths = {
-        
         "../assets/Sprites/Hud/lifeBar/life-bar0.png", // 0
         "../assets/Sprites/Hud/lifeBar/life-bar1.png", // 1
         "../assets/Sprites/Hud/lifeBar/life-bar2.png", // 2
@@ -35,7 +34,7 @@ HUD::HUD(class Game* game, const std::string& fontName)
     {
         UIImage* img = AddImage(
             path,
-            Vector2(10.0f, 4.0f),
+            Vector2(36.0f, 0.0f),
             Vector2(48.0f, 16.0f)
         );
         img->SetEnabled(false);
@@ -67,6 +66,37 @@ HUD::HUD(class Game* game, const std::string& fontName)
     }
 
     mFireballLoadingBarOffset = Vector2(-24.0f, -24.0f);
+
+    std::vector<std::string> manaBarPaths = {
+        "../assets/Sprites/Hud/manaBar/mana-bar6.png",
+        "../assets/Sprites/Hud/manaBar/mana-bar5.png",
+        "../assets/Sprites/Hud/manaBar/mana-bar4.png",
+        "../assets/Sprites/Hud/manaBar/mana-bar3.png",
+        "../assets/Sprites/Hud/manaBar/mana-bar2.png",
+        "../assets/Sprites/Hud/manaBar/mana-bar1.png",
+        "../assets/Sprites/Hud/manaBar/mana-bar0.png"
+    };
+
+    for (const auto& path : manaBarPaths)
+    {
+        UIImage* img = AddImage(
+            path,
+            Vector2(36.0f, 13.0f),
+            Vector2(48.0f, 16.0f)
+        );
+        img->SetEnabled(false);
+        mManaBarImages.push_back(img);
+    }
+
+    mPlayerFrameAnimation = AddAnimation(
+        "../assets/Sprites/Hud/playerFrame/texture.png",
+        "../assets/Sprites/Hud/playerFrame/texture.json",
+        Vector2(0.0f, 0.0f),
+        Vector2(32.0f, 32.0f),
+        3.0f,
+        0, 3, true
+    );
+    mPlayerFrameAnimation->SetEnabled(true);
 }
 
 HUD::~HUD()
@@ -107,6 +137,15 @@ void HUD::SetLife(int life) {
     }
 }
 
+void HUD::SetMana(float mana) {
+    int index = static_cast<int>((mana / mGame->GetConfig()->Get<float>("ZOE.MAX_MANA")) * (mManaBarImages.size() - 1));
+    index = std::max(0, std::min(index, static_cast<int>(mManaBarImages.size() - 1)));
+
+    for (int i = 0; i < mManaBarImages.size(); ++i) {
+        mManaBarImages[i]->SetEnabled(i == index);
+    }
+}
+
 void HUD::SetFireballLoadingBarProgress(bool enabled, float progress) {
     progress = std::max(0.f, std::min(1.f, progress));
     
@@ -127,16 +166,19 @@ void HUD::UpdateFireballLoadingBar(bool enabled, float progress, Vector2 pos) {
 }
 
 void HUD::Update(float deltaTime) {
+    UIScreen::Update(deltaTime);
+
     Zoe* zoe = dynamic_cast<Zoe*>(mGame->GetZoe());
 
     if (!zoe) {
         SDL_Log("Zoe actor not found in HUD update.");
         return;
     }
-    
+
     SetFPS(static_cast<int>(1.0f / deltaTime));
 
     SetLife(zoe->GetLifes());
+    SetMana(zoe->GetMana());
 
     UpdateFireballLoadingBar(
         zoe->CheckFireballOnCooldown(),

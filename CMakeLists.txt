@@ -98,6 +98,8 @@ add_executable(astral
     src/core/HUD.cpp
     src/ui/UIImage.cpp
     src/ui/UIImage.h
+    src/ui/UIAnimation.cpp
+    src/ui/UIAnimation.h
     src/core/SpatialHashing.cpp
     src/core/SpatialHashing.h
     src/actors/Projectile.h
