@@ -145,29 +145,66 @@ void DialogueStep::Initialize()
         });
 }
 
-SpawnUIAnimationStep::SpawnUIAnimationStep(class Game* game, int animStart, int animEnd)
-    : Step(game, 0.f), mAnimStart(animStart), mAnimEnd(animEnd) {}
+void SpawnJoystickButtonStep::OnProcessInput(const std::vector<SDL_Event>& events) {
+    if (GetIsComplete() || !mAnimation) return;
 
-void SpawnUIAnimationStep::Update(float deltaTime) {
-    if (GetIsComplete()) return;
+    SDL_GameController* controller = mGame->GetController();
 
-    Zoe* zoe = mGame->GetZoe();
-    Vector2 screenPos = zoe->GetCenter() - mGame->GetCameraPos();
-    screenPos += Vector2(-8.f, -30.f);
+    if (mButton == Button::RT && SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_TRIGGERRIGHT) > 0) {
+        mGame->GetHUD()->RemoveAnimation(mAnimation);
+        SetComplete();  
+        return;
+    }
 
-    mAnimation = mGame->GetHUD()->AddAnimation(
-        "../assets/Sprites/Joystick/texture.png",
-        "../assets/Sprites/Joystick/texture.json",
-        screenPos, Vector2::Zero, 4.f,
-        mAnimStart, mAnimEnd);
+    if (mButton != Button::LT && SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_TRIGGERLEFT) > 0) {
+        mGame->GetHUD()->RemoveAnimation(mAnimation);
+        SetComplete();  
+        return;
+    }
 
-    SetComplete();
+    for (const SDL_Event& event : events) {
+        if (event.type == SDL_CONTROLLERBUTTONDOWN) {
+            if (event.cbutton.button == GetSDLButton(mButton))
+            {
+                mGame->GetHUD()->RemoveAnimation(mAnimation);
+                SetComplete();
+            }
+
+            break;
+        }
+    }
 }
 
-void UnspawnUIAnimationStep::Update(float deltaTime) {
+void SpawnJoystickButtonStep::Update(float deltaTime) {
     if (GetIsComplete()) return;
-    mGame->GetHUD()->RemoveAnimation(mGetAnimation());
-    SetComplete();
+
+    if (!mAnimation) {
+        Zoe* zoe = mGame->GetZoe();
+        Vector2 screenPos = zoe->GetCenter() - mGame->GetCameraPos();
+        screenPos += Vector2(-8.f, -35.f);
+
+        std::pair<int, int> animRange = joystickButtonsSpriteMapping.at(mButton);
+
+        mAnimation = mGame->GetHUD()->AddAnimation(
+            "../assets/Sprites/Joystick/texture.png",
+            "../assets/Sprites/Joystick/texture.json",
+            screenPos, Vector2::Zero, 4.f,
+            animRange.first, animRange.second, true);
+    }
+}
+
+void LaunchFireballStep::Update(float deltaTime) {
+    if (GetIsComplete())
+        return;
+    
+    Step::Update(deltaTime);
+
+    mGame->GetZoe()->OnFireballPressed();
+
+    mGame->GetZoe()->mTimerComponent->AddTimer(1.0f, [this]() {
+        mGame->GetZoe()->OnFireballReleased();
+        SetComplete();
+    });
 }
 
 void FireNevascaStep::PreUpdate() {

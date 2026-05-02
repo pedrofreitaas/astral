@@ -21,6 +21,7 @@ public:
         }
     };
     virtual void PreUpdate() = 0;
+    virtual void OnProcessInput(const std::vector<SDL_Event>& events) {};
 
     bool operator==(const Step& other) const { return this == &other; }
     bool GetIsComplete() const { return mIsComplete; }
@@ -99,25 +100,24 @@ public:
 
 class UIAnimation;
 
-class SpawnUIAnimationStep : public Step {
+class SpawnJoystickButtonStep : public Step {
 public:
-    SpawnUIAnimationStep(class Game* game, int animStart, int animEnd);
+    SpawnJoystickButtonStep(class Game* game, Button button) : Step(game, 60.f), mButton(button), mAnimation(nullptr) {}
     void PreUpdate() override {};
     void Update(float deltaTime) override;
     UIAnimation* GetAnimation() const { return mAnimation; }
+    void OnProcessInput(const std::vector<SDL_Event>& events) override;
+
 private:
-    int mAnimStart, mAnimEnd;
-    UIAnimation* mAnimation = nullptr;
+    Button mButton;
+    UIAnimation* mAnimation;
 };
 
-class UnspawnUIAnimationStep : public Step {
+class LaunchFireballStep : public Step {
 public:
-    UnspawnUIAnimationStep(class Game* game, std::function<UIAnimation*()> getAnim)
-        : Step(game), mGetAnimation(std::move(getAnim)) {}
+    LaunchFireballStep(class Game* game, float maxTime=2.f) : Step(game, maxTime) {}
     void PreUpdate() override {};
     void Update(float deltaTime) override;
-private:
-    std::function<UIAnimation*()> mGetAnimation;
 };
 
 class FireNevascaStep : public Step {
@@ -175,6 +175,7 @@ public:
     void Pause();
     void Update(float deltaTime);
     bool IsComplete() const { return mIsComplete; }
+    void OnProcessInput(const std::vector<SDL_Event>& events);
 
 private:
     void Finish();
