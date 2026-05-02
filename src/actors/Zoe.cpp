@@ -522,6 +522,8 @@ void Zoe::Kill()
     }
 
     mDeaths++;
+    mGame->SetCameraCenterToShake(0.4f, 5);
+    mGame->GetAudio()->PlaySound("respawn.wav");
     SetPosition(GetCurrentCheckpoint()->position - GetHalfSize());
     SetLifes(mGame->GetConfig()->Get<int>("ZOE.LIFE_POINTS"));
     SetBehaviorState(BehaviorState::Idle);
