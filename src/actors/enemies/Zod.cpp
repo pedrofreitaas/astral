@@ -115,9 +115,20 @@ void Zod::ManageState()
         break;
     }
     
-    case BehaviorState::Charging:
+    case BehaviorState::Charging: {
         if (!PlayerOnSight(viewDistance)) SetBehaviorState(BehaviorState::Moving);
+
+        int currentAnimationSprite = mDrawComponent->GetCurrentSprite();
+
+        if (
+            currentAnimationSprite > 2 && 
+            !GetGame()->GetConfig()->Get<bool>("ZOE.SHOWN_DODGE_CUTSCENE")
+        ) {
+            PlayDodgeCutscene();
+        }
+
         break;
+    }
 
     case BehaviorState::TakingDamage:
         break;
@@ -213,4 +224,27 @@ void Zod::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* o
     Enemy::OnHorizontalCollision(minOverlap, other);
     
     Actor::OnHorizontalCollision(minOverlap, other);
+}
+
+void Zod::PlayDodgeCutscene() {
+    GetGame()->GetConfig()->Update("ZOE.SHOWN_DODGE_CUTSCENE", true, false);
+    std::vector<std::unique_ptr<Step>> steps;
+
+    std::vector<std::string> dialogue = {
+        "Esse tiro esta vindo na minha direcao."
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(mGame, "Zoe", dialogue));
+
+    steps.push_back(std::make_unique<FreezePhysicsStep>(mGame));
+    
+    steps.push_back(std::make_unique<SpawnJoystickButtonStep>(mGame, Button::B));
+
+    steps.push_back(std::make_unique<DodgeStep>(mGame));
+
+    steps.push_back(std::make_unique<UnfreezePhysicsStep>(mGame));
+
+    mGame->AddCutscene("dodgeCutscene",std::move(steps));
+
+    mGame->StartCutscene("dodgeCutscene");
 }

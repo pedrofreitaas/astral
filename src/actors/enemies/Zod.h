@@ -31,4 +31,6 @@ private:
 
     bool mProjectileOnCooldown;
     class TimerComponent *mTimerComponent;
+
+    void PlayDodgeCutscene();
 };
