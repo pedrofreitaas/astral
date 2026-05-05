@@ -110,7 +110,33 @@ Item *Item::CreateVentaniaItem(Game *game, const Vector2 &position)
       "../assets/Sprites/Zoe/Ventania/texture.png",
       "../assets/Sprites/Zoe/Ventania/texture.json",
       32, 16,
-      nullptr,
+      [game](Item &item)
+      {
+        std::vector<std::unique_ptr<Step>> steps;
+
+        std::vector<std::string> dialogue = {
+            "Sinto o vento me fortalecendo..."};
+        
+        steps.push_back(std::make_unique<DialogueStep>(game, "Zoe", dialogue));
+
+        steps.push_back(std::make_unique<SpawnJoystickButtonStep>(game, Button::A));
+
+        steps.push_back(std::make_unique<JumpStep>(game));
+
+        steps.push_back(std::make_unique<TurnOffGravityStep>(game));
+
+        steps.push_back(std::make_unique<SpawnJoystickButtonStep>(game, Button::RB));
+
+        steps.push_back(std::make_unique<TurnOnGravityStep>(game));
+
+        steps.push_back(std::make_unique<VentaniaStep>(game));
+
+        game->AddCutscene("ventania_acquisition", std::move(steps), nullptr);
+
+        game->GetZoe()->SetIsVentaniaAllowed(true);
+
+        game->StartCutscene("ventania_acquisition");
+      },
       Button::RB,
       0, 5, 5);
 }
