@@ -47,7 +47,7 @@ Game::Game()
       mCameraCenter(CameraCenter::Zoe), mMaintainCameraInMap(true), mCameraCenterPos(Vector2::Zero),
       mController(nullptr), mMustAlwaysUpdateActors(), mPreviousGameState(GamePlayState::Playing),
       mRealWindowHeight(0), mRealWindowWidth(0), mDeltatime(0.f), mShakeCounter(0.f), mShakeIntensity(3.f),
-      mPortal(nullptr)
+      mPortal(nullptr), mIsPhysicsFrozen(false)
 {
     mWindowWidth = 640;
     mWindowHeight = 352;

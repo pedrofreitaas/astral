@@ -240,6 +240,14 @@ public:
         return mModColor;
     }
 
+    bool GetPhysicsFrozen() const {
+        return mIsPhysicsFrozen;
+    }
+
+    void SetPhysicsFrozen(bool frozen) {
+        mIsPhysicsFrozen = frozen;
+    }
+
 private:
     Actor* mPortal;
     Config *mConfig;
@@ -340,4 +348,6 @@ private:
     void EndDemoCheck();
 
     float mShakeCounter, mShakeIntensity;
+
+    bool mIsPhysicsFrozen;
 };

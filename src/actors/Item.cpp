@@ -123,11 +123,11 @@ Item *Item::CreateVentaniaItem(Game *game, const Vector2 &position)
 
         steps.push_back(std::make_unique<JumpStep>(game));
 
-        steps.push_back(std::make_unique<TurnOffGravityStep>(game));
+        steps.push_back(std::make_unique<FreezePhysicsStep>(game));
 
         steps.push_back(std::make_unique<SpawnJoystickButtonStep>(game, Button::RB));
 
-        steps.push_back(std::make_unique<TurnOnGravityStep>(game));
+        steps.push_back(std::make_unique<UnfreezePhysicsStep>(game));
 
         steps.push_back(std::make_unique<VentaniaStep>(game));
 

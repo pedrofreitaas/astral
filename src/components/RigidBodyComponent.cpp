@@ -51,6 +51,11 @@ void RigidBodyComponent::ApplyImpulse(const Vector2 &impulse) {
 
 void RigidBodyComponent::Update(float deltaTime)
 {
+    if (mOwner->GetGame()->GetPhysicsFrozen()) {
+        mAcceleration = Vector2::Zero;
+        return;
+    }
+
     bool sceneAppliesGravity = mOwner->GetGame()->GetApplyGravityScene();
     bool applyGravity = mApplyGravity && sceneAppliesGravity;
     

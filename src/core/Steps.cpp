@@ -258,20 +258,29 @@ void VentaniaStep::SetComplete(bool v)
     Step::SetComplete(v);
 }
 
-void TurnOffGravityStep::PreUpdate()
+void FreezePhysicsStep::PreUpdate()
 {
-    auto *zoe = mGame->GetZoe();
-    if (!zoe) return;
-
-    // needs to be gravity scale, because turn of gravity doesnt mean zero gravity, so no onGround == true.
-    zoe->GetComponent<RigidBodyComponent>()->SetGravityScale(0.f);
-    zoe->GetComponent<RigidBodyComponent>()->ResetVelocityY();
+    mGame->SetPhysicsFrozen(true);
 }
 
-void TurnOnGravityStep::PreUpdate()
+void UnfreezePhysicsStep::PreUpdate()
+{
+    mGame->SetPhysicsFrozen(false);
+}
+
+void DodgeStep::PreUpdate()
 {
     auto *zoe = mGame->GetZoe();
     if (!zoe) return;
 
-    zoe->GetComponent<RigidBodyComponent>()->SetGravityScale(1.f);
+    zoe->OnDodgePressed();
+}
+
+void DodgeStep::SetComplete(bool v)
+{
+    auto *zoe = mGame->GetZoe();
+    if (!zoe) return;
+
+    zoe->OnDodgeReleased();
+    Step::SetComplete(v);
 }

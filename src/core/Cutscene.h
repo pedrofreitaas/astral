@@ -175,16 +175,23 @@ public:
     void SetComplete(bool v) override;
 };
 
-class TurnOffGravityStep : public Step {
+class FreezePhysicsStep : public Step {
 public:
-    TurnOffGravityStep(class Game* game) : Step(game, .1f) {}
+    FreezePhysicsStep(class Game* game) : Step(game, .01f) {}
     void PreUpdate() override;
 };
 
-class TurnOnGravityStep : public Step {
+class UnfreezePhysicsStep : public Step {
 public:
-    TurnOnGravityStep(class Game* game) : Step(game, .1f) {}
+    UnfreezePhysicsStep(class Game* game) : Step(game, .01f) {}
     void PreUpdate() override;
+};
+
+class DodgeStep : public Step {
+public:
+    DodgeStep(class Game* game) : Step(game, .01f) {}
+    void PreUpdate() override;
+    void SetComplete(bool v) override;
 };
 
 class Cutscene {
