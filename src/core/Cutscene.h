@@ -27,7 +27,7 @@ public:
     bool GetIsComplete() const { return mIsComplete; }
 
 protected:
-    void SetComplete(bool v = true) { mIsComplete = v; }
+    virtual void SetComplete(bool v = true) { mIsComplete = v; }
     bool mIsComplete = false;
     Game *mGame;
     float mTimer;
@@ -159,6 +159,32 @@ public:
 private:
     std::vector<std::string> mMessages;
     std::string mSpeaker;
+};
+
+class JumpStep : public Step {
+public:
+    JumpStep(class Game* game) : Step(game, .5f) {}
+    void PreUpdate() override;
+    void SetComplete(bool v) override;
+};
+
+class VentaniaStep : public Step {
+public:
+    VentaniaStep(class Game* game) : Step(game, .1f) {}
+    void PreUpdate() override;
+    void SetComplete(bool v) override;
+};
+
+class TurnOffGravityStep : public Step {
+public:
+    TurnOffGravityStep(class Game* game) : Step(game, .1f) {}
+    void PreUpdate() override;
+};
+
+class TurnOnGravityStep : public Step {
+public:
+    TurnOnGravityStep(class Game* game) : Step(game, .1f) {}
+    void PreUpdate() override;
 };
 
 class Cutscene {

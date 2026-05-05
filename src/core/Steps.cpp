@@ -201,7 +201,7 @@ void LaunchFireballStep::Update(float deltaTime) {
 
     mGame->GetZoe()->OnFireballPressed();
 
-    mGame->GetZoe()->mTimerComponent->AddTimer(1.0f, [this]() {
+    mGame->GetZoe()->GetComponent<TimerComponent>()->AddTimer(1.0f, [this]() {
         mGame->GetZoe()->OnFireballReleased();
         SetComplete();
     });
@@ -229,4 +229,49 @@ void SoundStep::Update(float deltaTime)
 
     mGame->GetAudio()->PlaySound(mSoundFile, mLoop);
     SetComplete();
+}
+
+void JumpStep::PreUpdate()
+{
+    Zoe* zoe = mGame->GetZoe();
+    zoe->OnJumpPressed();
+}
+
+void JumpStep::SetComplete(bool v)
+{
+    Zoe* zoe = mGame->GetZoe();
+    zoe->OnJumpReleased();
+    Step::SetComplete(v);
+}
+
+void VentaniaStep::PreUpdate()
+{
+    Zoe* zoe = mGame->GetZoe();
+    zoe->OnVentaniaPressed();
+}
+
+void VentaniaStep::SetComplete(bool v)
+{
+    Zoe* zoe = mGame->GetZoe();
+    zoe->OnVentaniaReleased();
+
+    Step::SetComplete(v);
+}
+
+void TurnOffGravityStep::PreUpdate()
+{
+    auto *zoe = mGame->GetZoe();
+    if (!zoe) return;
+
+    // needs to be gravity scale, because turn of gravity doesnt mean zero gravity, so no onGround == true.
+    zoe->GetComponent<RigidBodyComponent>()->SetGravityScale(0.f);
+    zoe->GetComponent<RigidBodyComponent>()->ResetVelocityY();
+}
+
+void TurnOnGravityStep::PreUpdate()
+{
+    auto *zoe = mGame->GetZoe();
+    if (!zoe) return;
+
+    zoe->GetComponent<RigidBodyComponent>()->SetGravityScale(1.f);
 }
