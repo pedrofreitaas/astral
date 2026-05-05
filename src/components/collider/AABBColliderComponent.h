@@ -54,6 +54,7 @@ public:
     ~AABBColliderComponent() override;
 
     bool Intersect(const AABBColliderComponent& b) const;
+    bool IsContainedIn(const AABBColliderComponent& b) const;
 
     float DetectHorizontalCollision(RigidBodyComponent *rigidBody);
     float DetectVerticalCollision(RigidBodyComponent *rigidBody);

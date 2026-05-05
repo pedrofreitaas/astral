@@ -36,11 +36,12 @@ public:
     std::string mEvent, mFunctionName;
     AABBColliderComponent *mColliderComponent;
     RigidBodyComponent *mRigidBodyComponent; // only to check collision
-    bool mIsPlayerInside, mWasPlayerInside;
+    bool mIsPlayerInside, mWasPlayerInside, mIsPlayerContainedInMe;
     float mCloseToCenterDistanceSQ;
 
     void Log();
     void PlayCutscene();
     void SpawnEntity();
+    void TeleportToCheckpoint();
     void CallMyFunction();
 };

@@ -507,6 +507,14 @@ void Zoe::ManageAnimations()
     }
 }
 
+void Zoe::TeleportToCheckpoint()
+{
+    if (GetCurrentCheckpoint() == nullptr)
+        return;
+
+    SetPosition(GetCurrentCheckpoint()->position - GetHalfSize());
+} 
+
 void Zoe::Kill()
 {
     if (mBehaviorState == BehaviorState::Dead)

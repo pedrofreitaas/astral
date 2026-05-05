@@ -153,6 +153,28 @@
                  "width":32,
                  "x":159,
                  "y":306.5
+                }, 
+                {
+                 "height":51.3333333333333,
+                 "id":17,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"event",
+                         "type":"string",
+                         "value":"contains"
+                        }, 
+                        {
+                         "name":"function_name",
+                         "type":"string",
+                         "value":"teleport_to_checkpoint"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":62.6666666666667,
+                 "x":534.666666666667,
+                 "y":261.333333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -172,7 +194,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":13,
+ "nextobjectid":18,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

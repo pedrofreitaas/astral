@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="13">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="18">
  <editorsettings>
   <export target="../../assets/Levels/Maps/tests.json" format="json"/>
  </editorsettings>
@@ -71,6 +71,12 @@
     <property name="entity_code" type="int" value="5"/>
     <property name="event" value="atStart"/>
     <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="17" x="534.667" y="261.333" width="62.6667" height="51.3333">
+   <properties>
+    <property name="event" value="contains"/>
+    <property name="function_name" value="teleport_to_checkpoint"/>
    </properties>
   </object>
  </objectgroup>

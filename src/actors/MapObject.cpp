@@ -14,9 +14,10 @@ MapObject::MapObject(Game *game, int inId, const std::string &ev, const std::str
                      const Vector2 &pos, const Vector2 &size, const json &parameters)
     : Actor(game, 1, true), mID(inId), mEvent(ev), mFunctionName(func_name),
       mIsPlayerInside(false), mWasPlayerInside(false),
-      mParameters(parameters), mCloseToCenterDistanceSQ(0.f)
+      mParameters(parameters), mCloseToCenterDistanceSQ(0.f),
+      mIsPlayerContainedInMe(false)
 {
-    if (ev != "in" && ev != "out" && ev != "enter" && ev != "exit" && ev != "closeToCenter" // always player related
+    if (ev != "in" && ev != "out" && ev != "enter" && ev != "exit" && ev != "closeToCenter" && ev != "contains" // always player related
         && ev != "atStart"                                                                  // not related to player
     )
     {
@@ -88,6 +89,12 @@ void MapObject::CallMyFunction()
         return;
     }
 
+    if (mFunctionName == "teleport_to_checkpoint")
+    {
+        TeleportToCheckpoint();
+        return;
+    }
+
     throw std::runtime_error("MapObject unknown function name: " + mFunctionName);
 }
 
@@ -123,8 +130,14 @@ void MapObject::OnUpdate(float deltaTime)
         CallMyFunction();
     }
 
+    else if (mEvent == "contains" && mIsPlayerContainedInMe)
+    {
+        CallMyFunction();
+    }
+
     mWasPlayerInside = mIsPlayerInside;
     mIsPlayerInside = false;
+    mIsPlayerContainedInMe = false;
 }
 
 void MapObject::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
@@ -132,6 +145,7 @@ void MapObject::OnVerticalCollision(const float minOverlap, AABBColliderComponen
     if (other->GetLayer() == ColliderLayer::Player)
     {
         mIsPlayerInside = true;
+        mIsPlayerContainedInMe = other->IsContainedIn(*mColliderComponent);
     }
 }
 
@@ -140,6 +154,7 @@ void MapObject::OnHorizontalCollision(const float minOverlap, AABBColliderCompon
     if (other->GetLayer() == ColliderLayer::Player)
     {
         mIsPlayerInside = true;
+        mIsPlayerContainedInMe = other->IsContainedIn(*mColliderComponent);
     }
 }
 
@@ -194,4 +209,11 @@ void MapObject::SpawnEntity()
     }
 
     SetState(ActorState::Destroy);
+}
+
+
+void MapObject::TeleportToCheckpoint()
+{
+    GetGame()->GetZoe()->TeleportToCheckpoint();
+    // SetState(ActorState::Destroy);
 }

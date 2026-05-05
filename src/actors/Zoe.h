@@ -143,6 +143,8 @@ public:
     void SetIsVentaniaAllowed(bool allowed) { mIsVentaniaAllowed = allowed; }
     void SetIsNevascaAllowed(bool allowed) { mIsNevascaAllowed = allowed; }
 
+    void TeleportToCheckpoint();
+
 protected:
     void SetMana(float mana);
 

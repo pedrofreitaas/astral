@@ -405,3 +405,12 @@ int AABBColliderComponent::IsCloseToTileWallHorizontally(float distance)
 
     return 0;
 }
+
+bool AABBColliderComponent::IsContainedIn(const AABBColliderComponent &b) const
+{
+    Vector2 min = GetMin();
+    Vector2 max = GetMax();
+
+    return (min.x >= b.GetMin().x && max.x <= b.GetMax().x &&
+            min.y >= b.GetMin().y && max.y <= b.GetMax().y);
+}
