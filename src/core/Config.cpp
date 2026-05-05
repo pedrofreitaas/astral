@@ -23,8 +23,34 @@ bool Config::Initialize(const std::string& configPath) {
     return true;
 }
 
-void Config::Update() {
-    // future
+void Config::Update(const std::string& key, const nlohmann::json& value, bool saveToFile) {
+    nlohmann::json* current = &mData;
+
+    size_t start = 0;
+    while (start < key.length()) {
+        size_t dot = key.find('.', start);
+        size_t end = (dot == std::string::npos) ? key.length() : dot;
+        std::string part = key.substr(start, end - start);
+
+        std::transform(part.begin(), part.end(), part.begin(), ::toupper);
+
+        if (dot == std::string::npos) {
+            (*current)[part] = value;
+            break;
+        }
+
+        current = &(*current)[part];
+        start = end + 1;
+    }
+
+    if (saveToFile) {
+        std::ofstream file(mFilePath);
+        if (!file.is_open()) {
+            std::cerr << "Failed to open config for writing: " << mFilePath << std::endl;
+            return;
+        }
+        file << mData.dump(4);
+    }
 }
 
 template<typename T>
