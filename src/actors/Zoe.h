@@ -31,6 +31,7 @@ class Zoe : public Actor
     friend class Game;
     friend class Item;
     friend class LaunchFireballStep;
+    friend class JumpStep;
 
     std::vector<ColliderLayer> IGNORED_LAYERS_DODGE = {
         ColliderLayer::Enemy,
@@ -144,7 +145,6 @@ public:
 
 protected:
     void SetMana(float mana);
-    class TimerComponent *mTimerComponent;
 
 private:
     float mForwardSpeed, mMana;
@@ -159,6 +159,7 @@ private:
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
+    class TimerComponent *mTimerComponent;
 
     void ManageAnimations();
 
