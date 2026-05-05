@@ -40,13 +40,13 @@ inline Button GetButtonFromSDL(SDL_GameControllerButton sdlButton) {
     case SDL_CONTROLLER_BUTTON_A:
         return Button::A;
     case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
-        return Button::LT;
+        return Button::LB;
     case SDL_CONTROLLER_BUTTON_Y:
         return Button::Y;
     case SDL_CONTROLLER_BUTTON_B:
         return Button::B;
     case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
-        return Button::RT;
+        return Button::RB;
     default:
         return Button::None;
     }
@@ -58,7 +58,7 @@ static std::map<Button, std::pair<int, int>> joystickButtonsSpriteMapping = {
     {Button::LT, {10, 14}},
     {Button::Y, {15, 19}},
     {Button::RT, {20, 23}},
-    {Button::B, {24, 27}},
-    {Button::LB, {28, 32}},
-    {Button::RB, {33, 36}},
+    {Button::B, {24, 28}},
+    {Button::LB, {29, 33}},
+    {Button::RB, {34, 37}},
 };
