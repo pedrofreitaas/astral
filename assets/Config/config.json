@@ -1,68 +1,61 @@
 {
-    "SPIKE_KNOCKBACK_FORCE": 400.0,
-    "SPIKE_COOLDOWN": 1.75,
-
-    "SPEAR_KNOCKBACK_FORCE": 140.0,
-    "SPEAR_COOLDOWN": 2.5,
-
-    "SHURIKEN_KNOCKBACK_FORCE": 200.0,
-    
-    "FREEZING_RATE": 1.0,
-
     "ENEMY": {
         "PLAYER_KNOCKBACK_FORCE": 400
     },
-
+    "FREEZING_RATE": 1.0,
+    "QUASAR": {
+        "SMASH_COOLDOWN": 3,
+        "SPIKE_KNOCKBACK_FORCE": 350
+    },
+    "SHURIKEN_KNOCKBACK_FORCE": 200.0,
     "SITH": {
-        "HEALTH": 3,
-        "SPEED": 900,
-        "PROJECTILE_COOLDOWN": 12,
-        "PROJECTILE_SPEED": 60,
         "ATTACK1_COOLDOWN": 3,
         "ATTACK1_EXTRA_SPEED": 450,
         "ATTACK2_COOLDOWN": 12,
-        "ATTACK2_EXTRA_SPEED": 700
+        "ATTACK2_EXTRA_SPEED": 700,
+        "HEALTH": 3,
+        "PROJECTILE_COOLDOWN": 12,
+        "PROJECTILE_SPEED": 60,
+        "SPEED": 900
     },
-
+    "SPEAR_COOLDOWN": 2.5,
+    "SPEAR_KNOCKBACK_FORCE": 140.0,
+    "SPIKE_COOLDOWN": 1.75,
+    "SPIKE_KNOCKBACK_FORCE": 400.0,
     "ZOD": {
         "HEALTH": 5,
-        "SPEED": 1500,
         "PROJECTILE_COOLDOWN": 3.5,
-        "PROJECTILE_SPEED": 150
+        "PROJECTILE_SPEED": 150,
+        "SPEED": 1500
     },
-
-    "QUASAR": {
-        "SPIKE_KNOCKBACK_FORCE": 350,
-        "SMASH_COOLDOWN": 3
-    },
-
     "ZOE": {
-        "MAX_MANA": 100.0,
-        "MANA_REGEN_RATE_PER_SECOND": 15.0,
-        "LIFE_POINTS": 6,
-        "MAX_DEATHS": 3,
-        "KNOCKBACK_FORCE": 250,
         "DODGE_COOLDOWN": 1.0,
-        "IS_VENTANIA_ALLOWED": true,
         "IS_DODGE_ALLOWED": true,
         "IS_FIREBALL_ALLOWED": false,
         "IS_NEVASCA_ALLOWED": false,
+        "IS_VENTANIA_ALLOWED": true,
+        "KNOCKBACK_FORCE": 250,
+        "LIFE_POINTS": 6,
+        "MANA_REGEN_RATE_PER_SECOND": 15.0,
+        "MAX_DEATHS": 3,
+        "MAX_MANA": 100.0,
         "POWERS": {
-            "NEVASCA": {
-                "RATE_PER_SECOND": 15,
-                "SPEED": 70,
-                "MANA_COST": 3.0
-            },
             "FIREBALL": {
-                "SPEED": 180,
-                "KNOCKBACK_FORCE": 350,
-                "MAX_RICOCHETS": 3,
                 "COOLDOWN": 4,
-                "MANA_COST": 55.0
+                "KNOCKBACK_FORCE": 350,
+                "MANA_COST": 55.0,
+                "MAX_RICOCHETS": 3,
+                "SPEED": 180
+            },
+            "NEVASCA": {
+                "MANA_COST": 3.0,
+                "RATE_PER_SECOND": 15,
+                "SPEED": 70
             },
             "VENTANIA": {
                 "SPEED": 900
             }
-        }
+        },
+        "SHOWN_DODGE_CUTSCENE": false
     }
 }
