@@ -109,6 +109,8 @@ add_executable(astral
     src/actors/Button.h
     src/actors/Item.h
     src/actors/Item.cpp
+    src/actors/Dog.h
+    src/actors/Dog.cpp
     src/ui/DialogueSystem.cpp
     src/ui/DialogueSystem.h
     src/core/Tileset.h
