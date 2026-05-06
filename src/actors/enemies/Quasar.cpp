@@ -22,7 +22,7 @@ Quasar::Quasar(Game *game, const Vector2 &center)
         "../assets/Sprites/Enemies/Quasar/texture.png",
         "../assets/Sprites/Enemies/Quasar/texture.json",
         std::bind(&Quasar::AnimationEndCallback, this, std::placeholders::_1), // could use a lambda here too
-        static_cast<int>(DrawLayerPosition::Enemy) + 1);
+        static_cast<int>(DrawLayerPosition::BelowPlayer));
 
     mTimerComponent = new TimerComponent(this);
 

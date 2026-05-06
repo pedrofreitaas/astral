@@ -27,7 +27,7 @@ Sith::Sith(Game *game, const Vector2 &position)
         "../assets/Sprites/Enemies/Sith/texture.png",
         "../assets/Sprites/Enemies/Sith/texture.json",
         std::bind(&Sith::AnimationEndCallback, this, std::placeholders::_1), // could use a lambda here too
-        static_cast<int>(DrawLayerPosition::Enemy) + 1);
+        static_cast<int>(DrawLayerPosition::BelowPlayer));
 
     mTimerComponent = new TimerComponent(this);
 

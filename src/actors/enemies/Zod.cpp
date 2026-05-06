@@ -24,7 +24,7 @@ Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
         "../assets/Sprites/Enemies/Zod/texture.png",
         "../assets/Sprites/Enemies/Zod/texture.json",
         std::bind(&Zod::AnimationEndCallback, this, std::placeholders::_1), // could use a lambda here too
-        static_cast<int>(DrawLayerPosition::Enemy) + 1);
+        static_cast<int>(DrawLayerPosition::BelowPlayer));
     
     mAIMovementComponent = new AIMovementComponent(
         this, 

@@ -33,7 +33,7 @@ Fireball::Fireball(
         spriteSheetPath,
         spriteSheetData,
         std::bind(&Fireball::AnimationEndCallback, this, std::placeholders::_1),
-        static_cast<int>(DrawLayerPosition::Enemy) - 1);
+        static_cast<int>(DrawLayerPosition::BelowPlayer));
     
     mDrawAnimatedComponent->SetUsePivotForRotation(true);
 

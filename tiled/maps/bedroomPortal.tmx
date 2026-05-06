@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="6" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="5">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="6" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="5">
  <editorsettings>
   <export target="../../assets/Levels/Maps/bedroomPortal.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/Terrain and Back Wall (32x32).tsx"/>
  <tileset firstgid="248" source="../tilesets/bedroom.tsx"/>
- <layer id="3" name="behind_player" width="6" height="10">
+ <layer id="5" name="ground" width="6" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="detailsDown" width="6" height="10">
   <data encoding="csv">
 0,267,0,0,0,0,
 280,285,284,284,280,0,
@@ -19,7 +33,7 @@
 280,280,280,280,280,0
 </data>
  </layer>
- <layer id="2" name="blocks" width="6" height="10">
+ <layer id="2" name="player" width="6" height="10">
   <data encoding="csv">
 267,322,267,267,267,41,
 283,311,382,383,339,41,
@@ -33,7 +47,7 @@
 41,41,41,41,41,41
 </data>
  </layer>
- <layer id="1" name="above_player" width="6" height="10">
+ <layer id="1" name="detailsTop" width="6" height="10">
   <data encoding="csv">
 251,251,251,251,256,0,
 0,401,0,0,265,0,
@@ -44,6 +58,20 @@
 0,0,0,0,0,0,
 0,0,0,0,265,0,
 0,0,0,0,272,0,
+0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="6" name="sky" width="6" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
 0,0,0,0,0,0
 </data>
  </layer>

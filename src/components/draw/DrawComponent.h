@@ -11,18 +11,18 @@
 enum class DrawLayerPosition
 {
     Ground = 0,
-    Player = 100,
-    Enemy = 99,
-    DetailsTop = 150,
     DetailsDown = 50,
+    BelowPlayer = 99,
+    Player = 100,
+    DetailsTop = 150,
     Sky = 200
 };
 
 constexpr DrawLayerPosition Layers[] = {
   DrawLayerPosition::Ground,
-  DrawLayerPosition::Player,
-  DrawLayerPosition::DetailsTop,
   DrawLayerPosition::DetailsDown,
+  DrawLayerPosition::BelowPlayer,
+  DrawLayerPosition::DetailsTop,
   DrawLayerPosition::Sky
 };
 

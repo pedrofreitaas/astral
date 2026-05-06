@@ -41,5 +41,6 @@ private:
     std::vector<std::pair<std::string, int>> LoadTilsetsUsedInMap(const json &data, const std::string &baseTilesetsPath, std::map<std::string, Tileset> &allAvailableTilesets);
     void LoadObjectsLayer(const json& layerData, int layerIdx);
     void LoadEnemyColliderObjects(const json &layerData, int layerIdx);
+    void LoadPlayerColliderObjects(const json &layerData, int layerIdx);
     void LoadTilesLayer(std::vector<std::pair<std::string, int>> &nameToFirstGID, const json &layerData, int layerIdx);
 };
