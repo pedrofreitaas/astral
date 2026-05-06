@@ -22,9 +22,7 @@ public:
     static Item* CreateNevascaItem(Game *game, const Vector2& position);
     static Item* CreateVentaniaItem(Game *game, const Vector2& position);
     static Item* CreateFireballItem(Game *game, const Vector2& position);
-    static Item* CreateDodgeItem(Game *game, const Vector2& position);
     
-private:
     Item(
         Game *game, 
         const Vector2& position, 
@@ -36,7 +34,8 @@ private:
         int animationStartIdx=0, int animationEndIdx=0,
         float animFPS=10.f
     );
-    
+
+protected:
     bool mIsPicked, mIsPickable;
     PickHandler mOnPickCallback;
 
@@ -44,9 +43,10 @@ private:
     AABBColliderComponent *mColliderComponent;
     RigidBodyComponent *mRigidBodyComponent;
 
-    void OnUpdate(float deltaTime) override;
+    virtual void OnUpdate(float deltaTime) override;
     void OnProcessInput(const Uint8* keyState, const std::vector<SDL_Event>& events) override;
     void Kill() override;
+    virtual void OnPick();
 
     Button mButton;
 };

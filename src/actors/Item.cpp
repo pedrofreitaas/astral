@@ -141,11 +141,6 @@ Item *Item::CreateVentaniaItem(Game *game, const Vector2 &position)
       0, 5, 5);
 }
 
-Item *Item::CreateDodgeItem(Game *game, const Vector2 &position)
-{
-  return nullptr;
-}
-
 Item::Item(
     Game *game,
     const Vector2 &position,
@@ -197,9 +192,6 @@ Item::Item(
 
 void Item::OnUpdate(float deltaTime)
 {
-  if (mIsPicked)
-    Kill();
-
   if (mIsPickable && !mButtonDrawComponent->IsVisible())
     mButtonDrawComponent->SetIsVisible(true);
 
@@ -215,6 +207,16 @@ void Item::OnUpdate(float deltaTime)
 
   if (mIsPickable)
     zoe->BlockButton(mButton);
+}
+
+void Item::OnPick()
+{
+  mGame->GetAudio()->PlaySound("PickItem.wav");
+  mIsPicked = true;
+  
+  if (mOnPickCallback) mOnPickCallback(*this);
+
+  Kill();
 }
 
 void Item::OnProcessInput(const Uint8 *keyState, const std::vector<SDL_Event> &events)
@@ -239,10 +241,7 @@ void Item::OnProcessInput(const Uint8 *keyState, const std::vector<SDL_Event> &e
     return;
   }
 
-  mGame->GetAudio()->PlaySound("PickItem.wav");
-  mIsPicked = true;
-  if (mOnPickCallback)
-    mOnPickCallback(*this);
+  OnPick();
 }
 
 void Item::Kill()
