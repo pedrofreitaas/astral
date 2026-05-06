@@ -12,12 +12,12 @@ public:
     TileExtraInfo(
         int inId, 
         int BBOffsetX, int BBOffsetY,
-        int BBWidth, int BBHeight
-    ): id(inId), BBOffsetX(BBOffsetX), BBOffsetY(BBOffsetY), BBWidth(BBWidth), BBHeight(BBHeight) {};
+        int BBWidth, int BBHeight,
+        int hasCollision = true
+    ): id(inId), BBOffsetX(BBOffsetX), BBOffsetY(BBOffsetY), BBWidth(BBWidth), BBHeight(BBHeight), hasCollision(hasCollision) {};
 
-    int id;
-    int BBOffsetX, BBOffsetY;
-    int BBWidth, BBHeight;
+    int id, BBOffsetX, BBOffsetY, BBWidth, BBHeight;
+    bool hasCollision;
     nlohmann::json mObjectGroup;
 };
 

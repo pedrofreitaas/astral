@@ -30,10 +30,15 @@ Tile::Tile(
         width, height,
         static_cast<int>(layer));
 
-    bool hasCollision = (layer == DrawLayerPosition::Player);
+    bool hasCollision = (layer == DrawLayerPosition::BelowPlayer);
 
     if (!hasCollision)
         return;
+
+    if (boundBoxWidth <= 0 || boundBoxHeight <= 0)
+    {
+        return;
+    }
 
     new AABBColliderComponent(
         this,
