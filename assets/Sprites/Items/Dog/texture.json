@@ -1,0 +1,171 @@
+{ "frames": [
+   {
+    "filename": "dog 0.png",
+    "frame": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 1.png",
+    "frame": { "x": 30, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 2.png",
+    "frame": { "x": 60, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 3.png",
+    "frame": { "x": 90, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 4.png",
+    "frame": { "x": 120, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 5.png",
+    "frame": { "x": 150, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 6.png",
+    "frame": { "x": 180, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 7.png",
+    "frame": { "x": 210, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 8.png",
+    "frame": { "x": 240, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 9.png",
+    "frame": { "x": 270, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 10.png",
+    "frame": { "x": 300, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 11.png",
+    "frame": { "x": 330, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 12.png",
+    "frame": { "x": 360, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 13.png",
+    "frame": { "x": 390, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 14.png",
+    "frame": { "x": 420, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 15.png",
+    "frame": { "x": 450, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   },
+   {
+    "filename": "dog 16.png",
+    "frame": { "x": 480, "y": 0, "w": 30, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 20 },
+    "sourceSize": { "w": 30, "h": 20 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.x-dev",
+  "image": "texture.png",
+  "format": "RGBA8888",
+  "size": { "w": 510, "h": 20 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

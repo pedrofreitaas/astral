@@ -89,6 +89,10 @@ public:
         return mAnimations[mAnimName].frames[static_cast<int>(mAnimTimer)] - firstFrame;
     }
 
+    void SetAnimationEndCallback(std::function<void(std::string animationName)> callback) {
+        mAnimationEndCallback = std::move(callback);
+    }
+
 private:
     std::vector<SDL_Rect*> mSpriteSheetData;
     std::unordered_map<std::string, class Animation> mAnimations;

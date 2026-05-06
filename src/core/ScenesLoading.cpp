@@ -23,6 +23,7 @@
 #include "../ui/DialogueSystem.h"
 #include "../actors/Star.h"
 #include "../actors/Portal.h"
+#include "../actors/Dog.h"
 
 void Game::LoadMainMenu()
 {
@@ -51,8 +52,8 @@ void Game::LoadMainMenu()
     mainMenu->AddTransparentButton(
         playButtonPos,
         playButtonSize,
-        // [this]() { SetGameScene(GameScene::Level1); });
-        [this]() { SetGameScene(GameScene::Tests); });
+        [this]() { SetGameScene(GameScene::Bedroom); });
+        // [this]() { SetGameScene(GameScene::Tests); });
     
     mainMenu->AddImage(
         "../assets/Sprites/Menu/playButton.png",
@@ -78,6 +79,8 @@ void Game::LoadBedroom()
     SetMaintainCameraInMap(false);
 
     SetApplyGravityScene(false);
+
+    auto *dog = new Dog(this, Vector2(300.f, 280.f));
 
     std::vector<std::unique_ptr<Step>> steps;
     std::vector<std::string> dialogue = {
@@ -109,8 +112,6 @@ void Game::LoadBedroom()
 
 void Game::LoadBedroomPortal()
 {
-    // mHUD = new HUD(this, FONT_PATH_INTER);
-
     SetMap("bedroomPortal.json");
 
     SetCameraCenter(mMap->GetCenter());
@@ -121,6 +122,17 @@ void Game::LoadBedroomPortal()
     auto portal = new Portal(this, Vector2(0.f, 72.f) + mMap->GetCenter());
 
     std::vector<std::unique_ptr<Step>> steps;
+
+    steps.push_back(std::make_unique<WaitStep>(this, .1f));
+    AddCutscene("leaveBedroomPortal",
+                std::move(steps),
+                [this]()
+                {
+                    this->SetGameScene(GameScene::Bedroom);
+                });
+
+    steps.clear();
+
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this]()
