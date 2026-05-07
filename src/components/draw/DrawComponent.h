@@ -39,6 +39,7 @@ public:
     void SetIsVisible(const bool isVisible) { mIsVisible = isVisible; }
 
     int GetDrawOrder() const { return mDrawOrder; }
+    void SetDrawOrder(int drawOrder) { mDrawOrder = drawOrder; }
 
     void SetOffset(const Vector2& offset) { mOffset = offset; }
 

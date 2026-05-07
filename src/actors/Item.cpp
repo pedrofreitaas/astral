@@ -141,6 +141,62 @@ Item *Item::CreateVentaniaItem(Game *game, const Vector2 &position)
       0, 5, 5);
 }
 
+Item *Item::CreateBookItem(Game *game, const Vector2 &position)
+{
+  return new Item(
+      game,
+      position,
+      "../assets/Sprites/Items/Book/texture.png",
+      "../assets/Sprites/Items/Book/texture.json",
+      13, 8,
+      [game](Item &item)
+      {
+        std::vector<std::unique_ptr<Step>> steps;
+
+        std::vector<std::string> dialogue = {
+            "Um livro antigo da mamae... A historia de Zathura.",
+            "Nebula era um planeta distante, em que vivia uma criatura gigante e malefica.",
+            "Zathura era temida por todos os habitantes de Nebula, e se alimentava do medo deles.",
+            "Um dia, uma jovem corajosa teve que enfrenta-lo, pois...", 
+            "Mamae nunca terminou de ler para mim.",
+            "Tenho que ir logo, se nao ela vai ficar brava."
+          };
+        
+        steps.push_back(std::make_unique<DialogueStep>(game, "Zoe", dialogue));
+
+        game->AddCutscene("book_acquisition", std::move(steps), nullptr);
+
+        game->StartCutscene("book_acquisition");
+      },
+      Button::A,
+      0, 0, 1);
+}
+
+Item *Item::CreateFridgeItem(Game *game, const Vector2 &position)
+{
+  return new Item(
+      game,
+      position,
+      "../assets/Sprites/Items/Fridge/texture.png",
+      "../assets/Sprites/Items/Fridge/texture.json",
+      28, 21,
+      [game](Item &item)
+      {
+        std::vector<std::unique_ptr<Step>> steps;
+
+        std::vector<std::string> dialogue = {
+            "Sera que sobrou pudim?"};
+        
+        steps.push_back(std::make_unique<DialogueStep>(game, "Zoe", dialogue));
+
+        game->AddCutscene("fridge", std::move(steps), nullptr);
+
+        game->StartCutscene("fridge");
+      },
+      Button::A,
+      0, 0, 1, false, true, DrawLayerPosition::DetailsDown);
+}
+
 Item::Item(
     Game *game,
     const Vector2 &position,
@@ -149,22 +205,26 @@ Item::Item(
     int bbWidth, int bbHeight,
     PickHandler onPickCallback,
     Button button,
-    int animationStartIdx, int animationEndIdx, float animFPS)
+    int animationStartIdx, int animationEndIdx, float animFPS,
+    bool disappearsAfterPick,
+    bool collidable,
+    DrawLayerPosition drawLayer
+  )
     : Actor(game),
       mOnPickCallback(onPickCallback),
       mIsPicked(false), mIsPickable(false),
-      mButton(button)
+      mButton(button), mDisapersAfterPick(disappearsAfterPick)
 {
   mRigidBodyComponent = new RigidBodyComponent(this, 1);
 
-  mColliderComponent = new AABBColliderComponent(
-      this, 0, 0, bbWidth, bbHeight, ColliderLayer::Items, true, 10);
+  mColliderComponent = new AABBColliderComponent(this, 0, 0, bbWidth, bbHeight, ColliderLayer::Items, collidable);
 
   mDrawComponent = new DrawAnimatedComponent(
       this,
       texturePath,
       dataPath,
-      nullptr);
+      nullptr,
+      static_cast<int>(drawLayer));
 
   mDrawComponent->AddAnimation("idle", animationStartIdx, animationEndIdx);
   mDrawComponent->SetAnimation("idle");
@@ -174,7 +234,8 @@ Item::Item(
       this,
       "../assets/Sprites/Joystick/texture.png",
       "../assets/Sprites/Joystick/texture.json",
-      nullptr);
+      nullptr,
+      static_cast<int>(drawLayer));
 
   mButtonDrawComponent->AddAnimation(
       "pressing",
@@ -187,7 +248,7 @@ Item::Item(
   mButtonDrawComponent->SetOffset(
       Vector2(GetHalfSize().x - 8, -20));
 
-  SetPosition(position);
+  SetPosition(position - GetHalfSize());
 }
 
 void Item::OnUpdate(float deltaTime)
@@ -212,11 +273,14 @@ void Item::OnUpdate(float deltaTime)
 void Item::OnPick()
 {
   mGame->GetAudio()->PlaySound("PickItem.wav");
-  mIsPicked = true;
   
   if (mOnPickCallback) mOnPickCallback(*this);
-
-  Kill();
+  
+  if (mDisapersAfterPick)
+  {
+    mIsPicked = true;
+    Kill();
+  }
 }
 
 void Item::OnProcessInput(const Uint8 *keyState, const std::vector<SDL_Event> &events)

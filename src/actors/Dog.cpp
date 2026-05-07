@@ -9,7 +9,7 @@ Dog::Dog(Game *game, const Vector2 &position)
           30, 20,
           nullptr,
           Button::A,
-          0, 9, 6) 
+          0, 9, 6, false, true) 
 {
     mDrawComponent->AddAnimation("licking", 10, 13);
     mDrawComponent->AddAnimation("barking", 14, 16);
