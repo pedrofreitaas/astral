@@ -1,4 +1,5 @@
 #include "./Map.h"
+#include "../actors/TV.h"
 
 std::map<std::string, Tileset> Map::LoadAllAvailableTilesets(const std::string &baseTilesetsPath)
 {
@@ -73,7 +74,7 @@ void Map::LoadTilesLayer(std::vector<std::pair<std::string, int>> &nameToFirstGI
 
 		Tileset currentTileset = search->second;
 
-		if (currentTileset.GetName() == "Torch") // torch
+		if (currentTileset.GetName() == "Torch")
 		{
 			new Torch(
 				mGame,
@@ -86,6 +87,39 @@ void Map::LoadTilesLayer(std::vector<std::pair<std::string, int>> &nameToFirstGI
 		}
 
 		int localID = gid - firstGID;
+
+		if (currentTileset.GetName() == "bedroom" && localID == 139)
+		{
+			Item::CreateBookItem(mGame, Vector2(
+				(tileIdx % mWidthInTiles) * 32, 
+				std::floor(tileIdx * 1.0f / mWidthInTiles) * 32
+			));
+
+			continue;
+		}
+
+		if (currentTileset.GetName() == "bedroom" && localID == 100)
+		{
+			Item::CreateFridgeItem(mGame, Vector2(
+				(tileIdx % mWidthInTiles) * 32, 
+				std::floor(tileIdx * 1.0f / mWidthInTiles) * 32
+			));
+
+			continue;
+		}
+
+		if (currentTileset.GetName() == "bedroom" && localID == 142)
+		{
+			new TV(
+				mGame, 
+				Vector2(
+					(tileIdx % mWidthInTiles) * 32, 
+					std::floor(tileIdx * 1.0f / mWidthInTiles) * 32
+				)
+			);
+
+			continue;
+		}
 
 		SDL_Texture *texture = currentTileset.GetTexture();
 		Vector2 tileDims = currentTileset.GetTileDims();
