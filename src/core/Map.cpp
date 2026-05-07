@@ -121,6 +121,16 @@ void Map::LoadTilesLayer(std::vector<std::pair<std::string, int>> &nameToFirstGI
 			continue;
 		}
 
+		if (currentTileset.GetName() == "bedroom" && localID == 138)
+		{
+			Item::CreatePictureItem(mGame, Vector2(
+				(tileIdx % mWidthInTiles) * 32, 
+				std::floor(tileIdx * 1.0f / mWidthInTiles) * 32
+			));
+
+			continue;
+		}
+
 		SDL_Texture *texture = currentTileset.GetTexture();
 		Vector2 tileDims = currentTileset.GetTileDims();
 		Vector2 worldPosition(

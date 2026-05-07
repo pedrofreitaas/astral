@@ -197,6 +197,32 @@ Item *Item::CreateFridgeItem(Game *game, const Vector2 &position)
       0, 0, 1, false, true, DrawLayerPosition::DetailsDown);
 }
 
+Item *Item::CreatePictureItem(Game *game, const Vector2 &position)
+{
+  return new Item(
+      game,
+      position,
+      "../assets/Sprites/Items/Picture/texture.png",
+      "../assets/Sprites/Items/Picture/texture.json",
+      32, 32,
+      [game](Item &item)
+      {
+        std::vector<std::unique_ptr<Step>> steps;
+
+        std::vector<std::string> dialogue = {
+            "Uma foto de papai e mamae.",
+          };
+        
+        steps.push_back(std::make_unique<DialogueStep>(game, "Zoe", dialogue));
+
+        game->AddCutscene("picture_acquisition", std::move(steps), nullptr);
+
+        game->StartCutscene("picture_acquisition");
+      },
+      Button::A,
+      0, 0, 1, false, false, DrawLayerPosition::DetailsTop);
+}
+
 Item::Item(
     Game *game,
     const Vector2 &position,
@@ -235,7 +261,7 @@ Item::Item(
       "../assets/Sprites/Joystick/texture.png",
       "../assets/Sprites/Joystick/texture.json",
       nullptr,
-      static_cast<int>(drawLayer));
+      static_cast<int>(DrawLayerPosition::Sky));
 
   mButtonDrawComponent->AddAnimation(
       "pressing",

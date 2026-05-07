@@ -24,6 +24,7 @@ public:
     static Item* CreateFireballItem(Game *game, const Vector2& position);
     static Item* CreateBookItem(Game *game, const Vector2& position);
     static Item* CreateFridgeItem(Game *game, const Vector2& position);
+    static Item* CreatePictureItem(Game *game, const Vector2& position);
     
     Item(
         Game *game, 

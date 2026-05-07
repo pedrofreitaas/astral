@@ -103,7 +103,8 @@ void Game::LoadBedroom()
                 [this]()
                 {
                     this->SetGameScene(GameScene::BedroomPortal);
-                });
+                }, 
+                true);
 
     mZoe->SetAbilitiesLocked(true);
 
@@ -129,7 +130,8 @@ void Game::LoadBedroomPortal()
                 [this]()
                 {
                     this->SetGameScene(GameScene::Bedroom);
-                });
+                },
+                true);
 
     steps.clear();
 
