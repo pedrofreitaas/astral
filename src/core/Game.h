@@ -187,7 +187,7 @@ public:
     int GetGameTotalActors();
     Vector2 GetLogicalMousePos() const;
 
-    void AddCutscene(const std::string &name, std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback = nullptr);
+    void AddCutscene(const std::string &name, std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback = nullptr, bool overwrite=false);
     void StartCutscene(const std::string &name);
     void PauseCutscene();
     void ResetCutscenes();

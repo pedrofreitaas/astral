@@ -955,11 +955,17 @@ Vector2 Game::GetLogicalMousePos() const
     return Vector2(lx, ly) + mCameraPos;
 }
 
-void Game::AddCutscene(const std::string &name, std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback)
+void Game::AddCutscene(const std::string &name, std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback, bool overwrite)
 {
     auto it = mCutscenes.find(name);
     if (it != mCutscenes.end())
     {
+        if (!overwrite)
+        {
+            SDL_Log("Cutscene with name '%s' already exists. Skipping.", name.c_str());
+            return;
+        }
+
         SDL_Log("Cutscene with name '%s' already exists. Overwriting.", name.c_str());
         delete it->second;
         mCutscenes.erase(it);
@@ -975,6 +981,12 @@ void Game::StartCutscene(const std::string &name)
     if (iter != mCutscenes.end())
     {
         mCurrentCutscene = iter->second;
+        
+        if (mCurrentCutscene->GetState() == Cutscene::State::Finished)
+        {
+            return;
+        }
+
         mCurrentCutscene->Play();
         return;
     }

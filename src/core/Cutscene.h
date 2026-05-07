@@ -209,6 +209,7 @@ public:
     void Update(float deltaTime);
     bool IsComplete() const { return mIsComplete; }
     void OnProcessInput(const std::vector<SDL_Event>& events);
+    State GetState() const { return mState; }
 
 private:
     void Finish();
