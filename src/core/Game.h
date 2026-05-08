@@ -224,11 +224,6 @@ public:
     };
 
     void SetPortal(Actor *portal) {
-        if (mPortal != nullptr) {
-            SDL_Log("Portal already set");
-            return;
-        }
-
         mPortal = portal;
     }
 
