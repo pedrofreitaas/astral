@@ -142,9 +142,9 @@
   </objectgroup>
  </tile>
  <tile id="79">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="3" y="0" width="26" height="8"/>
-  </objectgroup>
+  <properties>
+   <property name="hasCollision" type="bool" value="false"/>
+  </properties>
  </tile>
  <tile id="84">
   <objectgroup draworder="index" id="4">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="7" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="8">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="7" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="15">
  <editorsettings>
   <export target="../../assets/Levels/Maps/bedroomPortal.json" format="json"/>
  </editorsettings>
@@ -7,9 +7,9 @@
  <tileset firstgid="248" source="../tilesets/bedroom.tsx"/>
  <layer id="5" name="ground" width="7" height="11">
   <data encoding="csv">
+267,267,267,267,267,280,0,
 0,0,0,0,0,280,0,
-0,0,0,0,0,280,0,
-0,0,0,0,0,280,0,
+0,0,0,0,280,280,0,
 0,0,0,0,0,280,0,
 0,0,0,0,0,280,0,
 0,0,0,0,0,280,0,
@@ -22,9 +22,9 @@
  </layer>
  <layer id="3" name="detailsDown" width="7" height="11">
   <data encoding="csv">
-0,267,0,0,0,0,41,
-280,285,284,284,280,0,41,
-280,280,280,280,280,0,41,
+0,0,0,0,0,0,41,
+283,283,283,283,283,283,41,
+280,280,280,280,354,0,41,
 280,280,280,280,280,0,41,
 280,280,280,280,280,0,41,
 280,280,280,280,280,0,41,
@@ -37,9 +37,9 @@
  </layer>
  <layer id="2" name="player" width="7" height="11">
   <data encoding="csv">
-267,322,267,267,267,0,0,
-283,311,382,383,339,0,0,
-0,327,397,398,355,0,270,
+0,0,0,0,0,0,0,
+0,311,382,383,0,0,0,
+0,327,397,398,0,0,270,
 0,0,413,414,0,0,270,
 250,254,0,0,0,0,270,
 41,270,0,0,0,0,270,
@@ -53,7 +53,7 @@
  <layer id="1" name="detailsTop" width="7" height="11">
   <data encoding="csv">
 251,251,251,251,0,267,270,
-0,401,0,0,0,283,270,
+0,401,0,0,338,0,270,
 0,0,386,0,0,0,0,
 0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,
@@ -67,7 +67,7 @@
  </layer>
  <layer id="6" name="sky" width="7" height="11">
   <data encoding="csv">
-0,0,0,0,251,251,0,
+0,322,0,0,251,251,0,
 0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,
@@ -81,7 +81,7 @@
 </data>
  </layer>
  <objectgroup id="4" name="objects">
-  <object id="3" x="44" y="184.5" width="140.75" height="40">
+  <object id="3" x="37.5" y="197.5" width="152.5" height="27">
    <properties>
     <property name="cutscene_name" value="portalSuck"/>
     <property name="event" value="enter"/>
@@ -95,7 +95,7 @@
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
-  <object id="7" x="-0.36905" y="64.0019" width="13.2381" height="91.9963">
+  <object id="7" x="-0.36905" y="64.0019" width="6.2381" height="91.9963">
    <properties>
     <property name="cutscene_name" value="leaveBedroomPortal"/>
     <property name="event" value="enter"/>
@@ -104,7 +104,11 @@
   </object>
  </objectgroup>
  <objectgroup id="7" name="player_collider_objects">
-  <object id="5" x="31.25" y="315" width="32.5" height="5"/>
-  <object id="6" x="158.25" y="314.5" width="32.5" height="5"/>
+  <object id="5" x="31.75" y="315" width="32" height="5"/>
+  <object id="6" x="159.5" y="314.5" width="32.5" height="5"/>
+  <object id="10" x="192" y="32" width="3.5" height="32"/>
+  <object id="11" x="128" y="32" width="32" height="32"/>
+  <object id="13" x="160" y="32" width="32" height="16"/>
+  <object id="14" x="0" y="32" width="32" height="16"/>
  </objectgroup>
 </map>

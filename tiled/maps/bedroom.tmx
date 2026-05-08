@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="15" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="22">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="15" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="29">
  <editorsettings>
   <export target="../../assets/Levels/Maps/bedroom.json" format="json"/>
  </editorsettings>
@@ -9,7 +9,7 @@
  <layer id="3" name="ground" width="15" height="11">
   <data encoding="csv">
 0,0,267,0,0,0,0,0,0,267,0,0,267,0,0,
-0,283,283,283,283,280,280,283,280,280,280,284,283,280,280,
+0,283,283,283,283,280,280,283,280,280,280,284,283,284,284,
 0,280,280,280,280,41,41,280,280,280,280,280,280,280,280,
 0,280,280,280,280,280,280,280,280,280,280,280,280,280,280,
 0,280,280,280,280,283,283,280,280,280,280,280,280,280,280,
@@ -24,13 +24,13 @@
  <layer id="7" name="detailsDown" width="15" height="11">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,283,283,283,0,0,0,0,
+0,0,0,0,0,0,0,0,283,283,283,0,320,283,283,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,434,435,436,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -39,13 +39,13 @@
  <layer id="2" name="player" width="15" height="11">
   <data encoding="csv">
 41,267,322,267,267,41,41,267,267,328,267,267,304,267,267,
-41,283,381,384,283,41,41,347,333,332,333,348,320,283,283,
+41,0,381,384,0,41,41,347,333,332,333,348,0,0,0,
 41,270,397,400,0,271,41,363,0,0,0,0,0,0,0,
 41,270,413,0,0,267,267,0,0,0,0,0,0,0,0,
 41,270,0,0,0,0,0,0,0,0,0,0,0,249,250,
 41,270,0,0,0,0,0,0,0,0,0,390,0,265,41,
-41,270,308,356,310,0,0,0,0,343,0,0,0,0,41,
-41,270,324,325,326,357,0,0,0,359,434,435,436,265,41,
+41,270,308,356,310,0,0,0,0,343,0,0,0,265,41,
+41,270,324,325,326,357,0,0,0,359,0,0,0,265,41,
 41,270,340,341,342,0,0,0,0,0,0,0,0,265,41,
 41,0,0,0,0,0,0,0,0,0,0,0,0,0,41,
 41,0,0,0,0,0,0,0,0,0,0,0,0,0,41
@@ -82,14 +82,14 @@
 </data>
  </layer>
  <objectgroup id="4" name="objects">
-  <object id="1" x="227.117" y="148.806" width="40.1331" height="201.496">
+  <object id="1" x="227.117" y="96.806" width="213.133" height="119.996">
    <properties>
     <property name="cutscene_name" value="leave_bedroom"/>
     <property name="event" value="enter"/>
     <property name="function_name" value="play_cutscene"/>
    </properties>
   </object>
-  <object id="5" x="454.856" y="62.1366" width="24.7381" height="91.9963">
+  <object id="5" x="466.856" y="62.1366" width="12.7381" height="91.9963">
    <properties>
     <property name="cutscene_name" value="enterBedroomPortal"/>
     <property name="event" value="enter"/>
@@ -107,8 +107,13 @@
  <objectgroup id="6" name="player_collider_objects">
   <object id="8" x="160.227" y="124.545" width="63.7273" height="16.1818"/>
   <object id="13" x="447.417" y="156.167" width="32.5" height="5"/>
-  <object id="14" x="32.6136" y="347.727" width="414.273" height="4.54545"/>
-  <object id="16" x="448.25" y="316" width="32.5" height="36"/>
+  <object id="14" x="32.6136" y="347.727" width="415.728" height="4.54545"/>
   <object id="17" x="-1.25" y="316.5" width="32.5" height="36"/>
+  <object id="22" x="448.205" y="316" width="32.5" height="36"/>
+  <object id="24" x="322.25" y="224.5" width="92.5" height="16"/>
+  <object id="25" x="384" y="33" width="96" height="16"/>
+  <object id="26" x="32" y="32" width="128" height="16"/>
+  <object id="27" x="31.9773" y="288.318" width="3.68182" height="30.1818"/>
+  <object id="28" x="443.977" y="288.455" width="3.68182" height="31.0909"/>
  </objectgroup>
 </map>
