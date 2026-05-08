@@ -84,8 +84,7 @@ void Game::LoadBedroom()
 
     std::vector<std::unique_ptr<Step>> steps;
     std::vector<std::string> dialogue = {
-        "Hoje e dia de visitar a Vovo, Papai e Mamae ja devem estar se arrumando.",
-        "Acho que eu deveria ver como eles estao..."};
+        "Hoje e dia de visitar a Vovo, Papai e Mamae ja devem estar se arrumando."};
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
     AddCutscene("leave_bedroom",
@@ -269,7 +268,7 @@ void Game::LoadFirstLevel()
 
     dialogue = {
         "Se acalme garota, ainda nao e hora de responder sua perguntas.",
-        "Acho que você ja sabe o que tem que fazer!"
+        "Acho que voce ja sabe o que tem que fazer!"
     };
     
     steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
