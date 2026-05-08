@@ -210,12 +210,12 @@ Item *Item::CreatePictureItem(Game *game, const Vector2 &position)
         std::vector<std::unique_ptr<Step>> steps;
 
         std::vector<std::string> dialogue = {
-            "Uma foto de papai e mamae.",
-          };
+            "Uma foto do Papai e da Mamae.",
+        };
         
         steps.push_back(std::make_unique<DialogueStep>(game, "Zoe", dialogue));
 
-        game->AddCutscene("picture_acquisition", std::move(steps), nullptr);
+        game->AddCutscene("picture_acquisition", std::move(steps), nullptr, true);
 
         game->StartCutscene("picture_acquisition");
       },
