@@ -101,7 +101,14 @@ void MapObject::CallMyFunction()
 void MapObject::OnUpdate(float deltaTime)
 {
     // do logic before because components update before actor update
-    float distanceToPlayerSQ = (mGame->GetZoe()->GetCenter() - GetCenter()).LengthSq();
+    float distanceToPlayerSQ = 9999999;
+    
+    auto *zoe = mGame->GetZoe();
+
+    if (zoe)
+    {
+        distanceToPlayerSQ = (zoe->GetCenter() - GetCenter()).LengthSq();
+    }
 
     // if - return isnt welcome here, because there is a final operation.
 

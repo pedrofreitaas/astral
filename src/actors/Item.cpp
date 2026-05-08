@@ -285,12 +285,15 @@ void Item::OnUpdate(float deltaTime)
   else if (!mIsPickable && mButtonDrawComponent->IsVisible())
     mButtonDrawComponent->SetIsVisible(false);
 
-  Vector2 playerPos = mGame->GetZoe()->GetCenter();
+  auto *zoe = mGame->GetZoe();
+
+  if (zoe == nullptr)
+    return;
+  
+  Vector2 playerPos = zoe->GetCenter();
   float distanceToPlayerSq = (GetCenter() - playerPos).LengthSq();
 
   mIsPickable = distanceToPlayerSq < 2500.f; // 50 units
-
-  Zoe *zoe = mGame->GetZoe();
 
   if (mIsPickable)
     zoe->BlockButton(mButton);
