@@ -17,7 +17,10 @@ public:
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
 
+    void PlayBlockedPlayerSound();
+
 private:
     bool mAppliedImpulseInAttack;
     Timer* mAttackTimerHandle;
+    SoundHandle mBlockedPlayerSoundHandle;
 };

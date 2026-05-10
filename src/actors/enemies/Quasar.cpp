@@ -8,7 +8,8 @@
 #include "../Actor.h"
 
 Quasar::Quasar(Game *game, const Vector2 &center)
-    : Enemy(game, center), mAppliedImpulseInAttack(false), mAttackTimerHandle(nullptr)
+    : Enemy(game, center), mAppliedImpulseInAttack(false), mAttackTimerHandle(nullptr),
+    mBlockedPlayerSoundHandle(SoundHandle::Invalid)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f);
     mColliderComponent = new AABBColliderComponent(
@@ -31,8 +32,8 @@ Quasar::Quasar(Game *game, const Vector2 &center)
         350.f, 
         0,
         TypeOfMovement::Walker, 
-        3.f, 
-        .01f);
+        3.f,
+        0);
 
     mDrawComponent->AddAnimation("asleep", {0});
     mDrawComponent->AddAnimation("idle", 1, 8);
@@ -183,12 +184,61 @@ void Quasar::ManageAnimations()
 
 void Quasar::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    // Enemy::OnVerticalCollision(minOverlap, other);
-    // Actor::OnVerticalCollision(minOverlap, other);
+    mAIMovementComponent->OnVerticalCollision(minOverlap, other);
+    Actor::OnVerticalCollision(minOverlap, other);
+    
+    if (other->GetLayer() == ColliderLayer::PlayerAttack)
+    {
+        Zoe *zoe = mGame->GetZoe();
+
+        if (zoe->IsChargedPlayerAttack()) {
+            TakeKnockback(Vector2(0.f, -500.f));
+        } else {
+            zoe->TakeKnockback(
+                Vector2(
+                    zoe->GetCenter().x > GetCenter().x ? 100.f : -100.f, 
+                    -200.f
+                )
+            );
+            
+            PlayBlockedPlayerSound();
+        }
+    }
 }
 
 void Quasar::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    // Enemy::OnHorizontalCollision(minOverlap, other);
-    // Actor::OnHorizontalCollision(minOverlap, other);
+    mAIMovementComponent->OnHorizontalCollision(minOverlap, other);
+    Actor::OnHorizontalCollision(minOverlap, other);
+    
+    if (other->GetLayer() == ColliderLayer::PlayerAttack)
+    {
+        Zoe *zoe = mGame->GetZoe();
+        
+        if (zoe->IsChargedPlayerAttack()) {
+            TakeKnockback(Vector2(0.f, -500.f));
+        } else {
+            zoe->TakeKnockback(
+                Vector2(
+                    zoe->GetCenter().x > GetCenter().x ? 100.f : -100.f, 
+                    -200.f
+                )
+            );
+            
+            PlayBlockedPlayerSound();
+        }
+    }
+}
+
+void Quasar::PlayBlockedPlayerSound() {
+    if (mGame->GetAudio()->GetSoundState(mBlockedPlayerSoundHandle) == SoundState::Playing)
+        return;
+
+    if (!mBlockedPlayerSoundHandle.IsValid()) {
+        mBlockedPlayerSoundHandle = mGame->GetAudio()->PlaySound("quasarBlock.wav");
+        return;
+    }
+
+    mGame->GetAudio()->StopSound(mBlockedPlayerSoundHandle);
+    mGame->GetAudio()->PlaySound("quasarBlock.wav");
 }
