@@ -232,13 +232,15 @@ void Quasar::OnHorizontalCollision(const float minOverlap, AABBColliderComponent
 
 void Quasar::PlayBlockedPlayerSound() {
     if (mGame->GetAudio()->GetSoundState(mBlockedPlayerSoundHandle) == SoundState::Playing)
-        return;
+    {
+        mGame->GetAudio()->StopSound(mBlockedPlayerSoundHandle);
+    }
 
-    if (!mBlockedPlayerSoundHandle.IsValid()) {
+    if (!mBlockedPlayerSoundHandle.IsValid()) 
+    {
         mBlockedPlayerSoundHandle = mGame->GetAudio()->PlaySound("quasarBlock.wav");
         return;
     }
 
-    mGame->GetAudio()->StopSound(mBlockedPlayerSoundHandle);
     mGame->GetAudio()->PlaySound("quasarBlock.wav");
 }
