@@ -651,7 +651,16 @@ void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *oth
         TakeDamage();
 
         float knockbackForce = mGame->GetConfig()->Get<float>("QUASAR.SPIKE_KNOCKBACK_FORCE");
-        TakeKnockback(Vector2(1.f, Math::Sign(-minOverlap)) * knockbackForce);
+        Quasar *quasar = static_cast<Quasar *>(other->GetOwner());
+
+        if (quasar->GetBehaviorState() == BehaviorState::Attacking)
+        {
+            TakeKnockback(Vector2(Math::Sign(-minOverlap), -1) * knockbackForce);
+        }
+        else
+        {
+            TakeKnockback(Vector2(Math::Sign(-minOverlap) * .7f, -.2f) * knockbackForce);
+        }
 
         return;
     }
