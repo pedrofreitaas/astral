@@ -45,6 +45,7 @@ enum class BehaviorState // For AI behaviors/animations
     Dead = 20,
     Barking = 21,
     Licking = 22,
+    ChargingAttack = 23,
 };
 
 class Actor

@@ -17,6 +17,7 @@ void Zoe::OnAttackPressed()
 {
     if (!IsSDLButtonBlocked(Zoe::HIT_BUTTON))
     {
+        mReleasedHit = false;
         mIsTryingToHit = true;
     }
 }
@@ -24,6 +25,7 @@ void Zoe::OnAttackPressed()
 void Zoe::OnAttackReleased()
 {
     mIsTryingToHit = false;
+    mReleasedHit = true;
 }
 
 void Zoe::OnDodgePressed()
@@ -409,34 +411,30 @@ bool Zoe::CheckNevasca()
 
 bool Zoe::CheckHit()
 {
-    if (!mIsTryingToHit)
-        return false;
     if (mBehaviorState == BehaviorState::AerialAttacking)
         return false;
     if (mBehaviorState == BehaviorState::Attacking)
         return false;
+    if (!mIsTryingToHit)
+        return false;
 
-    mGame->SetCameraCenterToShake(0.25f);
+    if (!mRigidBodyComponent->GetOnGround()) {
+        SetBehaviorState(BehaviorState::AerialAttacking);
 
-    bool onGround = mRigidBodyComponent->GetOnGround();
+        float ySpeed = mRigidBodyComponent->GetJumpImpulseY(.5f);
+        mRigidBodyComponent->ApplyImpulse(Vector2(0.f, ySpeed));
 
-    SetBehaviorState(onGround ? BehaviorState::Attacking : BehaviorState::AerialAttacking);
-    mGame->GetAudio()->PlaySound("zoeSmash.wav");
-
-    if (onGround)
-    {
-        mGame->SetCameraCenterToShake(0.25f);
-
-        mAttackCollider = new Collider(
+        // this collider moves with player in manageState
+        mAerialAttackCollider = new Collider(
             mGame,
             this,
-            GetCenter() + (GetRotation() == 0.f ? Vector2(11, -22) : Vector2(-33, -22)),
-            Vector2(22, 30),
+            GetCenter() - Vector2(20, 30),
+            Vector2(40, 40),
             nullptr,
-            DismissOn::Both,
+            DismissOn::Time,
             ColliderLayer::PlayerAttack,
             {ColliderLayer::Player},
-            .75f,
+            1.25f,
             nullptr,
             false,
             std::bind(&Zoe::GetCenter, this));
@@ -444,23 +442,49 @@ bool Zoe::CheckHit()
         return true;
     }
 
-    float ySpeed = mRigidBodyComponent->GetJumpImpulseY(.5f);
-    mRigidBodyComponent->ApplyImpulse(Vector2(0.f, ySpeed));
+    if (mBehaviorState != BehaviorState::ChargingAttack) 
+    {
+        SetBehaviorState(BehaviorState::ChargingAttack);
+        // has to be reset here, so other actors can check if attack is charged by checking the public functions
+        mAttackChargeCounter = 0.f; 
+        return true;
+    }
 
-    // this collider moves with player in manageState
-    mAerialAttackCollider = new Collider(
+    return false;
+}
+
+bool Zoe::Hit()
+{
+    if (!mReleasedHit)
+        return false;
+
+    if (!mRigidBodyComponent->GetOnGround()) 
+        return false;
+
+    mPlayedChargeAttackSound = false;
+    mGame->SetCameraCenterToShake(0.25f);
+
+    SetBehaviorState(BehaviorState::Attacking);
+    mGame->GetAudio()->PlaySound("zoeSmash.wav");
+
+    mAttackCollider = new Collider(
         mGame,
         this,
-        GetCenter() - Vector2(20, 30),
-        Vector2(40, 40),
+        GetCenter() + (GetRotation() == 0.f ? Vector2(11, -22) : Vector2(-33, -22)),
+        Vector2(22, 30),
         nullptr,
-        DismissOn::Time,
+        DismissOn::Both,
         ColliderLayer::PlayerAttack,
         {ColliderLayer::Player},
-        1.25f,
+        .75f,
         nullptr,
         false,
         std::bind(&Zoe::GetCenter, this));
 
     return true;
+}
+
+bool Zoe::IsChargedPlayerAttack() const
+{
+    return mAttackChargeCounter >= mGame->GetConfig()->Get<float>("ZOE.ATTACK_CHARGE_TIME");
 }

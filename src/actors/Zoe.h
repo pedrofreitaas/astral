@@ -145,6 +145,8 @@ public:
 
     void TeleportToCheckpoint();
 
+    bool IsChargedPlayerAttack() const;
+
 protected:
     void SetMana(float mana);
 
@@ -166,7 +168,8 @@ private:
     void ManageAnimations();
 
     Vector2 mInputMovementDir;
-    bool mIsTryingToHit, mIsTryingToDodge, mIsTryingToJump, mIsTryingToNevasca;
+    bool mIsTryingToHit, mIsTryingToDodge, mIsTryingToJump, mIsTryingToNevasca, mReleasedHit, mPlayedChargeAttackSound;
+    float mAttackChargeCounter;
     bool mIsFiringNevasca;
     float mNevascaTimer;
     Timer* mDodgeCooldownTimer;
@@ -193,7 +196,8 @@ private:
     void Move(float modifier=1.f);
     bool CheckJump();
     bool CheckDodge(); 
-    bool CheckHit();
+    bool CheckHit(); 
+    bool Hit();
     void DodgeEnd();
     bool CheckNevasca();
 

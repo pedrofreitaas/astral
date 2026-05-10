@@ -14,7 +14,8 @@ Zoe::Zoe(
       mIsDodgeAllowed(game->GetConfig()->Get<bool>("ZOE.IS_DODGE_ALLOWED")), 
       mIsVentaniaAllowed(game->GetConfig()->Get<bool>("ZOE.IS_VENTANIA_ALLOWED")),
       mIsFireballAllowed(game->GetConfig()->Get<bool>("ZOE.IS_FIREBALL_ALLOWED")),
-      mIsNevascaAllowed(game->GetConfig()->Get<bool>("ZOE.IS_NEVASCA_ALLOWED"))
+      mIsNevascaAllowed(game->GetConfig()->Get<bool>("ZOE.IS_NEVASCA_ALLOWED")),
+      mReleasedHit(false), mAttackChargeCounter(0.f), mPlayedChargeAttackSound(false)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 11.0f);
 
@@ -34,6 +35,8 @@ Zoe::Zoe(
 
     mDrawComponent->AddAnimation("idle", 0, 8);
     mDrawComponent->AddAnimation("ground-crush", 9, 14);
+    mDrawComponent->AddAnimation("ground-crush-charge", {13,12});
+    mDrawComponent->AddAnimation("ground-crush-charged", {9});
     mDrawComponent->AddAnimation("blink", 15, 19);
     mDrawComponent->AddAnimation("jump", {20, 21});
     mDrawComponent->AddAnimation("run", 22, 25);
@@ -375,6 +378,19 @@ void Zoe::ManageState()
     case BehaviorState::TakingDamage:
         break;
 
+    case BehaviorState::ChargingAttack: {
+        mAttackChargeCounter += mGame->GetDtLastFrame();
+
+        if (IsChargedPlayerAttack() && !mPlayedChargeAttackSound) {
+            mGame->GetAudio()->PlaySound("attackChargedPlayer.mp3");
+            mPlayedChargeAttackSound = true;
+        }
+        
+        Hit();
+    
+        break;
+    }
+
     case BehaviorState::Attacking:
         break;
 
@@ -502,6 +518,16 @@ void Zoe::ManageAnimations()
         mDrawComponent->SetAnimation("jump");
         break;
 
+    case BehaviorState::ChargingAttack:
+        if (mAttackChargeCounter < mGame->GetConfig()->Get<float>("ZOE.ATTACK_CHARGE_TIME")) {
+            mDrawComponent->SetAnimation("ground-crush-charge");
+            mDrawComponent->SetAnimFPS(6);
+        } else {
+            mDrawComponent->SetAnimation("ground-crush-charged");
+            mDrawComponent->SetAnimFPS(1);
+        }
+        break;
+
     default:
         break;
     }
@@ -512,7 +538,11 @@ void Zoe::TeleportToCheckpoint()
     if (GetCurrentCheckpoint() == nullptr)
         return;
 
+    mGame->SetCameraCenterToShake(0.4f, 3);
+    mGame->GetAudio()->PlaySound("respawn.wav");
     SetPosition(GetCurrentCheckpoint()->position - GetHalfSize());
+    mRigidBodyComponent->ResetVelocity();
+    SetBehaviorState(BehaviorState::Idle);
 } 
 
 void Zoe::Kill()
@@ -536,6 +566,7 @@ void Zoe::Kill()
     SetPosition(GetCurrentCheckpoint()->position - GetHalfSize());
     SetLifes(mGame->GetConfig()->Get<int>("ZOE.LIFE_POINTS"));
     SetBehaviorState(BehaviorState::Idle);
+    mRigidBodyComponent->ResetVelocity();
 }
 
 void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
