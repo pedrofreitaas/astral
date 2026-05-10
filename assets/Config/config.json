@@ -33,7 +33,7 @@
         "IS_DODGE_ALLOWED": true,
         "IS_FIREBALL_ALLOWED": false,
         "IS_NEVASCA_ALLOWED": false,
-        "IS_VENTANIA_ALLOWED": true,
+        "IS_VENTANIA_ALLOWED": false,
         "KNOCKBACK_FORCE": 250,
         "LIFE_POINTS": 6,
         "MANA_REGEN_RATE_PER_SECOND": 15.0,

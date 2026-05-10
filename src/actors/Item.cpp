@@ -119,6 +119,14 @@ Item *Item::CreateVentaniaItem(Game *game, const Vector2 &position)
         
         steps.push_back(std::make_unique<DialogueStep>(game, "Zoe", dialogue));
 
+        steps.push_back(std::make_unique<MoveStep>(
+            game,
+            [game]()
+            { return game->GetZoe(); },
+            [game]()
+            { return Vector2(game->GetZoe()->GetCenter().x + 3.f, game->GetZoe()->GetCenter().y); },
+            20.f));
+
         steps.push_back(std::make_unique<SpawnJoystickButtonStep>(game, Button::A));
 
         steps.push_back(std::make_unique<JumpStep>(game));
@@ -138,7 +146,7 @@ Item *Item::CreateVentaniaItem(Game *game, const Vector2 &position)
         game->StartCutscene("ventania_acquisition");
       },
       Button::RB,
-      0, 5, 5);
+      0, 5, 5, true, true);
 }
 
 Item *Item::CreateBookItem(Game *game, const Vector2 &position)

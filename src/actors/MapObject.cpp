@@ -218,7 +218,6 @@ void MapObject::SpawnEntity()
     SetState(ActorState::Destroy);
 }
 
-
 void MapObject::TeleportToCheckpoint()
 {
     GetGame()->GetZoe()->TeleportToCheckpoint();

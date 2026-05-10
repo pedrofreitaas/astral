@@ -212,14 +212,14 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this](){ return GetZoe(); },
-        [this](){return Vector2(GetZoe()->GetCenter().x - 2.f, GetZoe()->GetCenter().y);},
+        [this](){return Vector2(GetZoe()->GetCenter().x - 10.f, GetZoe()->GetCenter().y);},
         20.f));
 
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this](){ return GetZoe(); },
-        [this](){return Vector2(GetZoe()->GetCenter().x + 4.f, GetZoe()->GetCenter().y);},
+        [this](){return Vector2(GetZoe()->GetCenter().x + 3.f, GetZoe()->GetCenter().y);},
         20.f));
 
     steps.push_back(std::make_unique<WaitStep>(this, 1.f));
@@ -267,8 +267,8 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
     dialogue = {
-        "Se acalme garota, ainda nao e hora de responder sua perguntas.",
-        "Acho que voce ja sabe o que tem que fazer!"
+        "Se acalme garota... Cuidado para nao cair!",
+        "Acho que voce sabe o que fazer, boa sorte!"
     };
     
     steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
@@ -305,7 +305,9 @@ void Game::LoadFirstLevel()
     steps.clear();
     dialogue = {
         "Opa, opa, opa...",
-        "Esse e o Quasar, um golem que protege o Espaco Astral.",
+        "Esse e o Quasar, uma especie de golem que vaga o Espaco Astral.",
+        "Nao acho que voce vai conseguir feri-lo.",
+        "Talvez tenha outra coisa possa..."
     };
     steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
 
@@ -317,6 +319,8 @@ void Game::LoadFirstLevel()
 
     mZoe->SetAbilitiesLocked(true);
     StartCutscene("Intro");
+                
+    Item::CreateVentaniaItem(this, Vector2(736,608));
 }
 
 void Game::LoadTestsLevel()
