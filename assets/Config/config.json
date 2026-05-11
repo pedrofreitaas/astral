@@ -29,6 +29,7 @@
         "SPEED": 1500
     },
     "ZOE": {
+        "ATTACK_CHARGE_TIME": 1.0,
         "DODGE_COOLDOWN": 1.0,
         "IS_DODGE_ALLOWED": true,
         "IS_FIREBALL_ALLOWED": false,

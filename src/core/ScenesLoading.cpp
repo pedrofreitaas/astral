@@ -3,6 +3,7 @@
 #include <fstream>
 #include <map>
 #include <vector>
+#include <cmath>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
@@ -52,8 +53,8 @@ void Game::LoadMainMenu()
     mainMenu->AddTransparentButton(
         playButtonPos,
         playButtonSize,
-        [this]() { SetGameScene(GameScene::Bedroom); });
-        // [this]() { SetGameScene(GameScene::Tests); });
+        // [this]() { SetGameScene(GameScene::Bedroom); });
+        [this]() { SetGameScene(GameScene::Level1); });
     
     mainMenu->AddImage(
         "../assets/Sprites/Menu/playButton.png",
@@ -280,29 +281,6 @@ void Game::LoadFirstLevel()
                 });
 
     steps.clear();
-
-    dialogue = {
-        "Parece que esses desafios foram muito faceis para voce!",
-        "Acho que voce vai se sair muito bem nos proximos!"
-    };
-
-    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
-
-    dialogue = {
-        "E isso jogador! Essa foi a DEMO do Astral. Muito obrigado por jogar!",
-        "Espero que tenha gostado do que viu ate agora, novas funcionalidades e conteudos estarao disponiveis na versao completa do jogo.",
-        "Nos vemos em breve!"
-    };
-
-    steps.push_back(std::make_unique<DialogueStep>(this, "Desenvolvedor", dialogue));
-
-    AddCutscene("endDemo",
-                std::move(steps),
-                [this](){
-                    SetGameScene(GameScene::EndDemo);
-                });
-
-    steps.clear();
     dialogue = {
         "Opa, opa, opa...",
         "Esse e o Quasar, uma especie de golem que vaga o Espaco Astral.",
@@ -314,6 +292,77 @@ void Game::LoadFirstLevel()
     AddCutscene("quasar_encounter",
                 std::move(steps),
                 [this](){});
+
+    steps.clear();
+
+    dialogue = {
+        "Ufa! Essa foi dificil."
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
+    dialogue = {
+        "Muito bem Zoe!"
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
+
+    steps.push_back(std::make_unique<SpawnStep>(
+        this,
+        SpawnStep::ActorType::Star,
+        Vector2(256.f, 160.f)));
+
+    steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
+
+    dialogue = {
+        "Opa, olha so quem apareceu de novo!"
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
+
+    std::vector<Vector2> starHexagon = {
+        Vector2(-30, 0),
+        Vector2(-21.3, 21.3),
+        Vector2(0, 30),
+        Vector2(21.3, 21.3),
+        Vector2(30, 0),
+        Vector2(21.3, -21.3),
+        Vector2(0, -30),
+        Vector2(-21.3, -21.3)
+    };
+
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this](){ return GetStar(); },
+        [this, starHexagon]()
+        {
+            return GetZoe()->GetCenter() + starHexagon[0];
+        },
+        60.f));
+
+    int totalSpins = 5;
+    for (int i=1; i<totalSpins*starHexagon.size(); i++) {
+        steps.push_back(std::make_unique<MoveStep>(
+            this,
+            [this](){ return GetStar(); },
+            [this, i, starHexagon]()
+            {
+                Vector2 center = GetZoe()->GetCenter();
+                Vector2 offset = starHexagon[i % starHexagon.size()];
+
+                return center + offset;
+            },
+            15.f * (i+1)));
+    }
+
+    steps.push_back(std::make_unique<ShakeStep>(this, 0.5f, 5.f));
+
+    AddCutscene("halfFirstLevel",
+                std::move(steps),
+                [this]()
+                {
+                    GetZoe()->TeleportToSecondHalfLevel1();
+                });
 
     mAudio->PlaySound("level1Theme.ogg", true);
 

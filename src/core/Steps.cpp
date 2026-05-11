@@ -231,6 +231,13 @@ void SoundStep::Update(float deltaTime)
     SetComplete();
 }
 
+void ShakeStep::Update(float deltaTime)
+{
+    if (GetIsComplete()) return;
+    mGame->SetCameraCenterToShake(mDuration, mIntensity);
+    SetComplete();
+}
+
 void JumpStep::PreUpdate()
 {
     Zoe* zoe = mGame->GetZoe();

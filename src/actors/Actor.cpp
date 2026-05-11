@@ -57,8 +57,7 @@ void Actor::SetPosition(const Vector2& pos)
 
 void Actor::SetCenter(const Vector2& pos)
 {
-    mPosition = pos - GetCenter()*.5f;
-    mGame->Reinsert(this);
+    SetPosition(pos - GetHalfSize());
 }
 
 void Actor::Update(float deltaTime)

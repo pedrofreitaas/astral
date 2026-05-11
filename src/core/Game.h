@@ -340,7 +340,7 @@ private:
     Vector2 GetBoxCenter(const Vector2& pos, float boxW, float boxH);
 
     bool isEnding;
-    void EndDemoCheck();
+    void HalfFirstLevelCheck();
 
     float mShakeCounter, mShakeIntensity;
 

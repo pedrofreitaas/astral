@@ -121,6 +121,7 @@
                  "height":36,
                  "id":2,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -143,28 +144,6 @@
                  "width":36,
                  "x":32.5,
                  "y":282.666
-                }, 
-                {
-                 "height":51.3333,
-                 "id":17,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"event",
-                         "type":"string",
-                         "value":"contains"
-                        }, 
-                        {
-                         "name":"function_name",
-                         "type":"string",
-                         "value":"teleport_to_checkpoint"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":62.6667,
-                 "x":534.667,
-                 "y":261.333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -184,10 +163,10 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":18,
+ "nextobjectid":19,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.11.2",
+ "tiledversion":"1.12.1",
  "tileheight":32,
  "tilesets":[
         {

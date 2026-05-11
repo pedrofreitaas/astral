@@ -37,17 +37,6 @@ void AIMovementComponent::Sense(float deltaTime)
     if (mOwnerEnemy->PlayerOnFov()) {
         mLastSeenPlayerCenter = mOwner->GetGame()->GetZoe()->GetCenter();
     }
-
-    auto *zoe = mOwner->GetGame()->GetZoe();
-
-    if (!zoe) return;
-
-    float distanceToPlayerSq = (zoe->GetCenter() - mOwner->GetCenter()).LengthSq();
-
-    if (distanceToPlayerSq < 900)
-    {
-        mLastSeenPlayerCenter = zoe->GetCenter();
-    }
 }
 
 void AIMovementComponent::Plan(float deltaTime)

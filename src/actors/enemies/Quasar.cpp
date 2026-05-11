@@ -59,6 +59,8 @@ void Quasar::ManageState()
     Vector2 toZoe = zoe->GetCenter() - GetCenter();
     float distanceToZoeSQ = toZoe.LengthSq();
 
+    bool playerInFov = PlayerOnFov(10.f, 300.f);
+
     switch (mBehaviorState)
     {
         case BehaviorState::Asleep:
@@ -92,6 +94,14 @@ void Quasar::ManageState()
                 );
 
                 break;
+            }
+
+            if (
+                playerInFov && 
+                mAIMovementComponent->GetMovementState() != MovementState::FollowingPath ||
+                distanceToZoeSQ <= 900.f
+            ) {
+                mAIMovementComponent->SeekPlayer();
             }
 
             break;

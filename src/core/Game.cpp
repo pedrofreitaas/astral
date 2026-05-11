@@ -353,16 +353,26 @@ void Game::ProcessInput()
                     new Sith(this, Vector2(310.f, 120.f));
                     break;
 
-                case SDLK_n:
-                    Item::CreateNevascaItem(this, Vector2(300.f, 220.f));
+                case SDLK_n: {
+                    Vector2 zoePos = GetZoe()->GetPosition();
+                    Item::CreateNevascaItem(this, zoePos + Vector2(0.f, -40.f));
                     break;
+                }
                 
-                case SDLK_v:
-                    Item::CreateVentaniaItem(this, Vector2(300.f, 220.f));
+                case SDLK_v: {
+                    Vector2 zoePos = GetZoe()->GetPosition();
+                    Item::CreateVentaniaItem(this, zoePos + Vector2(0.f, -40.f));
                     break;
+                }
 
-                case SDLK_m:
-                    Item::CreateFireballItem(this, Vector2(300.f, 220.f));
+                case SDLK_m: {
+                    Vector2 zoePos = GetZoe()->GetPosition();
+                    Item::CreateFireballItem(this, zoePos + Vector2(0.f, -40.f));
+                    break;
+                }
+
+                case SDLK_l:
+                    GetZoe()->SetPosition(Vector2(608.f, 60.f));
                     break;
             }
 
@@ -519,7 +529,7 @@ void Game::UpdateGame()
     UpdateSceneManager(mDeltatime);
     UpdateCamera();
 
-    EndDemoCheck();
+    HalfFirstLevelCheck();
 }
 
 void Game::UpdateCamera()
@@ -1099,7 +1109,7 @@ std::vector<class Enemy *> Game::GetEnemies(const Vector2 &min, const Vector2 &m
     return nearbyEnemies;
 }
 
-void Game::EndDemoCheck()
+void Game::HalfFirstLevelCheck()
 {
     if (GameScene::Level1 != mGameScene)
     {
@@ -1107,11 +1117,6 @@ void Game::EndDemoCheck()
     }
 
     if (mGamePlayState != GamePlayState::Playing)
-    {
-        return;
-    }
-
-    if (isEnding)
     {
         return;
     }
@@ -1130,8 +1135,7 @@ void Game::EndDemoCheck()
     if (zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
         zoeCenter.y >= start.y && zoeCenter.y <= end.y)
     {
-        StartCutscene("endDemo");
-        isEnding = true;
+        StartCutscene("halfFirstLevel");
     }
 }
 

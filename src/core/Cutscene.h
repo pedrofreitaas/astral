@@ -175,6 +175,17 @@ public:
     void SetComplete(bool v) override;
 };
 
+class ShakeStep : public Step {
+public:
+    ShakeStep(class Game* game, float duration, float intensity = 3.f)
+        : Step(game, 0.01f), mDuration(duration), mIntensity(intensity) {}
+    void PreUpdate() override {};
+    void Update(float deltaTime) override;
+private:
+    float mDuration;
+    float mIntensity;
+};
+
 class FreezePhysicsStep : public Step {
 public:
     FreezePhysicsStep(class Game* game) : Step(game, .01f) {}

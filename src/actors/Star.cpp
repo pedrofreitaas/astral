@@ -6,7 +6,7 @@
 Star::Star(Game *game) : 
     Actor(game)
 {
-    mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 0.0f);
+    mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 0.0f, false);
     mRigidBodyComponent->SetApplyGravity(false);
     mRigidBodyComponent->SetApplyFriction(false);
     
@@ -22,10 +22,13 @@ Star::Star(Game *game) :
     mDrawComponent->SetAnimFPS(1.0f);
     mDrawComponent->Scale(3);
 
-    mColliderComponent = nullptr; /* new AABBColliderComponent(
-        this, 0, 0, 33, 33,
-        ColliderLayer::Player
-    ); */
+    mColliderComponent = new AABBColliderComponent(
+        this, 
+        0, 0, 
+        33, 33,
+        ColliderLayer::Player,
+        false
+    );
 
     mGame->SetStar(this);
 }

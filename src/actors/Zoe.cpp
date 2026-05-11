@@ -879,3 +879,11 @@ void Zoe::RegenerateMana()
 
     SetMana(mMana + mGame->GetConfig()->Get<float>("ZOE.MANA_REGEN_RATE_PER_SECOND"));
 }
+
+void Zoe::TeleportToSecondHalfLevel1()
+{
+    SetCenter(Vector2(64, 992.f));
+    mRigidBodyComponent->ResetVelocity();
+    SetBehaviorState(BehaviorState::Idle);
+    SetLifes(mGame->GetConfig()->Get<int>("ZOE.LIFE_POINTS"));
+}

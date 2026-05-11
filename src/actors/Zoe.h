@@ -147,6 +147,8 @@ public:
 
     bool IsChargedPlayerAttack() const;
 
+    void TeleportToSecondHalfLevel1();
+
 protected:
     void SetMana(float mana);
 
