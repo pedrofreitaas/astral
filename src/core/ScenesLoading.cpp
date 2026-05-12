@@ -338,7 +338,7 @@ void Game::LoadFirstLevel()
         {
             return GetZoe()->GetCenter() + starHexagon[0];
         },
-        60.f));
+        120.f));
 
     int totalSpins = 5;
     for (int i=1; i<totalSpins*starHexagon.size(); i++) {
@@ -347,15 +347,14 @@ void Game::LoadFirstLevel()
             [this](){ return GetStar(); },
             [this, i, starHexagon]()
             {
-                Vector2 center = GetZoe()->GetCenter();
                 Vector2 offset = starHexagon[i % starHexagon.size()];
 
-                return center + offset;
+                return GetZoe()->GetCenter() + offset;
             },
-            15.f * (i+1)));
+            30.f * (i+1)));
     }
 
-    steps.push_back(std::make_unique<ShakeStep>(this, 0.5f, 5.f));
+    steps.push_back(std::make_unique<ShakeStep>(this, .5f, 5));
 
     AddCutscene("halfFirstLevel",
                 std::move(steps),

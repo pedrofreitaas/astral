@@ -29,7 +29,7 @@ Quasar::Quasar(Game *game, const Vector2 &center)
 
     mAIMovementComponent = new AIMovementComponent(
         this, 
-        350.f, 
+        400.f, 
         0,
         TypeOfMovement::Walker, 
         3.f,
@@ -79,12 +79,17 @@ void Quasar::ManageState()
                 SetRotation(0.f);
             else if (mRigidBodyComponent->GetVelocity().x < 0.f)
                 SetRotation(Math::Pi);
+            
+            if (!mRigidBodyComponent->GetOnGround())
+                break;
 
             if (
-                PlayerOnSight(60.f) && 
+                PlayerOnSight(180.f) && 
                 (mAttackTimerHandle == nullptr || 
                  mTimerComponent->checkTimerRemaining(mAttackTimerHandle) <= 0.f)
-            ) {
+            )
+            {
+                mIsCloseAttack = PlayerOnSight(60.f);
                 mAppliedImpulseInAttack = false;
                 SetBehaviorState(BehaviorState::Attacking);
                 
@@ -97,9 +102,9 @@ void Quasar::ManageState()
             }
 
             if (
-                playerInFov && 
-                mAIMovementComponent->GetMovementState() != MovementState::FollowingPath ||
-                distanceToZoeSQ <= 900.f
+                (playerInFov && 
+                mAIMovementComponent->GetMovementState() != MovementState::FollowingPath) ||
+                distanceToZoeSQ <= 1600
             ) {
                 mAIMovementComponent->SeekPlayer();
             }
@@ -120,7 +125,16 @@ void Quasar::ManageState()
                 break;
             
             float forward = GetForward().x;
-            mRigidBodyComponent->ApplyImpulse(Vector2(forward * 220.f, 0.f));
+            
+            if (mIsCloseAttack)
+            {
+                mRigidBodyComponent->ApplyImpulse(Vector2(forward * 220.f, 0.f));
+            }
+            else
+            {
+                mRigidBodyComponent->ApplyImpulse(Vector2(forward * 400.f, -180.f));
+            }
+
             mAppliedImpulseInAttack = true;
             
             break;

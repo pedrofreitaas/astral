@@ -119,6 +119,8 @@ void HUD::HandleMouseClick(int button, int x, int y)
 
 void HUD::SetFPS(int fps)
 {
+    if (!mFPSText->IsEnabled()) return;
+    
     int displayFPS = std::max(0, std::min(999, fps));
     mFPSText->SetText(std::to_string(displayFPS));
 }

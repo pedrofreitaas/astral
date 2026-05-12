@@ -9,6 +9,9 @@ public:
     void OnUpdate(float deltaTime) override;
     void ManageState();
 
+    void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override {};
+    void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override {};
+
 private:
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;

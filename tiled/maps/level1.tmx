@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="60" height="33" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="143">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="33" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="149">
  <editorsettings>
   <export target="../../assets/Levels/Maps/level1.json" format="json"/>
  </editorsettings>
@@ -87,9 +87,9 @@
 40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
 40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,261,262,25,25,0,261,263,0,0,0,0,0,0,0,0,0,261,262,263,0,0,0,272,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
 40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,25,0,0,261,262,263,0,0,0,0,0,261,262,263,0,0,0,0,0,42,
-40,0,0,0,0,264,0,0,0,0,0,264,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,261,262,263,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
+40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,261,262,263,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
 40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,0,0,0,0,97,98,99,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,261,262,263,0,42,
+40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,261,262,263,0,42,
 40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
 40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
 63,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,61,59,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,61,59,98,98,98,98,98,98,98,99,0,0,97,98,98,98,98,98,98,98,61,
@@ -289,7 +289,7 @@
     <property name="function_name" value="play_cutscene"/>
    </properties>
   </object>
-  <object id="120" x="257.667" y="128.833" width="28.6666" height="29.6667">
+  <object id="120" x="65.667" y="128.166" width="28.6666" height="29.6667">
    <properties>
     <property name="entity_code" type="int" value="3"/>
     <property name="event" value="atStart"/>
@@ -428,6 +428,41 @@
    </properties>
   </object>
   <object id="141" x="385" y="801.833" width="28.6666" height="29.6667">
+   <properties>
+    <property name="entity_code" type="int" value="3"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="144" x="162.333" y="129.167" width="28.6666" height="29.6667">
+   <properties>
+    <property name="entity_code" type="int" value="3"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="145" x="257" y="130.5" width="28.6666" height="29.6667">
+   <properties>
+    <property name="entity_code" type="int" value="3"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="146" x="544.333" y="127.833" width="28.6666" height="29.6667">
+   <properties>
+    <property name="entity_code" type="int" value="3"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="147" x="451" y="129.833" width="28.6666" height="29.6667">
+   <properties>
+    <property name="entity_code" type="int" value="3"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="148" x="355" y="127.833" width="28.6666" height="29.6667">
    <properties>
     <property name="entity_code" type="int" value="3"/>
     <property name="event" value="atStart"/>

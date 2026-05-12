@@ -20,7 +20,7 @@ public:
     void PlayBlockedPlayerSound();
 
 private:
-    bool mAppliedImpulseInAttack;
+    bool mAppliedImpulseInAttack, mIsCloseAttack;
     Timer* mAttackTimerHandle;
     SoundHandle mBlockedPlayerSoundHandle;
 };

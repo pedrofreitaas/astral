@@ -5,7 +5,7 @@
     "FREEZING_RATE": 1.0,
     "QUASAR": {
         "SMASH_COOLDOWN": 3,
-        "SPIKE_KNOCKBACK_FORCE": 350
+        "SPIKE_KNOCKBACK_FORCE": 260
     },
     "SHURIKEN_KNOCKBACK_FORCE": 200.0,
     "SITH": {
