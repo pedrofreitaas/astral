@@ -123,13 +123,12 @@ Vector2 Tileset::GetBBSize(int localID)
 
     if (extInfo != mTileExtraInfo.end())
     {
-        return Vector2(
-            extInfo->second.BBWidth,
-            extInfo->second.BBHeight);
+        if (!extInfo->second.hasCollision)
+            return Vector2(0.0f, 0.0f);
+
+        if (extInfo->second.BBWidth != 0 || extInfo->second.BBHeight != 0)
+            return Vector2(extInfo->second.BBWidth, extInfo->second.BBHeight);
     }
 
-    if (extInfo->second.hasCollision)
-        return Vector2(mTileWidth, mTileHeight);
-
-    return Vector2(0.0f, 0.0f);
+    return Vector2(mTileWidth, mTileHeight);
 }
