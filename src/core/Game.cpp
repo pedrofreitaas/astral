@@ -716,19 +716,9 @@ void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
         if (auto enemy = dynamic_cast<Enemy *>(actor))
         {
             SDL_SetRenderDrawColor(mRenderer, 114, 16, 199, 255);
-            std::vector<SDL_Rect> path = enemy->GetPath();
-
-            while (path.size() > 0)
-            {
-                SDL_Rect rect = path.back();
-                rect.x -= static_cast<int>(mCameraPos.x);
-                rect.y -= static_cast<int>(mCameraPos.y);
-                SDL_RenderDrawRect(mRenderer, &rect);
-                path.pop_back();
-            }
 
             // draw enemy's current applied force vector
-            Vector2 force = enemy->GetCurrentAppliedForce(.05f);
+            Vector2 force = enemy->GetCurrentVelocity(2.f);
             Vector2 enemyPos = enemy->GetCenter();
             SDL_SetRenderDrawColor(mRenderer, 29, 88, 146, 255);
             SDL_RenderDrawLine(
@@ -737,6 +727,29 @@ void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
                 static_cast<int>(enemyPos.y - mCameraPos.y),
                 static_cast<int>(enemyPos.x + force.x - mCameraPos.x),
                 static_cast<int>(enemyPos.y + force.y - mCameraPos.y));
+
+            SDL_Rect threatRect = enemy->GetThreatRect();
+            SDL_Rect rect = {
+                static_cast<int>(threatRect.x - mCameraPos.x),
+                static_cast<int>(threatRect.y - mCameraPos.y),
+                static_cast<int>(threatRect.w),
+                static_cast<int>(threatRect.h)};
+
+            SDL_SetRenderDrawColor(mRenderer, 114, 16, 199, 255);
+            SDL_RenderDrawRect(mRenderer, &rect);
+
+            std::vector<Vector2> obstaclesAroundCenters = enemy->GetObstaclesAroundCenters();
+            for (const auto& obstacleCenter : obstaclesAroundCenters)
+            {
+                SDL_Rect obstacleRect = {
+                    static_cast<int>(obstacleCenter.x - 5 - mCameraPos.x),
+                    static_cast<int>(obstacleCenter.y - 5 - mCameraPos.y),
+                    10,
+                    10
+                };
+                SDL_SetRenderDrawColor(mRenderer, 255, 165, 0, 255);
+                SDL_RenderDrawRect(mRenderer, &obstacleRect);
+            }
         }
     }
 
