@@ -34,7 +34,7 @@ void RigidBodyComponent::ApplyFriction() {
         friction *= 0.35f; // Reduce friction when sliding on snow
     }
 
-    if (mOwner->GetGame()->GetApplyGravityScene()) {
+    if (mOwner->GetGame()->GetApplyGravityScene() && mApplyGravity) {
         ApplyForce(Vector2(mVelocity.x, 0.f) * -friction);
     } else {
         ApplyForce(mVelocity * -friction);
