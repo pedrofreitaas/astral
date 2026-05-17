@@ -19,7 +19,6 @@ enum class ColliderLayer
     EnemyProjectile,
     Blocks,
     Objects,
-    Item,
     Portal,
     Projectile,
     Fireball,
@@ -33,7 +32,6 @@ enum class ColliderLayer
     SithAttack2,
     Quasar,
     Nevasca,
-    QuasarAttack,
     Torch,
     Items
 };
