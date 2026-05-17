@@ -48,6 +48,6 @@ private:
     Attacks mCurrentAttack;
     TimerComponent *mTimerComponent;
 
-    Collider *mAttack1Collider, *mAttack2Collider;
+    Collider *mAttack2Collider;
     bool mHasAppliedAttackBoost;
 };

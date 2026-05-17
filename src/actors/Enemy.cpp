@@ -6,8 +6,10 @@
 #include "Actor.h"
 #include "Collider.h"
 
-Enemy::Enemy(Game *game, const Vector2 &position)
-    : Actor(game)
+Enemy::Enemy(Game *game, const Vector2 &position, float maxSeeDistance, float minSeeDistance)
+    : Actor(game), mMaxSeeDistance(maxSeeDistance), 
+    mMinSeeDistance(minSeeDistance), mHasSeenPlayerThisFrame(false),
+    mLastSeenPlayerCenter(Vector2::Zero), mSpawnPosition(position)
 {
     mGame->AddEnemy(this);
 }
@@ -19,6 +21,10 @@ Enemy::~Enemy()
 
 void Enemy::OnUpdate(float deltaTime)
 {
+    mHasSeenPlayerThisFrame = PlayerOnFov();
+    if (mHasSeenPlayerThisFrame) 
+        mLastSeenPlayerCenter = GetGame()->GetZoe()->GetCenter();
+    
     ManageState();
     ManageAnimations();
     mColliderComponent->MaintainInMap();
@@ -26,8 +32,9 @@ void Enemy::OnUpdate(float deltaTime)
     Actor::OnUpdate(deltaTime);
 }
 
-bool Enemy::PlayerOnSight(float distance, float angle)
+bool Enemy::PlayerOnSight(float angle)
 {
+    float distance = mMaxSeeDistance;
     auto zoe = GetGame()->GetZoe();
 
     if (zoe == nullptr)
@@ -53,17 +60,21 @@ bool Enemy::PlayerOnSight(float distance, float angle)
     return isIntersecting;
 }
 
-bool Enemy::PlayerOnFov(float minDistance, float maxDistance)
+bool Enemy::PlayerOnFov()
 {
+    float minDistance = mMinSeeDistance;
+    float maxDistance = mMaxSeeDistance;
+
     auto zoe = GetGame()->GetZoe();
 
     if (zoe == nullptr)
         return false;
 
     Vector2 toZoe = zoe->GetPosition() - GetPosition();
-    
-    if (toZoe.LengthSq() > maxDistance * maxDistance) return false;
-    if (toZoe.LengthSq() < minDistance * minDistance) return true;
+    float distanceToZoeSq = toZoe.LengthSq();
+
+    if (distanceToZoeSq > maxDistance * maxDistance) return false;
+    if (distanceToZoeSq < minDistance * minDistance) return true;
 
     toZoe.Normalize();
 
@@ -77,15 +88,7 @@ bool Enemy::PlayerOnFov(float minDistance, float maxDistance)
     return angle < fovAngle;
 }
 
-std::vector<SDL_Rect> Enemy::GetPath() const
-{
-    if (mAIMovementComponent == nullptr)
-        return {};
-
-    return mAIMovementComponent->GetPath();
-}
-
-Vector2 Enemy::GetCurrentAppliedForce(float modifier)
+Vector2 Enemy::GetCurrentAppliedForce(float modifier) const
 {
     const RigidBodyComponent* rb = GetComponent<RigidBodyComponent>();
 
@@ -182,4 +185,29 @@ void Enemy::StopFreeze()
 
     SetBehaviorState(BehaviorState::Moving);
     mAIMovementComponent->SetEnabled(true);
+}
+
+SDL_Rect Enemy::GetThreatRect() const
+{
+    return SDL_Rect{
+        static_cast<int>(GetCenter().x - GetWidth()*1.4),
+        static_cast<int>(GetCenter().y - GetHeight()*1.4),
+        static_cast<int>(GetWidth()*2.8),
+        static_cast<int>(GetHeight()*2.8)
+    };
+}
+
+std::vector<Vector2> Enemy::GetObstaclesAroundCenters() const
+{
+    return mAIMovementComponent->GetObstaclesAroundCenters();
+}
+
+Vector2 Enemy::GetCurrentVelocity(float modifier) const
+{
+    const RigidBodyComponent* rb = GetComponent<RigidBodyComponent>();
+
+    if (!rb)
+        return Vector2::Zero;
+
+    return rb->GetVelocity() * modifier;
 }

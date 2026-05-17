@@ -8,7 +8,7 @@
 class Zod : public Enemy
 {
 public:
-    explicit Zod(Game* game, float forwardSpeed, const Vector2& position);
+    explicit Zod(Game* game, const Vector2& position);
 
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;

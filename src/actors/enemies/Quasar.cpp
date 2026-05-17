@@ -8,7 +8,7 @@
 #include "../Actor.h"
 
 Quasar::Quasar(Game *game, const Vector2 &center)
-    : Enemy(game, center), mAppliedImpulseInAttack(false), mAttackTimerHandle(nullptr),
+    : Enemy(game, center, 300.f), mAppliedImpulseInAttack(false), mAttackTimerHandle(nullptr),
     mBlockedPlayerSoundHandle(SoundHandle::Invalid)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f);
@@ -29,11 +29,9 @@ Quasar::Quasar(Game *game, const Vector2 &center)
 
     mAIMovementComponent = new AIMovementComponent(
         this, 
-        400.f, 
-        0,
-        TypeOfMovement::Walker, 
-        3.f,
-        0);
+        400.f,
+        TypeOfMovement::Walker,
+        0.01f);
 
     mDrawComponent->AddAnimation("asleep", {0});
     mDrawComponent->AddAnimation("idle", 1, 8);
@@ -59,8 +57,6 @@ void Quasar::ManageState()
     Vector2 toZoe = zoe->GetCenter() - GetCenter();
     float distanceToZoeSQ = toZoe.LengthSq();
 
-    bool playerInFov = PlayerOnFov(10.f, 300.f);
-
     switch (mBehaviorState)
     {
         case BehaviorState::Asleep:
@@ -84,12 +80,12 @@ void Quasar::ManageState()
                 break;
 
             if (
-                PlayerOnSight(180.f) && 
-                (mAttackTimerHandle == nullptr || 
+                PlayerOnSight() && 
+                (mAttackTimerHandle == nullptr ||
                  mTimerComponent->checkTimerRemaining(mAttackTimerHandle) <= 0.f)
             )
             {
-                mIsCloseAttack = PlayerOnSight(60.f);
+                mIsCloseAttack = distanceToZoeSQ <= 900.f;
                 mAppliedImpulseInAttack = false;
                 SetBehaviorState(BehaviorState::Attacking);
                 
@@ -101,13 +97,8 @@ void Quasar::ManageState()
                 break;
             }
 
-            if (
-                (playerInFov && 
-                mAIMovementComponent->GetMovementState() != MovementState::FollowingPath) ||
-                distanceToZoeSQ <= 1600
-            ) {
-                mAIMovementComponent->SeekPlayer();
-            }
+            if (PlayerOnFov()) mAIMovementComponent->SeekPlayer();
+            else mAIMovementComponent->LoosePlayer();
 
             break;
 
@@ -126,14 +117,8 @@ void Quasar::ManageState()
             
             float forward = GetForward().x;
             
-            if (mIsCloseAttack)
-            {
-                mRigidBodyComponent->ApplyImpulse(Vector2(forward * 220.f, 0.f));
-            }
-            else
-            {
-                mRigidBodyComponent->ApplyImpulse(Vector2(forward * 400.f, -180.f));
-            }
+            if (mIsCloseAttack) mRigidBodyComponent->ApplyImpulse(Vector2(forward * 220.f, 0.f));
+            else mRigidBodyComponent->ApplyImpulse(Vector2(forward * 400.f, -180.f));
 
             mAppliedImpulseInAttack = true;
             

@@ -23,8 +23,20 @@ SithProjectile::SithProjectile(
         14, 12,
         ColliderLayer::EnemyProjectile);
 
-    mColliderComponent->SetIgnoreLayers({ColliderLayer::Enemy,
-                                         ColliderLayer::EnemyProjectile});
+    mColliderComponent->SetIgnoreLayers({
+        ColliderLayer::Enemy,
+        ColliderLayer::EnemyProjectile,
+        ColliderLayer::Quasar,
+        ColliderLayer::PlayerAttack,
+        ColliderLayer::SithAttack1,
+        ColliderLayer::SithAttack2,
+        ColliderLayer::Torch,
+        ColliderLayer::Items,
+        ColliderLayer::Shuriken,
+        ColliderLayer::SpearTip,
+        ColliderLayer::SpearBlock,
+        ColliderLayer::Spikes
+    });
 
     mDrawAnimatedComponent = new DrawAnimatedComponent(
         this,

@@ -6,8 +6,8 @@
 #include "../Actor.h"
 #include "ZodProjectile.h"
 
-Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
-    : Enemy(game, position), mProjectileOnCooldown(false)
+Zod::Zod(Game* game, const Vector2& position)
+    : Enemy(game, position, 400.f), mProjectileOnCooldown(false)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f);
     
@@ -26,15 +26,12 @@ Zod::Zod(Game* game, float forwardSpeed, const Vector2& position)
         std::bind(&Zod::AnimationEndCallback, this, std::placeholders::_1), // could use a lambda here too
         static_cast<int>(DrawLayerPosition::BelowPlayer));
     
+    mTimerComponent = new TimerComponent(this);
+
     mAIMovementComponent = new AIMovementComponent(
         this, 
-        forwardSpeed, 
-        4,
-        TypeOfMovement::Walker, 
-        3.f, 
-        .01f);
-
-    mTimerComponent = new TimerComponent(this);
+        1200.f, 
+        TypeOfMovement::Walker);
 
     mDrawComponent->AddAnimation("asleep", {0});
     mDrawComponent->AddAnimation("waking", 1, 4);
@@ -80,15 +77,12 @@ void Zod::ManageState()
     if (!zoe)
         return;
 
-    bool playerInFov = PlayerOnFov(100.f, 400.f);
     float distanceSQToZoe = (zoe->GetPosition() - GetPosition()).LengthSq();
-
-    float viewDistance = 300.f;
 
     switch (mBehaviorState)
     {
     case BehaviorState::Asleep:
-        if (distanceSQToZoe < 40000.f) SetBehaviorState(BehaviorState::Waking);
+        if (distanceSQToZoe < 50000.f) SetBehaviorState(BehaviorState::Waking);
         break;
     case BehaviorState::Waking:
         break;
@@ -96,27 +90,23 @@ void Zod::ManageState()
         break;
     case BehaviorState::Moving:
     {
-        if (mRigidBodyComponent->GetVelocity().x > 0.f)
-            SetRotation(0.f);
-        else if (mRigidBodyComponent->GetVelocity().x < 0.f)
-            SetRotation(Math::Pi);
+        if (mRigidBodyComponent->GetVelocity().x > 0.f) SetRotation(0.f);
+        else if (mRigidBodyComponent->GetVelocity().x < 0.f) SetRotation(Math::Pi);
 
-        if (PlayerOnSight(viewDistance) && !mProjectileOnCooldown) {
+        if (PlayerOnSight() && !mProjectileOnCooldown) 
+        {
             SetBehaviorState(BehaviorState::Charging);
             break;
         }
 
-        if (playerInFov && 
-            mAIMovementComponent->GetMovementState() != MovementState::FollowingPath)
-        {
-            mAIMovementComponent->SeekPlayer();
-        }
+        if (PlayerOnFov()) mAIMovementComponent->SeekPlayer();
+        else mAIMovementComponent->LoosePlayer();
         
         break;
     }
     
     case BehaviorState::Charging: {
-        if (!PlayerOnSight(viewDistance)) SetBehaviorState(BehaviorState::Moving);
+        if (!PlayerOnSight()) SetBehaviorState(BehaviorState::Moving);
 
         int currentAnimationSprite = mDrawComponent->GetCurrentSprite();
 

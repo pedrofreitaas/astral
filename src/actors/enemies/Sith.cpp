@@ -8,9 +8,9 @@
 #include "../Actor.h"
 
 Sith::Sith(Game *game, const Vector2 &position)
-    : Enemy(game, position),
+    : Enemy(game, position, 400.f),
       mIsProjectileOnCooldown(false), mIsAttack1OnCooldown(false), mIsAttack2OnCooldown(false),
-      mCurrentAttack(Attacks::None), mAttack1Collider(nullptr), mAttack2Collider(nullptr), mHasAppliedAttackBoost(false)
+      mCurrentAttack(Attacks::None), mAttack2Collider(nullptr), mHasAppliedAttackBoost(false)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f, false);
     
@@ -35,9 +35,7 @@ Sith::Sith(Game *game, const Vector2 &position)
     mAIMovementComponent = new AIMovementComponent(
         this,
         forwardSpeed,
-        -1,
         TypeOfMovement::Flier,
-        5.f,
         .01f);
 
     mDrawComponent->AddAnimation("moving", 0, 6);
@@ -132,13 +130,7 @@ void Sith::FireProjectile()
 
 void Sith::ManageState()
 {
-    auto zoe = GetGame()->GetZoe();
-    if (!zoe)
-        return;
-
-    bool playerInFov = PlayerOnFov();
-    float distanceSQToZoe = (zoe->GetPosition() - GetPosition()).LengthSq();
-    float sightDistance = 400.f;
+    float distanceSQToZoe = (GetLastSeenPlayerCenter() - GetCenter()).LengthSq();
 
     switch (mBehaviorState)
     {
@@ -150,38 +142,35 @@ void Sith::ManageState()
         break;
     case BehaviorState::Moving:
     {
-        if (mRigidBodyComponent->GetVelocity().x > 0.f)
+        float speed = mAIMovementComponent->GetSpeed() * .95f;
+
+        if (mRigidBodyComponent->GetVelocity().x > speed)
             SetRotation(0.f);
-        else if (mRigidBodyComponent->GetVelocity().x < 0.f)
+        else if (mRigidBodyComponent->GetVelocity().x < -speed)
             SetRotation(Math::Pi);
 
-        if (PlayerOnSight(sightDistance) && !mIsProjectileOnCooldown)
+        if (PlayerOnSight() && !mIsProjectileOnCooldown)
         {
             SetBehaviorState(BehaviorState::Charging);
             break;
         }
 
         if (distanceSQToZoe < 2500.f &&
-            !mIsAttack1OnCooldown &&
-            mAIMovementComponent->CrazyDecision(2.f))
+            !mIsAttack1OnCooldown)
         {
             Attack1();
             break;
         }
 
         if (distanceSQToZoe < 12000.f &&
-            !mIsAttack2OnCooldown &&
-            mAIMovementComponent->CrazyDecision(3.f))
+            !mIsAttack2OnCooldown)
         {
             Attack2();
             break;
         }
 
-        if (playerInFov &&
-            mAIMovementComponent->GetMovementState() != MovementState::FollowingPath)
-        {
-            mAIMovementComponent->SeekPlayer();
-        }
+        if (PlayerOnFov()) mAIMovementComponent->SeekPlayer();
+        else mAIMovementComponent->LoosePlayer();
 
         break;
     }
@@ -191,7 +180,7 @@ void Sith::ManageState()
 
         int spriteIdx = mDrawComponent->GetCurrentSprite();
 
-        if (mCurrentAttack == Attacks::Attack1 && spriteIdx >= 1 && !mHasAppliedAttackBoost)
+        if (mCurrentAttack == Attacks::Attack1 && spriteIdx >= 2 && !mHasAppliedAttackBoost)
         {
             mHasAppliedAttackBoost = true;
             float extraSpeed = mGame->GetConfig()->Get<float>("SITH.ATTACK1_EXTRA_SPEED");
@@ -209,7 +198,7 @@ void Sith::ManageState()
     }
 
     case BehaviorState::Charging:
-        if (!PlayerOnSight(sightDistance))
+        if (!PlayerOnSight())
             SetBehaviorState(BehaviorState::Moving);
         break;
     case BehaviorState::TakingDamage:
@@ -236,9 +225,6 @@ void Sith::AnimationEndCallback(std::string animationName)
     {
         SetBehaviorState(BehaviorState::Moving);
         mCurrentAttack = Attacks::None;
-        if (mAttack1Collider)
-            mAttack1Collider->Dismiss();
-        mAttack1Collider = nullptr;
         SetInvincibilityOff();
     }
 
@@ -253,6 +239,8 @@ void Sith::AnimationEndCallback(std::string animationName)
     else if (animationName == "death")
     {
         SetState(ActorState::Destroy);
+        mRigidBodyComponent->SetEnabled(false);
+        mColliderComponent->SetEnabled(false);
     }
 
     else if (animationName == "damage")
@@ -278,34 +266,20 @@ void Sith::ManageAnimations()
         if (mCurrentAttack == Attacks::Attack1)
         {
             mDrawComponent->SetAnimation("attack");
-            mDrawComponent->SetAnimFPS(8.f);
 
-            if (mDrawComponent->GetCurrentSprite() >= 5 && mAttack1Collider == nullptr)
-            {
-                mAttack1Collider = new Collider(
-                    mGame,
-                    this,
-                    GetPosition() + (GetRotation() == 0.f ? Vector2(30.f, 30.f) : Vector2(7.f, 30.f)),
-                    Vector2(17.f, 8.f),
-                    [this](bool collided, float minOverlap, AABBColliderComponent *other)
-                    {
-                        if (collided && other->GetOwner() == GetGame()->GetZoe())
-                        {
-                            mAttack1Collider->SetEnabled(false);
-                        }
-                    },
-                    DismissOn::Both,
-                    ColliderLayer::SithAttack1,
-                    {ColliderLayer::Enemy},
-                    .5f,
-                    nullptr,
-                    false);
-            }
+            if (mDrawComponent->GetCurrentSprite() <= 2) 
+                mDrawComponent->SetAnimFPS(3.f);
+            else 
+                mDrawComponent->SetAnimFPS(6.f);
         }
         else if (mCurrentAttack == Attacks::Attack2)
         {
             mDrawComponent->SetAnimation("attack2");
-            mDrawComponent->SetAnimFPS(12.f);
+            
+            if (mDrawComponent->GetCurrentSprite() <= 4) 
+                mDrawComponent->SetAnimFPS(3.f);
+            else
+                mDrawComponent->SetAnimFPS(6.f);
         }
         break;
     case BehaviorState::Dying:

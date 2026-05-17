@@ -193,7 +193,7 @@ void MapObject::SpawnEntity()
         new Sith(mGame, GetCenter());
         break;
     case EntityCode::Zod:
-        new Zod(mGame, 1200.f, GetCenter());
+        new Zod(mGame, GetCenter());
         break;
     case EntityCode::Shuriken:
         new Shuriken(mGame, GetCenter());
