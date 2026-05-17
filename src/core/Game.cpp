@@ -345,12 +345,16 @@ void Game::ProcessInput()
             HandleKeyPressActors(event.key.keysym.sym, event.key.repeat == 0);            
 
             switch (event.key.keysym.sym) {
-                case SDLK_SPACE:
-                    new Zod(this, 1200.f, Vector2(310.f, 120.f));
+                case SDLK_z:
+                    new Zod(this, Vector2(310.f, 120.f));
                     break;
                 
-                case SDLK_b:
+                case SDLK_s:
                     new Sith(this, Vector2(310.f, 120.f));
+                    break;
+                
+                case SDLK_q:
+                    new Quasar(this, Vector2(310.f, 120.f));
                     break;
 
                 case SDLK_n: {
