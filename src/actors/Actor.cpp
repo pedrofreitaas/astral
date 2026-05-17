@@ -316,6 +316,16 @@ Vector2 Actor::GetHalfSize() const
     return GetCenter() - GetPosition();
 }
 
+float Actor::GetWidth() const
+{
+    return GetHalfSize().x * 2.f;
+}
+
+float Actor::GetHeight() const
+{
+    return GetHalfSize().y * 2.f;
+}
+
 void Actor::TakeSpikeHit(const Vector2 &SpikeBaseCenter)
 {
     float knockbackX = Math::Sign(GetCenter().x - SpikeBaseCenter.x);

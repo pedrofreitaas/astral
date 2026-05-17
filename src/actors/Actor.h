@@ -131,6 +131,8 @@ public:
     
     Vector2 GetCenter() const;
     Vector2 GetHalfSize() const;
+    float  GetWidth() const;
+    float GetHeight() const;
 
     BehaviorState GetBehaviorState() const { return mBehaviorState; }
 
