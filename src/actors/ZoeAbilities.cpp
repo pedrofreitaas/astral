@@ -304,6 +304,10 @@ void Zoe::DodgeEnd()
     float cooldown = mGame->GetConfig()->Get<float>("ZOE.DODGE_COOLDOWN");
     mDodgeCooldownTimer = mTimerComponent->AddTimer(cooldown, [this]
                                                     { mDodgeCooldownTimer = nullptr; });
+
+    SetInvincibilityOn();
+    mTimerComponent->AddTimer(0.25f, [this]()
+                              { SetInvincibilityOff(); });
 }
 
 void Zoe::FireFireball()

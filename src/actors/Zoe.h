@@ -36,7 +36,10 @@ class Zoe : public Actor
     std::vector<ColliderLayer> IGNORED_LAYERS_DODGE = {
         ColliderLayer::Enemy,
         ColliderLayer::EnemyProjectile,
-        ColliderLayer::PlayerAttack
+        ColliderLayer::PlayerAttack,
+        ColliderLayer::Quasar,
+        ColliderLayer::SithAttack1,
+        ColliderLayer::SithAttack2
     };
 
     std::vector<ColliderLayer> IGNORED_LAYERS_DEFAULT = {
