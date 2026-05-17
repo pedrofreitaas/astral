@@ -51,6 +51,12 @@ public:
         mGravityScale = scale; 
     }
 
+protected:
+    friend class AIMovementComponent;
+    // this is a really delicate method, be careful when using it.
+    // it was created for the ENEMIES AI for fliers.
+    void SetVelocity(const Vector2& velocity) { mVelocity = velocity; }
+
 private:
     bool mApplyGravity;
     bool mApplyFriction;
