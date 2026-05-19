@@ -7,6 +7,8 @@
 #include "../actors/Actor.h"
 #include "../components/RigidBodyComponent.h"
 #include "../actors/Button.h"
+#include "../actors/Tile.h"
+#include "../core/SpatialHashing.h"
 
 class Game;
 
@@ -37,6 +39,7 @@ class SpawnStep : public Step {
 public:
     enum class ActorType {
         Star,
+        Father
         // Add other actor types here as needed
     };
     SpawnStep(class Game* game, ActorType actorType, const Vector2& position, float maxTime=2.f): Step(game, maxTime), mActorType(actorType), mPosition(position) {};
@@ -203,6 +206,19 @@ public:
     DodgeStep(class Game* game) : Step(game, .01f) {}
     void PreUpdate() override;
     void SetComplete(bool v) override;
+};
+
+class BreakTileStep : public Step {
+public:
+    BreakTileStep(class Game* game, Vector2 position) : 
+        Step(game, 1.2f), mTileCenter(position), mTile(nullptr)
+        {}
+    void PreUpdate() override;
+    void Update(float deltaTime) override;
+    void SetComplete(bool v) override;
+private:
+    Tile *mTile;
+    Vector2 mTileCenter;
 };
 
 class Cutscene {

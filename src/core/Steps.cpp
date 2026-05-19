@@ -291,3 +291,38 @@ void DodgeStep::SetComplete(bool v)
     zoe->OnDodgeReleased();
     Step::SetComplete(v);
 }
+
+void BreakTileStep::PreUpdate()
+{
+    auto *spatialHashing = mGame->GetSpatialHashing();
+
+    mTile = spatialHashing->GetTileAtPos(mTileCenter);
+
+    if (mTile == nullptr)
+    {
+        throw std::runtime_error("BreakTileStep failed to find tile at position: (" +
+                                 std::to_string(mTileCenter.x) + ", " + std::to_string(mTileCenter.y) + ")");
+    }
+}
+
+void BreakTileStep::Update(float deltaTime)
+{
+    if (GetIsComplete())
+        return;
+
+    Step::Update(deltaTime);
+
+    Vector2 shakeOffset = Vector2(
+        Math::RandRangeInt(-3, 3),
+        Math::RandRangeInt(-3, 3)
+    );
+
+    mTile->SetPosition(mTileCenter + shakeOffset);
+}
+
+void BreakTileStep::SetComplete(bool v)
+{
+    Step::SetComplete(v);
+    mTile->Break();
+    mGame->GetAudio()->PlaySound("breakTile.wav");
+}
