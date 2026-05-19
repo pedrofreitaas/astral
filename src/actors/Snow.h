@@ -2,8 +2,9 @@
 
 #include <string>
 #include "Actor.h"
-#include "../core/Game.h"
 #include "../components/draw/DrawSpriteComponent.h"
+
+class Game;
 
 enum class SnowDirection {
     RIGHT=0,
