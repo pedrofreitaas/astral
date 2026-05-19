@@ -60,38 +60,6 @@ Item *Item::CreateFireballItem(Game *game, const Vector2 &position)
         
         steps.push_back(std::make_unique<LaunchFireballStep>(game, 1.f));
 
-        steps.push_back(std::make_unique<MoveStep>(
-            game,
-            [game]()
-            { return game->GetZoe(); },
-            [game]()
-            { return Vector2(game->GetZoe()->GetCenter().x + 15.f, game->GetZoe()->GetCenter().y); },
-            80.f));
-
-        steps.push_back(std::make_unique<WaitStep>(game, 0.5f));
-        steps.push_back(std::make_unique<MoveStep>(
-            game,
-            [game]()
-            { return game->GetZoe(); },
-            [game]()
-            { return Vector2(game->GetZoe()->GetCenter().x - 4.f, game->GetZoe()->GetCenter().y); },
-            20.f));
-
-        steps.push_back(std::make_unique<WaitStep>(game, 1.f));
-        steps.push_back(std::make_unique<MoveStep>(
-            game,
-            [game]()
-            { return game->GetZoe(); },
-            [game]()
-            { return Vector2(game->GetZoe()->GetCenter().x + 4.f, game->GetZoe()->GetCenter().y); },
-            20.f));
-
-        steps.push_back(std::make_unique<WaitStep>(game, 1.f));
-
-        std::vector<std::string> dialogue = {
-            "Muito cuidado para nao me queimar."};
-        steps.push_back(std::make_unique<DialogueStep>(game, "Zoe", dialogue));
-
         game->AddCutscene("fireball_acquisition", std::move(steps), nullptr);
 
         game->GetZoe()->SetIsFireballAllowed(true);
@@ -99,7 +67,7 @@ Item *Item::CreateFireballItem(Game *game, const Vector2 &position)
         game->StartCutscene("fireball_acquisition");
       },
       Button::Y,
-      0, 9, 14);
+      0, 9, 14, true, true);
 }
 
 Item *Item::CreateVentaniaItem(Game *game, const Vector2 &position)
