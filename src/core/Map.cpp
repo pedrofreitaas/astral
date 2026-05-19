@@ -86,6 +86,18 @@ void Map::LoadTilesLayer(std::vector<std::pair<std::string, int>> &nameToFirstGI
 			continue;
 		}
 
+		if (currentTileset.GetName() == "Crate")
+		{
+			new Crate(
+				mGame,
+				Vector2(
+					(tileIdx % mWidthInTiles) * 32 + 16, 
+					std::floor(tileIdx * 1.0f / mWidthInTiles) * 32 + 16
+				)
+			);
+			continue;
+		}
+
 		int localID = gid - firstGID;
 
 		if (currentTileset.GetName() == "bedroom" && localID == 139)

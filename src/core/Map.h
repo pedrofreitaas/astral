@@ -13,6 +13,7 @@
 #include "../libs/Math.h"
 #include "../actors/Collider.h"
 #include "../actors/Torch.h"
+#include "../actors/Crate.h"
 #include "../actors/Item.h"
 
 class Game;
