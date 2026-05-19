@@ -509,3 +509,26 @@ bool SpatialHashing::isEmptyCell(int row, int col)
 
     return !isTileCell(row, col) && !isPlaformCell(row, col) && !isCornerCel(row, col);
 }
+
+Tile* SpatialHashing::GetTileAtPos(const Vector2& position) const
+{
+    int col = static_cast<int>(position.x / mCellSize);
+    int row = static_cast<int>(position.y / mCellSize);
+
+    // Ensure indices are within bounds
+    if (col < 0 || col >= mGrid[0].size() || row < 0 || row >= mGrid.size())
+    {
+        return nullptr; // Out of bounds
+    }
+
+    const auto &cell = mGrid[row][col];
+    for (Actor* actor : cell)
+    {
+        if (auto tile = dynamic_cast<Tile*>(actor))
+        {
+            return tile;
+        }
+    }
+
+    return nullptr; // No tile found in this cell
+}
