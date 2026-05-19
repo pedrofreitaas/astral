@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="30">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="31">
  <editorsettings>
-  <export target="../../assets/Levels/Maps/tests.json" format="json"/>
+  <export target="../../assets/Levels/Maps/level2.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/Terrain and Back Wall (32x32).tsx"/>
  <tileset firstgid="248" source="../tilesets/Nebula-Terrain.tsx"/>
@@ -87,6 +87,13 @@
     <property name="entity_code" type="int" value="0"/>
     <property name="event" value="atStart"/>
     <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="30" x="126.502" y="20.7284" width="83.1734" height="318.639">
+   <properties>
+    <property name="cutscene_name" value="explainLevel2Wip"/>
+    <property name="event" value="enter"/>
+    <property name="function_name" value="play_cutscene"/>
    </properties>
   </object>
  </objectgroup>
