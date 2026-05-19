@@ -37,6 +37,10 @@ add_executable(astral
     src/libs/Json.h
     src/components/draw/DrawSpriteComponent.cpp
     src/components/draw/DrawSpriteComponent.h
+    src/actors/Father.h
+    src/actors/Father.cpp
+    src/actors/Mother.h
+    src/actors/Mother.cpp
     src/actors/Zoe.cpp
     src/actors/ZoeAbilities.cpp
     src/actors/Zoe.h
@@ -126,6 +130,8 @@ add_executable(astral
     src/core/Checkpoint.h
     src/actors/Torch.h
     src/actors/Torch.cpp
+    src/actors/Crate.cpp
+    src/actors/Crate.h
 )
 
 if(EMSCRIPTEN)
