@@ -8,6 +8,7 @@
 #include "../ui/DialogueSystem.h"
 #include "../ui/UIAnimation.h"
 #include "../core/HUD.h"
+#include "../actors/Father.h"
 
 MoveStep::MoveStep(
     class Game* game, 
@@ -108,6 +109,11 @@ void SpawnStep::Update(float deltaTime)
     if (mActorType == ActorType::Star)
     {
         newActor = new Star(mGame);
+    }
+
+    else if (mActorType == ActorType::Father)
+    {
+        newActor = new Father(mGame, mPosition);
     }
 
     if (newActor)
