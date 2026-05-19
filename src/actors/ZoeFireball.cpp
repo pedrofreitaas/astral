@@ -85,7 +85,8 @@ void Fireball::OnHorizontalCollision(const float minOverlap, AABBColliderCompone
 
     if (
         mRicochetsCount >= MAX_RICOCHETS ||
-        other->GetLayer() == ColliderLayer::Enemy
+        other->GetLayer() == ColliderLayer::Enemy ||
+        other->GetLayer() == ColliderLayer::Crate
     ) {
         Kill();
         return;
@@ -118,7 +119,8 @@ void Fireball::OnVerticalCollision(const float minOverlap, AABBColliderComponent
     
     if (
         mRicochetsCount >= MAX_RICOCHETS ||
-        other->GetLayer() == ColliderLayer::Enemy
+        other->GetLayer() == ColliderLayer::Enemy ||
+        other->GetLayer() == ColliderLayer::Crate
     )
     {
         Kill();
