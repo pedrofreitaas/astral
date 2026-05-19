@@ -99,3 +99,8 @@ void Tile::StopFreeze()
 
     SetBehaviorState(BehaviorState::Idle);
 }
+
+void Tile::Kill()
+{
+    SetState(ActorState::Destroy);
+}
