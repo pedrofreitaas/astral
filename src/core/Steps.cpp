@@ -77,8 +77,16 @@ void MoveStep::Update(float deltaTime)
     Vector2 direction = toTarget;
     direction.Normalize();
     Vector2 desiredVelocity = direction * mSpeed;
-    rb->ResetVelocity();
-    rb->ApplyImpulse(desiredVelocity);
+
+    if (rb->GetApplyGravity())
+    {
+        rb->ResetVelocityX();
+        rb->ApplyImpulse(Vector2(desiredVelocity.x - rb->GetVelocity().x, 0.f));
+    }
+    else {
+        rb->ResetVelocity();
+        rb->ApplyImpulse(desiredVelocity);
+    }
 
     // Check if we would overshoot the target in this frame
     if (distanceToTarget < desiredVelocity.Length() * deltaTime)
