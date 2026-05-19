@@ -134,6 +134,9 @@ void Zoe::ManageState()
         Kill();
         break;
 
+    case BehaviorState::Dead:
+        break;
+
     case BehaviorState::Jumping:
         if (mRigidBodyComponent->GetOnGround())
         {
@@ -482,8 +485,10 @@ void Zoe::ManageAnimations()
         mDrawComponent->SetAnimation("jump");
         break;
     case BehaviorState::Dying:
+        break;
+    case BehaviorState::Dead:
         mDrawComponent->SetAnimation("hurt");
-        mDrawComponent->SetAnimFPS(0.01f);
+        mDrawComponent->SetAnimFPS(14.f);
         break;
     case BehaviorState::TakingDamage:
         mDrawComponent->SetAnimation("hurt");
@@ -550,13 +555,11 @@ void Zoe::Kill()
     if (mBehaviorState == BehaviorState::Dead)
         return;
 
-    SetBehaviorState(BehaviorState::Dead);
-
     int maxDeaths = mGame->GetConfig()->Get<int>("ZOE.MAX_DEATHS");
 
     if (mDeaths >= maxDeaths || GetCurrentCheckpoint() == nullptr)
     {
-        mGame->SetGameScene(Game::GameScene::DeathScreen);
+        SetBehaviorState(BehaviorState::Dead);
         return;
     }
 
@@ -672,6 +675,12 @@ void Zoe::AnimationEndCallback(std::string animationName)
 {
     if (animationName == "hurt")
     {
+        if (mBehaviorState == BehaviorState::Dead)
+        {
+            mGame->SetGameScene(Game::GameScene::DeathScreen);
+            return;
+        }
+
         SetBehaviorState(BehaviorState::Idle);
         return;
     }
