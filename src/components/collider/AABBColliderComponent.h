@@ -33,7 +33,10 @@ enum class ColliderLayer
     Quasar,
     Nevasca,
     Torch,
-    Items
+    Crate,
+    Items,
+    Father,
+    Mother
 };
 
 enum class IgnoreOption
