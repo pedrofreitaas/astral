@@ -21,6 +21,9 @@
 #include "Config.h"
 #include "Checkpoint.h"
 
+class Step;
+class Cutscene;
+
 template <typename F>
 auto TimeCheckerWrapper(F&& func) {
     auto start = std::chrono::high_resolution_clock::now();
@@ -53,6 +56,7 @@ public:
         Bedroom,
         BedroomPortal,
         Level1,
+        Level2,
         Tests,
         DeathScreen,
         EndDemo
@@ -112,6 +116,7 @@ public:
     void LoadBedroom();
     void LoadBedroomPortal();
     void LoadFirstLevel();
+    void LoadSecondLevel();
     void LoadTestsLevel();
     void LoadDeathScreen();
     void LoadEndDemoScene();
@@ -197,6 +202,9 @@ public:
     void SetStar(class Star *star) { mStar = star; };
     class Star *GetStar() { return mStar; };
 
+    void SetFather(class Father *father) { mFather = father; };
+    class Father *GetFather() { return mFather; };
+
     int GetMapWidth();
     int GetMapHeight();
 
@@ -242,6 +250,8 @@ public:
     void SetPhysicsFrozen(bool frozen) {
         mIsPhysicsFrozen = frozen;
     }
+
+    const SpatialHashing* GetConstSpatialHashing() const { return mSpatialHashing; }
 
 private:
     Actor* mPortal;
@@ -312,6 +322,7 @@ private:
     // Game-specific
     class Zoe *mZoe;
     class Star *mStar;
+    class Father *mFather;
     std::vector<class Enemy *> mEnemies;
     class HUD *mHUD;
     SoundHandle mMusicHandle;
@@ -341,6 +352,8 @@ private:
 
     bool isEnding;
     void HalfFirstLevelCheck();
+    void BreakTilesFirstLevelCheck();
+    void LastPartFirstLevelCheck();
 
     float mShakeCounter, mShakeIntensity;
 

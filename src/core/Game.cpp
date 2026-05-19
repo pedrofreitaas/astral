@@ -210,6 +210,8 @@ void Game::ChangeScene()
         LoadBedroomPortal();
     else if (mNextScene == GameScene::Level1)
         LoadFirstLevel();
+    else if (mNextScene == GameScene::Level2)
+        LoadSecondLevel();
     else if (mNextScene == GameScene::DeathScreen)
         LoadDeathScreen();
     else if (mNextScene == GameScene::EndDemo)
@@ -376,7 +378,7 @@ void Game::ProcessInput()
                 }
 
                 case SDLK_l:
-                    GetZoe()->SetPosition(Vector2(608.f, 60.f));
+                    GetZoe()->SetPosition(Vector2(1288.f, 762.f));
                     break;
             }
 
@@ -533,7 +535,12 @@ void Game::UpdateGame()
     UpdateSceneManager(mDeltatime);
     UpdateCamera();
 
-    HalfFirstLevelCheck();
+    if (mGameScene == GameScene::Level1)
+    {
+        HalfFirstLevelCheck();
+        BreakTilesFirstLevelCheck();
+        LastPartFirstLevelCheck();
+    }
 }
 
 void Game::UpdateCamera()
@@ -1153,6 +1160,66 @@ void Game::HalfFirstLevelCheck()
         zoeCenter.y >= start.y && zoeCenter.y <= end.y)
     {
         StartCutscene("halfFirstLevel");
+    }
+}
+
+void Game::BreakTilesFirstLevelCheck()
+{
+    if (GameScene::Level1 != mGameScene)
+    {
+        return;
+    }
+
+    if (mGamePlayState != GamePlayState::Playing)
+    {
+        return;
+    }
+
+    Vector2 start = Vector2(642.f, 712.f);
+    Vector2 end = Vector2(1262.f, 1036.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
+
+    if (!enemiesInArea.empty())
+    {
+        return;
+    }
+
+    if (zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y)
+    {
+        StartCutscene("breakTiles");
+    }
+}
+
+void Game::LastPartFirstLevelCheck()
+{
+    if (GameScene::Level1 != mGameScene)
+    {
+        return;
+    }
+
+    if (mGamePlayState != GamePlayState::Playing)
+    {
+        return;
+    }
+
+    Vector2 start = Vector2(1280.f, 712.f);
+    Vector2 end = Vector2(1900.f, 1036.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
+
+    if (!enemiesInArea.empty())
+    {
+        return;
+    }
+
+    if (zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y)
+    {
+        StartCutscene("endFirstLevel");
     }
 }
 
