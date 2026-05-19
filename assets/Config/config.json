@@ -10,13 +10,13 @@
     "SHURIKEN_KNOCKBACK_FORCE": 200.0,
     "SITH": {
         "ATTACK1_COOLDOWN": 3,
-        "ATTACK1_EXTRA_SPEED": 450,
+        "ATTACK1_EXTRA_SPEED": 150,
         "ATTACK2_COOLDOWN": 12,
-        "ATTACK2_EXTRA_SPEED": 700,
+        "ATTACK2_EXTRA_SPEED": 600,
         "HEALTH": 3,
         "PROJECTILE_COOLDOWN": 12,
         "PROJECTILE_SPEED": 60,
-        "SPEED": 900
+        "SPEED": 80
     },
     "SPEAR_COOLDOWN": 2.5,
     "SPEAR_KNOCKBACK_FORCE": 140.0,
@@ -45,7 +45,7 @@
                 "COOLDOWN": 4,
                 "KNOCKBACK_FORCE": 350,
                 "MANA_COST": 55.0,
-                "MAX_RICOCHETS": 3,
+                "MAX_RICOCHETS": 0,
                 "SPEED": 180
             },
             "NEVASCA": {
