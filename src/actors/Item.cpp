@@ -39,7 +39,7 @@ Item *Item::CreateNevascaItem(Game *game, const Vector2 &position)
         game->StartCutscene("nevasca_acquisition");
       },
       Button::RT,
-      0, 4, 5);
+      0, 4, 5, true, true);
 }
 
 Item *Item::CreateFireballItem(Game *game, const Vector2 &position)
