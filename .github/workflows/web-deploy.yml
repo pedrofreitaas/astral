@@ -36,5 +36,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: embuild
-          clean-exclude: |
-            stage
+          clean: false
