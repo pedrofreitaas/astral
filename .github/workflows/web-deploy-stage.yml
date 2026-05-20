@@ -1,15 +1,15 @@
-name: Build and Deploy to GitHub Pages (main)
+name: Build and Deploy to GitHub Pages (stage)
 
 on:
   push:
-    branches: [main]
+    branches: [stage]
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: pages-main
+  group: pages-stage
   cancel-in-progress: true
 
 jobs:
@@ -32,9 +32,8 @@ jobs:
       - name: Rename to index.html
         run: mv embuild/astral.html embuild/index.html
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages (stage)
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: embuild
-          clean-exclude: |
-            stage
+          target-folder: stage
