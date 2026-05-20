@@ -78,7 +78,7 @@ void MoveStep::Update(float deltaTime)
     direction.Normalize();
     Vector2 desiredVelocity = direction * mSpeed;
 
-    if (rb->GetApplyGravity())
+    if (rb->GetApplyGravity() && mGame->GetApplyGravityScene())
     {
         rb->ResetVelocityX();
         rb->ApplyImpulse(Vector2(desiredVelocity.x - rb->GetVelocity().x, 0.f));
