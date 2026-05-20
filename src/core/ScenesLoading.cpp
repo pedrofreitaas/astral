@@ -54,8 +54,8 @@ void Game::LoadMainMenu()
     mainMenu->AddTransparentButton(
         playButtonPos,
         playButtonSize,
-        // [this]() { SetGameScene(GameScene::Bedroom); });
-        [this]() { SetGameScene(GameScene::Level1); });
+        [this]() { SetGameScene(GameScene::Bedroom); });
+        // [this]() { SetGameScene(GameScene::Tests); });
     
     mainMenu->AddImage(
         "../assets/Sprites/Menu/playButton.png",
