@@ -156,6 +156,11 @@ void AIMovementComponent::Act(float deltaTime)
 
     case MovementState::Seeking:
     {
+        if (CanBePressingPlayerAgainstWall()) {
+            dir = Vector2(0.f, 0.f);
+            break;
+        }
+
         Vector2 toPlayer = mOwnerEnemy->GetLastSeenPlayerCenter() - mOwner->GetCenter();
         float distanceToPlayerSQ = toPlayer.LengthSq();
 
@@ -350,4 +355,25 @@ void AIMovementComponent::SetMovementState(MovementState state)
     mMovementState = state;
 
     LogState();
+}
+
+bool AIMovementComponent::CanBePressingPlayerAgainstWall() const
+{
+    if (mMovementState != MovementState::Seeking) return false;
+
+    Vector2 toPlayer = mOwnerEnemy->GetLastSeenPlayerCenter() - mOwner->GetCenter();
+    float distanceToPlayerSQ = toPlayer.LengthSq();
+
+    if (distanceToPlayerSQ > 900.f) return false;
+
+    AABBColliderComponent* playerColliderComponent = mOwnerEnemy->
+        GetGame()->
+        GetZoe()->
+        GetComponent<AABBColliderComponent>();
+    
+    if (!playerColliderComponent) return false;
+
+    int playerCloseToWall = playerColliderComponent->IsCloseToTileWallHorizontally(1.f);
+
+    return playerCloseToWall != 0;
 }

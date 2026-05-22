@@ -38,6 +38,8 @@ public:
     
     void SetMovementState(MovementState state);
     
+    bool CanBePressingPlayerAgainstWall() const;
+
     void SeekPlayer();
     void LoosePlayer();
     void LogState();
