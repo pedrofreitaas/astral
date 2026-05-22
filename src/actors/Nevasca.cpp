@@ -15,7 +15,15 @@ Nevasca::Nevasca(
         4, 4, 8, 8,
         ColliderLayer::Nevasca);
 
-    mColliderComponent->IgnoreLayer(ColliderLayer::Enemy, IgnoreOption::IgnoreResolution);
+    mColliderComponent->IgnoreLayers({
+        ColliderLayer::Enemy,
+        ColliderLayer::Quasar,
+        ColliderLayer::SpearBlock,
+        ColliderLayer::SpearBlock,
+        ColliderLayer::Spikes,
+        ColliderLayer::SpikesBlock,
+        ColliderLayer::Shuriken
+    }, IgnoreOption::IgnoreResolution);
 
     mDrawAnimatedComponent = new DrawAnimatedComponent(
         this, 
@@ -43,10 +51,16 @@ Nevasca::Nevasca(
 
 void Nevasca::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
 {
+    if (other->GetLayer() == ColliderLayer::Objects) {
+        Kill();
+    }
 }   
 
 void Nevasca::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
 {
+    if (other->GetLayer() == ColliderLayer::Objects) {
+        Kill();
+    }
 }
 
 void Nevasca::Kill()
