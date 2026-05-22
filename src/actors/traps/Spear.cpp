@@ -1,26 +1,38 @@
 #include "Spear.h"
 
-Spear::Spear(Game *game, const Vector2 &position)
-    : Actor(game, 1.f), mTipCollider(nullptr)
+Spear::Spear(Game *game, const Vector2 &position, bool inversed)
+    : Actor(game, 1.f), mTipCollider(nullptr), mIsInversed(inversed)
 {
     mTimerComponent = new TimerComponent(this);
 
-    mColliderComponent = new AABBColliderComponent(
-        this, 4, 60, 8, 3, ColliderLayer::SpearBlock);
+    if (mIsInversed) {
+        mColliderComponent = new AABBColliderComponent(
+            this, 4, 0, 8, 3, ColliderLayer::SpearBlock);
+    }
+
+    else {
+        mColliderComponent = new AABBColliderComponent(
+            this, 4, 60, 8, 3, ColliderLayer::SpearBlock);
+    }
 
     mColliderComponent->SetIgnoreLayers({
-        ColliderLayer::PlayerAttack
+        ColliderLayer::PlayerAttack,
+        ColliderLayer::Nevasca
     });
 
     mDrawComponent = new DrawAnimatedComponent(
         this,
-        "../assets/Sprites/Enemies/Traps/Spear/texture.png",
-        "../assets/Sprites/Enemies/Traps/Spear/texture.json",
+        mIsInversed 
+         ? "../assets/Sprites/Enemies/Traps/SpearInversed/texture.png" 
+         : "../assets/Sprites/Enemies/Traps/Spear/texture.png",
+        mIsInversed 
+         ? "../assets/Sprites/Enemies/Traps/SpearInversed/texture.json"
+         : "../assets/Sprites/Enemies/Traps/Spear/texture.json",
         [this](std::string animationName)
         { AnimationEndCallback(animationName); });
 
     mRigidBodyComponent = new RigidBodyComponent(
-        this, 1.0f, 0.0f, true);
+        this, 1.0f, 0.0f, !mIsInversed);
 
     mDrawComponent->AddAnimation("idle", {0});
     mDrawComponent->AddAnimation("spiking", 1, 7);
@@ -35,18 +47,16 @@ Spear::Spear(Game *game, const Vector2 &position)
     mTipCollider = new Collider(
         mGame,
         this,
-        GetPosition() + Vector2(5, 49),
+        GetPosition() + (mIsInversed ? Vector2(4, 3) : Vector2(5, 49)),
         Vector2(7, 10),
         [this](bool collided, const float minOverlap, AABBColliderComponent *other)
         {},
         DismissOn::None,
         ColliderLayer::SpearTip,
-        {ColliderLayer::SpearBlock, ColliderLayer::PlayerAttack},
+        {ColliderLayer::SpearBlock, ColliderLayer::PlayerAttack, ColliderLayer::Nevasca},
         -1.f);
 
-    Vector2 toTipCenter = mTipCollider->GetCenter() - GetPosition();
-
-    SetPosition(position-toTipCenter);
+    SetPosition(position-GetHalfSize());
 }
 
 void Spear::ManageState()
@@ -82,7 +92,7 @@ void Spear::ManageAnimations()
         mDrawComponent->SetAnimation("idle");
         mDrawComponent->SetAnimFPS(1.f);
 
-        mTipCollider->SetPosition(GetPosition() + Vector2(5, 49));
+        mTipCollider->SetPosition(GetPosition() + (mIsInversed ? Vector2(4, 3) : Vector2(5, 49)));
 
         break;
     case BehaviorState::Attacking:
@@ -92,16 +102,20 @@ void Spear::ManageAnimations()
         switch (mDrawComponent->GetCurrentSprite()) // seven frame animation
         {
         case 0:
-            mTipCollider->SetPosition(GetPosition() + Vector2(5, 49));
+            if (!mIsInversed) mTipCollider->SetPosition(GetPosition() + Vector2(5, 49));
+            else mTipCollider->SetPosition(GetPosition() + Vector2(4, 4));
             break;
         case 1:
-            mTipCollider->SetPosition(GetPosition() + Vector2(5, 2));
+            if (!mIsInversed) mTipCollider->SetPosition(GetPosition() + Vector2(5, 2));
+            else mTipCollider->SetPosition(GetPosition() + Vector2(4, 52));
             break;
         case 5:
-            mTipCollider->SetPosition(GetPosition() + Vector2(5, 4));
+            if (!mIsInversed) mTipCollider->SetPosition(GetPosition() + Vector2(5, 4));
+            else mTipCollider->SetPosition(GetPosition() + Vector2(4, 50));
             break;
         case 6:
-            mTipCollider->SetPosition(GetPosition() + Vector2(5, 22));
+            if (!mIsInversed) mTipCollider->SetPosition(GetPosition() + Vector2(5, 22));
+            else mTipCollider->SetPosition(GetPosition() + Vector2(4, 32));
             break;
         default:
             break;

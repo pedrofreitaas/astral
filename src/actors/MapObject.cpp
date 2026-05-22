@@ -210,6 +210,9 @@ void MapObject::SpawnEntity()
     case EntityCode::Quasar:
         new Quasar(mGame, GetCenter());
         break;
+    case EntityCode::InversedSpear:
+        new Spear(mGame, GetCenter(), true);
+        break;
     default:
         throw std::runtime_error("MapObject unknown SpawnCode");
         break;
