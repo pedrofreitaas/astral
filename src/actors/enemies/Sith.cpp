@@ -8,7 +8,7 @@
 #include "../Actor.h"
 
 Sith::Sith(Game *game, const Vector2 &position)
-    : Enemy(game, position, 400.f),
+    : Enemy(game, position, 600.f, 400.f),
       mIsProjectileOnCooldown(false), mIsAttack1OnCooldown(false), mIsAttack2OnCooldown(false),
       mCurrentAttack(Attacks::None), mAttack2Collider(nullptr), mHasAppliedAttackBoost(false)
 {
@@ -116,10 +116,14 @@ void Sith::FireProjectile()
     if (mIsProjectileOnCooldown)
         return;
 
-    auto projectile = new SithProjectile(
+    Vector2 startPos = GetCenter();
+    Vector2 dir = GetGame()->GetZoe()->GetCenter() - GetCenter();
+    dir.Normalize();
+
+    new SithProjectile(
         mGame,
-        GetPosition() + GetProjectileOffset(),
-        GetGame()->GetZoe()->GetCenter(),
+        startPos,
+        dir,
         this);
 
     SetProjectileOnCooldown(true);
@@ -155,14 +159,14 @@ void Sith::ManageState()
             break;
         }
 
-        if (distanceSQToZoe < 2500.f &&
+        if (distanceSQToZoe < 1600.f &&
             !mIsAttack1OnCooldown)
         {
             Attack1();
             break;
         }
 
-        if (distanceSQToZoe < 12000.f &&
+        if (distanceSQToZoe < 6000.f &&
             !mIsAttack2OnCooldown)
         {
             Attack2();
@@ -268,18 +272,18 @@ void Sith::ManageAnimations()
             mDrawComponent->SetAnimation("attack");
 
             if (mDrawComponent->GetCurrentSprite() <= 2) 
-                mDrawComponent->SetAnimFPS(3.f);
+                mDrawComponent->SetAnimFPS(7.f);
             else 
-                mDrawComponent->SetAnimFPS(6.f);
+                mDrawComponent->SetAnimFPS(8.f);
         }
         else if (mCurrentAttack == Attacks::Attack2)
         {
             mDrawComponent->SetAnimation("attack2");
             
             if (mDrawComponent->GetCurrentSprite() <= 4) 
-                mDrawComponent->SetAnimFPS(3.f);
+                mDrawComponent->SetAnimFPS(7.f);
             else
-                mDrawComponent->SetAnimFPS(6.f);
+                mDrawComponent->SetAnimFPS(8.f);
         }
         break;
     case BehaviorState::Dying:

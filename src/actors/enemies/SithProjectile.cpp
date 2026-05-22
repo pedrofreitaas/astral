@@ -9,7 +9,7 @@
 
 SithProjectile::SithProjectile(
     class Game *game, Vector2 position,
-    Vector2 target, Actor *sith
+    Vector2 direction, Actor *sith
 ) : Projectile(game, position, sith)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Enemies/Sith/Projectile/texture.png";
@@ -53,7 +53,7 @@ SithProjectile::SithProjectile(
 
     SetPosition(position - GetHalfSize());
 
-    Fire(target - position, mGame->GetConfig()->Get<float>("SITH.PROJECTILE_SPEED"));
+    Fire(direction, mGame->GetConfig()->Get<float>("SITH.PROJECTILE_SPEED"));
 }
 
 void SithProjectile::AnimationEndCallback(std::string animationName)
