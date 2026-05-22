@@ -1,0 +1,90 @@
+{ "frames": [
+   {
+    "filename": "texture 0.png",
+    "frame": { "x": 0, "y": 0, "w": 16, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 64 },
+    "sourceSize": { "w": 16, "h": 64 },
+    "duration": 100
+   },
+   {
+    "filename": "texture 1.png",
+    "frame": { "x": 16, "y": 0, "w": 16, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 64 },
+    "sourceSize": { "w": 16, "h": 64 },
+    "duration": 100
+   },
+   {
+    "filename": "texture 2.png",
+    "frame": { "x": 32, "y": 0, "w": 16, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 64 },
+    "sourceSize": { "w": 16, "h": 64 },
+    "duration": 100
+   },
+   {
+    "filename": "texture 3.png",
+    "frame": { "x": 48, "y": 0, "w": 16, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 64 },
+    "sourceSize": { "w": 16, "h": 64 },
+    "duration": 100
+   },
+   {
+    "filename": "texture 4.png",
+    "frame": { "x": 64, "y": 0, "w": 16, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 64 },
+    "sourceSize": { "w": 16, "h": 64 },
+    "duration": 100
+   },
+   {
+    "filename": "texture 5.png",
+    "frame": { "x": 80, "y": 0, "w": 16, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 64 },
+    "sourceSize": { "w": 16, "h": 64 },
+    "duration": 100
+   },
+   {
+    "filename": "texture 6.png",
+    "frame": { "x": 96, "y": 0, "w": 16, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 64 },
+    "sourceSize": { "w": 16, "h": 64 },
+    "duration": 100
+   },
+   {
+    "filename": "texture 7.png",
+    "frame": { "x": 112, "y": 0, "w": 16, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 64 },
+    "sourceSize": { "w": 16, "h": 64 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.x-dev",
+  "image": "texture.png",
+  "format": "RGBA8888",
+  "size": { "w": 128, "h": 64 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

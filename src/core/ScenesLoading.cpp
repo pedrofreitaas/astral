@@ -543,7 +543,6 @@ void Game::LoadFirstLevel()
 
     mAudio->PlaySound("level1Theme.ogg", true);
 
-    mZoe->SetAbilitiesLocked(true);
     StartCutscene("Intro");
                 
     Item::CreateVentaniaItem(this, Vector2(836,608));
@@ -570,15 +569,109 @@ void Game::LoadSecondLevel()
     std::vector<std::unique_ptr<Step>> steps;
     std::vector<std::string> dialogue;
 
+    new Father(this, Vector2(128.f, 288.f));
+
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this](){ return GetFather(); },
+        [this](){ 
+            auto father = GetFather();
+            return father->GetPosition() - Vector2(5.f, 0.f); 
+        },
+        80.f,
+        false,
+        1.f));
+
     dialogue = {
-        "Seja bem vindo(a), essa e uma fase conceitual do segundo nivel.",
-        "Ele ainda esta em desenvolvimento, nao tem nada por aqui. Muito obrigado por jogar o primeiro nivel!",
-        "Espero te ver novamente quando o segundo estiver pronto :)"
+        "Chegamos Zoe!",
+        "Esse e Nebula, o planeta onde Zathura mora."
     };
 
-    steps.push_back(std::make_unique<DialogueStep>(this, "Desenvolvedor", dialogue));
-    AddCutscene("explainLevel2Wip",
+    steps.push_back(std::make_unique<DialogueStep>(this, "Pai", dialogue));
+
+    dialogue = {
+        "Nossa pai, e igual a mamae contava nas historias!"
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
+    dialogue = {
+        "Sim, mas nos nao temos tempo para ficar admirando a vista."
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Pai", dialogue));
+
+    steps.push_back(std::make_unique<SpawnStep>(
+        this,
+        SpawnStep::ActorType::Star,
+        [this](){ 
+            auto father = GetFather();
+            return father->GetCenter(); 
+        }));
+
+    steps.push_back(std::make_unique<UnspawnStep>(
+        this, [this]()
+        { return GetFather(); }));
+
+    steps.push_back(std::make_unique<WaitStep>(this, .5f));
+
+    dialogue = {
+        "Vamos logo, voce precisa ficar forte para enfrentar Zathura e salvar sua mae."
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Pai", dialogue));
+
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this](){ return GetStar(); },
+        [this](){ 
+            return GetPortal()->GetCenter(); },
+        120.f));
+
+    steps.push_back(std::make_unique<UnspawnStep>(
+        this, [this]()
+        { return GetStar(); }));
+
+    AddCutscene("startSecondLevel",
+                std::move(steps),
+                [this]()
+                {
+                    GetZoe()->SetIsFireballAllowed(true);
+                    GetZoe()->SetIsVentaniaAllowed(true);
+                    Item::CreateNevascaItem(this, Vector2(80.f, 256.f));
+                });
+
+    steps.clear();
+
+    steps.push_back(std::make_unique<SoundStep>(this, "portalSuck.wav"));
+
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this]()
+        { return GetZoe(); },
+        [this]()
+        { return GetPortal()->GetPosition(); },
+        80.f,
+        true,
+        1.5f));
+    
+    AddCutscene("portalSuckLevel2",
+                std::move(steps),
+                [this]()
+                {
+                    GetZoe()->SetPosition(Vector2(38.f, 620.f));
+                });
+
+    steps.clear();
+
+    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
+    steps.push_back(std::make_unique<BreakTileStep>(this, Vector2(19, 19) * 32));
+    steps.push_back(std::make_unique<BreakTileStep>(this, Vector2(19, 20) * 32));
+
+    AddCutscene("breakLevelSithPhaseTiles",
                 std::move(steps));
+
+    StartCutscene("startSecondLevel");
 }
 
 void Game::LoadTestsLevel()
@@ -597,8 +690,6 @@ void Game::LoadTestsLevel()
         false);
 
     mAudio->PlaySound("level1Theme.ogg", true);
-
-    new Father(this, Vector2(295.f, 160.f));
 }
 
 void Game::LoadDeathScreen()

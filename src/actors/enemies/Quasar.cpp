@@ -18,6 +18,10 @@ Quasar::Quasar(Game *game, const Vector2 &center)
         23, 29,
         ColliderLayer::Quasar);
 
+    mColliderComponent->SetIgnoreLayers({
+        ColliderLayer::Nevasca
+    }, IgnoreOption::IgnoreResolution);
+
     mDrawComponent = new DrawAnimatedComponent(
         this,
         "../assets/Sprites/Enemies/Quasar/texture.png",
@@ -35,10 +39,11 @@ Quasar::Quasar(Game *game, const Vector2 &center)
 
     mDrawComponent->AddAnimation("asleep", {0});
     mDrawComponent->AddAnimation("idle", 1, 8);
-    mDrawComponent->AddAnimation("walk", 9, 18);
-    mDrawComponent->AddAnimation("hit", 19, 22);
-    mDrawComponent->AddAnimation("die", 23, 34);
-    mDrawComponent->AddAnimation("attack", 35, 45);
+    mDrawComponent->AddAnimation("walk", 9, 19);
+    mDrawComponent->AddAnimation("hit", 20, 23);
+    mDrawComponent->AddAnimation("die", 24, 35);
+    mDrawComponent->AddAnimation("attack", 36, 45);
+    mDrawComponent->AddAnimation("frozen", 46, 50, false);
 
     mDrawComponent->SetAnimation("asleep");
 
@@ -85,7 +90,7 @@ void Quasar::ManageState()
                  mTimerComponent->checkTimerRemaining(mAttackTimerHandle) <= 0.f)
             )
             {
-                mIsCloseAttack = distanceToZoeSQ <= 900.f;
+                mIsCloseAttack = distanceToZoeSQ <= 1600.f;
                 mAppliedImpulseInAttack = false;
                 SetBehaviorState(BehaviorState::Attacking);
                 
@@ -124,6 +129,9 @@ void Quasar::ManageState()
             
             break;
         }
+
+        case BehaviorState::Frozen:
+            break;
 
         default:
             SetBehaviorState(BehaviorState::Asleep);
@@ -183,6 +191,11 @@ void Quasar::ManageAnimations()
         case BehaviorState::Attacking:
             mDrawComponent->SetAnimation("attack");
             mDrawComponent->SetAnimFPS(7.f);
+            break;
+
+        case BehaviorState::Frozen:
+            mDrawComponent->SetAnimation("frozen");
+            mDrawComponent->SetAnimFPS(6.f);
             break;
 
         default:

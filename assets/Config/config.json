@@ -15,7 +15,7 @@
         "ATTACK2_EXTRA_SPEED": 600,
         "HEALTH": 3,
         "PROJECTILE_COOLDOWN": 12,
-        "PROJECTILE_SPEED": 60,
+        "PROJECTILE_SPEED": 350,
         "SPEED": 80
     },
     "SPEAR_COOLDOWN": 2.5,

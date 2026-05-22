@@ -116,7 +116,7 @@ void SpawnStep::Update(float deltaTime)
 
     if (mActorType == ActorType::Star)
     {
-        newActor = new Star(mGame);
+        newActor = new Star(mGame, mPosition);
     }
 
     else if (mActorType == ActorType::Father)
@@ -126,7 +126,6 @@ void SpawnStep::Update(float deltaTime)
 
     if (newActor)
     {
-        newActor->SetPosition(mPosition);
         SetComplete();
     }
     else

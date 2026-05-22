@@ -299,7 +299,7 @@
   </object>
   <object id="121" x="672" y="300" width="576" height="10">
    <properties>
-    <property name="event" value="enter"/>
+    <property name="event" value="in"/>
     <property name="function_name" value="teleport_to_checkpoint"/>
    </properties>
   </object>

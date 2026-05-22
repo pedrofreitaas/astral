@@ -351,9 +351,13 @@ private:
     Vector2 GetBoxCenter(const Vector2& pos, float boxW, float boxH);
 
     bool isEnding;
+    
+    // -- first level --
     void HalfFirstLevelCheck();
     void BreakTilesFirstLevelCheck();
     void LastPartFirstLevelCheck();
+    // -- second level
+    void SithEncounterBreakTilesCheck();
 
     float mShakeCounter, mShakeIntensity;
 
