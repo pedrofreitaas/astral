@@ -90,7 +90,7 @@ void Quasar::ManageState()
                  mTimerComponent->checkTimerRemaining(mAttackTimerHandle) <= 0.f)
             )
             {
-                mIsCloseAttack = distanceToZoeSQ <= 900.f;
+                mIsCloseAttack = distanceToZoeSQ <= 1600.f;
                 mAppliedImpulseInAttack = false;
                 SetBehaviorState(BehaviorState::Attacking);
                 
