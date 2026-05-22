@@ -5,7 +5,7 @@
 class Star : public Actor
 {
 public:
-    explicit Star(Game* game);
+    explicit Star(Game* game, const Vector2& position);
     void OnUpdate(float deltaTime) override;
     void ManageState();
 

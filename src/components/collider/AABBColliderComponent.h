@@ -36,7 +36,8 @@ enum class ColliderLayer
     Crate,
     Items,
     Father,
-    Mother
+    Mother,
+    Star
 };
 
 enum class IgnoreOption

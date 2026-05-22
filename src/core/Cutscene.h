@@ -42,12 +42,30 @@ public:
         Father
         // Add other actor types here as needed
     };
-    SpawnStep(class Game* game, ActorType actorType, const Vector2& position, float maxTime=2.f): Step(game, maxTime), mActorType(actorType), mPosition(position) {};
+    SpawnStep(
+        class Game* game, ActorType actorType, const Vector2& position, float maxTime=2.f
+    ): Step(game, maxTime), mActorType(actorType), mPosition(position), mPositionFunc(nullptr) {};
+    
+    SpawnStep(
+        class Game* game, 
+        ActorType actorType, 
+        std::function<Vector2()> positionFunc,
+        float maxTime=2.f
+    ): 
+        Step(game, maxTime), mActorType(actorType), 
+        mPosition(Vector2(0.f, 0.f)), mPositionFunc(positionFunc) 
+    {};
+
     void Update(float deltaTime) override;
-    void PreUpdate() override {};
+    void PreUpdate() override {
+        if (mPositionFunc != nullptr) {
+            mPosition = mPositionFunc();
+        }
+    };
 private:
     ActorType mActorType;
     Vector2 mPosition;
+    std::function<Vector2()> mPositionFunc;
 };
 
 class MoveStep : public Step {
