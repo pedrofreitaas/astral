@@ -39,10 +39,10 @@ Quasar::Quasar(Game *game, const Vector2 &center)
 
     mDrawComponent->AddAnimation("asleep", {0});
     mDrawComponent->AddAnimation("idle", 1, 8);
-    mDrawComponent->AddAnimation("walk", 9, 18);
-    mDrawComponent->AddAnimation("hit", 19, 22);
-    mDrawComponent->AddAnimation("die", 23, 34);
-    mDrawComponent->AddAnimation("attack", 35, 45);
+    mDrawComponent->AddAnimation("walk", 9, 19);
+    mDrawComponent->AddAnimation("hit", 20, 23);
+    mDrawComponent->AddAnimation("die", 24, 35);
+    mDrawComponent->AddAnimation("attack", 36, 45);
     mDrawComponent->AddAnimation("frozen", 46, 50, false);
 
     mDrawComponent->SetAnimation("asleep");
