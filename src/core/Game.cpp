@@ -348,15 +348,15 @@ void Game::ProcessInput()
 
             switch (event.key.keysym.sym) {
                 case SDLK_z:
-                    new Zod(this, Vector2(310.f, 120.f));
+                    new Zod(this, Vector2(310.f, 120.f) + GetCameraPos());
                     break;
                 
                 case SDLK_s:
-                    new Sith(this, Vector2(310.f, 120.f));
+                    new Sith(this, Vector2(310.f, 120.f) + GetCameraPos());
                     break;
                 
                 case SDLK_q:
-                    new Quasar(this, Vector2(310.f, 120.f));
+                    new Quasar(this, Vector2(310.f, 120.f) + GetCameraPos());
                     break;
 
                 case SDLK_n: {
