@@ -20,23 +20,29 @@ Item *Item::CreateNevascaItem(Game *game, const Vector2 &position)
             [game]()
             { return game->GetZoe(); },
             [game]()
-            { return Vector2(game->GetZoe()->GetCenter().x + 32.f, game->GetZoe()->GetCenter().y); },
-            80.f));
+            { return Vector2(game->GetZoe()->GetCenter().x + 5.f, game->GetZoe()->GetCenter().y); },
+            10.f,
+            false,
+            .5));
 
         auto spawnAnim = std::make_unique<SpawnJoystickButtonStep>(game, Button::RT);
         SpawnJoystickButtonStep *spawnAnimPtr = spawnAnim.get();
         steps.push_back(std::move(spawnAnim));
 
-        steps.push_back(std::make_unique<FireNevascaStep>(game, 2.f));
+        game->AddCutscene("nevasca_aim", std::move(steps), [game]() {
+            game->GetZoe()->SetIsNevascaAllowed(true);
 
-        std::vector<std::string> dialogue = {"O que e isso? Que frio..."};
-        steps.push_back(std::make_unique<DialogueStep>(game, "Zoe", dialogue));
+            std::vector<std::unique_ptr<Step>> steps;
+            steps.push_back(std::make_unique<FireNevascaStep>(game, 2.f));
 
-        game->AddCutscene("nevasca_acquisition", std::move(steps), nullptr);
+            std::vector<std::string> dialogue = {"O que e isso? Que frio..."};
+            steps.push_back(std::make_unique<DialogueStep>(game, "Zoe", dialogue));
 
-        game->GetZoe()->SetIsNevascaAllowed(true);
+            game->AddCutscene("nevasca_acquisition", std::move(steps), nullptr);
+            game->StartCutscene("nevasca_acquisition");
+        });
 
-        game->StartCutscene("nevasca_acquisition");
+        game->StartCutscene("nevasca_aim");
       },
       Button::RT,
       0, 4, 5, true, true);
