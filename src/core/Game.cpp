@@ -541,6 +541,10 @@ void Game::UpdateGame()
         BreakTilesFirstLevelCheck();
         LastPartFirstLevelCheck();
     }
+    else if (mGameScene == GameScene::Level2)
+    {
+        SithEncounterBreakTilesCheck();
+    }
 }
 
 void Game::UpdateCamera()
@@ -1220,6 +1224,36 @@ void Game::LastPartFirstLevelCheck()
         zoeCenter.y >= start.y && zoeCenter.y <= end.y)
     {
         StartCutscene("endFirstLevel");
+    }
+}
+
+void Game::SithEncounterBreakTilesCheck()
+{
+    if (GameScene::Level2 != mGameScene)
+    {
+        return;
+    }
+
+    if (mGamePlayState != GamePlayState::Playing)
+    {
+        return;
+    }
+
+    Vector2 start = Vector2(13.f, 369.f);
+    Vector2 end = Vector2(623.f, 690.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
+
+    if (!enemiesInArea.empty())
+    {
+        return;
+    }
+
+    if (zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y)
+    {
+        StartCutscene("breakLevelSithPhaseTiles");
     }
 }
 
