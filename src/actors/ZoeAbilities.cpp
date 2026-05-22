@@ -465,8 +465,12 @@ bool Zoe::Hit()
     if (!mRigidBodyComponent->GetOnGround()) 
         return false;
 
+    if (IsChargedPlayerAttack())
+        mGame->SetCameraCenterToShake(0.25f);
+    else
+        mGame->SetCameraCenterToShake(0.1f);
+    
     mPlayedChargeAttackSound = false;
-    mGame->SetCameraCenterToShake(0.25f);
 
     SetBehaviorState(BehaviorState::Attacking);
     mGame->GetAudio()->PlaySound("zoeSmash.wav");

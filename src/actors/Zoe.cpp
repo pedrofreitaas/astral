@@ -384,6 +384,10 @@ void Zoe::ManageState()
     case BehaviorState::ChargingAttack: {
         mAttackChargeCounter += mGame->GetDtLastFrame();
 
+        if (!IsChargedPlayerAttack()) {
+            mGame->SetCameraCenterToShake(0.1f, 1.f);
+        }
+
         if (IsChargedPlayerAttack() && !mPlayedChargeAttackSound) {
             mGame->GetAudio()->PlaySound("attackChargedPlayer.mp3");
             mPlayedChargeAttackSound = true;
