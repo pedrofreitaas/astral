@@ -18,6 +18,10 @@ Quasar::Quasar(Game *game, const Vector2 &center)
         23, 29,
         ColliderLayer::Quasar);
 
+    mColliderComponent->SetIgnoreLayers({
+        ColliderLayer::Nevasca
+    }, IgnoreOption::IgnoreResolution);
+
     mDrawComponent = new DrawAnimatedComponent(
         this,
         "../assets/Sprites/Enemies/Quasar/texture.png",
@@ -39,6 +43,7 @@ Quasar::Quasar(Game *game, const Vector2 &center)
     mDrawComponent->AddAnimation("hit", 19, 22);
     mDrawComponent->AddAnimation("die", 23, 34);
     mDrawComponent->AddAnimation("attack", 35, 45);
+    mDrawComponent->AddAnimation("frozen", 46, 50, false);
 
     mDrawComponent->SetAnimation("asleep");
 
@@ -125,6 +130,9 @@ void Quasar::ManageState()
             break;
         }
 
+        case BehaviorState::Frozen:
+            break;
+
         default:
             SetBehaviorState(BehaviorState::Asleep);
             break;
@@ -183,6 +191,11 @@ void Quasar::ManageAnimations()
         case BehaviorState::Attacking:
             mDrawComponent->SetAnimation("attack");
             mDrawComponent->SetAnimFPS(7.f);
+            break;
+
+        case BehaviorState::Frozen:
+            mDrawComponent->SetAnimation("frozen");
+            mDrawComponent->SetAnimFPS(6.f);
             break;
 
         default:
