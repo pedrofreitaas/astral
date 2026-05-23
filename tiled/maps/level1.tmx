@@ -456,13 +456,6 @@
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
-  <object id="147" x="451" y="129.833" width="28.6666" height="29.6667">
-   <properties>
-    <property name="entity_code" type="int" value="3"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
   <object id="148" x="355" y="127.833" width="28.6666" height="29.6667">
    <properties>
     <property name="entity_code" type="int" value="3"/>
