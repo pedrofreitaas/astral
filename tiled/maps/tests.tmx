@@ -43,9 +43,9 @@
 267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
 267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
 267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
-267,0,0,0,0,0,0,0,0,252,0,0,0,0,0,0,0,0,0,265,
-267,0,0,0,0,0,0,0,0,269,0,0,0,0,0,0,0,0,0,265,
-267,0,0,0,0,0,0,0,0,286,0,0,0,0,0,0,0,0,0,265,
+267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
+267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
+267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
 267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
 267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
 325,249,249,257,249,249,257,249,249,249,249,249,249,249,249,249,249,249,249,326
@@ -85,20 +85,6 @@
   <object id="2" x="32.5" y="282.666" width="36" height="36">
    <properties>
     <property name="entity_code" type="int" value="0"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="30" x="297.583" y="251.833" width="14.6667" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="8"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="31" x="362" y="295.167" width="14.6667" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="4"/>
     <property name="event" value="atStart"/>
     <property name="function_name" value="spawn_entity"/>
    </properties>

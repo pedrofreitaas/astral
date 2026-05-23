@@ -604,10 +604,21 @@ void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *o
         float knockbackForce = mGame->GetConfig()->Get<float>("QUASAR.SPIKE_KNOCKBACK_FORCE");
         Quasar *quasar = static_cast<Quasar *>(other->GetOwner());
 
-        if (quasar->GetBehaviorState() == BehaviorState::Attacking)
+        int closeToWall = mColliderComponent->IsCloseToTileWallHorizontally(1.f);
+
+        if (closeToWall == -1 && minOverlap > 0) {
+            TakeKnockback(Vector2(1, -1) * knockbackForce);
+        }
+
+        else if (closeToWall == 1 && minOverlap < 0) {
+            TakeKnockback(Vector2(-1, -1) * knockbackForce);
+        }
+
+        else if (quasar->GetBehaviorState() == BehaviorState::Attacking)
         {
             TakeKnockback(Vector2(Math::Sign(-minOverlap), -1) * knockbackForce);
         }
+
         else
         {
             TakeKnockback(Vector2(Math::Sign(-minOverlap) * .7f, -.2f) * knockbackForce);
@@ -655,20 +666,7 @@ void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *oth
 
     if (other->GetLayer() == ColliderLayer::Quasar)
     {
-        TakeDamage();
-
-        float knockbackForce = mGame->GetConfig()->Get<float>("QUASAR.SPIKE_KNOCKBACK_FORCE");
-        Quasar *quasar = static_cast<Quasar *>(other->GetOwner());
-
-        if (quasar->GetBehaviorState() == BehaviorState::Attacking)
-        {
-            TakeKnockback(Vector2(Math::Sign(-minOverlap), -1) * knockbackForce);
-        }
-        else
-        {
-            TakeKnockback(Vector2(Math::Sign(-minOverlap) * .7f, -.2f) * knockbackForce);
-        }
-
+        // let horizontal take care.
         return;
     }
 

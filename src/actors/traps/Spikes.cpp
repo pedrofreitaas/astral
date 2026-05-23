@@ -9,7 +9,8 @@ Spikes::Spikes(Game *game, const Vector2 &position)
         this, 0, 28, 32, 4, ColliderLayer::SpikesBlock);
 
     mColliderComponent->SetIgnoreLayers({
-        ColliderLayer::PlayerAttack
+        ColliderLayer::PlayerAttack,
+        ColliderLayer::Nevasca
     });
 
     mDrawComponent = new DrawAnimatedComponent(

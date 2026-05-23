@@ -1240,33 +1240,6 @@
                 }, 
                 {
                  "height":29.6667,
-                 "id":147,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"entity_code",
-                         "type":"int",
-                         "value":3
-                        }, 
-                        {
-                         "name":"event",
-                         "type":"string",
-                         "value":"atStart"
-                        }, 
-                        {
-                         "name":"function_name",
-                         "type":"string",
-                         "value":"spawn_entity"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":28.6666,
-                 "x":451,
-                 "y":129.833
-                }, 
-                {
-                 "height":29.6667,
                  "id":148,
                  "name":"",
                  "properties":[
