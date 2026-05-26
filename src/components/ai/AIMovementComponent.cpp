@@ -82,7 +82,7 @@ void AIMovementComponent::Sense(float deltaTime)
 
 void AIMovementComponent::Plan(float deltaTime)
 {
-    mInteligence += deltaTime * 0.01;
+    mInteligence += deltaTime * .1f;
     if (mInteligence > 1.f) mInteligence = 0.f;
 
     switch (mMovementState)
@@ -105,15 +105,6 @@ void AIMovementComponent::Plan(float deltaTime)
     case MovementState::Patrolling:
     {
         if (CrazyDecision()) {
-            SetMovementState(MovementState::Wandering);
-            break;
-        }
-
-        float minDistanceFromSpawnSQ = 400;
-        Vector2 toSpawn = mOwnerEnemy->GetSpawnPosition() - mOwner->GetPosition();
-        float distanceToSpawnSQ = toSpawn.LengthSq();
-
-        if (distanceToSpawnSQ < minDistanceFromSpawnSQ) {
             SetMovementState(MovementState::Wandering);
             break;
         }
@@ -162,9 +153,8 @@ void AIMovementComponent::Act(float deltaTime)
         }
 
         Vector2 toPlayer = mOwnerEnemy->GetLastSeenPlayerCenter() - mOwner->GetCenter();
-        float distanceToPlayerSQ = toPlayer.LengthSq();
 
-        if (distanceToPlayerSQ < 400.f) break;
+        if (mOwnerEnemy->GetLastSeenPlayerDistanceSquared() < 400.f) break;
 
         toPlayer.Normalize();
 
@@ -181,7 +171,12 @@ void AIMovementComponent::Act(float deltaTime)
     case MovementState::Patrolling:
     {
         Vector2 toSpawn = mOwnerEnemy->GetSpawnPosition() - mOwner->GetPosition();
-        // wont be norm zero, because on plan if it gets low, it changes to wandering.
+        
+        if (toSpawn.LengthSq() < 100.f) {
+            dir = Vector2::Zero;
+            break;
+        }
+
         toSpawn.Normalize();
         
         dir = toSpawn;
@@ -227,7 +222,6 @@ void AIMovementComponent::Act(float deltaTime)
     else {
         rb->SetVelocity(dir * mSpeed);
     }
-
 }
 
 bool AIMovementComponent::CrazyDecision()
@@ -319,8 +313,19 @@ void AIMovementComponent::OnHorizontalCollision(const float minOverlap, AABBColl
         other->GetLayer() == ColliderLayer::EnemyBlocker
     )
     {
-        mSpeedFlipped = true;
-        mOwner->GetComponent<TimerComponent>()->AddTimer(1.f, [this]() { mSpeedFlipped = false; });
+        if (mMovementState != MovementState::Seeking) {
+            mSpeedFlipped = true;
+            mOwner->GetComponent<TimerComponent>()->AddTimer(1.f, [this]() { mSpeedFlipped = false; });    
+        }
+
+        else if (mTypeOfMovement == TypeOfMovement::Flier) {
+            Vector2 toPlayer = mOwnerEnemy->GetLastSeenPlayerCenter() - mOwner->GetCenter();
+
+            if (Math::Abs(toPlayer.y) > 20.f) {
+                auto rb = mOwner->GetComponent<RigidBodyComponent>();
+                rb->SetVelocity(Vector2(0.f, Math::Sign(toPlayer.y) * mSpeed));
+            }
+        }
     }
 }
 
@@ -331,8 +336,14 @@ void AIMovementComponent::OnVerticalCollision(const float minOverlap, AABBCollid
         other->GetLayer() == ColliderLayer::EnemyBlocker
     )
     {
-        mSpeedFlipped = true;
-        mOwner->GetComponent<TimerComponent>()->AddTimer(1.f, [this]() { mSpeedFlipped = false; });
+        if (mTypeOfMovement == TypeOfMovement::Flier && mMovementState == MovementState::Seeking) {
+            Vector2 toPlayer = mOwnerEnemy->GetLastSeenPlayerCenter() - mOwner->GetCenter();
+
+            if (Math::Abs(toPlayer.x) > 20.f) {
+                auto rb = mOwner->GetComponent<RigidBodyComponent>();
+                rb->SetVelocity(Vector2(Math::Sign(toPlayer.x) * mSpeed, 0.f));
+            }
+        }
     }
 }
 
@@ -362,7 +373,7 @@ bool AIMovementComponent::CanBePressingPlayerAgainstWall() const
     if (mMovementState != MovementState::Seeking) return false;
 
     Vector2 toPlayer = mOwnerEnemy->GetLastSeenPlayerCenter() - mOwner->GetCenter();
-    float distanceToPlayerSQ = toPlayer.LengthSq();
+    float distanceToPlayerSQ = mOwnerEnemy->GetDistanceToPlayerSquared(); // cant be get distance to last seen!
 
     if (distanceToPlayerSQ > 900.f) return false;
 
