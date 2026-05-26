@@ -83,6 +83,8 @@ public:
     void MaintainInMap();
     bool IsSegmentIntersecting(const Vector2& start, const Vector2& end);
 
+    bool IsSegmentIntersectingPlayerLayer(const Vector2& start, const Vector2& end) const;
+
     bool IsCollidingRect(const SDL_Rect& rect) const;
 
     void IgnoreLayer(ColliderLayer layer, IgnoreOption option = IgnoreOption::Both);

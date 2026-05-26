@@ -414,3 +414,40 @@ bool AABBColliderComponent::IsContainedIn(const AABBColliderComponent &b) const
     return (min.x >= b.GetMin().x && max.x <= b.GetMax().x &&
             min.y >= b.GetMin().y && max.y <= b.GetMax().y);
 }
+
+bool AABBColliderComponent::IsSegmentIntersectingPlayerLayer(const Vector2 &start, const Vector2 &end) const
+{
+    float length = (end - start).Length();
+    const int minPoints = 4;
+    const int maxPoints = 30;
+    const float stepSize = 45.35f/3.f; // 32x32 tile diagonal
+    int totalPoints = (int)std::ceil(length / stepSize);
+    totalPoints = std::max(minPoints, std::min(maxPoints, totalPoints));
+
+    // get points along the segment
+    for (int i = 0; i <= totalPoints; i++)
+    {
+        float t = (float)i / (float)totalPoints;
+        Vector2 point = Vector2::Lerp(start, end, t);
+
+        auto colliders = mOwner->GetGame()->GetNearbyColliders(point, 0);
+
+        for (auto &collider : colliders)
+        {
+            if (!collider->IsEnabled())
+                continue;
+
+            if (collider->GetLayer() == GetLayer()) // ignoring own caller layer
+                continue;
+
+            if (collider->GetLayer() == ColliderLayer::Player)
+                return true;
+            
+            // collided in other layer
+            else
+                return false;
+        }
+    }
+
+    return false;
+}
