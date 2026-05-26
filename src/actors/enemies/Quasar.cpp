@@ -59,13 +59,10 @@ void Quasar::ManageState()
     if (!zoe)
         return;
 
-    Vector2 toZoe = zoe->GetCenter() - GetCenter();
-    float distanceToZoeSQ = toZoe.LengthSq();
-
     switch (mBehaviorState)
     {
         case BehaviorState::Asleep:
-            if (distanceToZoeSQ <= 45000.f)
+            if (GetDistanceToPlayerSquared() <= 45000.f)
             {
                 SetBehaviorState(BehaviorState::Moving);
             }
@@ -85,12 +82,12 @@ void Quasar::ManageState()
                 break;
 
             if (
-                PlayerOnSight() && 
+                IsPlayerOnSightThisFrame() &&
                 (mAttackTimerHandle == nullptr ||
                  mTimerComponent->checkTimerRemaining(mAttackTimerHandle) <= 0.f)
             )
             {
-                mIsCloseAttack = distanceToZoeSQ <= 1600.f;
+                mIsCloseAttack = GetLastSeenPlayerDistanceSquared() <= 1600.f;
                 mAppliedImpulseInAttack = false;
                 SetBehaviorState(BehaviorState::Attacking);
                 

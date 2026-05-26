@@ -77,12 +77,10 @@ void Zod::ManageState()
     if (!zoe)
         return;
 
-    float distanceSQToZoe = (zoe->GetPosition() - GetPosition()).LengthSq();
-
     switch (mBehaviorState)
     {
     case BehaviorState::Asleep:
-        if (distanceSQToZoe < 50000.f) SetBehaviorState(BehaviorState::Waking);
+        if (GetDistanceToPlayerSquared() < 50000.f) SetBehaviorState(BehaviorState::Waking);
         break;
     case BehaviorState::Waking:
         break;
@@ -93,7 +91,7 @@ void Zod::ManageState()
         if (mRigidBodyComponent->GetVelocity().x > 0.f) SetRotation(0.f);
         else if (mRigidBodyComponent->GetVelocity().x < 0.f) SetRotation(Math::Pi);
 
-        if (PlayerOnSight() && !mProjectileOnCooldown) 
+        if (IsPlayerOnSightThisFrame() && !mProjectileOnCooldown) 
         {
             SetBehaviorState(BehaviorState::Charging);
             break;
@@ -106,7 +104,7 @@ void Zod::ManageState()
     }
     
     case BehaviorState::Charging: {
-        if (!PlayerOnSight()) SetBehaviorState(BehaviorState::Moving);
+        if (!IsPlayerOnSightThisFrame()) SetBehaviorState(BehaviorState::Moving);
 
         int currentAnimationSprite = mDrawComponent->GetCurrentSprite();
 
