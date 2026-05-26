@@ -1,6 +1,7 @@
 {
     "ENEMY": {
-        "PLAYER_KNOCKBACK_FORCE": 400
+        "PLAYER_KNOCKBACK_FORCE": 400,
+        "FOV_ANGLE": 1.3963
     },
     "FREEZING_RATE": 1.0,
     "QUASAR": {
@@ -18,7 +19,7 @@
         "PROJECTILE_SPEED": 350,
         "SPEED": 80
     },
-    "SPEAR_COOLDOWN": 2.5,
+    "SPEAR_COOLDOWN": 2,
     "SPEAR_KNOCKBACK_FORCE": 140.0,
     "SPIKE_COOLDOWN": 1.75,
     "SPIKE_KNOCKBACK_FORCE": 400.0,
