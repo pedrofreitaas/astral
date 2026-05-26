@@ -47,7 +47,7 @@ SpatialHashing::~SpatialHashing()
 void SpatialHashing::Insert(Actor *actor)
 {
     // Compute positions for each vertex of the collider
-    Vector2 position = actor->GetPosition();
+    Vector2 position = actor->GetCenter();
 
     int col = static_cast<int>(position.x / mCellSize);
     int row = static_cast<int>(position.y / mCellSize);
