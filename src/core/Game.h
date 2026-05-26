@@ -358,6 +358,7 @@ private:
     void LastPartFirstLevelCheck();
     // -- second level
     void SithEncounterBreakTilesCheck();
+    void SithEncounterBreakTilesCheck2();
 
     float mShakeCounter, mShakeIntensity;
 

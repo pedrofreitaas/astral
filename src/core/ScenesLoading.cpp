@@ -613,7 +613,7 @@ void Game::LoadSecondLevel()
         this, [this]()
         { return GetFather(); }));
 
-    steps.push_back(std::make_unique<WaitStep>(this, .5f));
+    steps.push_back(std::make_unique<WaitStep>(this, .2f));
 
     dialogue = {
         "Vamos logo, voce precisa ficar forte para enfrentar Zathura e salvar sua mae."
@@ -626,8 +626,8 @@ void Game::LoadSecondLevel()
         [this](){ return GetStar(); },
         [this](){ 
             return GetPortal()->GetCenter(); },
-        120.f));
-
+        280.f));
+    
     steps.push_back(std::make_unique<UnspawnStep>(
         this, [this]()
         { return GetStar(); }));
@@ -669,6 +669,13 @@ void Game::LoadSecondLevel()
     steps.push_back(std::make_unique<BreakTileStep>(this, Vector2(19, 20) * 32));
 
     AddCutscene("breakLevelSithPhaseTiles",
+                std::move(steps));
+
+    steps.clear();
+    steps.push_back(std::make_unique<BreakTileStep>(this, Vector2(37, 11) * 32));
+    steps.push_back(std::make_unique<BreakTileStep>(this, Vector2(38, 11) * 32));
+
+    AddCutscene("breakLevelSithPhaseTiles2",
                 std::move(steps));
 
     StartCutscene("startSecondLevel");

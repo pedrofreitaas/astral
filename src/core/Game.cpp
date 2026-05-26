@@ -544,6 +544,7 @@ void Game::UpdateGame()
     else if (mGameScene == GameScene::Level2)
     {
         SithEncounterBreakTilesCheck();
+        SithEncounterBreakTilesCheck2();
     }
 }
 
@@ -1256,6 +1257,37 @@ void Game::SithEncounterBreakTilesCheck()
         StartCutscene("breakLevelSithPhaseTiles");
     }
 }
+
+void Game::SithEncounterBreakTilesCheck2()
+{
+    if (GameScene::Level2 != mGameScene)
+    {
+        return;
+    }
+
+    if (mGamePlayState != GamePlayState::Playing)
+    {
+        return;
+    }
+
+    Vector2 start = Vector2(655.f, 373.f);
+    Vector2 end = Vector2(1270.f, 688.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
+
+    if (!enemiesInArea.empty())
+    {
+        return;
+    }
+
+    if (zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y)
+    {
+        StartCutscene("breakLevelSithPhaseTiles2");
+    }
+}
+
 
 Vector2 Game::getNormalizedControlerPad()
 {
