@@ -31,6 +31,7 @@
 #include "../ui/DialogueSystem.h"
 #include "../actors/Star.h"
 #include "../actors/Enemy.h"
+#include "../components/ai/AIMovementComponent.h"
 #include "../actors/Portal.h"
 #include "../actors/enemies/Zod.h"
 #include "../actors/Item.h"
@@ -378,7 +379,7 @@ void Game::ProcessInput()
                 }
 
                 case SDLK_l:
-                    GetZoe()->SetPosition(Vector2(1288.f, 762.f));
+                    GetZoe()->SetPosition(Vector2(1153.f, 288.f));
                     break;
             }
 
@@ -702,7 +703,7 @@ std::vector<AABBColliderComponent *> Game::GetNearbyColliders(const Vector2 &pos
 
 void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
 {
-    mSpatialHashing->Draw(mRenderer, mCameraPos, mWindowWidth, mWindowHeight);
+    // mSpatialHashing->Draw(mRenderer, mCameraPos, mWindowWidth, mWindowHeight);
 
     // draw collider boxes only if the player has collider
     for (auto actor : actorsOnCamera)
@@ -761,6 +762,37 @@ void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
                 };
                 SDL_SetRenderDrawColor(mRenderer, 255, 165, 0, 255);
                 SDL_RenderDrawRect(mRenderer, &obstacleRect);
+            }
+        
+            float fovAngleDeg = enemy->GetFovAngle() * (180.0f / Math::Pi);
+            Vector2 forward = enemy->GetForward();
+            float maxDist = enemy->GetMaxSeeDistance();
+
+            Vector2 leftEdge = Vector2::RotateVec(forward, -fovAngleDeg) * maxDist;
+            Vector2 rightEdge = Vector2::RotateVec(forward, fovAngleDeg) * maxDist;
+
+            SDL_SetRenderDrawColor(mRenderer, 0, 220, 0, 255);
+            SDL_RenderDrawLine(mRenderer,
+                static_cast<int>(enemyPos.x - mCameraPos.x),
+                static_cast<int>(enemyPos.y - mCameraPos.y),
+                static_cast<int>(enemyPos.x + leftEdge.x - mCameraPos.x),
+                static_cast<int>(enemyPos.y + leftEdge.y - mCameraPos.y));
+            SDL_RenderDrawLine(mRenderer,
+                static_cast<int>(enemyPos.x - mCameraPos.x),
+                static_cast<int>(enemyPos.y - mCameraPos.y),
+                static_cast<int>(enemyPos.x + rightEdge.x - mCameraPos.x),
+                static_cast<int>(enemyPos.y + rightEdge.y - mCameraPos.y));
+
+            if (enemy->isAISeeking())
+            {
+                Vector2 seekIndicator = enemyPos + enemy->GetForward() * enemy->GetWidth() * 0.5f;
+                SDL_Rect seekRect = {
+                    static_cast<int>(seekIndicator.x - 4 - mCameraPos.x),
+                    static_cast<int>(seekIndicator.y - 4 - mCameraPos.y),
+                    8, 8
+                };
+                SDL_SetRenderDrawColor(mRenderer, 160, 32, 240, 255);
+                SDL_RenderFillRect(mRenderer, &seekRect);
             }
         }
     }
