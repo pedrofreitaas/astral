@@ -39,12 +39,15 @@ class Zoe : public Actor
         ColliderLayer::PlayerAttack,
         ColliderLayer::Quasar,
         ColliderLayer::SithAttack1,
-        ColliderLayer::SithAttack2
+        ColliderLayer::SithAttack2,
+        ColliderLayer::Nevasca,
+        ColliderLayer::Items
     };
 
     std::vector<ColliderLayer> IGNORED_LAYERS_DEFAULT = {
         ColliderLayer::PlayerAttack,
-        ColliderLayer::Nevasca
+        ColliderLayer::Nevasca,
+        ColliderLayer::Items
     };
 
     std::map<Button, bool> mButtonBlocked = {
