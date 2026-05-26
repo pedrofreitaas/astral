@@ -44,5 +44,6 @@ public:
     void PlayCutscene();
     void SpawnEntity();
     void TeleportToCheckpoint();
+    void TeleportToCheckpointIfDamaged();
     void CallMyFunction();
 };

@@ -95,6 +95,12 @@ void MapObject::CallMyFunction()
         return;
     }
 
+    if (mFunctionName == "teleport_to_checkpoint_if_damaged")
+    {
+        TeleportToCheckpointIfDamaged();
+        return;
+    }
+
     throw std::runtime_error("MapObject unknown function name: " + mFunctionName);
 }
 
@@ -225,4 +231,12 @@ void MapObject::TeleportToCheckpoint()
 {
     GetGame()->GetZoe()->TeleportToCheckpoint();
     // SetState(ActorState::Destroy);
+}
+
+void MapObject::TeleportToCheckpointIfDamaged()
+{
+    if (GetGame()->GetZoe()->GetBehaviorState() == BehaviorState::TakingDamage)
+    {
+        TeleportToCheckpoint();
+    }
 }
