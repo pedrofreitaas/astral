@@ -313,21 +313,26 @@ void Actor::TakeDamage()
 
 Vector2 Actor::GetHalfSize() const
 {
-    auto collider = GetComponent<AABBColliderComponent>();
-
-    if (!collider)
-        return GetCenter() - GetPosition();
-
-    return Vector2(collider->GetWidth() / 2.f, collider->GetHeight() / 2.f);
+    return GetCenter() - GetPosition();
 }
 
 float Actor::GetWidth() const
 {
+    auto collider = GetComponent<AABBColliderComponent>();
+
+    if (collider)
+        return collider->GetWidth();
+
     return GetHalfSize().x * 2.f;
 }
 
 float Actor::GetHeight() const
 {
+    auto collider = GetComponent<AABBColliderComponent>();
+    
+    if (collider)
+        return collider->GetHeight();
+
     return GetHalfSize().y * 2.f;
 }
 
