@@ -26,6 +26,7 @@
 #include "../actors/Portal.h"
 #include "../actors/Dog.h"
 #include "../actors/Father.h"
+#include "../actors/MetalCrate.h"
 
 void Game::LoadMainMenu()
 {
@@ -54,8 +55,8 @@ void Game::LoadMainMenu()
     mainMenu->AddTransparentButton(
         playButtonPos,
         playButtonSize,
-        [this]() { SetGameScene(GameScene::Bedroom); });
-        // [this]() { SetGameScene(GameScene::Tests); });
+        // [this]() { SetGameScene(GameScene::Bedroom); });
+        [this]() { SetGameScene(GameScene::Level1); });
     
     mainMenu->AddImage(
         "../assets/Sprites/Menu/playButton.png",
@@ -245,35 +246,29 @@ void Game::LoadFirstLevel()
         "Uma estrela? Ela parece estar indo para algum lugar?"};
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
-    steps.push_back(std::make_unique<MoveStep>(
-        this,
-        [this](){ return GetStar(); },
-        [this](){ return Vector2(730.f, 330.f); }));
-
-    dialogue = {
-        "Espere! Volte aqui!"};
-    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
-
-    steps.push_back(std::make_unique<UnspawnStep>(
-        this, [this]()
-        { return GetStar(); }));
-
     dialogue = {
         "Oi Zoe! Seja bem vinda ao Espaco Astral!"
     };
-    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
+    steps.push_back(std::make_unique<DialogueStep>(this, "Estrela", dialogue));
 
     dialogue = {
         "Como assim? O que e esse lugar? Quem e voce?",
     };
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this](){ return GetStar(); },
+        [this](){ return Vector2(730.f, 330.f); }));
+
     dialogue = {
-        "Se acalme garota... Cuidado para nao cair!",
-        "Acho que voce sabe o que fazer, boa sorte!"
+        "Espere! Volte aqui!"
     };
-    
-    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
+    steps.push_back(std::make_unique<UnspawnStep>(
+        this, [this]()
+        { return GetStar(); }));
 
     AddCutscene("Intro",
                 std::move(steps),
@@ -284,11 +279,12 @@ void Game::LoadFirstLevel()
     steps.clear();
     dialogue = {
         "Opa, opa, opa...",
-        "Esse e o Quasar, uma especie de golem que vaga o Espaco Astral.",
-        "Nao acho que voce vai conseguir feri-lo.",
+        "Esse parece um Quasar, um golem do Espaco Astral.",
+        "Mamae me contava historias sobre ele...",
+        "Acho que nao vou conseguir feri-lo.",
         "Talvez tenha outra coisa possa..."
     };
-    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
     AddCutscene("quasar_encounter",
                 std::move(steps),
@@ -302,12 +298,6 @@ void Game::LoadFirstLevel()
 
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
-    dialogue = {
-        "Muito bem Zoe!"
-    };
-
-    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
-
     steps.push_back(std::make_unique<SpawnStep>(
         this,
         SpawnStep::ActorType::Star,
@@ -316,10 +306,10 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<WaitStep>(this, 0.5f));
 
     dialogue = {
-        "Opa, olha so quem apareceu de novo!"
+        "Muito bem Zoe!"
     };
 
-    steps.push_back(std::make_unique<DialogueStep>(this, "Narrador", dialogue));
+    steps.push_back(std::make_unique<DialogueStep>(this, "Estrela", dialogue));
 
     std::vector<Vector2> starHexagon = {
         Vector2(-30, 0),
@@ -383,27 +373,9 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<SpawnStep>(
         this,
         SpawnStep::ActorType::Star,
-        Vector2(1290.f, 768.f)));
-
-    steps.push_back(std::make_unique<MoveStep>(
-        this,
-        [this](){ return GetStar(); },
-        [this](){ 
-            auto zoe = GetZoe();
-            Vector2 zoeCenter = zoe->GetCenter();
-
-            if (zoeCenter.x < 1580.f) {
-                return zoeCenter + Vector2(50.f, -10.f);
-            }
-            
-            return zoeCenter + Vector2(-50.f, -10.f);
-        },
-        140.f,
-        false,
-        8.f));
+        Vector2(1353.f, 969.f)));
 
     dialogue = {
-        "Voce ja se mostrou mais do que preparada.",
         "Acho que ja e hora de eu te contar.",
         "Voce tem ideia de onde esta?"
     };
@@ -412,7 +384,7 @@ void Game::LoadFirstLevel()
 
     dialogue = {
         "Sim, eu estou no Espaco Astral.",
-        "Igual ao que minha mamae lia historias para mim antes de dormir, parece que eu estou dentro do livro agora."
+        "Minha mae lia historias sobre esse lugar para mim antes de dormir, parece que eu estou dentro do livro agora."
     };
 
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
@@ -425,25 +397,11 @@ void Game::LoadFirstLevel()
 
     dialogue = {
         "Isso! Ele fingia que era o monstro Zathura.",
-        "Mas, pera...",
+        "Mas, espera ai...",
         "Como voce sabe disso?"
     };
 
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
-
-    dialogue = {
-        "Ja esta na hora de voce saber!"
-    };
-
-    steps.push_back(std::make_unique<DialogueStep>(this, "Estrela", dialogue));
-
-    steps.push_back(std::make_unique<MoveStep>(
-        this,
-        [this](){ return GetStar(); },
-        [this](){ return Vector2(1353.f, 969.f); },
-        140.f,
-        false,
-        8.f));
 
     steps.push_back(std::make_unique<MoveStep>(
         this,
@@ -485,15 +443,25 @@ void Game::LoadFirstLevel()
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this](){ return GetZoe(); },
-        [this](){ 
+        [this](){
+            auto father = GetFather();
             auto zoe = GetZoe();
             Vector2 zoeCenter = zoe->GetCenter();
-            return Vector2(1418.f, zoeCenter.y); 
+
+            if (Math::Abs(zoeCenter.x - father->GetCenter().x) < 50.f)
+                return zoeCenter;
+
+            if (zoeCenter.x > father->GetCenter().x)
+                return Vector2(1418.f, zoeCenter.y);
+
+            return zoeCenter;
         },
-        60.f));
+        80.f,
+        false,
+        8.f));
 
     dialogue = {
-        "Pai? E voce mesmo? O que voce esta fazendo aqui?",
+        "Papai? E voce mesmo? O que voce esta fazendo aqui?",
         "Eu achei que a gente ia para casa da vovo, o que aconteceu?"
     };
 
@@ -501,25 +469,23 @@ void Game::LoadFirstLevel()
 
     dialogue = {
         "Eu nao tenho muito tempo para explicar...",
-        "Mas as historias que sua mamae lia para voce antes de dormir, eram reais.",
-        "A sua mae adora esse lugar, mas ele pode ser perigoso!",
-        "A gente veio aqui buscar o presente de aniversario da sua Vo. Mas a gente nao tomou o cuidado necessario.",
-        "E Zathura capturou sua mae."
+        "Mas as historias que sua mamae lia para voce antes de dormir eram reais.",
+        "A gente veio aqui buscar o presente de aniversario da sua Vo.",
+        "Mas nao tomamos o cuidado necessario, e Zathura capturou sua mae."
     };
 
     steps.push_back(std::make_unique<DialogueStep>(this, "Pai", dialogue));
 
     dialogue = {
-        "Zathura? O monstro do livro? Ele e real tambem?",
-        "Nossa, isso e tao assustador... E o que a gente faz agora? Eu preciso salvar minha mae!"
+        "Zathura? O monstro do livro? Ele e real tambem?"
     };
 
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
     dialogue = {
         "Sim Zoe, ele e real. E ele e muito perigoso.",
-        "Nos nao temos tempo a perder, voce precisa ficar forte para enfrentar ele e salvar sua mae.",
-        "Para isso, vamos visitar o planeta que ele mora, que se chama Nebula.",
+        "Nos nao temos tempo a perder, voce precisa ficar forte para enfrenta-lo e salvar sua mae.",
+        "Para isso, vamos visitar o planeta que ele mora, Nebula.",
         "La voce vai enfrentar problemas maiores e ficar mais forte!",
         "So assim vamos conseguir enfrentar Zathura e salvar sua mae."
     };
@@ -528,8 +494,7 @@ void Game::LoadFirstLevel()
 
     dialogue = {
         "Nebula?",
-        "A historia que mamae me contava falava sobre os ventos gelidos de la.",
-        "Se e para la que eu tenho que ir, entao vamos logo! Eu quero salvar minha mae!"
+        "A mamae me contava historias sobre os ventos gelidos de la."
     };
 
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
@@ -542,6 +507,19 @@ void Game::LoadFirstLevel()
                 });
 
     mAudio->PlaySound("level1Theme.ogg", true);
+
+    steps.clear();
+    dialogue = {
+        "Eu acho que posso segurar o meu martelo e bater com muita forca no chao.",
+        "Ai eu vou jogar esse Quasar nas Shurikens!"
+    };
+
+    steps.push_back(std::make_unique<FreezePhysicsStep>(this));
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+    steps.push_back(std::make_unique<UnfreezePhysicsStep>(this));
+
+    AddCutscene("quasarEncounterTip",
+                std::move(steps));
 
     StartCutscene("Intro");
                 
@@ -678,6 +656,47 @@ void Game::LoadSecondLevel()
     AddCutscene("breakLevelSithPhaseTiles2",
                 std::move(steps));
 
+    steps.clear();
+
+    steps.push_back(std::make_unique<SoundStep>(this, "portalSuck.wav"));
+
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this]()
+        { return GetZoe(); },
+        [this]()
+        { return GetPortal()->GetCenter(); },
+        80.f,
+        true,
+        1.5f,
+        true));
+
+    AddCutscene("spawnPortalLevel2",
+                std::move(steps),
+                [this]()
+                {
+                    GetZoe()->SetPosition(Vector2(1344.f, 256.f));
+                    GetZoe()->SetRotation(0.f);
+                });
+
+    steps.clear();
+    dialogue = {
+        "Esses portais..."
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
+    AddCutscene("dontLikePortals",
+                std::move(steps));
+
+    steps.clear();
+    dialogue = {
+        "Talvez eu devesse tentar congelar essa caixa no ar, e usa-la para pegar impulso."
+    };
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
+    AddCutscene("metalCrateTip",
+                std::move(steps));
+
     StartCutscene("startSecondLevel");
 }
 
@@ -697,6 +716,8 @@ void Game::LoadTestsLevel()
         false);
 
     mAudio->PlaySound("level1Theme.ogg", true);
+
+    new MetalCrate(this, Vector2(181.f, 240.f));
 }
 
 void Game::LoadDeathScreen()
