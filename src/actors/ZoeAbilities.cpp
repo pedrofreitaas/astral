@@ -217,6 +217,11 @@ bool Zoe::CheckVentania()
         return false;
     }
 
+    if (closeToWall && dir.x == 0.f && dir.y == -1.f)
+    {
+        return false;
+    }
+
     float speed = mGame->GetConfig()->Get<float>("ZOE.POWERS.VENTANIA.SPEED");
 
     mRigidBodyComponent->ResetVelocity();
