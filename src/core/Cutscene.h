@@ -76,16 +76,18 @@ public:
         std::function<Vector2()> getTargetPosFunc, 
         float speed=450.f,
         bool spin=false,
-        float maxTime=5.f);
+        float maxTime=5.f,
+        bool removeGravityIfNeeded=false);
 
     void Update(float deltaTime) override;
     void PreUpdate() override;
+    void SetComplete(bool v = true) override;
 private:
     float mSpeed;
     std::function<Actor*()> mGetTargetActor;
     std::function<Vector2()> mGetTargetPos;
     Vector2 mTargetPos;
-    bool mSpin;
+    bool mSpin, mRemoveGravityIfNeeded;
     float mSpinAngle;
 };
 

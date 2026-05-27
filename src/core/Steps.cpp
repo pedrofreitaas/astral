@@ -14,12 +14,12 @@ MoveStep::MoveStep(
     class Game* game, 
     std::function<Actor*()> targetActorFunc,
     std::function<Vector2()> getTargetPosFunc,
-    float speed, bool spin, float maxTime
-): 
+    float speed, bool spin, float maxTime, bool blockGravity): 
     Step(game, maxTime), mSpeed(speed), 
     mGetTargetActor(std::move(targetActorFunc)), 
     mGetTargetPos(std::move(getTargetPosFunc)),
-    mTargetPos(Vector2::Zero), mSpinAngle(0.0f), mSpin(spin)
+    mTargetPos(Vector2::Zero), mSpinAngle(0.0f), 
+    mSpin(spin), mRemoveGravityIfNeeded(blockGravity)
 {
 }
 
@@ -38,6 +38,36 @@ void MoveStep::PreUpdate()
     {
         throw std::runtime_error("MoveStep target Actor lost its RigidBodyComponent");
     }
+
+    if (!rb->GetApplyGravity() && mRemoveGravityIfNeeded)
+    {
+        throw std::runtime_error("MoveStep was set to block gravity but target Actor's RigidBodyComponent already has gravity disabled");
+    }
+
+    if (rb->GetApplyGravity() && mRemoveGravityIfNeeded)
+    {
+        rb->SetApplyGravity(false);
+    }
+}
+
+void MoveStep::SetComplete(bool v)
+{
+    Step::SetComplete(v);
+
+    Actor *mTargetActor = mGetTargetActor();
+    if (!mTargetActor)
+    {
+        throw std::runtime_error("MoveStep target Actor is null");
+    }
+
+    RigidBodyComponent *rb = mTargetActor->GetComponent<RigidBodyComponent>();
+    if (!rb)
+    {
+        throw std::runtime_error("MoveStep target Actor lost its RigidBodyComponent");
+    }
+
+    if (mRemoveGravityIfNeeded)
+        rb->SetApplyGravity(true);
 }
 
 void MoveStep::Update(float deltaTime)
