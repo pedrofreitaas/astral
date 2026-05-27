@@ -22,7 +22,8 @@ Nevasca::Nevasca(
         ColliderLayer::SpearBlock,
         ColliderLayer::Spikes,
         ColliderLayer::SpikesBlock,
-        ColliderLayer::Shuriken
+        ColliderLayer::Shuriken,
+        ColliderLayer::MetalCrate
     }, IgnoreOption::IgnoreResolution);
 
     mDrawAnimatedComponent = new DrawAnimatedComponent(
