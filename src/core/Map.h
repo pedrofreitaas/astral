@@ -14,6 +14,7 @@
 #include "../actors/Collider.h"
 #include "../actors/Torch.h"
 #include "../actors/Crate.h"
+#include "../actors/MetalCrate.h"
 #include "../actors/Item.h"
 
 class Game;
