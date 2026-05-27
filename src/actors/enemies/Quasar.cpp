@@ -50,6 +50,8 @@ Quasar::Quasar(Game *game, const Vector2 &center)
     SetBehaviorState(BehaviorState::Asleep);
 
     SetPosition(center - GetHalfSize());
+
+    SetLifes(game->GetConfig()->Get<int>("QUASAR.HEALTH"));
 }
 
 void Quasar::ManageState()

@@ -6,6 +6,7 @@
     },
     "FREEZING_RATE": 1.0,
     "QUASAR": {
+        "HEALTH": 3,
         "SMASH_COOLDOWN": 3,
         "SPIKE_KNOCKBACK_FORCE": 260
     },
