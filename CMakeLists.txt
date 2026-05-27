@@ -132,6 +132,8 @@ add_executable(astral
     src/actors/Torch.cpp
     src/actors/Crate.cpp
     src/actors/Crate.h
+    src/actors/MetalCrate.cpp
+    src/actors/MetalCrate.h
 )
 
 if(EMSCRIPTEN)

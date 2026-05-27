@@ -1,4 +1,5 @@
 {
+    "METAL_CRATE_PUSH_FORCE": 1000,
     "ENEMY": {
         "PLAYER_KNOCKBACK_FORCE": 400,
         "FOV_ANGLE": 1.3963

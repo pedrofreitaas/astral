@@ -1,0 +1,63 @@
+{ "frames": [
+   {
+    "filename": "metalcrate-scaled 0.png",
+    "frame": { "x": 0, "y": 0, "w": 32, "h": 35 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 35 },
+    "sourceSize": { "w": 32, "h": 35 },
+    "duration": 100
+   },
+   {
+    "filename": "metalcrate-scaled 1.png",
+    "frame": { "x": 32, "y": 0, "w": 32, "h": 35 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 35 },
+    "sourceSize": { "w": 32, "h": 35 },
+    "duration": 100
+   },
+   {
+    "filename": "metalcrate-scaled 2.png",
+    "frame": { "x": 64, "y": 0, "w": 32, "h": 35 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 35 },
+    "sourceSize": { "w": 32, "h": 35 },
+    "duration": 100
+   },
+   {
+    "filename": "metalcrate-scaled 3.png",
+    "frame": { "x": 96, "y": 0, "w": 32, "h": 35 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 35 },
+    "sourceSize": { "w": 32, "h": 35 },
+    "duration": 100
+   },
+   {
+    "filename": "metalcrate-scaled 4.png",
+    "frame": { "x": 128, "y": 0, "w": 32, "h": 35 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 35 },
+    "sourceSize": { "w": 32, "h": 35 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.x-dev",
+  "image": "texture.png",
+  "format": "RGBA8888",
+  "size": { "w": 160, "h": 35 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
