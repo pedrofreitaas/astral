@@ -21,6 +21,10 @@
 #include "Config.h"
 #include "Checkpoint.h"
 
+const float MAX_TIME_QUASAR_ENCOUNTER_TIP = 20.f;
+const int SPAWN_PORTAL_LEVEL_2_OBJ_ID = 9999;
+const float MAX_TIME_METAL_CRATE_TIP = 30.f;
+
 class Step;
 class Cutscene;
 
@@ -353,13 +357,17 @@ private:
     bool isEnding;
     
     // -- first level --
-    void HalfFirstLevelCheck();
+    void QuasarEncounterLevelCheck();
     void BreakTilesFirstLevelCheck();
     void LastPartFirstLevelCheck();
     // -- second level
     void SithEncounterBreakTilesCheck();
     void SithEncounterBreakTilesCheck2();
-
+    void CheckPortalSpawn();
+    void CheckMetalCrateLevel();
+    
+    float mQuasarEncounterTimeCounter, mMetalCratePortionTimeCounter;
+    bool mHasSpawnedPortalLevel2;
     float mShakeCounter, mShakeIntensity;
 
     bool mIsPhysicsFrozen;

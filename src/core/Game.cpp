@@ -48,7 +48,8 @@ Game::Game()
       mCameraCenter(CameraCenter::Zoe), mMaintainCameraInMap(true), mCameraCenterPos(Vector2::Zero),
       mController(nullptr), mMustAlwaysUpdateActors(), mPreviousGameState(GamePlayState::Playing),
       mRealWindowHeight(0), mRealWindowWidth(0), mDeltatime(0.f), mShakeCounter(0.f), mShakeIntensity(3.f),
-      mPortal(nullptr), mIsPhysicsFrozen(false)
+      mPortal(nullptr), mIsPhysicsFrozen(false), mHasSpawnedPortalLevel2(false),
+      mMetalCratePortionTimeCounter(0.f), mQuasarEncounterTimeCounter(0.f)
 {
     mWindowWidth = 640;
     mWindowHeight = 352;
@@ -379,7 +380,7 @@ void Game::ProcessInput()
                 }
 
                 case SDLK_l:
-                    GetZoe()->SetPosition(Vector2(1153.f, 288.f));
+                    GetZoe()->SetPosition(Vector2(1306.f, 768.f));
                     break;
             }
 
@@ -538,7 +539,7 @@ void Game::UpdateGame()
 
     if (mGameScene == GameScene::Level1)
     {
-        HalfFirstLevelCheck();
+        QuasarEncounterLevelCheck();
         BreakTilesFirstLevelCheck();
         LastPartFirstLevelCheck();
     }
@@ -546,6 +547,8 @@ void Game::UpdateGame()
     {
         SithEncounterBreakTilesCheck();
         SithEncounterBreakTilesCheck2();
+        CheckPortalSpawn();
+        CheckMetalCrateLevel();
     }
 }
 
@@ -1170,7 +1173,7 @@ std::vector<class Enemy *> Game::GetEnemies(const Vector2 &min, const Vector2 &m
     return nearbyEnemies;
 }
 
-void Game::HalfFirstLevelCheck()
+void Game::QuasarEncounterLevelCheck()
 {
     if (GameScene::Level1 != mGameScene)
     {
@@ -1188,13 +1191,29 @@ void Game::HalfFirstLevelCheck()
     Vector2 zoeCenter = mZoe->GetCenter();
     std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
 
-    if (!enemiesInArea.empty())
+    bool playerInArea = zoeCenter.x >= start.x && zoeCenter.x <= end.x 
+        && zoeCenter.y >= start.y && zoeCenter.y <= end.y;
+
+    if (!playerInArea)
     {
         return;
     }
+    
+    // if the only quasar is still full life.
+    if (
+        !enemiesInArea.empty() && 
+        enemiesInArea[0]->GetLifes() == GetConfig()->Get<int>("QUASAR.HEALTH")
+    )
+    {
+        mQuasarEncounterTimeCounter += GetDtLastFrame();
 
-    if (zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
-        zoeCenter.y >= start.y && zoeCenter.y <= end.y)
+        if (mQuasarEncounterTimeCounter >= MAX_TIME_QUASAR_ENCOUNTER_TIP)
+            StartCutscene("quasarEncounterTip");
+
+        return;
+    }
+
+    if (enemiesInArea.empty())
     {
         StartCutscene("halfFirstLevel");
     }
@@ -1317,6 +1336,93 @@ void Game::SithEncounterBreakTilesCheck2()
         zoeCenter.y >= start.y && zoeCenter.y <= end.y)
     {
         StartCutscene("breakLevelSithPhaseTiles2");
+    }
+}
+
+void Game::CheckPortalSpawn()
+{
+    if (mGameScene != GameScene::Level2)
+        return;
+
+    if (mGamePlayState != GamePlayState::Playing)
+        return;
+
+    if (mHasSpawnedPortalLevel2)
+        return;
+
+    Vector2 start = Vector2(656.f, 15.f);
+    Vector2 end = Vector2(1265.f, 365.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
+
+    if (!enemiesInArea.empty())
+        return;
+
+    if (
+        !(zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y)
+    )
+        return;
+
+    Vector2 pos1 = Vector2(896, 64);
+    Vector2 pos2 = Vector2(672, 160);
+    Vector2 objSize = Vector2(128, 64);
+
+    Vector2 realPos = (zoeCenter.x >= pos1.x && zoeCenter.x <= pos1.x + objSize.x &&
+        zoeCenter.y >= pos1.y && zoeCenter.y <= pos1.y + objSize.y) ? pos2 : pos1;
+
+    json parameters = json::object();
+    parameters["cutscene_name"] = "spawnPortalLevel2";
+
+    new Portal(
+        this,
+        realPos + (objSize * 0.5f)
+    );
+
+    new MapObject(
+        this,
+        SPAWN_PORTAL_LEVEL_2_OBJ_ID,
+        "in",
+        "play_cutscene",
+        realPos,
+        objSize,
+        parameters);
+
+    mHasSpawnedPortalLevel2 = true;
+}
+
+void Game::CheckMetalCrateLevel()
+{
+    if (mGameScene != GameScene::Level2)
+        return;
+
+    if (mGamePlayState != GamePlayState::Playing)
+        return;
+
+    if (mMetalCratePortionTimeCounter >= MAX_TIME_METAL_CRATE_TIP)
+        return;
+
+    // not the full level, this the first horizontal half.
+    Vector2 start = Vector2(1297.f, 14.f);
+    Vector2 end = Vector2(1564.f, 335.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    RigidBodyComponent* zoeRigidBody = mZoe->GetComponent<RigidBodyComponent>();
+
+    // might be gettting mechanic without tip
+    if (!zoeRigidBody->GetOnGround())
+        return;
+
+    if (
+        zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y
+    )
+    {
+        mMetalCratePortionTimeCounter += GetDtLastFrame();
+
+        if (mMetalCratePortionTimeCounter >= MAX_TIME_METAL_CRATE_TIP)
+            StartCutscene("metalCrateTip");
     }
 }
 
