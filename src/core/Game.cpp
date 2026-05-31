@@ -35,6 +35,7 @@
 #include "../actors/Portal.h"
 #include "../actors/enemies/Zod.h"
 #include "../actors/Item.h"
+#include "../actors/enemies/Zathura.h"
 
 Game::Game()
     : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true),
@@ -49,7 +50,7 @@ Game::Game()
       mController(nullptr), mMustAlwaysUpdateActors(), mPreviousGameState(GamePlayState::Playing),
       mRealWindowHeight(0), mRealWindowWidth(0), mDeltatime(0.f), mShakeCounter(0.f), mShakeIntensity(3.f),
       mPortal(nullptr), mIsPhysicsFrozen(false), mHasSpawnedPortalLevel2(false),
-      mMetalCratePortionTimeCounter(0.f), mQuasarEncounterTimeCounter(0.f)
+      mMetalCratePortionTimeCounter(0.f), mQuasarEncounterTimeCounter(0.f), mZathura(nullptr)
 {
     mWindowWidth = 640;
     mWindowHeight = 352;
@@ -1403,9 +1404,9 @@ void Game::CheckMetalCrateLevel()
     if (mMetalCratePortionTimeCounter >= MAX_TIME_METAL_CRATE_TIP)
         return;
 
-    // not the full level, this the first horizontal half.
-    Vector2 start = Vector2(1297.f, 14.f);
-    Vector2 end = Vector2(1564.f, 335.f);
+    // not the full level, just the tip portion.
+    Vector2 start = Vector2(1474.f, 0.f);
+    Vector2 end = Vector2(1686.f, 350.f);
 
     Vector2 zoeCenter = mZoe->GetCenter();
     RigidBodyComponent* zoeRigidBody = mZoe->GetComponent<RigidBodyComponent>();
