@@ -5,6 +5,9 @@
         "FOV_ANGLE": 1.3963
     },
     "FREEZING_RATE": 1.0,
+    "ZATHURA": {
+        "HEALTH": 5
+    },
     "QUASAR": {
         "HEALTH": 3,
         "SMASH_COOLDOWN": 3,

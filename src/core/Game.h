@@ -176,6 +176,9 @@ public:
     class Zoe *GetZoe() { return mZoe; }
     void SetZoe(class Zoe *zoe);
 
+    class Zathura *GetZathura() { return mZathura; }
+    void SetZathura(class Zathura *zathura) { mZathura = zathura; }
+
     GamePlayState GetGamePlayState() const { 
         return mGamePlayState; 
     }
@@ -324,6 +327,7 @@ private:
     Vector2 mCameraPos;
 
     // Game-specific
+    class Zathura *mZathura;
     class Zoe *mZoe;
     class Star *mStar;
     class Father *mFather;

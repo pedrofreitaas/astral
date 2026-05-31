@@ -39,6 +39,7 @@ enum class ColliderLayer
     Mother,
     Star,
     MetalCrate,
+    Zathura
 };
 
 enum class IgnoreOption
