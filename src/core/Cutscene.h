@@ -39,21 +39,24 @@ class SpawnStep : public Step {
 public:
     enum class ActorType {
         Star,
-        Father
+        Father,
+        Portal
         // Add other actor types here as needed
     };
     SpawnStep(
-        class Game* game, ActorType actorType, const Vector2& position, float maxTime=2.f
-    ): Step(game, maxTime), mActorType(actorType), mPosition(position), mPositionFunc(nullptr) {};
+        class Game* game, ActorType actorType, const Vector2& position, float maxTime=2.f, float rotation=0.f
+    ): Step(game, maxTime), mActorType(actorType), mPosition(position), mPositionFunc(nullptr), mRotation(rotation) {};
     
     SpawnStep(
         class Game* game, 
         ActorType actorType, 
         std::function<Vector2()> positionFunc,
-        float maxTime=2.f
+        float maxTime=2.f,
+        float rotation=0.f
     ): 
         Step(game, maxTime), mActorType(actorType), 
-        mPosition(Vector2(0.f, 0.f)), mPositionFunc(positionFunc) 
+        mPosition(Vector2(0.f, 0.f)), mPositionFunc(positionFunc),
+        mRotation(rotation)
     {};
 
     void Update(float deltaTime) override;
@@ -65,6 +68,7 @@ public:
 private:
     ActorType mActorType;
     Vector2 mPosition;
+    float mRotation;
     std::function<Vector2()> mPositionFunc;
 };
 

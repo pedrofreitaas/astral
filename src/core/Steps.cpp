@@ -9,6 +9,7 @@
 #include "../ui/UIAnimation.h"
 #include "../core/HUD.h"
 #include "../actors/Father.h"
+#include "../actors/Portal.h"
 
 MoveStep::MoveStep(
     class Game* game, 
@@ -154,8 +155,14 @@ void SpawnStep::Update(float deltaTime)
         newActor = new Father(mGame, mPosition);
     }
 
+    else if (mActorType == ActorType::Portal)
+    {
+        newActor = new Portal(mGame, mPosition);
+    }
+
     if (newActor)
     {
+        newActor->SetRotation(mRotation);
         SetComplete();
     }
     else
