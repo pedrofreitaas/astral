@@ -87,7 +87,8 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
         return false;
 
     // Use spatial hashing to get nearby colliders
-    auto colliders = mOwner->GetGame()->GetNearbyColliders(mOwner->GetCenter(), 2);
+    int radius = static_cast<int>(mWidth / Game::TILE_SIZE) + 1;
+    auto colliders = mOwner->GetGame()->GetNearbyColliders(GetCenter(), radius);
 
     std::sort(colliders.begin(), colliders.end(), [this](AABBColliderComponent *a, AABBColliderComponent *b)
               { return Math::Abs((a->GetCenter() - GetCenter()).LengthSq() < (b->GetCenter() - GetCenter()).LengthSq()); });
@@ -142,7 +143,8 @@ float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBo
         return false;
 
     // Use spatial hashing to get nearby colliders
-    auto colliders = mOwner->GetGame()->GetNearbyColliders(mOwner->GetPosition());
+    int radius = static_cast<int>(mHeight / Game::TILE_SIZE) + 2;
+    auto colliders = mOwner->GetGame()->GetNearbyColliders(GetCenter(), radius);
 
     std::sort(colliders.begin(), colliders.end(), [this](AABBColliderComponent *a, AABBColliderComponent *b)
               { return Math::Abs((a->GetCenter() - GetCenter()).LengthSq() < (b->GetCenter() - GetCenter()).LengthSq()); });
