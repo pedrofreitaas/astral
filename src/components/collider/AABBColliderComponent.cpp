@@ -57,12 +57,12 @@ float AABBColliderComponent::GetMinHorizontalOverlap(AABBColliderComponent *b) c
 
 void AABBColliderComponent::CallHorizontalCollisionCallbacks(const float overlap, class AABBColliderComponent *other, IgnoreOption thisColliderIgnoreOption, IgnoreOption otherColliderIgnoreOption)
 {
-    if (thisColliderIgnoreOption != IgnoreOption::IgnoreCallback ||
+    if (thisColliderIgnoreOption != IgnoreOption::IgnoreCallback &&
         thisColliderIgnoreOption != IgnoreOption::Both
     )
         mOwner->OnHorizontalCollision(overlap, other);
 
-    if (otherColliderIgnoreOption != IgnoreOption::IgnoreCallback ||
+    if (otherColliderIgnoreOption != IgnoreOption::IgnoreCallback &&
         otherColliderIgnoreOption != IgnoreOption::Both
     )
         other->GetOwner()->OnHorizontalCollision(-overlap, this);
@@ -70,12 +70,12 @@ void AABBColliderComponent::CallHorizontalCollisionCallbacks(const float overlap
 
 void AABBColliderComponent::CallVerticalCollisionCallbacks(const float overlap, class AABBColliderComponent *other, IgnoreOption thisColliderIgnoreOption, IgnoreOption otherColliderIgnoreOption)
 {
-    if (thisColliderIgnoreOption != IgnoreOption::IgnoreCallback || 
+    if (thisColliderIgnoreOption != IgnoreOption::IgnoreCallback &&
         thisColliderIgnoreOption != IgnoreOption::Both
     )
         mOwner->OnVerticalCollision(overlap, other);
 
-    if (otherColliderIgnoreOption != IgnoreOption::IgnoreCallback ||
+    if (otherColliderIgnoreOption != IgnoreOption::IgnoreCallback &&
         otherColliderIgnoreOption != IgnoreOption::Both
     )
         other->GetOwner()->OnVerticalCollision(-overlap, this);
