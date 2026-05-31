@@ -675,11 +675,19 @@ void Game::LoadSecondLevel()
                 std::move(steps),
                 [this]()
                 {
-                    GetZoe()->SetPosition(Vector2(1344.f, 256.f));
+                    GetZoe()->SetCenter(Vector2(1327.f, 256.f));
                     GetZoe()->SetRotation(0.f);
                 });
 
     steps.clear();
+
+    steps.push_back(std::make_unique<SpawnStep>(
+        this,
+        SpawnStep::ActorType::Portal,
+        Vector2(1847.f, 85.f),
+        .5f,
+        Math::Pi));
+
     dialogue = {
         "Esses portais..."
     };
@@ -696,6 +704,29 @@ void Game::LoadSecondLevel()
 
     AddCutscene("metalCrateTip",
                 std::move(steps));
+
+    steps.clear();
+
+    steps.push_back(std::make_unique<SoundStep>(this, "portalSuck.wav"));
+
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this]()
+        { return GetZoe(); },
+        [this]()
+        { return GetPortal()->GetCenter(); },
+        80.f,
+        true,
+        1.5f,
+        true));
+
+    AddCutscene("metalCrateLevelFinal",
+                std::move(steps),
+                [this]()
+                {
+                    GetZoe()->SetPosition(Vector2(1346.f, 609.f));
+                    GetZoe()->SetRotation(0.f);
+                });
 
     StartCutscene("startSecondLevel");
 }
@@ -716,8 +747,6 @@ void Game::LoadTestsLevel()
         false);
 
     mAudio->PlaySound("level1Theme.ogg", true);
-
-    new MetalCrate(this, Vector2(181.f, 240.f));
 }
 
 void Game::LoadDeathScreen()
