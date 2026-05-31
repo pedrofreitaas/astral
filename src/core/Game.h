@@ -23,7 +23,7 @@
 
 const float MAX_TIME_QUASAR_ENCOUNTER_TIP = 20.f;
 const int SPAWN_PORTAL_LEVEL_2_OBJ_ID = 9999;
-const float MAX_TIME_METAL_CRATE_TIP = 30.f;
+const float MAX_TIME_METAL_CRATE_TIP = 25.f;
 
 class Step;
 class Cutscene;
