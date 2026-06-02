@@ -43,6 +43,7 @@ Collider::Collider(
                 mDismissCallback();
             }
             SetState(ActorState::Destroy);
+            mColliderComponent->SetEnabled(false);
         });
     }
 
@@ -61,6 +62,8 @@ void Collider::OnVerticalCollision(const float minOverlap, AABBColliderComponent
 
     if (mDismissOn == DismissOn::Collision || mDismissOn == DismissOn::Both) {
         SetState(ActorState::Destroy);
+        mColliderComponent->SetEnabled(false);
+
         if (mDismissCallback) {
             mDismissCallback();
         }
@@ -75,6 +78,8 @@ void Collider::OnHorizontalCollision(const float minOverlap, AABBColliderCompone
 
     if (mDismissOn == DismissOn::Collision || mDismissOn == DismissOn::Both) {
         SetState(ActorState::Destroy);
+        mColliderComponent->SetEnabled(false);
+
         if (mDismissCallback) {
             mDismissCallback();
         }
@@ -84,6 +89,7 @@ void Collider::OnHorizontalCollision(const float minOverlap, AABBColliderCompone
 void Collider::Dismiss()
 {
     SetState(ActorState::Destroy);
+    mColliderComponent->SetEnabled(false);
 }
 
 void Collider::SetEnabled(bool enabled)
