@@ -1,6 +1,6 @@
 { "frames": [
    {
-    "filename": "zathura-raw 0.png",
+    "filename": "texture 0.png",
     "frame": { "x": 0, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -9,7 +9,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 1.png",
+    "filename": "texture 1.png",
     "frame": { "x": 200, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -18,7 +18,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 2.png",
+    "filename": "texture 2.png",
     "frame": { "x": 400, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -27,7 +27,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 3.png",
+    "filename": "texture 3.png",
     "frame": { "x": 600, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -36,7 +36,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 4.png",
+    "filename": "texture 4.png",
     "frame": { "x": 800, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -45,7 +45,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 5.png",
+    "filename": "texture 5.png",
     "frame": { "x": 1000, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -54,7 +54,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 6.png",
+    "filename": "texture 6.png",
     "frame": { "x": 1200, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -63,7 +63,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 7.png",
+    "filename": "texture 7.png",
     "frame": { "x": 1400, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -72,7 +72,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 8.png",
+    "filename": "texture 8.png",
     "frame": { "x": 1600, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -81,7 +81,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 9.png",
+    "filename": "texture 9.png",
     "frame": { "x": 1800, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -90,7 +90,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 10.png",
+    "filename": "texture 10.png",
     "frame": { "x": 2000, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -99,7 +99,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 11.png",
+    "filename": "texture 11.png",
     "frame": { "x": 2200, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -108,7 +108,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 12.png",
+    "filename": "texture 12.png",
     "frame": { "x": 2400, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -117,7 +117,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 13.png",
+    "filename": "texture 13.png",
     "frame": { "x": 2600, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -126,7 +126,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 14.png",
+    "filename": "texture 14.png",
     "frame": { "x": 2800, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -135,7 +135,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 15.png",
+    "filename": "texture 15.png",
     "frame": { "x": 3000, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -144,7 +144,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 16.png",
+    "filename": "texture 16.png",
     "frame": { "x": 3200, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -153,7 +153,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 17.png",
+    "filename": "texture 17.png",
     "frame": { "x": 3400, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -162,7 +162,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 18.png",
+    "filename": "texture 18.png",
     "frame": { "x": 3600, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -171,7 +171,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 19.png",
+    "filename": "texture 19.png",
     "frame": { "x": 3800, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -180,7 +180,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 20.png",
+    "filename": "texture 20.png",
     "frame": { "x": 4000, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -189,7 +189,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 21.png",
+    "filename": "texture 21.png",
     "frame": { "x": 4200, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -198,7 +198,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 22.png",
+    "filename": "texture 22.png",
     "frame": { "x": 4400, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -207,7 +207,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 23.png",
+    "filename": "texture 23.png",
     "frame": { "x": 4600, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -216,7 +216,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 24.png",
+    "filename": "texture 24.png",
     "frame": { "x": 4800, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -225,7 +225,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 25.png",
+    "filename": "texture 25.png",
     "frame": { "x": 5000, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -234,7 +234,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 26.png",
+    "filename": "texture 26.png",
     "frame": { "x": 5200, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -243,7 +243,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 27.png",
+    "filename": "texture 27.png",
     "frame": { "x": 5400, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -252,7 +252,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 28.png",
+    "filename": "texture 28.png",
     "frame": { "x": 5600, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -261,7 +261,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 29.png",
+    "filename": "texture 29.png",
     "frame": { "x": 5800, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -270,7 +270,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 30.png",
+    "filename": "texture 30.png",
     "frame": { "x": 6000, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -279,7 +279,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 31.png",
+    "filename": "texture 31.png",
     "frame": { "x": 6200, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -288,7 +288,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 32.png",
+    "filename": "texture 32.png",
     "frame": { "x": 6400, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -297,7 +297,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 33.png",
+    "filename": "texture 33.png",
     "frame": { "x": 6600, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -306,7 +306,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 34.png",
+    "filename": "texture 34.png",
     "frame": { "x": 6800, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -315,7 +315,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 35.png",
+    "filename": "texture 35.png",
     "frame": { "x": 7000, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -324,7 +324,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 36.png",
+    "filename": "texture 36.png",
     "frame": { "x": 7200, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -333,7 +333,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 37.png",
+    "filename": "texture 37.png",
     "frame": { "x": 7400, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -342,7 +342,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 38.png",
+    "filename": "texture 38.png",
     "frame": { "x": 7600, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -351,7 +351,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 39.png",
+    "filename": "texture 39.png",
     "frame": { "x": 7800, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -360,7 +360,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 40.png",
+    "filename": "texture 40.png",
     "frame": { "x": 8000, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -369,7 +369,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 41.png",
+    "filename": "texture 41.png",
     "frame": { "x": 8200, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -378,7 +378,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 42.png",
+    "filename": "texture 42.png",
     "frame": { "x": 8400, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -387,7 +387,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 43.png",
+    "filename": "texture 43.png",
     "frame": { "x": 8600, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -396,7 +396,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 44.png",
+    "filename": "texture 44.png",
     "frame": { "x": 8800, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -405,7 +405,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 45.png",
+    "filename": "texture 45.png",
     "frame": { "x": 9000, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -414,7 +414,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 46.png",
+    "filename": "texture 46.png",
     "frame": { "x": 9200, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -423,7 +423,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 47.png",
+    "filename": "texture 47.png",
     "frame": { "x": 9400, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -432,7 +432,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 48.png",
+    "filename": "texture 48.png",
     "frame": { "x": 9600, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -441,7 +441,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 49.png",
+    "filename": "texture 49.png",
     "frame": { "x": 9800, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -450,7 +450,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 50.png",
+    "filename": "texture 50.png",
     "frame": { "x": 10000, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -459,7 +459,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 51.png",
+    "filename": "texture 51.png",
     "frame": { "x": 10200, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -468,7 +468,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 52.png",
+    "filename": "texture 52.png",
     "frame": { "x": 10400, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -477,7 +477,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 53.png",
+    "filename": "texture 53.png",
     "frame": { "x": 10600, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -486,7 +486,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 54.png",
+    "filename": "texture 54.png",
     "frame": { "x": 10800, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -495,7 +495,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 55.png",
+    "filename": "texture 55.png",
     "frame": { "x": 11000, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -504,7 +504,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 56.png",
+    "filename": "texture 56.png",
     "frame": { "x": 11200, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -513,7 +513,7 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 57.png",
+    "filename": "texture 57.png",
     "frame": { "x": 11400, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
@@ -522,8 +522,53 @@
     "duration": 100
    },
    {
-    "filename": "zathura-raw 58.png",
+    "filename": "texture 58.png",
     "frame": { "x": 11600, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "texture 59.png",
+    "frame": { "x": 11800, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "texture 60.png",
+    "frame": { "x": 12000, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "texture 61.png",
+    "frame": { "x": 12200, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "texture 62.png",
+    "frame": { "x": 12400, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "texture 63.png",
+    "frame": { "x": 12600, "y": 0, "w": 200, "h": 200 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
@@ -536,13 +581,12 @@
   "version": "1.x-dev",
   "image": "texture.png",
   "format": "RGBA8888",
-  "size": { "w": 11800, "h": 200 },
+  "size": { "w": 12800, "h": 200 },
   "scale": "1",
   "frameTags": [
   ],
   "layers": [
-   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" },
-   { "name": "Layer 1", "opacity": 204, "blendMode": "overlay" }
+   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }
   ],
   "slices": [
   ]

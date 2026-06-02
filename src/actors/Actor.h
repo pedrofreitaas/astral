@@ -46,6 +46,8 @@ enum class BehaviorState // For AI behaviors/animations
     Barking = 21,
     Licking = 22,
     ChargingAttack = 23,
+    Vanishing = 24,
+    Appearing = 25
 };
 
 class Actor

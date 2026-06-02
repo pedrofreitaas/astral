@@ -88,6 +88,42 @@ HUD::HUD(class Game* game, const std::string& fontName)
         mManaBarImages.push_back(img);
     }
 
+    std::vector<std::string> zathuraLifeBarPaths = {
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar00.png",
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar01.png",
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar02.png",
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar03.png",
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar04.png",
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar05.png",
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar06.png",
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar07.png",
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar08.png",
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar09.png",
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar10.png",
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar11.png",
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar12.png",
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar13.png",
+        "../assets/Sprites/Hud/zathuraLifeBar/lifeBar14.png",
+    };
+
+    int getWindowCenterX = mGame->GetWindowWidth() * 0.5f;
+
+    for (const auto& path : zathuraLifeBarPaths)
+    {
+        Vector2 size = Vector2(128.0f, 32.0f);
+
+        UIImage* img = AddImage(
+            path,
+            Vector2(
+                getWindowCenterX - size.x * 0.5f, 
+                0.f
+            ),
+            size
+        );
+        img->SetEnabled(false);
+        mZathuraLifeBarImages.push_back(img);
+    }
+
     mPlayerFrameAnimation = AddAnimation(
         "../assets/Sprites/Hud/playerFrame/texture.png",
         "../assets/Sprites/Hud/playerFrame/texture.json",
@@ -167,6 +203,24 @@ void HUD::UpdateFireballLoadingBar(bool enabled, float progress, Vector2 pos) {
     }
 }
 
+void HUD::SetZathuraLifeBar() 
+{
+    Zathura* zathura = mGame->GetZathura();
+
+    if (!zathura) {
+        for (auto& img : mZathuraLifeBarImages) {
+            img->SetEnabled(false);
+        }
+
+        return;
+    }
+
+    int lifes = zathura->GetLifes();
+    for (int i = 0; i < mZathuraLifeBarImages.size(); ++i) {
+        mZathuraLifeBarImages[i]->SetEnabled(i == (lifes -1));
+    }
+}
+
 void HUD::Update(float deltaTime) {
     UIScreen::Update(deltaTime);
 
@@ -179,6 +233,7 @@ void HUD::Update(float deltaTime) {
 
     SetFPS(static_cast<int>(1.0f / deltaTime));
 
+    SetZathuraLifeBar();
     SetLife(zoe->GetLifes());
     SetMana(zoe->GetMana());
 

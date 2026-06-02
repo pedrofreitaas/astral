@@ -136,6 +136,8 @@ add_executable(astral
     src/actors/MetalCrate.h
     src/actors/enemies/Zathura.cpp
     src/actors/enemies/Zathura.h
+    src/actors/enemies/ZathuraRock.h
+    src/actors/enemies/ZathuraRock.cpp
 )
 
 if(EMSCRIPTEN)

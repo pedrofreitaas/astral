@@ -634,6 +634,24 @@ void Zoe::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *o
         return;
     }
 
+    if (other->GetLayer() == ColliderLayer::ZathuraAttack1)
+    {
+        TakeDamage();
+        TakeKnockback(Vector2(0.f, -1.f) * mGame->GetConfig()->Get<float>("ZATHURA.ATTACK1_KNOCKBACK_FORCE"));
+        return;
+    }
+
+    if (
+        other->GetLayer() == ColliderLayer::ZathuraAttack2 ||
+        other->GetLayer() == ColliderLayer::ZathuraAttack3
+    )
+    {
+        TakeDamage();
+        float xDir = Math::Sign(GetCenter().x - other->GetCenter().x); 
+        TakeKnockback(Vector2(xDir, 0.f) * mGame->GetConfig()->Get<float>("ZATHURA.ATTACK_2_AND_3_KNOCKBACK_FORCE"));
+        return;
+    }
+
     Actor::OnHorizontalCollision(minOverlap, other);
 }
 
@@ -667,6 +685,13 @@ void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *oth
     if (other->GetLayer() == ColliderLayer::Quasar)
     {
         // let horizontal take care.
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::ZathuraAttack1)
+    {
+        TakeDamage();
+        TakeKnockback(Vector2(0.f, -1.f) * mGame->GetConfig()->Get<float>("ZATHURA.ATTACK1_KNOCKBACK_FORCE"));
         return;
     }
 

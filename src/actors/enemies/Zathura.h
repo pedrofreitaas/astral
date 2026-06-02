@@ -3,12 +3,15 @@
 #include <SDL.h>
 #include "../Enemy.h"
 #include "../../components/TimerComponent.h"
+#include "./ZathuraRock.h"
+#include "../Collider.h"
 
 enum class ZathuraAttacks
 {
     Attack1,
     Attack2,
     Attack3,
+    Rocks,
     None
 };
 
@@ -26,7 +29,13 @@ public:
 
     void PlayBlockedPlayerSound();
 
+    bool GetIsWaitingToThrowRocks() { return mIsWaitingToThrowRocks; }
+    void SetIsWaitingToThrowRocks(bool value) { mIsWaitingToThrowRocks = value; }
+
 private:
     ZathuraAttacks mCurrentAttack;
     SoundHandle mBlockedPlayerSoundHandle;
+    Timer* mRockAttackTimerHandle, *mAttack1CooldownTimer, *mAttack2CooldownTimer, *mAttack3CooldownTimer;
+
+    bool mIsWaitingToThrowRocks, mSpawnedAttackCollider;
 };
