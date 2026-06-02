@@ -6,6 +6,7 @@
  <tileset firstgid="1" source="../tilesets/Terrain and Back Wall (32x32).tsx"/>
  <tileset firstgid="248" source="../tilesets/Nebula-Terrain.tsx"/>
  <tileset firstgid="333" source="../tilesets/Torch.tsx"/>
+ <tileset firstgid="334" source="../../assets/Levels/Tilesets/MetalCrate.json"/>
  <layer id="6" name="ground" width="20" height="11">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

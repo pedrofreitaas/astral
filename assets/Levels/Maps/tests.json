@@ -206,6 +206,10 @@
         {
          "firstgid":333,
          "source":"..\/..\/..\/tiled\/tilesets\/Torch.tsx"
+        }, 
+        {
+         "firstgid":334,
+         "source":"..\/Tilesets\/MetalCrate.json"
         }],
  "tilewidth":32,
  "type":"map",
