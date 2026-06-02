@@ -31,7 +31,11 @@ void Rock::SpawnRocks(Game *game, class Zathura* zathura)
     timer->AddTimer(3.f * delayBetweenRocks, [r3, game, zathura]() {
         Vector2 target = game->GetZoe()->GetCenter();
         r3->ThrowRock(target);
-        zathura->SetIsWaitingToThrowRocks(false);
+        
+        if (zathura != nullptr) //zathura might die.
+        {
+            zathura->SetIsWaitingToThrowRocks(false);
+        }
     });
 };
 
@@ -69,7 +73,7 @@ Rock::Rock(
         ColliderLayer::Fireball,
         ColliderLayer::Nevasca,
         ColliderLayer::Zathura
-    });
+    }, IgnoreOption::IgnoreResolution);
 
     mDrawAnimatedComponent = new DrawAnimatedComponent(
         this,
