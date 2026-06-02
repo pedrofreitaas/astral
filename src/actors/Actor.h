@@ -191,6 +191,7 @@ protected:
     virtual void StopFreeze();
 
     void SetOnDamageCallback(std::function<void()> callback);
+    bool GetIsInvincible() const { return mInvincible; }
     void SetInvincibilityOff();
     void SetInvincibilityOn();
 

@@ -70,6 +70,7 @@ void Zathura::ManageState()
             if (GetIsWaitingToThrowRocks())
                 break;
 
+            SetInvincibilityOff();
             SetBehaviorState(BehaviorState::Moving);
 
             break;
@@ -90,6 +91,7 @@ void Zathura::ManageState()
             )
             {
                 SetBehaviorState(BehaviorState::Vanishing);
+                SetInvincibilityOn();
                 break;
             }
             
@@ -167,6 +169,11 @@ void Zathura::ManageState()
             switch (mCurrentAttack)
             {
                 case ZathuraAttacks::Attack1: {
+                    if (currentSprite >= 4 && !GetIsInvincible())
+                    {
+                        SetInvincibilityOn();
+                    }
+
                     if (currentSprite >= 7 && !mSpawnedAttackCollider)
                     {
                         mSpawnedAttackCollider = true;
@@ -193,6 +200,11 @@ void Zathura::ManageState()
                 }
 
                 case ZathuraAttacks::Attack2: {
+                    if (currentSprite >= 4 && !GetIsInvincible())
+                    {
+                        SetInvincibilityOn();
+                    }
+
                     if (currentSprite >= 5 && !mSpawnedAttackCollider)
                     {
                         mSpawnedAttackCollider = true;
@@ -208,7 +220,7 @@ void Zathura::ManageState()
                             DismissOn::Both,
                             ColliderLayer::ZathuraAttack2,
                             {},
-                            .75f,
+                            .5f,
                             nullptr,
                             false,
                             nullptr
@@ -219,6 +231,11 @@ void Zathura::ManageState()
                 }
 
                 case ZathuraAttacks::Attack3: {
+                    if (currentSprite >= 1 && !GetIsInvincible())
+                    {
+                        SetInvincibilityOn();
+                    }
+
                     if (currentSprite >= 4 && !mSpawnedAttackCollider)
                     {
                         mSpawnedAttackCollider = true;
@@ -234,7 +251,7 @@ void Zathura::ManageState()
                             DismissOn::Both,
                             ColliderLayer::ZathuraAttack3,
                             {},
-                            .75f,
+                            .5f,
                             nullptr,
                             false,
                             nullptr
@@ -255,7 +272,10 @@ void Zathura::ManageState()
                         mGame->GetConfig()->Get<float>("ZATHURA.ROCKS_ATTACK_COOLDOWN"), 
                         nullptr
                     );
+
+                    break;
                 }
+                
                 default:
                     SDL_Log("Invalid attack animation name!");
             }
@@ -297,6 +317,7 @@ void Zathura::AnimationEndCallback(std::string animationName)
     
     if (animationName == "attack1" || animationName == "attack2" || animationName == "attack3") {
         SetBehaviorState(BehaviorState::Moving);
+        SetInvincibilityOff();
         return;
     }
 
@@ -329,12 +350,12 @@ void Zathura::ManageAnimations()
 
         case BehaviorState::TakingDamage:
             mDrawComponent->SetAnimation("hit");
-            mDrawComponent->SetAnimFPS(6.f);
+            mDrawComponent->SetAnimFPS(5.f);
             break;
 
         case BehaviorState::Dying:
             mDrawComponent->SetAnimation("die");
-            mDrawComponent->SetAnimFPS(14.f);
+            mDrawComponent->SetAnimFPS(6.f);
             break;
 
         case BehaviorState::Attacking: {
@@ -387,19 +408,6 @@ void Zathura::OnVerticalCollision(const float minOverlap, AABBColliderComponent 
 {
     mAIMovementComponent->OnVerticalCollision(minOverlap, other);
     Actor::OnVerticalCollision(minOverlap, other);
-    
-    if (other->GetLayer() == ColliderLayer::PlayerAttack)
-    {
-        Zoe *zoe = mGame->GetZoe();
-        zoe->TakeKnockback(
-            Vector2(
-                zoe->GetCenter().x > GetCenter().x ? 100.f : -100.f, 
-                -200.f
-            )
-        );
-        
-        PlayBlockedPlayerSound();
-    }
 }
 
 void Zathura::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
@@ -407,18 +415,31 @@ void Zathura::OnHorizontalCollision(const float minOverlap, AABBColliderComponen
     mAIMovementComponent->OnHorizontalCollision(minOverlap, other);
     Actor::OnHorizontalCollision(minOverlap, other);
     
-    if (other->GetLayer() == ColliderLayer::PlayerAttack)
+    if (other->GetLayer() == ColliderLayer::EnemyProjectile)
+    {
+        TakeDamage();
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::PlayerAttack && GetIsInvincible())
     {
         Zoe *zoe = mGame->GetZoe();
-        
+
         zoe->TakeKnockback(
             Vector2(
                 zoe->GetCenter().x > GetCenter().x ? 100.f : -100.f, 
                 -200.f
             )
         );
-        
-        PlayBlockedPlayerSound();
+    
+        PlayBlockedPlayerSound();        
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::PlayerAttack)
+    {
+        TakeDamage();
+        return;
     }
 }
 

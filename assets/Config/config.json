@@ -7,14 +7,14 @@
     "FREEZING_RATE": 1.0,
     "ZATHURA": {
         "HEALTH": 15,
-        "ROCKS_ATTACK_COOLDOWN": 40.0,
-        "ATTACK1_COOLDOWN": 15.0,
+        "ROCKS_ATTACK_COOLDOWN": 30.0,
+        "ATTACK1_COOLDOWN": 10.0,
+        "ATTACK2_COOLDOWN": 5.0,
+        "ATTACK3_COOLDOWN": 10.0,
         "ATTACK1_KNOCKBACK_FORCE": 300,
-        "ATTACK2_COOLDOWN": 10.0,
         "ATTACK_2_AND_3_KNOCKBACK_FORCE": 400,
-        "ATTACK3_COOLDOWN": 15.0,
-        "ROCK_SPEED": 450.0,
-        "ROCK_DELAY": 2.0
+        "ROCK_SPEED": 550.0,
+        "ROCK_DELAY": 1.5
     },
     "QUASAR": {
         "HEALTH": 3,
