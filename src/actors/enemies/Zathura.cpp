@@ -430,9 +430,9 @@ void Zathura::PlayBlockedPlayerSound() {
 
     if (!mBlockedPlayerSoundHandle.IsValid()) 
     {
-        mBlockedPlayerSoundHandle = mGame->GetAudio()->PlaySound("ZathuraBlock.wav");
+        mBlockedPlayerSoundHandle = mGame->GetAudio()->PlaySound("playerHitBlock.wav");
         return;
     }
 
-    mGame->GetAudio()->PlaySound("ZathuraBlock.wav");
+    mGame->GetAudio()->PlaySound("playerHitBlock.wav");
 }

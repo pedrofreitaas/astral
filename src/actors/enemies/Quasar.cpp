@@ -259,9 +259,9 @@ void Quasar::PlayBlockedPlayerSound() {
 
     if (!mBlockedPlayerSoundHandle.IsValid()) 
     {
-        mBlockedPlayerSoundHandle = mGame->GetAudio()->PlaySound("quasarBlock.wav");
+        mBlockedPlayerSoundHandle = mGame->GetAudio()->PlaySound("playerHitBlock.wav");
         return;
     }
 
-    mGame->GetAudio()->PlaySound("quasarBlock.wav");
+    mGame->GetAudio()->PlaySound("playerHitBlock.wav");
 }
