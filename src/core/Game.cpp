@@ -221,6 +221,8 @@ void Game::ChangeScene()
         LoadEndDemoScene();
     else if (mNextScene == GameScene::Tests)
         LoadTestsLevel();
+    else if (mNextScene == GameScene::BedroomFinal)
+        LoadBedroomFinal();
 
     // Set new scenes
     mGameScene = mNextScene;
@@ -381,7 +383,7 @@ void Game::ProcessInput()
                 }
 
                 case SDLK_l:
-                    GetZoe()->SetPosition(Vector2(1306.f, 768.f));
+                    GetZoe()->SetCenter(Vector2(1330.f, 655.f));
                     break;
             }
 
@@ -574,7 +576,7 @@ void Game::UpdateCamera()
         case CameraCenter::LogicalWindowSizeCenter: {
             if (!mZoe)
             {
-                throw std::runtime_error("Zoe actor is null when trying to center camera to logical window size center.");
+                break;
             }
 
             center = GetBoxCenter(
@@ -586,7 +588,7 @@ void Game::UpdateCamera()
         case CameraCenter::Shaking: {
             if (!mZoe)
             {
-                throw std::runtime_error("Zoe actor is null when trying to center camera to logical window size center.");
+                break;
             }
 
             center = GetBoxCenter(

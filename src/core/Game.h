@@ -63,7 +63,8 @@ public:
         Level2,
         Tests,
         DeathScreen,
-        EndDemo
+        EndDemo,
+        BedroomFinal
     };
 
     enum class CameraCenter
@@ -124,6 +125,7 @@ public:
     void LoadTestsLevel();
     void LoadDeathScreen();
     void LoadEndDemoScene();
+    void LoadBedroomFinal();
 
     std::vector<Actor *> GetNearbyActors(const Vector2 &position, const int range = 1);
     std::vector<class AABBColliderComponent *> GetNearbyColliders(const Vector2 &position, const int range = 2);
@@ -211,6 +213,9 @@ public:
 
     void SetFather(class Father *father) { mFather = father; };
     class Father *GetFather() { return mFather; };
+    
+    void SetMother(class Mother *mother) { mMother = mother; };
+    class Mother *GetMother() { return mMother; };
 
     int GetMapWidth();
     int GetMapHeight();
@@ -331,6 +336,7 @@ private:
     class Zoe *mZoe;
     class Star *mStar;
     class Father *mFather;
+    class Mother *mMother;
     std::vector<class Enemy *> mEnemies;
     class HUD *mHUD;
     SoundHandle mMusicHandle;
