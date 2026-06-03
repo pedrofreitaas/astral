@@ -151,9 +151,9 @@ public:
 protected:
     class Game* mGame;
 
-    void SetBehaviorState(BehaviorState state) { 
+    virtual void SetBehaviorState(BehaviorState state) {
         mPreviousBehaviorState = mBehaviorState;
-        mBehaviorState = state; 
+        mBehaviorState = state;
     }
 
     // Any actor-specific update code (overridable)
