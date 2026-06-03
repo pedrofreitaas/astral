@@ -10,6 +10,8 @@
 #include "../core/HUD.h"
 #include "../actors/Father.h"
 #include "../actors/Portal.h"
+#include "../actors/Mother.h"
+#include "../actors/enemies/Zathura.h"
 
 MoveStep::MoveStep(
     class Game* game, 
@@ -158,6 +160,16 @@ void SpawnStep::Update(float deltaTime)
     else if (mActorType == ActorType::Portal)
     {
         newActor = new Portal(mGame, mPosition);
+    }
+
+    else if (mActorType == ActorType::Mother)
+    {
+        newActor = new Mother(mGame, mPosition);
+    }
+
+    else if (mActorType == ActorType::Zathura)
+    {
+        newActor = new Zathura(mGame, mPosition);
     }
 
     if (newActor)
@@ -375,4 +387,66 @@ void BreakTileStep::SetComplete(bool v)
     Step::SetComplete(v);
     mTile->Break();
     mGame->GetAudio()->PlaySound("breakTile.wav");
+}
+
+void SetBehaviorStateStep::PreUpdate()
+{
+    if (mTargetActor)
+        return;
+
+    if (mGetTargetActor)
+    {
+        mTargetActor = mGetTargetActor();
+        return;
+    }
+
+    throw std::runtime_error("SetBehaviorStateStep failed to get target Actor");
+}
+
+void SetBehaviorStateStep::Update(float deltaTime)
+{
+    if (GetIsComplete())
+        return;
+
+    if (!mTargetActor)
+    {
+        throw std::runtime_error("SetBehaviorStateStep failed to get target Actor");
+    }
+
+    mTargetActor->SetBehaviorState(mNewState);
+    SetComplete();
+}
+
+void ApplyKnockbackStep::PreUpdate()
+{
+    if (mTargetActor)
+        return;
+
+    if (mGetTargetActor)
+    {
+        mTargetActor = mGetTargetActor();
+        return;
+    }
+
+    throw std::runtime_error("ApplyKnockbackStep failed to get target Actor");
+}
+
+void ApplyKnockbackStep::Update(float deltaTime)
+{
+    if (GetIsComplete())
+        return;
+
+    if (!mTargetActor)
+    {
+        throw std::runtime_error("ApplyKnockbackStep failed to get target Actor");
+    }
+
+    RigidBodyComponent* rb = mTargetActor->GetComponent<RigidBodyComponent>();
+    if (!rb)
+    {
+        throw std::runtime_error("ApplyKnockbackStep target Actor lost its RigidBodyComponent");
+    }
+
+    rb->ApplyImpulse(mGetMyImpulse());
+    SetComplete();
 }

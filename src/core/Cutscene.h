@@ -11,6 +11,7 @@
 #include "../core/SpatialHashing.h"
 
 class Game;
+class UIAnimation;
 
 class Step {
 public:
@@ -40,9 +41,12 @@ public:
     enum class ActorType {
         Star,
         Father,
-        Portal
+        Portal,
+        Mother,
+        Zathura
         // Add other actor types here as needed
     };
+
     SpawnStep(
         class Game* game, ActorType actorType, const Vector2& position, float maxTime=2.f, float rotation=0.f
     ): Step(game, maxTime), mActorType(actorType), mPosition(position), mPositionFunc(nullptr), mRotation(rotation) {};
@@ -124,8 +128,6 @@ public:
     WaitStep(class Game* game, float duration) : Step(game, duration) {}
     void PreUpdate() override {};
 };
-
-class UIAnimation;
 
 class SpawnJoystickButtonStep : public Step {
 public:
@@ -234,8 +236,8 @@ public:
 
 class BreakTileStep : public Step {
 public:
-    BreakTileStep(class Game* game, Vector2 position) : 
-        Step(game, 1.2f), mTileCenter(position), mTile(nullptr)
+    BreakTileStep(class Game* game, Vector2 position, float maxTime=1.2f) : 
+        Step(game, maxTime), mTileCenter(position), mTile(nullptr)
         {}
     void PreUpdate() override;
     void Update(float deltaTime) override;
@@ -243,6 +245,39 @@ public:
 private:
     Tile *mTile;
     Vector2 mTileCenter;
+};
+
+class SetBehaviorStateStep : public Step {
+public:
+    SetBehaviorStateStep(class Game* game, Actor* targetActor, BehaviorState newState, float maxTime=1.f) 
+        : Step(game, maxTime), mTargetActor(targetActor), mNewState(newState), mGetTargetActor(nullptr) {}
+
+    SetBehaviorStateStep(class Game* game, std::function<Actor*()> getTargetActor, BehaviorState newState, float maxTime=1.f) 
+        : Step(game, maxTime), mTargetActor(nullptr), mNewState(newState), mGetTargetActor(getTargetActor) {}
+    
+    void PreUpdate() override;
+    void Update(float deltaTime) override;
+
+private:
+    Actor* mTargetActor;
+    BehaviorState mNewState;
+    std::function<Actor*()> mGetTargetActor;
+};
+
+class ApplyKnockbackStep : public Step {
+public:
+    ApplyKnockbackStep(class Game* game, Actor* targetActor, std::function<Vector2()> getImpulse, float maxTime=1.f) 
+        : Step(game, maxTime), mTargetActor(targetActor), mGetMyImpulse(getImpulse), mGetTargetActor(nullptr) {}
+
+    ApplyKnockbackStep(class Game* game, std::function<Actor*()> getTargetActor, std::function<Vector2()> getImpulse, float maxTime=1.f) 
+        : Step(game, maxTime), mTargetActor(nullptr), mGetTargetActor(getTargetActor), mGetMyImpulse(getImpulse) {}
+    
+    void PreUpdate() override;
+    void Update(float deltaTime) override;
+private:
+    Actor* mTargetActor;
+    std::function<Vector2()> mGetMyImpulse; 
+    std::function<Actor*()> mGetTargetActor;
 };
 
 class Cutscene {
