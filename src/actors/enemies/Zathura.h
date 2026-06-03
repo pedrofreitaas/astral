@@ -32,10 +32,15 @@ public:
     bool GetIsWaitingToThrowRocks() { return mIsWaitingToThrowRocks; }
     void SetIsWaitingToThrowRocks(bool value) { mIsWaitingToThrowRocks = value; }
 
+    void DeathCutscenePlayedCallback();
+
+protected:
+    void SetBehaviorState(BehaviorState newState) override;
+
 private:
     ZathuraAttacks mCurrentAttack;
     SoundHandle mBlockedPlayerSoundHandle;
     Timer* mRockAttackTimerHandle, *mAttack1CooldownTimer, *mAttack2CooldownTimer, *mAttack3CooldownTimer;
 
-    bool mIsWaitingToThrowRocks, mSpawnedAttackCollider;
+    bool mIsWaitingToThrowRocks, mSpawnedAttackCollider, mPreDeathCutscenePlayed;
 };

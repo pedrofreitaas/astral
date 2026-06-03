@@ -12,7 +12,8 @@ Zathura::Zathura(Game *game, const Vector2 &center)
     mBlockedPlayerSoundHandle(SoundHandle::Invalid),
     mRockAttackTimerHandle(nullptr), mIsWaitingToThrowRocks(false),
     mAttack1CooldownTimer(nullptr), mAttack2CooldownTimer(nullptr), 
-    mAttack3CooldownTimer(nullptr), mSpawnedAttackCollider(false)
+    mAttack3CooldownTimer(nullptr), mSpawnedAttackCollider(false),
+    mPreDeathCutscenePlayed(false)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f);
     mColliderComponent = new AABBColliderComponent(
@@ -51,19 +52,29 @@ Zathura::Zathura(Game *game, const Vector2 &center)
     mDrawComponent->AddAnimation("vanish", 59, 63, false);
     mDrawComponent->AddAnimation("appear", {63,62,61,60,59}, false);
 
-    mDrawComponent->SetAnimation("walk");
-
-    SetBehaviorState(BehaviorState::Idle);
+    SetBehaviorState(BehaviorState::Appearing);
+    mDrawComponent->SetAnimation("appear");
 
     SetPosition(center - GetHalfSize());
 
     SetLifes(game->GetConfig()->Get<int>("Zathura.HEALTH"));
 
     mGame->SetZathura(this);
+
+    mRockAttackTimerHandle = mTimerComponent->AddTimer(
+        mGame->GetConfig()->Get<float>("ZATHURA.ROCKS_ATTACK_COOLDOWN"), 
+        nullptr
+    );
 }
 
 void Zathura::ManageState()
 {
+    if (mGame->GetGamePlayState() == Game::GamePlayState::PlayingCutscene)
+    {
+        return;
+    }
+
+
     switch (mBehaviorState)
     {
         case BehaviorState::Idle: {
@@ -150,6 +161,7 @@ void Zathura::ManageState()
             }
 
             break;
+        }
 
         case BehaviorState::Vanishing:
             break;
@@ -355,7 +367,16 @@ void Zathura::ManageAnimations()
 
         case BehaviorState::Dying:
             mDrawComponent->SetAnimation("die");
-            mDrawComponent->SetAnimFPS(6.f);
+            
+            if (mPreDeathCutscenePlayed)
+            {
+                mDrawComponent->SetAnimFPS(6.f);
+            }
+
+            else {
+                mDrawComponent->SetAnimFPS(0.f); // no progress (stuck)
+            }
+    
             break;
 
         case BehaviorState::Attacking: {
@@ -456,4 +477,19 @@ void Zathura::PlayBlockedPlayerSound() {
     }
 
     mGame->GetAudio()->PlaySound("playerHitBlock.wav");
+}
+
+void Zathura::DeathCutscenePlayedCallback() 
+{
+    mPreDeathCutscenePlayed = true;
+}
+
+void Zathura::SetBehaviorState(BehaviorState newState)
+{
+    Enemy::SetBehaviorState(newState);
+
+    if (newState == BehaviorState::Dying)
+    {
+        mGame->StartCutscene("defeatZathura");
+    }
 }
