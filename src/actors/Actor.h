@@ -197,6 +197,8 @@ protected:
 
 private:
     friend class Component;
+    friend class SetBehaviorStateStep;
+    friend class MoveStep;
 
     // Adds component to Actor (this is automatically called
     // in the component constructor)
