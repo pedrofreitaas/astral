@@ -26,6 +26,7 @@
 #include "../actors/Portal.h"
 #include "../actors/Dog.h"
 #include "../actors/Father.h"
+#include "../actors/Mother.h"
 #include "../actors/MetalCrate.h"
 
 void Game::LoadMainMenu()
@@ -56,7 +57,7 @@ void Game::LoadMainMenu()
         playButtonPos,
         playButtonSize,
         // [this]() { SetGameScene(GameScene::Bedroom); });
-        [this]() { SetGameScene(GameScene::Tests); });
+        [this]() { SetGameScene(GameScene::Level2); });
     
     mainMenu->AddImage(
         "../assets/Sprites/Menu/playButton.png",
@@ -724,8 +725,303 @@ void Game::LoadSecondLevel()
                 std::move(steps),
                 [this]()
                 {
-                    GetZoe()->SetPosition(Vector2(1346.f, 609.f));
+                    GetZoe()->SetCenter(Vector2(1330.f, 655.f));
                     GetZoe()->SetRotation(0.f);
+                });
+
+    steps.clear();
+
+    steps.push_back(std::make_unique<SpawnStep>(this, SpawnStep::ActorType::Mother, Vector2(1866.f, 655.f), 0.f));
+
+    steps.push_back(std::make_unique<WaitStep>(this, .75f));
+
+    dialogue = {
+        "Mamae?"
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
+    dialogue = {
+        "Oi minha filha, que bom que voce esta bem.",
+        "Eu estou tao orgulhosa de voce por ter chegado ate aqui, e por ser tao corajosa.",
+        "Onde esta seu pai?"
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Mae", dialogue));
+
+    steps.push_back(std::make_unique<SpawnStep>(
+        this,
+        SpawnStep::ActorType::Star,
+        Vector2(1300.f, 460.f)));
+
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this](){ return GetStar(); },
+        [this](){ return Vector2(1432.f, 559.f); },
+        250.f));
+
+    dialogue = {
+        "Opa, nao se esquecam de mim!"
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Pai", dialogue));
+
+
+    dialogue = {
+        "Que bom ver voces de novo!"
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Mae", dialogue));
+
+    steps.push_back(std::make_unique<SpawnStep>(
+        this,
+        SpawnStep::ActorType::Zathura,
+        Vector2(1615.f, 516.f)));
+
+    steps.push_back(std::make_unique<WaitStep>(this, .73f));
+
+    steps.push_back(std::make_unique<FreezePhysicsStep>(this));
+
+    dialogue = {
+        "Eu nao quero atrapalhar a reuniao de familia de voces, mas...",
+        "Ninguem vai embora daqui sem me enfrentar primeiro!"
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zathura", dialogue));
+
+    dialogue = {
+        "Boa sorte Zoe!"
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Pai e Mae", dialogue));
+
+    steps.push_back(std::make_unique<UnspawnStep>(
+        this, [this]()
+        { return GetStar(); }));
+
+    steps.push_back(std::make_unique<UnspawnStep>(
+        this, [this]()
+        { return GetMother(); }));
+
+    steps.push_back(std::make_unique<BreakTileStep>(this, Vector2(49, 17) * 32, .5f));
+    steps.push_back(std::make_unique<BreakTileStep>(this, Vector2(51, 17) * 32, .5f));
+    steps.push_back(std::make_unique<BreakTileStep>(this, Vector2(50, 17) * 32, .5f));
+
+    steps.push_back(std::make_unique<UnfreezePhysicsStep>(this));
+
+    AddCutscene("motherEncounter",
+                std::move(steps));
+
+    steps.clear();
+
+    steps.push_back(std::make_unique<WaitStep>(this, 1.25f));
+
+    steps.push_back(std::make_unique<SpawnStep>(
+        this,
+        SpawnStep::ActorType::Star,
+        Vector2(1790.f, 512.f)));
+    
+    steps.push_back(std::make_unique<WaitStep>(this, .5f));
+
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this](){ return GetStar(); },
+        [this](){ return Vector2(1600.f, 651.f); },
+        250.f));
+
+    steps.push_back(std::make_unique<UnspawnStep>(
+        this, [this]()
+        { return GetStar(); }));
+
+    steps.push_back(std::make_unique<ShakeStep>(this, .5f, 2));
+
+    steps.push_back(std::make_unique<SpawnStep>(
+        this,
+        SpawnStep::ActorType::Father,
+        Vector2(1600.f, 651.f)));
+
+    steps.push_back(std::make_unique<SpawnStep>(
+        this,
+        SpawnStep::ActorType::Mother,
+        Vector2(1630.f, 651.f)));
+
+    steps.push_back(std::make_unique<WaitStep>(this, .5f));
+
+    dialogue = {
+        "Que bom que voce conseguiu derrotar Zathura, Zoe!",
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Pai e Mae", dialogue));
+
+    dialogue = {
+        "Obrigada pai, obrigada mae. Eu nao teria conseguido sem voces.",
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
+    dialogue = {
+        "Vamos voltar para casa, voces merecem um descanso depois de tudo isso."
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Pai", dialogue));
+
+    steps.push_back(std::make_unique<SpawnStep>(
+        this,
+        SpawnStep::ActorType::Portal,
+        Vector2(1660.f, 512.f)));
+
+    steps.push_back(std::make_unique<WaitStep>(this, .5f));
+
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this]()
+        { return GetMother(); },
+        [this]()
+        { return Vector2(1660.f, 512.f); },
+        220.f,
+        true,
+        3.f,
+        true));
+
+    steps.push_back(std::make_unique<UnspawnStep>(
+        this, [this]()
+        { return GetMother(); }));
+
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this]()
+        { return GetFather(); },
+        [this]()
+        { return Vector2(1660.f, 512.f); },
+        220.f,
+        true,
+        3.f,
+        true));
+
+    steps.push_back(std::make_unique<UnspawnStep>(
+        this, [this]()
+        { return GetFather(); }));
+
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this]()
+        { return GetZoe(); },
+        [this]()
+        { return Vector2(1660.f, 512.f); },
+        220.f,
+        true,
+        3.f,
+        true));
+
+    steps.push_back(std::make_unique<FreezePhysicsStep>(this));
+
+    AddCutscene("postDefeatZathura",
+                std::move(steps),
+                [this]()
+                {
+                    SetGameScene(GameScene::BedroomFinal);
+                });
+
+    steps.clear();
+
+    steps.push_back(std::make_unique<ApplyKnockbackStep>(
+        this,
+        [this]()
+        { return GetZoe(); },
+        [this]()
+        {
+            auto zoe = GetZoe();
+            float zoeX = zoe->GetCenter().x;
+            
+            auto zathura = GetZathura();
+            float zathuraX = zathura->GetCenter().x;
+
+            if (zoeX >= 1440 && zoeX <= 1760)
+            {
+                int diffXSign = Math::Sign(zoeX - zathuraX);
+                return Vector2(diffXSign * 500.f, -150.f);
+            }
+            
+            return Vector2(0,0);
+        }));
+
+    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
+
+    dialogue = {
+        "Voce nao vai se safar dessa!"
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zathura", dialogue));
+
+    Vector2 spawn = Vector2(1600.f, 480.f);
+
+    steps.push_back(std::make_unique<SpawnStep>(
+        this,
+        SpawnStep::ActorType::Star,
+        spawn));
+
+    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
+        
+    dialogue = {
+        "Calma Zoe, eu te ajudo com essa!"
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Pai", dialogue));
+
+    std::vector<Vector2> starHexagon = {
+        Vector2(-30, 0),
+        Vector2(-21.3, 21.3),
+        Vector2(0, 30),
+        Vector2(21.3, 21.3),
+        Vector2(30, 0),
+        Vector2(21.3, -21.3),
+        Vector2(0, -30),
+        Vector2(-21.3, -21.3)
+    };
+
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this](){ return GetStar(); },
+        [this, starHexagon, spawn]()
+        {
+            return spawn + starHexagon[0];
+        },
+        120.f));
+
+    int totalSpins = 5;
+    for (int i=1; i<totalSpins*starHexagon.size(); i+=2) {
+        steps.push_back(std::make_unique<MoveStep>(
+            this,
+            [this](){ return GetStar(); },
+            [this, i, starHexagon, spawn]()
+            {
+                Vector2 offset = starHexagon[i % starHexagon.size()];
+
+                return spawn + offset;
+            },
+            30.f * (i+1)));
+    }
+
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this]()
+        { return GetStar(); },
+        [this]()
+        { return GetZathura()->GetCenter(); },
+        totalSpins * starHexagon.size() * 30.f));
+
+    steps.push_back(std::make_unique<ShakeStep>(this, .5f, 5));
+
+    steps.push_back(std::make_unique<UnspawnStep>(
+        this, [this]()
+        { return GetStar(); }));
+
+    AddCutscene("defeatZathura",
+                std::move(steps),
+                [this]()
+                {
+                    GetZathura()->DeathCutscenePlayedCallback();
+                    StartCutscene("postDefeatZathura");
                 });
 
     StartCutscene("startSecondLevel");
@@ -827,4 +1123,18 @@ void Game::LoadEndDemoScene()
         Color::White);
 
     mAudio->PlaySound("endDemoTheme.ogg", true);
+}
+
+void Game::LoadBedroomFinal()
+{
+    SetMap("bedroomFinal.json");
+
+    SetCameraCenter(mMap->GetCenter());
+    SetMaintainCameraInMap(false);
+
+    SetApplyGravityScene(false);
+
+    mZoe->SetAbilitiesLocked(true);
+
+    mAudio->PlaySound("bedroomTheme.ogg", true);
 }
