@@ -10,9 +10,11 @@ void Rock::SpawnRocks(Game *game, class Zathura* zathura)
 {
     zathura->SetIsWaitingToThrowRocks(true);
 
-    Rock *r1 = new Rock(game, Vector2(144, 90), zathura);
-    Rock *r2 = new Rock(game, Vector2(306, 90), zathura);
-    Rock *r3 = new Rock(game, Vector2(464, 90), zathura);
+    Vector2 cameraPos = game->GetCameraPos();
+
+    Rock *r1 = new Rock(game, cameraPos + Vector2(144, 90), zathura);
+    Rock *r2 = new Rock(game, cameraPos + Vector2(306, 90), zathura);
+    Rock *r3 = new Rock(game, cameraPos + Vector2(464, 90), zathura);
 
     TimerComponent *timer = zathura->GetComponent<TimerComponent>();
 
