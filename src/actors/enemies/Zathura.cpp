@@ -74,7 +74,6 @@ void Zathura::ManageState()
         return;
     }
 
-
     switch (mBehaviorState)
     {
         case BehaviorState::Idle: {
@@ -87,7 +86,7 @@ void Zathura::ManageState()
             break;
         }
 
-        case BehaviorState::Moving:
+        case BehaviorState::Moving: {
             if (mRigidBodyComponent->GetVelocity().x > 0.f)
                 SetRotation(0.f);
             else if (mRigidBodyComponent->GetVelocity().x < 0.f)
