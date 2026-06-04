@@ -196,6 +196,7 @@ void Game::ChangeScene()
 
     // Reset gameplay state
     mGamePlayState = GamePlayState::Playing;
+    mIsPhysicsFrozen = false;
 
     mAudio->StopAllSounds();
 
