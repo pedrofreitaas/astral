@@ -444,7 +444,7 @@ bool Zoe::CheckHit()
             ColliderLayer::PlayerAttack,
             {ColliderLayer::Player},
             1.25f,
-            nullptr,
+            [this]() { mAerialAttackCollider = nullptr; },
             false,
             std::bind(&Zoe::GetCenter, this));
 
@@ -490,7 +490,7 @@ bool Zoe::Hit()
         ColliderLayer::PlayerAttack,
         {ColliderLayer::Player},
         .75f,
-        nullptr,
+        [this]() { mAttackCollider = nullptr; },
         false,
         std::bind(&Zoe::GetCenter, this));
 
