@@ -23,7 +23,9 @@ public:
         Portal=6,
         Quasar=7,
         InversedSpear=8,
-        Zathura=9
+        Zathura=9,
+        Father=10,
+        Mother=11
     };
 
     MapObject(Game *game, int inId, const std::string &ev, const std::string &func_name, 

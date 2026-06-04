@@ -10,6 +10,8 @@
 #include "../actors/traps/Spikes.h"
 #include "../actors/Portal.h"
 #include "../actors/enemies/Zathura.h"
+#include "../actors/Father.h"
+#include "../actors/Mother.h"
 
 MapObject::MapObject(Game *game, int inId, const std::string &ev, const std::string &func_name,
                      const Vector2 &pos, const Vector2 &size, const json &parameters)
@@ -222,6 +224,12 @@ void MapObject::SpawnEntity()
         break;
     case EntityCode::Zathura:
         new Zathura(mGame, GetCenter());
+        break;
+    case EntityCode::Father:
+        new Father(mGame, GetCenter());
+        break;
+    case EntityCode::Mother:
+        new Mother(mGame, GetCenter());
         break;
     default:
         throw std::runtime_error("MapObject unknown SpawnCode");
