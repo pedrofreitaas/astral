@@ -57,7 +57,7 @@ void Game::LoadMainMenu()
         playButtonPos,
         playButtonSize,
         // [this]() { SetGameScene(GameScene::Bedroom); });
-        [this]() { SetGameScene(GameScene::Level2); });
+        [this]() { SetGameScene(GameScene::BedroomFinal); });
     
     mainMenu->AddImage(
         "../assets/Sprites/Menu/playButton.png",
@@ -84,7 +84,7 @@ void Game::LoadBedroom()
 
     SetApplyGravityScene(false);
 
-    auto *dog = new Dog(this, Vector2(300.f, 280.f));
+    new Dog(this, Vector2(300.f, 280.f));
 
     std::vector<std::unique_ptr<Step>> steps;
     std::vector<std::string> dialogue = {
@@ -1122,6 +1122,42 @@ void Game::LoadEndDemoScene()
         Vector2(33.0f, 33.0f),
         Color::White);
 
+    std::vector<std::unique_ptr<Step>> steps;
+    std::vector<std::string> dialogue;
+
+    dialogue = {
+        "E foi assim que a Zoe conseguiu salvar a mae dela e derrotar Zathura.",
+        "Ela e muito corajosa, nao e mesmo?",
+        "Parabens por chegar ate aqui! Voce terminou a versao final do jogo.",
+        "Muito obrigado por jogar, espero que voce tenha gostado!",
+        "Se voce quiser saber mais sobre a criacao jogo, basta continuar lendo.",
+        "Se nao, voce pode clicar no botao para voltar para o menu principal e jogar de novo, ou ate mesmo mostrar o jogo para um amigo!",
+        "Astral foi um jogo que nasceu do amor que eu tenho por jogos de plataforma 2D, e da minha vontade de criar um jogo proprio.",
+        "Ele e resultado de um trabalho de conclusao de curso (TCC), que durou aproximadamente 1 ano ao todo.",
+        "Eu sou Pedro Oliveira, e desenvolvedor do Astral. Eu sou apaixonado por jogos desde crianca, e sempre sonhei em criar um jogo proprio.",
+        "Nesse processo, fui orientado pelo Lucas Ferreira, professor da UFMG.",
+        "Varios dos assets do jogo nao foram criados por mim, todos os creditos sao dados no GDD do Astral.",
+        "Voce pode encontra-lo no Itch.io do jogo: 'https://pedrofreitaas.itch.io/astral'",
+        "Alguns easter eggs:",
+        "Os nomes desse jogo sao inspirados em personagens de obras espacias: Zod (o sentinela atirador),",
+        "Zathura (o monstro do livro), Nebula (o planeta do segundo nivel),",
+        "Sith (a besta voadora) e o Quasar (o golem do segundo nivel)",
+        "Originalmente, o roteiro do jogo era um pouco diferente, a estrela nao era o Pai de Zoe, e o final do jogo nem parecia com esse final,",
+        "Mas eu acabei mudando algumas coisas no processo de desenvolvimento para deixar a historia mais fluida, interessante.",
+        "Fazer um jogo e um processo de muita tentativa e erro, e eu acabei mudando varias coisas no roteiro original, mas eu estou muito feliz com o resultado final.",
+        "E um grande desafio, mas sem duvidas, muito divertido e gratificante.",
+        "Mas, tudo tem seu fim."
+        "E com MUITO PESAR, eu encerro Astral por aqui. Muito obrigado por jogar!",
+        "Enfim, ate a proxima aventura! E cuidado com Zathura..."
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Desenvolvedor", dialogue));
+
+    AddCutscene("credits",
+                std::move(steps));
+
+    StartCutscene("credits");
+
     mAudio->PlaySound("endDemoTheme.ogg", true);
 }
 
@@ -1131,10 +1167,85 @@ void Game::LoadBedroomFinal()
 
     SetCameraCenter(mMap->GetCenter());
     SetMaintainCameraInMap(false);
-
     SetApplyGravityScene(false);
 
+    new Dog(this, Vector2(402.f, 75.f));
+
     mZoe->SetAbilitiesLocked(true);
+
+    std::vector<std::unique_ptr<Step>> steps;
+    std::vector<std::string> dialogue;
+
+    dialogue = {
+        "Ufa, ainda bem que estamos bem.",
+        "Eu estava com medo de que o Zathura fosse forte demais e que eu nao conseguisse derrotar ele."
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
+    dialogue = {
+        "Zathura? E aquele monstro do livro da sua mae?",
+        "Agora eu entendi por que voce demorou tanto para acordar."
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Pai", dialogue));
+
+    dialogue = {
+        "Como assim? Voce nao lembra que acabamos de salvar a mamae, Pai?"
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
+    dialogue = {
+        "Ah, Zoe... Acho que esse seu tempo extra na cama te rendeu um bom sonho...",
+        "Vamos, va pegar o presente da vovo que deixamos no quarto."
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Mae", dialogue));
+
+    dialogue = {
+        "Ah, ta bom entao.",
+        "Pelo menos tudo nao passou de um sonho."
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
+
+    steps.push_back(std::make_unique<MoveStep>(
+        this,
+        [this]()
+        { return GetZoe(); },
+        [this]()
+        { return Vector2(474.f, 103.f); },
+        80.f,
+        false,
+        1.2f));
+
+    steps.push_back(std::make_unique<UnspawnStep>(
+        this,
+        [this]()
+        { return GetZoe(); }));
+
+    dialogue = {
+        "Sera que e mesmo a melhor decisao esconder isso dela?"
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Mae", dialogue));
+
+    dialogue = {
+        "Nao sei.",
+        "Mas tenho certeza que nao devemos mais voltar para la."
+    };
+
+    steps.push_back(std::make_unique<DialogueStep>(this, "Pai", dialogue));
+
+    steps.push_back(std::make_unique<WaitStep>(this, 1.f));
+
+    AddCutscene("finalCutscene",
+                std::move(steps),
+                [this]()
+                {
+                    this->SetGameScene(GameScene::EndDemo);
+                });
 
     mAudio->PlaySound("bedroomTheme.ogg", true);
 }
