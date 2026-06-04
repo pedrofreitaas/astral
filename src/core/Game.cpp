@@ -255,13 +255,20 @@ void Game::UnloadScene()
 {
     // Delete actors
     delete mSpatialHashing;
+    mZoe = nullptr;
+    mStar = nullptr;
+    mPortal = nullptr;
+    mZathura = nullptr;
+    mEnemies.clear();
 
-    // Delete UI screens
+    // Delete UI screens - HUD is here
     for (auto ui : mUIStack)
     {
         delete ui;
     }
     mUIStack.clear();
+
+    mHUD = nullptr;
 
     // Delete background texture
     if (mBackgroundTexture)
