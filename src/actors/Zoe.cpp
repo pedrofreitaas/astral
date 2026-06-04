@@ -329,8 +329,11 @@ void Zoe::ManageState()
         if (mRigidBodyComponent->GetOnGround())
         {
             SetBehaviorState(BehaviorState::Idle);
-            mAerialAttackCollider->Dismiss();
-            mAerialAttackCollider = nullptr;
+            if (mAerialAttackCollider != nullptr)
+            {
+                mAerialAttackCollider->Dismiss();
+                mAerialAttackCollider = nullptr;
+            }
             break;
         }
 
@@ -729,16 +732,22 @@ void Zoe::AnimationEndCallback(std::string animationName)
     if (animationName == "ground-crush")
     {
         SetBehaviorState(BehaviorState::Idle);
-        mAttackCollider->Dismiss();
-        mAttackCollider = nullptr;
+        if (mAttackCollider != nullptr)
+        {
+            mAttackCollider->Dismiss();
+            mAttackCollider = nullptr;
+        }
         return;
     }
 
     if (animationName == "aerial-crush")
     {
         SetBehaviorState(BehaviorState::Jumping);
-        mAerialAttackCollider->Dismiss();
-        mAerialAttackCollider = nullptr;
+        if (mAerialAttackCollider != nullptr)
+        {
+            mAerialAttackCollider->Dismiss();
+            mAerialAttackCollider = nullptr;
+        }
         return;
     }
 }
