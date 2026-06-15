@@ -105,9 +105,9 @@
             21, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 99, 0, 0, 0, 97, 98, 98, 98, 98, 98, 98, 23,
             40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 42,
             40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 101, 0, 0, 0, 0, 0, 0, 0, 0, 42,
-            40, 0, 0, 0, 0, 0, 0, 0, 261, 262, 263, 0, 261, 262, 263, 0, 0, 0, 0, 0, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 261, 262, 262, 25, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 97, 98, 98, 98, 98, 23, 0, 0, 42,
+            40, 0, 0, 0, 0, 0, 0, 0, 261, 262, 263, 0, 261, 262, 263, 0, 0, 0, 0, 0, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 261, 262, 262, 262, 25, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 97, 98, 98, 98, 98, 23, 0, 0, 42,
             40, 0, 0, 261, 262, 263, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 261, 262, 262, 25, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 0, 0, 42,
-            40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 44, 0, 0, 0, 0, 0, 0, 0, 261, 262, 263, 0, 0, 0, 0, 0, 0, 0, 0, 44, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 0, 0, 42,
+            40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 44, 0, 0, 0, 0, 0, 0, 261, 262, 263, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 0, 0, 42,
             40, 0, 0, 0, 0, 0, 0, 261, 262, 263, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 262, 262, 262, 44, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 0, 0, 42,
             40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 0, 0, 0, 44, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 42,
             40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 261, 262, 263, 0, 0, 0, 0, 0, 0, 44, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 0, 0, 0, 44, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 42,
@@ -231,6 +231,7 @@
                  "height":64,
                  "id":4,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -258,6 +259,7 @@
                  "height":30.3334,
                  "id":52,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -285,6 +287,7 @@
                  "height":13,
                  "id":67,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -312,6 +315,7 @@
                  "height":64,
                  "id":100,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -339,6 +343,7 @@
                  "height":6.66663,
                  "id":110,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"event",
@@ -361,6 +366,7 @@
                  "height":16,
                  "id":111,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -388,6 +394,7 @@
                  "height":16,
                  "id":112,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -415,6 +422,7 @@
                  "height":16,
                  "id":113,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -442,6 +450,7 @@
                  "height":16,
                  "id":114,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -469,6 +478,7 @@
                  "height":16,
                  "id":115,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -496,6 +506,7 @@
                  "height":16,
                  "id":116,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -523,6 +534,7 @@
                  "height":16,
                  "id":117,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -550,6 +562,7 @@
                  "height":63,
                  "id":118,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -577,6 +590,7 @@
                  "height":44.913,
                  "id":119,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"cutscene_name",
@@ -604,6 +618,7 @@
                  "height":29.6667,
                  "id":120,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -631,6 +646,7 @@
                  "height":10,
                  "id":121,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"event",
@@ -647,12 +663,13 @@
                  "visible":true,
                  "width":576,
                  "x":672,
-                 "y":300
+                 "y":305
                 }, 
                 {
                  "height":13,
                  "id":122,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -680,6 +697,7 @@
                  "height":13,
                  "id":123,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -707,6 +725,7 @@
                  "height":13,
                  "id":124,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -734,6 +753,7 @@
                  "height":13,
                  "id":125,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -761,6 +781,7 @@
                  "height":13,
                  "id":126,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -788,6 +809,7 @@
                  "height":13,
                  "id":127,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -815,6 +837,7 @@
                  "height":13,
                  "id":128,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -842,6 +865,7 @@
                  "height":13,
                  "id":129,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -869,6 +893,7 @@
                  "height":13,
                  "id":130,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -896,6 +921,7 @@
                  "height":13,
                  "id":131,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -923,6 +949,7 @@
                  "height":13,
                  "id":132,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -950,6 +977,7 @@
                  "height":13,
                  "id":133,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -977,6 +1005,7 @@
                  "height":13,
                  "id":134,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1004,6 +1033,7 @@
                  "height":13,
                  "id":135,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1031,6 +1061,7 @@
                  "height":13,
                  "id":136,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1058,6 +1089,7 @@
                  "height":13,
                  "id":137,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1085,6 +1117,7 @@
                  "height":13,
                  "id":138,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1112,6 +1145,7 @@
                  "height":6.66663,
                  "id":140,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"event",
@@ -1134,6 +1168,7 @@
                  "height":29.6667,
                  "id":141,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1161,6 +1196,7 @@
                  "height":29.6667,
                  "id":144,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1188,6 +1224,7 @@
                  "height":29.6667,
                  "id":145,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1215,6 +1252,7 @@
                  "height":29.6667,
                  "id":146,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1242,6 +1280,7 @@
                  "height":29.6667,
                  "id":148,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1269,6 +1308,7 @@
                  "height":32,
                  "id":149,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1296,6 +1336,7 @@
                  "height":32,
                  "id":150,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1323,6 +1364,7 @@
                  "height":32,
                  "id":151,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1350,6 +1392,7 @@
                  "height":30.3334,
                  "id":153,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1377,6 +1420,7 @@
                  "height":13,
                  "id":154,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1404,6 +1448,7 @@
                  "height":13,
                  "id":155,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1431,6 +1476,7 @@
                  "height":63,
                  "id":157,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1458,6 +1504,7 @@
                  "height":30.3334,
                  "id":158,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1485,6 +1532,7 @@
                  "height":30.3334,
                  "id":159,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1523,6 +1571,7 @@
                  "height":31.0833,
                  "id":37,
                  "name":"",
+                 "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1534,6 +1583,7 @@
                  "height":31.5,
                  "id":81,
                  "name":"",
+                 "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1545,6 +1595,7 @@
                  "height":31.1667,
                  "id":82,
                  "name":"",
+                 "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1556,6 +1607,7 @@
                  "height":29.5,
                  "id":83,
                  "name":"",
+                 "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1567,6 +1619,7 @@
                  "height":29.5,
                  "id":84,
                  "name":"",
+                 "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1578,6 +1631,7 @@
                  "height":29.5,
                  "id":85,
                  "name":"",
+                 "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1589,6 +1643,7 @@
                  "height":31.0833,
                  "id":162,
                  "name":"",
+                 "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1600,6 +1655,7 @@
                  "height":31.0833,
                  "id":163,
                  "name":"",
+                 "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1617,7 +1673,7 @@
  "nextobjectid":164,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.11.2",
+ "tiledversion":"1.12.2",
  "tileheight":32,
  "tilesets":[
         {

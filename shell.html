@@ -22,7 +22,6 @@
     #header {
       width: 100%;
       display: flex;
-      justify-content: flex-end;
       align-items: center;
       gap: 12px;
       padding: 8px 16px;
@@ -30,7 +29,26 @@
       border-bottom: 1px solid #333;
     }
 
-    #header label { font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+    .header-link {
+      color: #9d8ff0;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 4px 12px;
+      border: 1px solid #4a4080;
+      border-radius: 4px;
+      white-space: nowrap;
+      transition: background .15s, color .15s;
+    }
+    .header-link:hover { background: #2a2050; color: #c8bcff; }
+
+    #header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: auto;
+    }
+
+    #header-controls label { font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
 
     #fullscreen {
       padding: 4px 14px;
@@ -85,38 +103,23 @@
       accent-color: #7c6fcd;
     }
 
-    /* ── links footer ── */
-    #links {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 32px;
-      padding: 20px 16px;
-      background: #1a1a1a;
-      border-top: 1px solid #333;
-      flex-wrap: wrap;
-    }
-
-    #links a {
-      color: #9d8ff0;
-      text-decoration: none;
-      font-size: 14px;
-      padding: 8px 20px;
-      border: 1px solid #4a4080;
-      border-radius: 6px;
-      transition: background .15s, color .15s;
-    }
-    #links a:hover { background: #2a2050; color: #c8bcff; }
   </style>
-  {{{ STYLE }}}
 </head>
 <body>
 
   <!-- header controls -->
   <div id="header">
-    <label><input type="checkbox" id="resize"> Resize canvas</label>
-    <label><input type="checkbox" id="pointerLock"> Lock/hide mouse pointer</label>
-    <button id="fullscreen">Fullscreen</button>
+    <a href="https://docs.google.com/forms/d/1mKuvfojrFI_Fi23-AFfw42d1iDGGo4Dp0DJ7cYeJhbs/viewform" target="_blank" rel="noopener" class="header-link">
+      📋 Avaliar o jogo
+    </a>
+    <a href="https://docs.google.com/forms/d/1mKuvfojrFI_Fi23-AFfw42d1iDGGo4Dp0DJ7cYeJhbs/viewform" target="_blank" rel="noopener" class="header-link">
+      🔔 Receber avisos de futuros playtests
+    </a>
+    <div id="header-controls">
+      <label><input type="checkbox" id="resize"> Resize canvas</label>
+      <label><input type="checkbox" id="pointerLock"> Lock/hide mouse pointer</label>
+      <button id="fullscreen">Fullscreen</button>
+    </div>
   </div>
 
   <!-- canvas + loading overlay -->
@@ -127,16 +130,6 @@
       <div id="status">Carregando...</div>
       <progress id="progress" value="0" max="100" hidden></progress>
     </div>
-  </div>
-
-  <!-- form links -->
-  <div id="links">
-    <a href="https://docs.google.com/forms/d/1mKuvfojrFI_Fi23-AFfw42d1iDGGo4Dp0DJ7cYeJhbs/viewform" target="_blank" rel="noopener">
-      📋 Avaliar o jogo
-    </a>
-    <a href="https://docs.google.com/forms/d/1mKuvfojrFI_Fi23-AFfw42d1iDGGo4Dp0DJ7cYeJhbs/viewform" target="_blank" rel="noopener">
-      🔔 Receber avisos de futuros playtests
-    </a>
   </div>
 
   <script>
