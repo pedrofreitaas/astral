@@ -76,11 +76,14 @@ bool Game::Initialize()
     }
 
 #ifdef __EMSCRIPTEN__
-    // On web, SDL_GetCurrentDisplayMode returns the monitor resolution, not the
-    // canvas size. Creating a canvas at monitor resolution causes a CSS/viewport
-    // mismatch that makes the game invisible until the user changes browser zoom.
-    mRealWindowWidth = mWindowWidth;
-    mRealWindowHeight = mWindowHeight;
+    // On web, SDL_GetCurrentDisplayMode returns the monitor resolution, which is
+    // larger than the browser viewport. Creating a canvas at monitor resolution
+    // causes a CSS/viewport mismatch that makes the game invisible until the user
+    // changes browser zoom. Use the actual viewport size instead.
+    mRealWindowWidth  = EM_ASM_INT({ return window.innerWidth;  });
+    mRealWindowHeight = EM_ASM_INT({ return window.innerHeight; });
+    if (mRealWindowWidth  <= 0) mRealWindowWidth  = 1280;
+    if (mRealWindowHeight <= 0) mRealWindowHeight = 720;
 #else
     SDL_DisplayMode mode;
     SDL_GetCurrentDisplayMode(0, &mode);
@@ -169,17 +172,6 @@ bool Game::Initialize()
 
     mAudio->CacheAllSounds();
 
-#ifdef __EMSCRIPTEN__
-    // Uncheck "Lock/hide mouse pointer" — the game manages cursor visibility itself
-    // via SDL_ShowCursor, and the shell's pointer lock causes a WrongDocumentError
-    // when entering fullscreen. Also enable "Resize canvas" so fullscreen fills the screen.
-    EM_ASM({
-        var pointerLock = document.getElementById('pointerLock');
-        if (pointerLock) pointerLock.checked = false;
-        var resize = document.getElementById('resize');
-        if (resize) resize.checked = true;
-    });
-#endif
 
     return true;
 }

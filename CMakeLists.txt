@@ -152,6 +152,7 @@ if(EMSCRIPTEN)
         "SHELL:-s ALLOW_MEMORY_GROWTH=1"
         "SHELL:--preload-file ${CMAKE_SOURCE_DIR}/assets@/assets"
         "SHELL:--preload-file ${CMAKE_SOURCE_DIR}/gamecontrollerdb.txt@/gamecontrollerdb.txt"
+        "SHELL:--shell-file ${CMAKE_SOURCE_DIR}/shell.html"
     )
 
 elseif(WIN32)
