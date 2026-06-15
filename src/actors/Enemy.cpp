@@ -130,6 +130,15 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent 
         );
         return;
     }
+
+    if (other->GetLayer() == ColliderLayer::Player)
+    {
+        // just to avoid player stuck on enemy when colliding horizontally.
+        TakeKnockback(
+            Vector2(Math::Sign(-minOverlap) * mGame->GetConfig()->Get<float>("ENEMY.PLAYER_KNOCKBACK_FORCE"), 0.f)
+        );
+        return;
+    }
 }
 
 void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
