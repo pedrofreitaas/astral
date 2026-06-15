@@ -52,16 +52,10 @@ Nevasca::Nevasca(
 
 void Nevasca::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    if (other->GetLayer() == ColliderLayer::Objects) {
-        Kill();
-    }
 }   
 
 void Nevasca::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    if (other->GetLayer() == ColliderLayer::Objects) {
-        Kill();
-    }
 }
 
 void Nevasca::Kill()
