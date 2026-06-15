@@ -143,6 +143,33 @@
                  "width":36,
                  "x":32.5,
                  "y":282.666
+                }, 
+                {
+                 "height":200,
+                 "id":40,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"entity_code",
+                         "type":"int",
+                         "value":9
+                        }, 
+                        {
+                         "name":"event",
+                         "type":"string",
+                         "value":"atStart"
+                        }, 
+                        {
+                         "name":"function_name",
+                         "type":"string",
+                         "value":"spawn_entity"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":200,
+                 "x":401,
+                 "y":119
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -162,7 +189,7 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":32,
+ "nextobjectid":42,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -179,6 +206,10 @@
         {
          "firstgid":333,
          "source":"..\/..\/..\/tiled\/tilesets\/Torch.tsx"
+        }, 
+        {
+         "firstgid":334,
+         "source":"..\/Tilesets\/MetalCrate.json"
         }],
  "tilewidth":32,
  "type":"map",

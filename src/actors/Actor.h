@@ -46,6 +46,8 @@ enum class BehaviorState // For AI behaviors/animations
     Barking = 21,
     Licking = 22,
     ChargingAttack = 23,
+    Vanishing = 24,
+    Appearing = 25
 };
 
 class Actor
@@ -149,9 +151,9 @@ public:
 protected:
     class Game* mGame;
 
-    void SetBehaviorState(BehaviorState state) { 
+    virtual void SetBehaviorState(BehaviorState state) {
         mPreviousBehaviorState = mBehaviorState;
-        mBehaviorState = state; 
+        mBehaviorState = state;
     }
 
     // Any actor-specific update code (overridable)
@@ -189,11 +191,14 @@ protected:
     virtual void StopFreeze();
 
     void SetOnDamageCallback(std::function<void()> callback);
+    bool GetIsInvincible() const { return mInvincible; }
     void SetInvincibilityOff();
     void SetInvincibilityOn();
 
 private:
     friend class Component;
+    friend class SetBehaviorStateStep;
+    friend class MoveStep;
 
     // Adds component to Actor (this is automatically called
     // in the component constructor)

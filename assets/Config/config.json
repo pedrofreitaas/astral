@@ -1,9 +1,23 @@
 {
+    "METAL_CRATE_PUSH_FORCE": 1000,
     "ENEMY": {
-        "PLAYER_KNOCKBACK_FORCE": 400
+        "PLAYER_KNOCKBACK_FORCE": 400,
+        "FOV_ANGLE": 1.3963
     },
     "FREEZING_RATE": 1.0,
+    "ZATHURA": {
+        "HEALTH": 15,
+        "ROCKS_ATTACK_COOLDOWN": 30.0,
+        "ATTACK1_COOLDOWN": 10.0,
+        "ATTACK2_COOLDOWN": 5.0,
+        "ATTACK3_COOLDOWN": 10.0,
+        "ATTACK1_KNOCKBACK_FORCE": 300,
+        "ATTACK_2_AND_3_KNOCKBACK_FORCE": 400,
+        "ROCK_SPEED": 550.0,
+        "ROCK_DELAY": 1.5
+    },
     "QUASAR": {
+        "HEALTH": 3,
         "SMASH_COOLDOWN": 3,
         "SPIKE_KNOCKBACK_FORCE": 260
     },
@@ -18,7 +32,7 @@
         "PROJECTILE_SPEED": 350,
         "SPEED": 80
     },
-    "SPEAR_COOLDOWN": 2.5,
+    "SPEAR_COOLDOWN": 2,
     "SPEAR_KNOCKBACK_FORCE": 140.0,
     "SPIKE_COOLDOWN": 1.75,
     "SPIKE_KNOCKBACK_FORCE": 400.0,

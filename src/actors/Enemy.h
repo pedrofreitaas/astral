@@ -22,6 +22,12 @@ public:
     SDL_Rect GetThreatRect() const;
     std::vector<Vector2> GetObstaclesAroundCenters() const;
 
+    float GetMaxSeeDistance() const { return mMaxSeeDistance; }
+    float GetMinSeeDistance() const { return mMinSeeDistance; }
+    float GetFovAngle() const;
+
+    bool isAISeeking() const;
+
 protected:
     friend class AIMovementComponent;
 
@@ -43,8 +49,17 @@ protected:
     Vector2 GetLastSeenPlayerCenter() const { return mLastSeenPlayerCenter; }
     Vector2 GetSpawnPosition() const { return mSpawnPosition; }
 
+    bool HasSeenPlayerThisFrame() const { return mHasSeenPlayerThisFrame; }
+    bool IsPlayerOnSightThisFrame() const { return mPlayerOnSightThisFrame; }
+    float GetHowLongLastSeenPlayer() const { return mHowLongLastSeenPlayer; }
+    float GetDistanceToPlayerSquared() const { return mDistanceToPlayerSquared; }
+    float GetLastSeenPlayerDistanceSquared() const { return mLastSeenPlayerDistanceSquared; }
+
+    bool HasSeenPlayerRecently(float timeThreshold=2.f) const { return mHowLongLastSeenPlayer <= timeThreshold; }
+
 private:
     float mMaxSeeDistance, mMinSeeDistance;
-    bool mHasSeenPlayerThisFrame;
+    bool mHasSeenPlayerThisFrame, mPlayerOnSightThisFrame;
     Vector2 mLastSeenPlayerCenter, mSpawnPosition;
+    float mHowLongLastSeenPlayer, mDistanceToPlayerSquared, mLastSeenPlayerDistanceSquared;
 };

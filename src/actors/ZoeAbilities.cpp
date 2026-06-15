@@ -217,6 +217,11 @@ bool Zoe::CheckVentania()
         return false;
     }
 
+    if (closeToWall && dir.x == 0.f && dir.y == -1.f)
+    {
+        return false;
+    }
+
     float speed = mGame->GetConfig()->Get<float>("ZOE.POWERS.VENTANIA.SPEED");
 
     mRigidBodyComponent->ResetVelocity();
@@ -439,7 +444,7 @@ bool Zoe::CheckHit()
             ColliderLayer::PlayerAttack,
             {ColliderLayer::Player},
             1.25f,
-            nullptr,
+            [this]() { mAerialAttackCollider = nullptr; },
             false,
             std::bind(&Zoe::GetCenter, this));
 
@@ -485,7 +490,7 @@ bool Zoe::Hit()
         ColliderLayer::PlayerAttack,
         {ColliderLayer::Player},
         .75f,
-        nullptr,
+        [this]() { mAttackCollider = nullptr; },
         false,
         std::bind(&Zoe::GetCenter, this));
 

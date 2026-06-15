@@ -39,7 +39,9 @@ class Zoe : public Actor
         ColliderLayer::PlayerAttack,
         ColliderLayer::Quasar,
         ColliderLayer::SithAttack1,
-        ColliderLayer::SithAttack2
+        ColliderLayer::SithAttack2,
+        ColliderLayer::Nevasca,
+        ColliderLayer::Items
     };
 
     std::vector<ColliderLayer> IGNORED_LAYERS_DEFAULT = {

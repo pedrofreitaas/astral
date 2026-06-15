@@ -37,7 +37,12 @@ enum class ColliderLayer
     Items,
     Father,
     Mother,
-    Star
+    Star,
+    MetalCrate,
+    Zathura,
+    ZathuraAttack1,
+    ZathuraAttack2,
+    ZathuraAttack3
 };
 
 enum class IgnoreOption
@@ -82,6 +87,8 @@ public:
     void MaintainInCamera();
     void MaintainInMap();
     bool IsSegmentIntersecting(const Vector2& start, const Vector2& end);
+
+    bool IsSegmentIntersectingPlayerLayer(const Vector2& start, const Vector2& end) const;
 
     bool IsCollidingRect(const SDL_Rect& rect) const;
 

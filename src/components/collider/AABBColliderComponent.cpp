@@ -57,12 +57,12 @@ float AABBColliderComponent::GetMinHorizontalOverlap(AABBColliderComponent *b) c
 
 void AABBColliderComponent::CallHorizontalCollisionCallbacks(const float overlap, class AABBColliderComponent *other, IgnoreOption thisColliderIgnoreOption, IgnoreOption otherColliderIgnoreOption)
 {
-    if (thisColliderIgnoreOption != IgnoreOption::IgnoreCallback ||
+    if (thisColliderIgnoreOption != IgnoreOption::IgnoreCallback &&
         thisColliderIgnoreOption != IgnoreOption::Both
     )
         mOwner->OnHorizontalCollision(overlap, other);
 
-    if (otherColliderIgnoreOption != IgnoreOption::IgnoreCallback ||
+    if (otherColliderIgnoreOption != IgnoreOption::IgnoreCallback &&
         otherColliderIgnoreOption != IgnoreOption::Both
     )
         other->GetOwner()->OnHorizontalCollision(-overlap, this);
@@ -70,12 +70,12 @@ void AABBColliderComponent::CallHorizontalCollisionCallbacks(const float overlap
 
 void AABBColliderComponent::CallVerticalCollisionCallbacks(const float overlap, class AABBColliderComponent *other, IgnoreOption thisColliderIgnoreOption, IgnoreOption otherColliderIgnoreOption)
 {
-    if (thisColliderIgnoreOption != IgnoreOption::IgnoreCallback || 
+    if (thisColliderIgnoreOption != IgnoreOption::IgnoreCallback &&
         thisColliderIgnoreOption != IgnoreOption::Both
     )
         mOwner->OnVerticalCollision(overlap, other);
 
-    if (otherColliderIgnoreOption != IgnoreOption::IgnoreCallback ||
+    if (otherColliderIgnoreOption != IgnoreOption::IgnoreCallback &&
         otherColliderIgnoreOption != IgnoreOption::Both
     )
         other->GetOwner()->OnVerticalCollision(-overlap, this);
@@ -87,7 +87,8 @@ float AABBColliderComponent::DetectHorizontalCollision(RigidBodyComponent *rigid
         return false;
 
     // Use spatial hashing to get nearby colliders
-    auto colliders = mOwner->GetGame()->GetNearbyColliders(mOwner->GetCenter(), 2);
+    int radius = static_cast<int>(mWidth / Game::TILE_SIZE) + 1;
+    auto colliders = mOwner->GetGame()->GetNearbyColliders(GetCenter(), radius);
 
     std::sort(colliders.begin(), colliders.end(), [this](AABBColliderComponent *a, AABBColliderComponent *b)
               { return Math::Abs((a->GetCenter() - GetCenter()).LengthSq() < (b->GetCenter() - GetCenter()).LengthSq()); });
@@ -142,7 +143,8 @@ float AABBColliderComponent::DetectVerticalCollision(RigidBodyComponent *rigidBo
         return false;
 
     // Use spatial hashing to get nearby colliders
-    auto colliders = mOwner->GetGame()->GetNearbyColliders(mOwner->GetPosition());
+    int radius = static_cast<int>(mHeight / Game::TILE_SIZE) + 2;
+    auto colliders = mOwner->GetGame()->GetNearbyColliders(GetCenter(), radius);
 
     std::sort(colliders.begin(), colliders.end(), [this](AABBColliderComponent *a, AABBColliderComponent *b)
               { return Math::Abs((a->GetCenter() - GetCenter()).LengthSq() < (b->GetCenter() - GetCenter()).LengthSq()); });
@@ -413,4 +415,41 @@ bool AABBColliderComponent::IsContainedIn(const AABBColliderComponent &b) const
 
     return (min.x >= b.GetMin().x && max.x <= b.GetMax().x &&
             min.y >= b.GetMin().y && max.y <= b.GetMax().y);
+}
+
+bool AABBColliderComponent::IsSegmentIntersectingPlayerLayer(const Vector2 &start, const Vector2 &end) const
+{
+    float length = (end - start).Length();
+    const int minPoints = 4;
+    const int maxPoints = 30;
+    const float stepSize = 45.35f/3.f; // 32x32 tile diagonal
+    int totalPoints = (int)std::ceil(length / stepSize);
+    totalPoints = std::max(minPoints, std::min(maxPoints, totalPoints));
+
+    // get points along the segment
+    for (int i = 0; i <= totalPoints; i++)
+    {
+        float t = (float)i / (float)totalPoints;
+        Vector2 point = Vector2::Lerp(start, end, t);
+
+        auto colliders = mOwner->GetGame()->GetNearbyColliders(point, 0);
+
+        for (auto &collider : colliders)
+        {
+            if (!collider->IsEnabled())
+                continue;
+
+            if (collider->GetLayer() == GetLayer()) // ignoring own caller layer
+                continue;
+
+            if (collider->GetLayer() == ColliderLayer::Player)
+                return true;
+            
+            // collided in other layer
+            else
+                return false;
+        }
+    }
+
+    return false;
 }

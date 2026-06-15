@@ -74,6 +74,18 @@ void Map::LoadTilesLayer(std::vector<std::pair<std::string, int>> &nameToFirstGI
 
 		Tileset currentTileset = search->second;
 
+		if (currentTileset.GetName() == "MetalCrate")
+		{
+			new MetalCrate(
+				mGame,
+				Vector2(
+					(tileIdx % mWidthInTiles) * 32 + 16, 
+					std::floor(tileIdx * 1.0f / mWidthInTiles) * 32 + 16
+				)
+			);
+			continue;
+		}
+
 		if (currentTileset.GetName() == "Torch")
 		{
 			new Torch(

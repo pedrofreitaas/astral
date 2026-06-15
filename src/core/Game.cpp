@@ -31,9 +31,11 @@
 #include "../ui/DialogueSystem.h"
 #include "../actors/Star.h"
 #include "../actors/Enemy.h"
+#include "../components/ai/AIMovementComponent.h"
 #include "../actors/Portal.h"
 #include "../actors/enemies/Zod.h"
 #include "../actors/Item.h"
+#include "../actors/enemies/Zathura.h"
 
 Game::Game()
     : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true),
@@ -47,7 +49,8 @@ Game::Game()
       mCameraCenter(CameraCenter::Zoe), mMaintainCameraInMap(true), mCameraCenterPos(Vector2::Zero),
       mController(nullptr), mMustAlwaysUpdateActors(), mPreviousGameState(GamePlayState::Playing),
       mRealWindowHeight(0), mRealWindowWidth(0), mDeltatime(0.f), mShakeCounter(0.f), mShakeIntensity(3.f),
-      mPortal(nullptr), mIsPhysicsFrozen(false)
+      mPortal(nullptr), mIsPhysicsFrozen(false), mHasSpawnedPortalLevel2(false),
+      mMetalCratePortionTimeCounter(0.f), mQuasarEncounterTimeCounter(0.f), mZathura(nullptr)
 {
     mWindowWidth = 640;
     mWindowHeight = 352;
@@ -193,6 +196,7 @@ void Game::ChangeScene()
 
     // Reset gameplay state
     mGamePlayState = GamePlayState::Playing;
+    mIsPhysicsFrozen = false;
 
     mAudio->StopAllSounds();
 
@@ -218,6 +222,8 @@ void Game::ChangeScene()
         LoadEndDemoScene();
     else if (mNextScene == GameScene::Tests)
         LoadTestsLevel();
+    else if (mNextScene == GameScene::BedroomFinal)
+        LoadBedroomFinal();
 
     // Set new scenes
     mGameScene = mNextScene;
@@ -249,13 +255,20 @@ void Game::UnloadScene()
 {
     // Delete actors
     delete mSpatialHashing;
+    mZoe = nullptr;
+    mStar = nullptr;
+    mPortal = nullptr;
+    mZathura = nullptr;
+    mEnemies.clear();
 
-    // Delete UI screens
+    // Delete UI screens - HUD is here
     for (auto ui : mUIStack)
     {
         delete ui;
     }
     mUIStack.clear();
+
+    mHUD = nullptr;
 
     // Delete background texture
     if (mBackgroundTexture)
@@ -378,7 +391,7 @@ void Game::ProcessInput()
                 }
 
                 case SDLK_l:
-                    GetZoe()->SetPosition(Vector2(1288.f, 762.f));
+                    GetZoe()->SetCenter(Vector2(1330.f, 655.f));
                     break;
             }
 
@@ -537,13 +550,16 @@ void Game::UpdateGame()
 
     if (mGameScene == GameScene::Level1)
     {
-        HalfFirstLevelCheck();
+        QuasarEncounterLevelCheck();
         BreakTilesFirstLevelCheck();
         LastPartFirstLevelCheck();
     }
     else if (mGameScene == GameScene::Level2)
     {
         SithEncounterBreakTilesCheck();
+        SithEncounterBreakTilesCheck2();
+        CheckPortalSpawn();
+        CheckMetalCrateLevel();
     }
 }
 
@@ -568,7 +584,7 @@ void Game::UpdateCamera()
         case CameraCenter::LogicalWindowSizeCenter: {
             if (!mZoe)
             {
-                throw std::runtime_error("Zoe actor is null when trying to center camera to logical window size center.");
+                break;
             }
 
             center = GetBoxCenter(
@@ -580,7 +596,7 @@ void Game::UpdateCamera()
         case CameraCenter::Shaking: {
             if (!mZoe)
             {
-                throw std::runtime_error("Zoe actor is null when trying to center camera to logical window size center.");
+                break;
             }
 
             center = GetBoxCenter(
@@ -701,7 +717,7 @@ std::vector<AABBColliderComponent *> Game::GetNearbyColliders(const Vector2 &pos
 
 void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
 {
-    mSpatialHashing->Draw(mRenderer, mCameraPos, mWindowWidth, mWindowHeight);
+    // mSpatialHashing->Draw(mRenderer, mCameraPos, mWindowWidth, mWindowHeight);
 
     // draw collider boxes only if the player has collider
     for (auto actor : actorsOnCamera)
@@ -760,6 +776,37 @@ void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
                 };
                 SDL_SetRenderDrawColor(mRenderer, 255, 165, 0, 255);
                 SDL_RenderDrawRect(mRenderer, &obstacleRect);
+            }
+        
+            float fovAngleDeg = enemy->GetFovAngle() * (180.0f / Math::Pi);
+            Vector2 forward = enemy->GetForward();
+            float maxDist = enemy->GetMaxSeeDistance();
+
+            Vector2 leftEdge = Vector2::RotateVec(forward, -fovAngleDeg) * maxDist;
+            Vector2 rightEdge = Vector2::RotateVec(forward, fovAngleDeg) * maxDist;
+
+            SDL_SetRenderDrawColor(mRenderer, 0, 220, 0, 255);
+            SDL_RenderDrawLine(mRenderer,
+                static_cast<int>(enemyPos.x - mCameraPos.x),
+                static_cast<int>(enemyPos.y - mCameraPos.y),
+                static_cast<int>(enemyPos.x + leftEdge.x - mCameraPos.x),
+                static_cast<int>(enemyPos.y + leftEdge.y - mCameraPos.y));
+            SDL_RenderDrawLine(mRenderer,
+                static_cast<int>(enemyPos.x - mCameraPos.x),
+                static_cast<int>(enemyPos.y - mCameraPos.y),
+                static_cast<int>(enemyPos.x + rightEdge.x - mCameraPos.x),
+                static_cast<int>(enemyPos.y + rightEdge.y - mCameraPos.y));
+
+            if (enemy->isAISeeking())
+            {
+                Vector2 seekIndicator = enemyPos + enemy->GetForward() * enemy->GetWidth() * 0.5f;
+                SDL_Rect seekRect = {
+                    static_cast<int>(seekIndicator.x - 4 - mCameraPos.x),
+                    static_cast<int>(seekIndicator.y - 4 - mCameraPos.y),
+                    8, 8
+                };
+                SDL_SetRenderDrawColor(mRenderer, 160, 32, 240, 255);
+                SDL_RenderFillRect(mRenderer, &seekRect);
             }
         }
     }
@@ -1137,7 +1184,7 @@ std::vector<class Enemy *> Game::GetEnemies(const Vector2 &min, const Vector2 &m
     return nearbyEnemies;
 }
 
-void Game::HalfFirstLevelCheck()
+void Game::QuasarEncounterLevelCheck()
 {
     if (GameScene::Level1 != mGameScene)
     {
@@ -1155,13 +1202,29 @@ void Game::HalfFirstLevelCheck()
     Vector2 zoeCenter = mZoe->GetCenter();
     std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
 
-    if (!enemiesInArea.empty())
+    bool playerInArea = zoeCenter.x >= start.x && zoeCenter.x <= end.x 
+        && zoeCenter.y >= start.y && zoeCenter.y <= end.y;
+
+    if (!playerInArea)
     {
         return;
     }
+    
+    // if the only quasar is still full life.
+    if (
+        !enemiesInArea.empty() && 
+        enemiesInArea[0]->GetLifes() == GetConfig()->Get<int>("QUASAR.HEALTH")
+    )
+    {
+        mQuasarEncounterTimeCounter += GetDtLastFrame();
 
-    if (zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
-        zoeCenter.y >= start.y && zoeCenter.y <= end.y)
+        if (mQuasarEncounterTimeCounter >= MAX_TIME_QUASAR_ENCOUNTER_TIP)
+            StartCutscene("quasarEncounterTip");
+
+        return;
+    }
+
+    if (enemiesInArea.empty())
     {
         StartCutscene("halfFirstLevel");
     }
@@ -1256,6 +1319,124 @@ void Game::SithEncounterBreakTilesCheck()
         StartCutscene("breakLevelSithPhaseTiles");
     }
 }
+
+void Game::SithEncounterBreakTilesCheck2()
+{
+    if (GameScene::Level2 != mGameScene)
+    {
+        return;
+    }
+
+    if (mGamePlayState != GamePlayState::Playing)
+    {
+        return;
+    }
+
+    Vector2 start = Vector2(655.f, 373.f);
+    Vector2 end = Vector2(1270.f, 688.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
+
+    if (!enemiesInArea.empty())
+    {
+        return;
+    }
+
+    if (zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y)
+    {
+        StartCutscene("breakLevelSithPhaseTiles2");
+    }
+}
+
+void Game::CheckPortalSpawn()
+{
+    if (mGameScene != GameScene::Level2)
+        return;
+
+    if (mGamePlayState != GamePlayState::Playing)
+        return;
+
+    if (mHasSpawnedPortalLevel2)
+        return;
+
+    Vector2 start = Vector2(656.f, 15.f);
+    Vector2 end = Vector2(1265.f, 365.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
+
+    if (!enemiesInArea.empty())
+        return;
+
+    if (
+        !(zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y)
+    )
+        return;
+
+    Vector2 pos1 = Vector2(896, 64);
+    Vector2 pos2 = Vector2(672, 160);
+    Vector2 objSize = Vector2(128, 64);
+
+    Vector2 realPos = (zoeCenter.x >= pos1.x && zoeCenter.x <= pos1.x + objSize.x &&
+        zoeCenter.y >= pos1.y && zoeCenter.y <= pos1.y + objSize.y) ? pos2 : pos1;
+
+    json parameters = json::object();
+    parameters["cutscene_name"] = "spawnPortalLevel2";
+
+    new Portal(
+        this,
+        realPos + (objSize * 0.5f)
+    );
+
+    new MapObject(
+        this,
+        SPAWN_PORTAL_LEVEL_2_OBJ_ID,
+        "in",
+        "play_cutscene",
+        realPos,
+        objSize,
+        parameters);
+
+    mHasSpawnedPortalLevel2 = true;
+}
+
+void Game::CheckMetalCrateLevel()
+{
+    if (mGameScene != GameScene::Level2)
+        return;
+
+    if (mGamePlayState != GamePlayState::Playing)
+        return;
+
+    if (mMetalCratePortionTimeCounter >= MAX_TIME_METAL_CRATE_TIP)
+        return;
+
+    // not the full level, just the tip portion.
+    Vector2 start = Vector2(1474.f, 0.f);
+    Vector2 end = Vector2(1686.f, 350.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    RigidBodyComponent* zoeRigidBody = mZoe->GetComponent<RigidBodyComponent>();
+
+    // might be gettting mechanic without tip
+    if (!zoeRigidBody->GetOnGround())
+        return;
+
+    if (
+        zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y
+    )
+    {
+        mMetalCratePortionTimeCounter += GetDtLastFrame();
+
+        if (mMetalCratePortionTimeCounter >= MAX_TIME_METAL_CRATE_TIP)
+            StartCutscene("metalCrateTip");
+    }
+}
+
 
 Vector2 Game::getNormalizedControlerPad()
 {

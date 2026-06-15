@@ -9,6 +9,9 @@
 #include "../actors/traps/Spear.h"
 #include "../actors/traps/Spikes.h"
 #include "../actors/Portal.h"
+#include "../actors/enemies/Zathura.h"
+#include "../actors/Father.h"
+#include "../actors/Mother.h"
 
 MapObject::MapObject(Game *game, int inId, const std::string &ev, const std::string &func_name,
                      const Vector2 &pos, const Vector2 &size, const json &parameters)
@@ -92,6 +95,12 @@ void MapObject::CallMyFunction()
     if (mFunctionName == "teleport_to_checkpoint")
     {
         TeleportToCheckpoint();
+        return;
+    }
+
+    if (mFunctionName == "teleport_to_checkpoint_if_damaged")
+    {
+        TeleportToCheckpointIfDamaged();
         return;
     }
 
@@ -213,6 +222,15 @@ void MapObject::SpawnEntity()
     case EntityCode::InversedSpear:
         new Spear(mGame, GetCenter(), true);
         break;
+    case EntityCode::Zathura:
+        new Zathura(mGame, GetCenter());
+        break;
+    case EntityCode::Father:
+        new Father(mGame, GetCenter());
+        break;
+    case EntityCode::Mother:
+        new Mother(mGame, GetCenter());
+        break;
     default:
         throw std::runtime_error("MapObject unknown SpawnCode");
         break;
@@ -225,4 +243,12 @@ void MapObject::TeleportToCheckpoint()
 {
     GetGame()->GetZoe()->TeleportToCheckpoint();
     // SetState(ActorState::Destroy);
+}
+
+void MapObject::TeleportToCheckpointIfDamaged()
+{
+    if (GetGame()->GetZoe()->GetBehaviorState() == BehaviorState::TakingDamage)
+    {
+        TeleportToCheckpoint();
+    }
 }

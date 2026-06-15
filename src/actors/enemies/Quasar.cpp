@@ -50,6 +50,8 @@ Quasar::Quasar(Game *game, const Vector2 &center)
     SetBehaviorState(BehaviorState::Asleep);
 
     SetPosition(center - GetHalfSize());
+
+    SetLifes(game->GetConfig()->Get<int>("QUASAR.HEALTH"));
 }
 
 void Quasar::ManageState()
@@ -59,13 +61,10 @@ void Quasar::ManageState()
     if (!zoe)
         return;
 
-    Vector2 toZoe = zoe->GetCenter() - GetCenter();
-    float distanceToZoeSQ = toZoe.LengthSq();
-
     switch (mBehaviorState)
     {
         case BehaviorState::Asleep:
-            if (distanceToZoeSQ <= 45000.f)
+            if (GetDistanceToPlayerSquared() <= 45000.f)
             {
                 SetBehaviorState(BehaviorState::Moving);
             }
@@ -85,12 +84,12 @@ void Quasar::ManageState()
                 break;
 
             if (
-                PlayerOnSight() && 
+                IsPlayerOnSightThisFrame() &&
                 (mAttackTimerHandle == nullptr ||
                  mTimerComponent->checkTimerRemaining(mAttackTimerHandle) <= 0.f)
             )
             {
-                mIsCloseAttack = distanceToZoeSQ <= 1600.f;
+                mIsCloseAttack = GetLastSeenPlayerDistanceSquared() <= 1600.f;
                 mAppliedImpulseInAttack = false;
                 SetBehaviorState(BehaviorState::Attacking);
                 
@@ -260,9 +259,9 @@ void Quasar::PlayBlockedPlayerSound() {
 
     if (!mBlockedPlayerSoundHandle.IsValid()) 
     {
-        mBlockedPlayerSoundHandle = mGame->GetAudio()->PlaySound("quasarBlock.wav");
+        mBlockedPlayerSoundHandle = mGame->GetAudio()->PlaySound("playerHitBlock.wav");
         return;
     }
 
-    mGame->GetAudio()->PlaySound("quasarBlock.wav");
+    mGame->GetAudio()->PlaySound("playerHitBlock.wav");
 }

@@ -29,6 +29,11 @@ void Dog::OnUpdate(float deltaTime)
 {
     Item::OnUpdate(deltaTime);
 
+    auto zoe = mGame->GetZoe();
+
+    if (!zoe)
+        return;
+
     float myX = GetPosition().x;
     float zoeX = mGame->GetZoe()->GetPosition().x;
 

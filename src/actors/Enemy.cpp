@@ -9,7 +9,9 @@
 Enemy::Enemy(Game *game, const Vector2 &position, float maxSeeDistance, float minSeeDistance)
     : Actor(game), mMaxSeeDistance(maxSeeDistance), 
     mMinSeeDistance(minSeeDistance), mHasSeenPlayerThisFrame(false),
-    mLastSeenPlayerCenter(Vector2::Zero), mSpawnPosition(position)
+    mLastSeenPlayerCenter(Vector2::Zero), mSpawnPosition(position),
+    mHowLongLastSeenPlayer(99999.f), mPlayerOnSightThisFrame(false),
+    mLastSeenPlayerDistanceSquared(0.f), mDistanceToPlayerSquared(0.f)
 {
     mGame->AddEnemy(this);
 }
@@ -22,8 +24,17 @@ Enemy::~Enemy()
 void Enemy::OnUpdate(float deltaTime)
 {
     mHasSeenPlayerThisFrame = PlayerOnFov();
-    if (mHasSeenPlayerThisFrame) 
+    mPlayerOnSightThisFrame = PlayerOnSight();
+    mDistanceToPlayerSquared = (GetGame()->GetZoe()->GetCenter() - GetCenter()).LengthSq();
+    
+    if (mHasSeenPlayerThisFrame) {
         mLastSeenPlayerCenter = GetGame()->GetZoe()->GetCenter();
+        mLastSeenPlayerDistanceSquared = mDistanceToPlayerSquared;
+        mHowLongLastSeenPlayer = 0.f;
+    }
+    else {
+        mHowLongLastSeenPlayer += deltaTime;
+    }
     
     ManageState();
     ManageAnimations();
@@ -50,14 +61,7 @@ bool Enemy::PlayerOnSight(float angle)
 
     Vector2 lineOfSightEnd = lineOfSightStart + viewDir*distance;
 
-    auto zoeCollider = zoe->GetComponent<AABBColliderComponent>();
-
-    if (zoeCollider == nullptr)
-        return false;
-
-    bool isIntersecting = zoeCollider->IsSegmentIntersecting(lineOfSightStart, lineOfSightEnd);
-
-    return isIntersecting;
+    return mColliderComponent->IsSegmentIntersectingPlayerLayer(lineOfSightStart, lineOfSightEnd);
 }
 
 bool Enemy::PlayerOnFov()
@@ -70,8 +74,8 @@ bool Enemy::PlayerOnFov()
     if (zoe == nullptr)
         return false;
 
-    Vector2 toZoe = zoe->GetPosition() - GetPosition();
-    float distanceToZoeSq = toZoe.LengthSq();
+    Vector2 toZoe = zoe->GetCenter() - GetCenter();
+    float distanceToZoeSq = GetDistanceToPlayerSquared();
 
     if (distanceToZoeSq > maxDistance * maxDistance) return false;
     if (distanceToZoeSq < minDistance * minDistance) return true;
@@ -83,9 +87,11 @@ bool Enemy::PlayerOnFov()
     float dot = Vector2::Dot(forward, toZoe);
     float angle = Math::Acos(dot);
 
-    const float fovAngle = Math::Pi / 4.f; // 45 degrees field of view
+    const float fovAngle = mGame->GetConfig()->Get<float>("ENEMY.FOV_ANGLE");
 
-    return angle < fovAngle;
+    if (angle >= fovAngle) return false;
+
+    return mColliderComponent->IsSegmentIntersectingPlayerLayer(GetCenter(), zoe->GetCenter());
 }
 
 Vector2 Enemy::GetCurrentAppliedForce(float modifier) const
@@ -210,4 +216,15 @@ Vector2 Enemy::GetCurrentVelocity(float modifier) const
         return Vector2::Zero;
 
     return rb->GetVelocity() * modifier;
+}
+
+float Enemy::GetFovAngle() const
+{
+    return mGame->GetConfig()->Get<float>("ENEMY.FOV_ANGLE");
+}
+
+bool Enemy::isAISeeking() const
+{
+    return mAIMovementComponent &&
+           mAIMovementComponent->GetMovementState() == MovementState::Seeking;
 }

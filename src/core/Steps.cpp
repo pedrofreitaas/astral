@@ -9,17 +9,20 @@
 #include "../ui/UIAnimation.h"
 #include "../core/HUD.h"
 #include "../actors/Father.h"
+#include "../actors/Portal.h"
+#include "../actors/Mother.h"
+#include "../actors/enemies/Zathura.h"
 
 MoveStep::MoveStep(
     class Game* game, 
     std::function<Actor*()> targetActorFunc,
     std::function<Vector2()> getTargetPosFunc,
-    float speed, bool spin, float maxTime
-): 
+    float speed, bool spin, float maxTime, bool blockGravity): 
     Step(game, maxTime), mSpeed(speed), 
     mGetTargetActor(std::move(targetActorFunc)), 
     mGetTargetPos(std::move(getTargetPosFunc)),
-    mTargetPos(Vector2::Zero), mSpinAngle(0.0f), mSpin(spin)
+    mTargetPos(Vector2::Zero), mSpinAngle(0.0f), 
+    mSpin(spin), mRemoveGravityIfNeeded(blockGravity)
 {
 }
 
@@ -38,6 +41,36 @@ void MoveStep::PreUpdate()
     {
         throw std::runtime_error("MoveStep target Actor lost its RigidBodyComponent");
     }
+
+    if (!rb->GetApplyGravity() && mRemoveGravityIfNeeded)
+    {
+        throw std::runtime_error("MoveStep was set to block gravity but target Actor's RigidBodyComponent already has gravity disabled");
+    }
+
+    if (rb->GetApplyGravity() && mRemoveGravityIfNeeded)
+    {
+        rb->SetApplyGravity(false);
+    }
+}
+
+void MoveStep::SetComplete(bool v)
+{
+    Step::SetComplete(v);
+
+    Actor *mTargetActor = mGetTargetActor();
+    if (!mTargetActor)
+    {
+        throw std::runtime_error("MoveStep target Actor is null");
+    }
+
+    RigidBodyComponent *rb = mTargetActor->GetComponent<RigidBodyComponent>();
+    if (!rb)
+    {
+        throw std::runtime_error("MoveStep target Actor lost its RigidBodyComponent");
+    }
+
+    if (mRemoveGravityIfNeeded)
+        rb->SetApplyGravity(true);
 }
 
 void MoveStep::Update(float deltaTime)
@@ -124,8 +157,24 @@ void SpawnStep::Update(float deltaTime)
         newActor = new Father(mGame, mPosition);
     }
 
+    else if (mActorType == ActorType::Portal)
+    {
+        newActor = new Portal(mGame, mPosition);
+    }
+
+    else if (mActorType == ActorType::Mother)
+    {
+        newActor = new Mother(mGame, mPosition);
+    }
+
+    else if (mActorType == ActorType::Zathura)
+    {
+        newActor = new Zathura(mGame, mPosition);
+    }
+
     if (newActor)
     {
+        newActor->SetRotation(mRotation);
         SetComplete();
     }
     else
@@ -338,4 +387,66 @@ void BreakTileStep::SetComplete(bool v)
     Step::SetComplete(v);
     mTile->Break();
     mGame->GetAudio()->PlaySound("breakTile.wav");
+}
+
+void SetBehaviorStateStep::PreUpdate()
+{
+    if (mTargetActor)
+        return;
+
+    if (mGetTargetActor)
+    {
+        mTargetActor = mGetTargetActor();
+        return;
+    }
+
+    throw std::runtime_error("SetBehaviorStateStep failed to get target Actor");
+}
+
+void SetBehaviorStateStep::Update(float deltaTime)
+{
+    if (GetIsComplete())
+        return;
+
+    if (!mTargetActor)
+    {
+        throw std::runtime_error("SetBehaviorStateStep failed to get target Actor");
+    }
+
+    mTargetActor->SetBehaviorState(mNewState);
+    SetComplete();
+}
+
+void ApplyKnockbackStep::PreUpdate()
+{
+    if (mTargetActor)
+        return;
+
+    if (mGetTargetActor)
+    {
+        mTargetActor = mGetTargetActor();
+        return;
+    }
+
+    throw std::runtime_error("ApplyKnockbackStep failed to get target Actor");
+}
+
+void ApplyKnockbackStep::Update(float deltaTime)
+{
+    if (GetIsComplete())
+        return;
+
+    if (!mTargetActor)
+    {
+        throw std::runtime_error("ApplyKnockbackStep failed to get target Actor");
+    }
+
+    RigidBodyComponent* rb = mTargetActor->GetComponent<RigidBodyComponent>();
+    if (!rb)
+    {
+        throw std::runtime_error("ApplyKnockbackStep target Actor lost its RigidBodyComponent");
+    }
+
+    rb->ApplyImpulse(mGetMyImpulse());
+    SetComplete();
 }

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="32">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="42">
  <editorsettings>
   <export target="../../assets/Levels/Maps/tests.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/Terrain and Back Wall (32x32).tsx"/>
  <tileset firstgid="248" source="../tilesets/Nebula-Terrain.tsx"/>
  <tileset firstgid="333" source="../tilesets/Torch.tsx"/>
+ <tileset firstgid="334" source="../../assets/Levels/Tilesets/MetalCrate.json"/>
  <layer id="6" name="ground" width="20" height="11">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -85,6 +86,13 @@
   <object id="2" x="32.5" y="282.666" width="36" height="36">
    <properties>
     <property name="entity_code" type="int" value="0"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="40" x="401" y="119" width="200" height="200">
+   <properties>
+    <property name="entity_code" type="int" value="9"/>
     <property name="event" value="atStart"/>
     <property name="function_name" value="spawn_entity"/>
    </properties>

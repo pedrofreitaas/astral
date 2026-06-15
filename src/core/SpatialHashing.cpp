@@ -47,7 +47,7 @@ SpatialHashing::~SpatialHashing()
 void SpatialHashing::Insert(Actor *actor)
 {
     // Compute positions for each vertex of the collider
-    Vector2 position = actor->GetPosition();
+    Vector2 position = actor->GetCenter();
 
     int col = static_cast<int>(position.x / mCellSize);
     int row = static_cast<int>(position.y / mCellSize);
@@ -395,43 +395,32 @@ void SpatialHashing::Draw(SDL_Renderer *renderer, const Vector2 &cameraPosition,
     {
         for (int c = 0; c < cols; ++c)
         {
-            if (mCellTypes[r][c] == CellType::Tile)
+            int x = c * mCellSize + mCellSize / 2 - static_cast<int>(cameraPosition.x) - 5;
+            int y = r * mCellSize + mCellSize / 2 - static_cast<int>(cameraPosition.y) - 5;
+            SDL_Rect rect = {x, y, 10, 10};
+
+            if (!mGrid[r][c].empty())
             {
-                int x = c * mCellSize + mCellSize / 2 - static_cast<int>(cameraPosition.x) - 5;
-                int y = r * mCellSize + mCellSize / 2 - static_cast<int>(cameraPosition.y) - 5;
-                SDL_Rect rect = {x, y, 10, 10};
+                SDL_SetRenderDrawColor(renderer, 40, 110, 100, 255);
+                SDL_RenderFillRect(renderer, &rect);
+            }
+
+            else if (mCellTypes[r][c] == CellType::Tile)
+            {
                 SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
                 SDL_RenderFillRect(renderer, &rect);
             }
 
             else if (mCellTypes[r][c] == CellType::Platform)
             {
-                int x = c * mCellSize + mCellSize / 2 - static_cast<int>(cameraPosition.x) - 5;
-                int y = r * mCellSize + mCellSize / 2 - static_cast<int>(cameraPosition.y) - 5;
-                SDL_Rect rect = {x, y, 10, 10};
                 SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
                 SDL_RenderFillRect(renderer, &rect);
             }
 
             else if (mCellTypes[r][c] == CellType::Corner)
             {
-                int x = c * mCellSize + mCellSize / 2 - static_cast<int>(cameraPosition.x) - 5;
-                int y = r * mCellSize + mCellSize / 2 - static_cast<int>(cameraPosition.y) - 5;
-                SDL_Rect rect = {x, y, 10, 10};
                 SDL_SetRenderDrawColor(renderer, 255, 165, 0, 255);
                 SDL_RenderFillRect(renderer, &rect);
-
-                int auxRow = r + 1;
-                while (mCellTypes[r][c] != CellType::Platform && false)
-                {
-                    int y = auxRow * mCellSize + mCellSize / 2 - static_cast<int>(cameraPosition.y) - 5;
-                    SDL_Rect rect = {x, y, 10, 10};
-                    SDL_RenderFillRect(renderer, &rect);
-
-                    auxRow++;
-                    if (auxRow > mGrid.size())
-                        break;
-                }
             }
         }
     }

@@ -21,6 +21,10 @@
 #include "Config.h"
 #include "Checkpoint.h"
 
+const float MAX_TIME_QUASAR_ENCOUNTER_TIP = 20.f;
+const int SPAWN_PORTAL_LEVEL_2_OBJ_ID = 9999;
+const float MAX_TIME_METAL_CRATE_TIP = 25.f;
+
 class Step;
 class Cutscene;
 
@@ -59,7 +63,8 @@ public:
         Level2,
         Tests,
         DeathScreen,
-        EndDemo
+        EndDemo,
+        BedroomFinal
     };
 
     enum class CameraCenter
@@ -120,6 +125,7 @@ public:
     void LoadTestsLevel();
     void LoadDeathScreen();
     void LoadEndDemoScene();
+    void LoadBedroomFinal();
 
     std::vector<Actor *> GetNearbyActors(const Vector2 &position, const int range = 1);
     std::vector<class AABBColliderComponent *> GetNearbyColliders(const Vector2 &position, const int range = 2);
@@ -172,6 +178,9 @@ public:
     class Zoe *GetZoe() { return mZoe; }
     void SetZoe(class Zoe *zoe);
 
+    class Zathura *GetZathura() { return mZathura; }
+    void SetZathura(class Zathura *zathura) { mZathura = zathura; }
+
     GamePlayState GetGamePlayState() const { 
         return mGamePlayState; 
     }
@@ -204,6 +213,9 @@ public:
 
     void SetFather(class Father *father) { mFather = father; };
     class Father *GetFather() { return mFather; };
+    
+    void SetMother(class Mother *mother) { mMother = mother; };
+    class Mother *GetMother() { return mMother; };
 
     int GetMapWidth();
     int GetMapHeight();
@@ -320,9 +332,11 @@ private:
     Vector2 mCameraPos;
 
     // Game-specific
+    class Zathura *mZathura;
     class Zoe *mZoe;
     class Star *mStar;
     class Father *mFather;
+    class Mother *mMother;
     std::vector<class Enemy *> mEnemies;
     class HUD *mHUD;
     SoundHandle mMusicHandle;
@@ -353,12 +367,17 @@ private:
     bool isEnding;
     
     // -- first level --
-    void HalfFirstLevelCheck();
+    void QuasarEncounterLevelCheck();
     void BreakTilesFirstLevelCheck();
     void LastPartFirstLevelCheck();
     // -- second level
     void SithEncounterBreakTilesCheck();
-
+    void SithEncounterBreakTilesCheck2();
+    void CheckPortalSpawn();
+    void CheckMetalCrateLevel();
+    
+    float mQuasarEncounterTimeCounter, mMetalCratePortionTimeCounter;
+    bool mHasSpawnedPortalLevel2;
     float mShakeCounter, mShakeIntensity;
 
     bool mIsPhysicsFrozen;
