@@ -201,6 +201,54 @@ src/actors/Collider.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Collider.cpp.s
 .PHONY : src/actors/Collider.cpp.s
 
+src/actors/Crate.o: src/actors/Crate.cpp.o
+.PHONY : src/actors/Crate.o
+
+# target to build an object file
+src/actors/Crate.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Crate.cpp.o
+.PHONY : src/actors/Crate.cpp.o
+
+src/actors/Crate.i: src/actors/Crate.cpp.i
+.PHONY : src/actors/Crate.i
+
+# target to preprocess a source file
+src/actors/Crate.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Crate.cpp.i
+.PHONY : src/actors/Crate.cpp.i
+
+src/actors/Crate.s: src/actors/Crate.cpp.s
+.PHONY : src/actors/Crate.s
+
+# target to generate assembly for a file
+src/actors/Crate.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Crate.cpp.s
+.PHONY : src/actors/Crate.cpp.s
+
+src/actors/Dog.o: src/actors/Dog.cpp.o
+.PHONY : src/actors/Dog.o
+
+# target to build an object file
+src/actors/Dog.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Dog.cpp.o
+.PHONY : src/actors/Dog.cpp.o
+
+src/actors/Dog.i: src/actors/Dog.cpp.i
+.PHONY : src/actors/Dog.i
+
+# target to preprocess a source file
+src/actors/Dog.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Dog.cpp.i
+.PHONY : src/actors/Dog.cpp.i
+
+src/actors/Dog.s: src/actors/Dog.cpp.s
+.PHONY : src/actors/Dog.s
+
+# target to generate assembly for a file
+src/actors/Dog.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Dog.cpp.s
+.PHONY : src/actors/Dog.cpp.s
+
 src/actors/Enemy.o: src/actors/Enemy.cpp.o
 .PHONY : src/actors/Enemy.o
 
@@ -224,6 +272,30 @@ src/actors/Enemy.s: src/actors/Enemy.cpp.s
 src/actors/Enemy.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Enemy.cpp.s
 .PHONY : src/actors/Enemy.cpp.s
+
+src/actors/Father.o: src/actors/Father.cpp.o
+.PHONY : src/actors/Father.o
+
+# target to build an object file
+src/actors/Father.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Father.cpp.o
+.PHONY : src/actors/Father.cpp.o
+
+src/actors/Father.i: src/actors/Father.cpp.i
+.PHONY : src/actors/Father.i
+
+# target to preprocess a source file
+src/actors/Father.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Father.cpp.i
+.PHONY : src/actors/Father.cpp.i
+
+src/actors/Father.s: src/actors/Father.cpp.s
+.PHONY : src/actors/Father.s
+
+# target to generate assembly for a file
+src/actors/Father.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Father.cpp.s
+.PHONY : src/actors/Father.cpp.s
 
 src/actors/Item.o: src/actors/Item.cpp.o
 .PHONY : src/actors/Item.o
@@ -272,6 +344,54 @@ src/actors/MapObject.s: src/actors/MapObject.cpp.s
 src/actors/MapObject.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/MapObject.cpp.s
 .PHONY : src/actors/MapObject.cpp.s
+
+src/actors/MetalCrate.o: src/actors/MetalCrate.cpp.o
+.PHONY : src/actors/MetalCrate.o
+
+# target to build an object file
+src/actors/MetalCrate.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.o
+.PHONY : src/actors/MetalCrate.cpp.o
+
+src/actors/MetalCrate.i: src/actors/MetalCrate.cpp.i
+.PHONY : src/actors/MetalCrate.i
+
+# target to preprocess a source file
+src/actors/MetalCrate.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.i
+.PHONY : src/actors/MetalCrate.cpp.i
+
+src/actors/MetalCrate.s: src/actors/MetalCrate.cpp.s
+.PHONY : src/actors/MetalCrate.s
+
+# target to generate assembly for a file
+src/actors/MetalCrate.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.s
+.PHONY : src/actors/MetalCrate.cpp.s
+
+src/actors/Mother.o: src/actors/Mother.cpp.o
+.PHONY : src/actors/Mother.o
+
+# target to build an object file
+src/actors/Mother.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Mother.cpp.o
+.PHONY : src/actors/Mother.cpp.o
+
+src/actors/Mother.i: src/actors/Mother.cpp.i
+.PHONY : src/actors/Mother.i
+
+# target to preprocess a source file
+src/actors/Mother.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Mother.cpp.i
+.PHONY : src/actors/Mother.cpp.i
+
+src/actors/Mother.s: src/actors/Mother.cpp.s
+.PHONY : src/actors/Mother.s
+
+# target to generate assembly for a file
+src/actors/Mother.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Mother.cpp.s
+.PHONY : src/actors/Mother.cpp.s
 
 src/actors/Nevasca.o: src/actors/Nevasca.cpp.o
 .PHONY : src/actors/Nevasca.o
@@ -393,6 +513,30 @@ src/actors/Star.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Star.cpp.s
 .PHONY : src/actors/Star.cpp.s
 
+src/actors/TV.o: src/actors/TV.cpp.o
+.PHONY : src/actors/TV.o
+
+# target to build an object file
+src/actors/TV.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/TV.cpp.o
+.PHONY : src/actors/TV.cpp.o
+
+src/actors/TV.i: src/actors/TV.cpp.i
+.PHONY : src/actors/TV.i
+
+# target to preprocess a source file
+src/actors/TV.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/TV.cpp.i
+.PHONY : src/actors/TV.cpp.i
+
+src/actors/TV.s: src/actors/TV.cpp.s
+.PHONY : src/actors/TV.s
+
+# target to generate assembly for a file
+src/actors/TV.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/TV.cpp.s
+.PHONY : src/actors/TV.cpp.s
+
 src/actors/Tile.o: src/actors/Tile.cpp.o
 .PHONY : src/actors/Tile.o
 
@@ -416,6 +560,30 @@ src/actors/Tile.s: src/actors/Tile.cpp.s
 src/actors/Tile.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Tile.cpp.s
 .PHONY : src/actors/Tile.cpp.s
+
+src/actors/Torch.o: src/actors/Torch.cpp.o
+.PHONY : src/actors/Torch.o
+
+# target to build an object file
+src/actors/Torch.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Torch.cpp.o
+.PHONY : src/actors/Torch.cpp.o
+
+src/actors/Torch.i: src/actors/Torch.cpp.i
+.PHONY : src/actors/Torch.i
+
+# target to preprocess a source file
+src/actors/Torch.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Torch.cpp.i
+.PHONY : src/actors/Torch.cpp.i
+
+src/actors/Torch.s: src/actors/Torch.cpp.s
+.PHONY : src/actors/Torch.s
+
+# target to generate assembly for a file
+src/actors/Torch.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Torch.cpp.s
+.PHONY : src/actors/Torch.cpp.s
 
 src/actors/Ventania.o: src/actors/Ventania.cpp.o
 .PHONY : src/actors/Ventania.o
@@ -464,6 +632,30 @@ src/actors/Zoe.s: src/actors/Zoe.cpp.s
 src/actors/Zoe.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/Zoe.cpp.s
 .PHONY : src/actors/Zoe.cpp.s
+
+src/actors/ZoeAbilities.o: src/actors/ZoeAbilities.cpp.o
+.PHONY : src/actors/ZoeAbilities.o
+
+# target to build an object file
+src/actors/ZoeAbilities.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.o
+.PHONY : src/actors/ZoeAbilities.cpp.o
+
+src/actors/ZoeAbilities.i: src/actors/ZoeAbilities.cpp.i
+.PHONY : src/actors/ZoeAbilities.i
+
+# target to preprocess a source file
+src/actors/ZoeAbilities.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.i
+.PHONY : src/actors/ZoeAbilities.cpp.i
+
+src/actors/ZoeAbilities.s: src/actors/ZoeAbilities.cpp.s
+.PHONY : src/actors/ZoeAbilities.s
+
+# target to generate assembly for a file
+src/actors/ZoeAbilities.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.s
+.PHONY : src/actors/ZoeAbilities.cpp.s
 
 src/actors/ZoeFireball.o: src/actors/ZoeFireball.cpp.o
 .PHONY : src/actors/ZoeFireball.o
@@ -560,6 +752,54 @@ src/actors/enemies/SithProjectile.s: src/actors/enemies/SithProjectile.cpp.s
 src/actors/enemies/SithProjectile.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.s
 .PHONY : src/actors/enemies/SithProjectile.cpp.s
+
+src/actors/enemies/Zathura.o: src/actors/enemies/Zathura.cpp.o
+.PHONY : src/actors/enemies/Zathura.o
+
+# target to build an object file
+src/actors/enemies/Zathura.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.o
+.PHONY : src/actors/enemies/Zathura.cpp.o
+
+src/actors/enemies/Zathura.i: src/actors/enemies/Zathura.cpp.i
+.PHONY : src/actors/enemies/Zathura.i
+
+# target to preprocess a source file
+src/actors/enemies/Zathura.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.i
+.PHONY : src/actors/enemies/Zathura.cpp.i
+
+src/actors/enemies/Zathura.s: src/actors/enemies/Zathura.cpp.s
+.PHONY : src/actors/enemies/Zathura.s
+
+# target to generate assembly for a file
+src/actors/enemies/Zathura.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.s
+.PHONY : src/actors/enemies/Zathura.cpp.s
+
+src/actors/enemies/ZathuraRock.o: src/actors/enemies/ZathuraRock.cpp.o
+.PHONY : src/actors/enemies/ZathuraRock.o
+
+# target to build an object file
+src/actors/enemies/ZathuraRock.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.o
+.PHONY : src/actors/enemies/ZathuraRock.cpp.o
+
+src/actors/enemies/ZathuraRock.i: src/actors/enemies/ZathuraRock.cpp.i
+.PHONY : src/actors/enemies/ZathuraRock.i
+
+# target to preprocess a source file
+src/actors/enemies/ZathuraRock.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.i
+.PHONY : src/actors/enemies/ZathuraRock.cpp.i
+
+src/actors/enemies/ZathuraRock.s: src/actors/enemies/ZathuraRock.cpp.s
+.PHONY : src/actors/enemies/ZathuraRock.s
+
+# target to generate assembly for a file
+src/actors/enemies/ZathuraRock.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.s
+.PHONY : src/actors/enemies/ZathuraRock.cpp.s
 
 src/actors/enemies/Zod.o: src/actors/enemies/Zod.cpp.o
 .PHONY : src/actors/enemies/Zod.o
@@ -1209,6 +1449,30 @@ src/ui/DialogueSystem.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.s
 .PHONY : src/ui/DialogueSystem.cpp.s
 
+src/ui/UIAnimation.o: src/ui/UIAnimation.cpp.o
+.PHONY : src/ui/UIAnimation.o
+
+# target to build an object file
+src/ui/UIAnimation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.o
+.PHONY : src/ui/UIAnimation.cpp.o
+
+src/ui/UIAnimation.i: src/ui/UIAnimation.cpp.i
+.PHONY : src/ui/UIAnimation.i
+
+# target to preprocess a source file
+src/ui/UIAnimation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.i
+.PHONY : src/ui/UIAnimation.cpp.i
+
+src/ui/UIAnimation.s: src/ui/UIAnimation.cpp.s
+.PHONY : src/ui/UIAnimation.s
+
+# target to generate assembly for a file
+src/ui/UIAnimation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.s
+.PHONY : src/ui/UIAnimation.cpp.s
+
 src/ui/UIButton.o: src/ui/UIButton.cpp.o
 .PHONY : src/ui/UIButton.o
 
@@ -1395,15 +1659,30 @@ help:
 	@echo "... src/actors/Collider.o"
 	@echo "... src/actors/Collider.i"
 	@echo "... src/actors/Collider.s"
+	@echo "... src/actors/Crate.o"
+	@echo "... src/actors/Crate.i"
+	@echo "... src/actors/Crate.s"
+	@echo "... src/actors/Dog.o"
+	@echo "... src/actors/Dog.i"
+	@echo "... src/actors/Dog.s"
 	@echo "... src/actors/Enemy.o"
 	@echo "... src/actors/Enemy.i"
 	@echo "... src/actors/Enemy.s"
+	@echo "... src/actors/Father.o"
+	@echo "... src/actors/Father.i"
+	@echo "... src/actors/Father.s"
 	@echo "... src/actors/Item.o"
 	@echo "... src/actors/Item.i"
 	@echo "... src/actors/Item.s"
 	@echo "... src/actors/MapObject.o"
 	@echo "... src/actors/MapObject.i"
 	@echo "... src/actors/MapObject.s"
+	@echo "... src/actors/MetalCrate.o"
+	@echo "... src/actors/MetalCrate.i"
+	@echo "... src/actors/MetalCrate.s"
+	@echo "... src/actors/Mother.o"
+	@echo "... src/actors/Mother.i"
+	@echo "... src/actors/Mother.s"
 	@echo "... src/actors/Nevasca.o"
 	@echo "... src/actors/Nevasca.i"
 	@echo "... src/actors/Nevasca.s"
@@ -1419,15 +1698,24 @@ help:
 	@echo "... src/actors/Star.o"
 	@echo "... src/actors/Star.i"
 	@echo "... src/actors/Star.s"
+	@echo "... src/actors/TV.o"
+	@echo "... src/actors/TV.i"
+	@echo "... src/actors/TV.s"
 	@echo "... src/actors/Tile.o"
 	@echo "... src/actors/Tile.i"
 	@echo "... src/actors/Tile.s"
+	@echo "... src/actors/Torch.o"
+	@echo "... src/actors/Torch.i"
+	@echo "... src/actors/Torch.s"
 	@echo "... src/actors/Ventania.o"
 	@echo "... src/actors/Ventania.i"
 	@echo "... src/actors/Ventania.s"
 	@echo "... src/actors/Zoe.o"
 	@echo "... src/actors/Zoe.i"
 	@echo "... src/actors/Zoe.s"
+	@echo "... src/actors/ZoeAbilities.o"
+	@echo "... src/actors/ZoeAbilities.i"
+	@echo "... src/actors/ZoeAbilities.s"
 	@echo "... src/actors/ZoeFireball.o"
 	@echo "... src/actors/ZoeFireball.i"
 	@echo "... src/actors/ZoeFireball.s"
@@ -1440,6 +1728,12 @@ help:
 	@echo "... src/actors/enemies/SithProjectile.o"
 	@echo "... src/actors/enemies/SithProjectile.i"
 	@echo "... src/actors/enemies/SithProjectile.s"
+	@echo "... src/actors/enemies/Zathura.o"
+	@echo "... src/actors/enemies/Zathura.i"
+	@echo "... src/actors/enemies/Zathura.s"
+	@echo "... src/actors/enemies/ZathuraRock.o"
+	@echo "... src/actors/enemies/ZathuraRock.i"
+	@echo "... src/actors/enemies/ZathuraRock.s"
 	@echo "... src/actors/enemies/Zod.o"
 	@echo "... src/actors/enemies/Zod.i"
 	@echo "... src/actors/enemies/Zod.s"
@@ -1521,6 +1815,9 @@ help:
 	@echo "... src/ui/DialogueSystem.o"
 	@echo "... src/ui/DialogueSystem.i"
 	@echo "... src/ui/DialogueSystem.s"
+	@echo "... src/ui/UIAnimation.o"
+	@echo "... src/ui/UIAnimation.i"
+	@echo "... src/ui/UIAnimation.s"
 	@echo "... src/ui/UIButton.o"
 	@echo "... src/ui/UIButton.i"
 	@echo "... src/ui/UIButton.s"

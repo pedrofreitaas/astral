@@ -76,729 +76,883 @@ CMakeFiles/astral.dir/src/Main.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/Main.cpp.o: /home/runner/work/astral/astral/src/Main.cpp
 CMakeFiles/astral.dir/src/Main.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/astral.dir/src/Main.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/Main.cpp.o -MF CMakeFiles/astral.dir/src/Main.cpp.o.d -o CMakeFiles/astral.dir/src/Main.cpp.o -c /home/runner/work/astral/astral/src/Main.cpp
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/Main.cpp.o -MF CMakeFiles/astral.dir/src/Main.cpp.o.d -o CMakeFiles/astral.dir/src/Main.cpp.o -c /home/runner/work/astral/astral/src/Main.cpp
 
 CMakeFiles/astral.dir/src/Main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/Main.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/Main.cpp > CMakeFiles/astral.dir/src/Main.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/Main.cpp > CMakeFiles/astral.dir/src/Main.cpp.i
 
 CMakeFiles/astral.dir/src/Main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/Main.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/Main.cpp -o CMakeFiles/astral.dir/src/Main.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/Main.cpp -o CMakeFiles/astral.dir/src/Main.cpp.s
 
 CMakeFiles/astral.dir/src/libs/Math.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/libs/Math.cpp.o: /home/runner/work/astral/astral/src/libs/Math.cpp
 CMakeFiles/astral.dir/src/libs/Math.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/astral.dir/src/libs/Math.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/libs/Math.cpp.o -MF CMakeFiles/astral.dir/src/libs/Math.cpp.o.d -o CMakeFiles/astral.dir/src/libs/Math.cpp.o -c /home/runner/work/astral/astral/src/libs/Math.cpp
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/libs/Math.cpp.o -MF CMakeFiles/astral.dir/src/libs/Math.cpp.o.d -o CMakeFiles/astral.dir/src/libs/Math.cpp.o -c /home/runner/work/astral/astral/src/libs/Math.cpp
 
 CMakeFiles/astral.dir/src/libs/Math.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/libs/Math.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/libs/Math.cpp > CMakeFiles/astral.dir/src/libs/Math.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/libs/Math.cpp > CMakeFiles/astral.dir/src/libs/Math.cpp.i
 
 CMakeFiles/astral.dir/src/libs/Math.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/libs/Math.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/libs/Math.cpp -o CMakeFiles/astral.dir/src/libs/Math.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/libs/Math.cpp -o CMakeFiles/astral.dir/src/libs/Math.cpp.s
 
 CMakeFiles/astral.dir/src/libs/Random.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/libs/Random.cpp.o: /home/runner/work/astral/astral/src/libs/Random.cpp
 CMakeFiles/astral.dir/src/libs/Random.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/astral.dir/src/libs/Random.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/libs/Random.cpp.o -MF CMakeFiles/astral.dir/src/libs/Random.cpp.o.d -o CMakeFiles/astral.dir/src/libs/Random.cpp.o -c /home/runner/work/astral/astral/src/libs/Random.cpp
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/libs/Random.cpp.o -MF CMakeFiles/astral.dir/src/libs/Random.cpp.o.d -o CMakeFiles/astral.dir/src/libs/Random.cpp.o -c /home/runner/work/astral/astral/src/libs/Random.cpp
 
 CMakeFiles/astral.dir/src/libs/Random.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/libs/Random.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/libs/Random.cpp > CMakeFiles/astral.dir/src/libs/Random.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/libs/Random.cpp > CMakeFiles/astral.dir/src/libs/Random.cpp.i
 
 CMakeFiles/astral.dir/src/libs/Random.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/libs/Random.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/libs/Random.cpp -o CMakeFiles/astral.dir/src/libs/Random.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/libs/Random.cpp -o CMakeFiles/astral.dir/src/libs/Random.cpp.s
 
 CMakeFiles/astral.dir/src/actors/Actor.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/Actor.cpp.o: /home/runner/work/astral/astral/src/actors/Actor.cpp
 CMakeFiles/astral.dir/src/actors/Actor.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/astral.dir/src/actors/Actor.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Actor.cpp.o -MF CMakeFiles/astral.dir/src/actors/Actor.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Actor.cpp.o -c /home/runner/work/astral/astral/src/actors/Actor.cpp
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Actor.cpp.o -MF CMakeFiles/astral.dir/src/actors/Actor.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Actor.cpp.o -c /home/runner/work/astral/astral/src/actors/Actor.cpp
 
 CMakeFiles/astral.dir/src/actors/Actor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Actor.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Actor.cpp > CMakeFiles/astral.dir/src/actors/Actor.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Actor.cpp > CMakeFiles/astral.dir/src/actors/Actor.cpp.i
 
 CMakeFiles/astral.dir/src/actors/Actor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Actor.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Actor.cpp -o CMakeFiles/astral.dir/src/actors/Actor.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Actor.cpp -o CMakeFiles/astral.dir/src/actors/Actor.cpp.s
 
 CMakeFiles/astral.dir/src/components/Component.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/components/Component.cpp.o: /home/runner/work/astral/astral/src/components/Component.cpp
 CMakeFiles/astral.dir/src/components/Component.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/astral.dir/src/components/Component.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/Component.cpp.o -MF CMakeFiles/astral.dir/src/components/Component.cpp.o.d -o CMakeFiles/astral.dir/src/components/Component.cpp.o -c /home/runner/work/astral/astral/src/components/Component.cpp
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/Component.cpp.o -MF CMakeFiles/astral.dir/src/components/Component.cpp.o.d -o CMakeFiles/astral.dir/src/components/Component.cpp.o -c /home/runner/work/astral/astral/src/components/Component.cpp
 
 CMakeFiles/astral.dir/src/components/Component.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/components/Component.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/Component.cpp > CMakeFiles/astral.dir/src/components/Component.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/Component.cpp > CMakeFiles/astral.dir/src/components/Component.cpp.i
 
 CMakeFiles/astral.dir/src/components/Component.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/components/Component.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/Component.cpp -o CMakeFiles/astral.dir/src/components/Component.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/Component.cpp -o CMakeFiles/astral.dir/src/components/Component.cpp.s
 
 CMakeFiles/astral.dir/src/core/Config.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/core/Config.cpp.o: /home/runner/work/astral/astral/src/core/Config.cpp
 CMakeFiles/astral.dir/src/core/Config.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/astral.dir/src/core/Config.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/Config.cpp.o -MF CMakeFiles/astral.dir/src/core/Config.cpp.o.d -o CMakeFiles/astral.dir/src/core/Config.cpp.o -c /home/runner/work/astral/astral/src/core/Config.cpp
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/Config.cpp.o -MF CMakeFiles/astral.dir/src/core/Config.cpp.o.d -o CMakeFiles/astral.dir/src/core/Config.cpp.o -c /home/runner/work/astral/astral/src/core/Config.cpp
 
 CMakeFiles/astral.dir/src/core/Config.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/core/Config.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/Config.cpp > CMakeFiles/astral.dir/src/core/Config.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/Config.cpp > CMakeFiles/astral.dir/src/core/Config.cpp.i
 
 CMakeFiles/astral.dir/src/core/Config.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/core/Config.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/Config.cpp -o CMakeFiles/astral.dir/src/core/Config.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/Config.cpp -o CMakeFiles/astral.dir/src/core/Config.cpp.s
 
 CMakeFiles/astral.dir/src/core/Game.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/core/Game.cpp.o: /home/runner/work/astral/astral/src/core/Game.cpp
 CMakeFiles/astral.dir/src/core/Game.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/astral.dir/src/core/Game.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/Game.cpp.o -MF CMakeFiles/astral.dir/src/core/Game.cpp.o.d -o CMakeFiles/astral.dir/src/core/Game.cpp.o -c /home/runner/work/astral/astral/src/core/Game.cpp
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/Game.cpp.o -MF CMakeFiles/astral.dir/src/core/Game.cpp.o.d -o CMakeFiles/astral.dir/src/core/Game.cpp.o -c /home/runner/work/astral/astral/src/core/Game.cpp
 
 CMakeFiles/astral.dir/src/core/Game.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/core/Game.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/Game.cpp > CMakeFiles/astral.dir/src/core/Game.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/Game.cpp > CMakeFiles/astral.dir/src/core/Game.cpp.i
 
 CMakeFiles/astral.dir/src/core/Game.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/core/Game.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/Game.cpp -o CMakeFiles/astral.dir/src/core/Game.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/Game.cpp -o CMakeFiles/astral.dir/src/core/Game.cpp.s
 
 CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.o: /home/runner/work/astral/astral/src/core/ScenesLoading.cpp
 CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.o -MF CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.o.d -o CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.o -c /home/runner/work/astral/astral/src/core/ScenesLoading.cpp
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.o -MF CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.o.d -o CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.o -c /home/runner/work/astral/astral/src/core/ScenesLoading.cpp
 
 CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/ScenesLoading.cpp > CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/ScenesLoading.cpp > CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.i
 
 CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/ScenesLoading.cpp -o CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/ScenesLoading.cpp -o CMakeFiles/astral.dir/src/core/ScenesLoading.cpp.s
 
 CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.o: /home/runner/work/astral/astral/src/components/draw/DrawComponent.cpp
 CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.o -c /home/runner/work/astral/astral/src/components/draw/DrawComponent.cpp
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.o -c /home/runner/work/astral/astral/src/components/draw/DrawComponent.cpp
 
 CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/draw/DrawComponent.cpp > CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/draw/DrawComponent.cpp > CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.i
 
 CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/draw/DrawComponent.cpp -o CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/draw/DrawComponent.cpp -o CMakeFiles/astral.dir/src/components/draw/DrawComponent.cpp.s
 
 CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.o: /home/runner/work/astral/astral/src/components/draw/DrawTileComponent.cpp
 CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.o -c /home/runner/work/astral/astral/src/components/draw/DrawTileComponent.cpp
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.o -c /home/runner/work/astral/astral/src/components/draw/DrawTileComponent.cpp
 
 CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/draw/DrawTileComponent.cpp > CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/draw/DrawTileComponent.cpp > CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.i
 
 CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/draw/DrawTileComponent.cpp -o CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/draw/DrawTileComponent.cpp -o CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.s
 
 CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.o: /home/runner/work/astral/astral/src/components/RigidBodyComponent.cpp
 CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.o -c /home/runner/work/astral/astral/src/components/RigidBodyComponent.cpp
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.o -c /home/runner/work/astral/astral/src/components/RigidBodyComponent.cpp
 
 CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/RigidBodyComponent.cpp > CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/RigidBodyComponent.cpp > CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.i
 
 CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/RigidBodyComponent.cpp -o CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/RigidBodyComponent.cpp -o CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.s
 
 CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.o: /home/runner/work/astral/astral/src/components/collider/CircleColliderComponent.cpp
 CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.o -c /home/runner/work/astral/astral/src/components/collider/CircleColliderComponent.cpp
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.o -c /home/runner/work/astral/astral/src/components/collider/CircleColliderComponent.cpp
 
 CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/collider/CircleColliderComponent.cpp > CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/collider/CircleColliderComponent.cpp > CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.i
 
 CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/collider/CircleColliderComponent.cpp -o CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/collider/CircleColliderComponent.cpp -o CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.s
 
 CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.o: /home/runner/work/astral/astral/src/components/draw/DrawSpriteComponent.cpp
 CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.o -c /home/runner/work/astral/astral/src/components/draw/DrawSpriteComponent.cpp
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.o -c /home/runner/work/astral/astral/src/components/draw/DrawSpriteComponent.cpp
 
 CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/draw/DrawSpriteComponent.cpp > CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/draw/DrawSpriteComponent.cpp > CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.i
 
 CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/draw/DrawSpriteComponent.cpp -o CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/draw/DrawSpriteComponent.cpp -o CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.s
+
+CMakeFiles/astral.dir/src/actors/Father.cpp.o: CMakeFiles/astral.dir/flags.make
+CMakeFiles/astral.dir/src/actors/Father.cpp.o: /home/runner/work/astral/astral/src/actors/Father.cpp
+CMakeFiles/astral.dir/src/actors/Father.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/astral.dir/src/actors/Father.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Father.cpp.o -MF CMakeFiles/astral.dir/src/actors/Father.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Father.cpp.o -c /home/runner/work/astral/astral/src/actors/Father.cpp
+
+CMakeFiles/astral.dir/src/actors/Father.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Father.cpp.i"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Father.cpp > CMakeFiles/astral.dir/src/actors/Father.cpp.i
+
+CMakeFiles/astral.dir/src/actors/Father.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Father.cpp.s"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Father.cpp -o CMakeFiles/astral.dir/src/actors/Father.cpp.s
+
+CMakeFiles/astral.dir/src/actors/Mother.cpp.o: CMakeFiles/astral.dir/flags.make
+CMakeFiles/astral.dir/src/actors/Mother.cpp.o: /home/runner/work/astral/astral/src/actors/Mother.cpp
+CMakeFiles/astral.dir/src/actors/Mother.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/astral.dir/src/actors/Mother.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Mother.cpp.o -MF CMakeFiles/astral.dir/src/actors/Mother.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Mother.cpp.o -c /home/runner/work/astral/astral/src/actors/Mother.cpp
+
+CMakeFiles/astral.dir/src/actors/Mother.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Mother.cpp.i"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Mother.cpp > CMakeFiles/astral.dir/src/actors/Mother.cpp.i
+
+CMakeFiles/astral.dir/src/actors/Mother.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Mother.cpp.s"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Mother.cpp -o CMakeFiles/astral.dir/src/actors/Mother.cpp.s
 
 CMakeFiles/astral.dir/src/actors/Zoe.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/Zoe.cpp.o: /home/runner/work/astral/astral/src/actors/Zoe.cpp
 CMakeFiles/astral.dir/src/actors/Zoe.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/astral.dir/src/actors/Zoe.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Zoe.cpp.o -MF CMakeFiles/astral.dir/src/actors/Zoe.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Zoe.cpp.o -c /home/runner/work/astral/astral/src/actors/Zoe.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/astral.dir/src/actors/Zoe.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Zoe.cpp.o -MF CMakeFiles/astral.dir/src/actors/Zoe.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Zoe.cpp.o -c /home/runner/work/astral/astral/src/actors/Zoe.cpp
 
 CMakeFiles/astral.dir/src/actors/Zoe.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Zoe.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Zoe.cpp > CMakeFiles/astral.dir/src/actors/Zoe.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Zoe.cpp > CMakeFiles/astral.dir/src/actors/Zoe.cpp.i
 
 CMakeFiles/astral.dir/src/actors/Zoe.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Zoe.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Zoe.cpp -o CMakeFiles/astral.dir/src/actors/Zoe.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Zoe.cpp -o CMakeFiles/astral.dir/src/actors/Zoe.cpp.s
+
+CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.o: CMakeFiles/astral.dir/flags.make
+CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.o: /home/runner/work/astral/astral/src/actors/ZoeAbilities.cpp
+CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.o -MF CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.o.d -o CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.o -c /home/runner/work/astral/astral/src/actors/ZoeAbilities.cpp
+
+CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.i"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/ZoeAbilities.cpp > CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.i
+
+CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.s"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/ZoeAbilities.cpp -o CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.s
 
 CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.o: /home/runner/work/astral/astral/src/actors/ZoeFireball.cpp
 CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.o -MF CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.o.d -o CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.o -c /home/runner/work/astral/astral/src/actors/ZoeFireball.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.o -MF CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.o.d -o CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.o -c /home/runner/work/astral/astral/src/actors/ZoeFireball.cpp
 
 CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/ZoeFireball.cpp > CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/ZoeFireball.cpp > CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.i
 
 CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/ZoeFireball.cpp -o CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/ZoeFireball.cpp -o CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.s
 
 CMakeFiles/astral.dir/src/actors/Nevasca.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/Nevasca.cpp.o: /home/runner/work/astral/astral/src/actors/Nevasca.cpp
 CMakeFiles/astral.dir/src/actors/Nevasca.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/astral.dir/src/actors/Nevasca.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Nevasca.cpp.o -MF CMakeFiles/astral.dir/src/actors/Nevasca.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Nevasca.cpp.o -c /home/runner/work/astral/astral/src/actors/Nevasca.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/astral.dir/src/actors/Nevasca.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Nevasca.cpp.o -MF CMakeFiles/astral.dir/src/actors/Nevasca.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Nevasca.cpp.o -c /home/runner/work/astral/astral/src/actors/Nevasca.cpp
 
 CMakeFiles/astral.dir/src/actors/Nevasca.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Nevasca.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Nevasca.cpp > CMakeFiles/astral.dir/src/actors/Nevasca.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Nevasca.cpp > CMakeFiles/astral.dir/src/actors/Nevasca.cpp.i
 
 CMakeFiles/astral.dir/src/actors/Nevasca.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Nevasca.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Nevasca.cpp -o CMakeFiles/astral.dir/src/actors/Nevasca.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Nevasca.cpp -o CMakeFiles/astral.dir/src/actors/Nevasca.cpp.s
 
 CMakeFiles/astral.dir/src/actors/Ventania.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/Ventania.cpp.o: /home/runner/work/astral/astral/src/actors/Ventania.cpp
 CMakeFiles/astral.dir/src/actors/Ventania.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/astral.dir/src/actors/Ventania.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Ventania.cpp.o -MF CMakeFiles/astral.dir/src/actors/Ventania.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Ventania.cpp.o -c /home/runner/work/astral/astral/src/actors/Ventania.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/astral.dir/src/actors/Ventania.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Ventania.cpp.o -MF CMakeFiles/astral.dir/src/actors/Ventania.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Ventania.cpp.o -c /home/runner/work/astral/astral/src/actors/Ventania.cpp
 
 CMakeFiles/astral.dir/src/actors/Ventania.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Ventania.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Ventania.cpp > CMakeFiles/astral.dir/src/actors/Ventania.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Ventania.cpp > CMakeFiles/astral.dir/src/actors/Ventania.cpp.i
 
 CMakeFiles/astral.dir/src/actors/Ventania.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Ventania.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Ventania.cpp -o CMakeFiles/astral.dir/src/actors/Ventania.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Ventania.cpp -o CMakeFiles/astral.dir/src/actors/Ventania.cpp.s
 
 CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.o: /home/runner/work/astral/astral/src/components/collider/AABBColliderComponent.cpp
 CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.o -c /home/runner/work/astral/astral/src/components/collider/AABBColliderComponent.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.o -c /home/runner/work/astral/astral/src/components/collider/AABBColliderComponent.cpp
 
 CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/collider/AABBColliderComponent.cpp > CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/collider/AABBColliderComponent.cpp > CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.i
 
 CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/collider/AABBColliderComponent.cpp -o CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/collider/AABBColliderComponent.cpp -o CMakeFiles/astral.dir/src/components/collider/AABBColliderComponent.cpp.s
 
 CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.o: /home/runner/work/astral/astral/src/components/draw/DrawAnimatedComponent.cpp
 CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.o -c /home/runner/work/astral/astral/src/components/draw/DrawAnimatedComponent.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.o -c /home/runner/work/astral/astral/src/components/draw/DrawAnimatedComponent.cpp
 
 CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/draw/DrawAnimatedComponent.cpp > CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/draw/DrawAnimatedComponent.cpp > CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.i
 
 CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/draw/DrawAnimatedComponent.cpp -o CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/draw/DrawAnimatedComponent.cpp -o CMakeFiles/astral.dir/src/components/draw/DrawAnimatedComponent.cpp.s
 
 CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.o: /home/runner/work/astral/astral/src/components/ai/AIMovementComponent.cpp
 CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.o -c /home/runner/work/astral/astral/src/components/ai/AIMovementComponent.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.o -MF CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.o.d -o CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.o -c /home/runner/work/astral/astral/src/components/ai/AIMovementComponent.cpp
 
 CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/ai/AIMovementComponent.cpp > CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/components/ai/AIMovementComponent.cpp > CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.i
 
 CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/ai/AIMovementComponent.cpp -o CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/components/ai/AIMovementComponent.cpp -o CMakeFiles/astral.dir/src/components/ai/AIMovementComponent.cpp.s
 
 CMakeFiles/astral.dir/src/actors/Snow.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/Snow.cpp.o: /home/runner/work/astral/astral/src/actors/Snow.cpp
 CMakeFiles/astral.dir/src/actors/Snow.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/astral.dir/src/actors/Snow.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Snow.cpp.o -MF CMakeFiles/astral.dir/src/actors/Snow.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Snow.cpp.o -c /home/runner/work/astral/astral/src/actors/Snow.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/astral.dir/src/actors/Snow.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Snow.cpp.o -MF CMakeFiles/astral.dir/src/actors/Snow.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Snow.cpp.o -c /home/runner/work/astral/astral/src/actors/Snow.cpp
 
 CMakeFiles/astral.dir/src/actors/Snow.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Snow.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Snow.cpp > CMakeFiles/astral.dir/src/actors/Snow.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Snow.cpp > CMakeFiles/astral.dir/src/actors/Snow.cpp.i
 
 CMakeFiles/astral.dir/src/actors/Snow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Snow.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Snow.cpp -o CMakeFiles/astral.dir/src/actors/Snow.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Snow.cpp -o CMakeFiles/astral.dir/src/actors/Snow.cpp.s
 
 CMakeFiles/astral.dir/src/actors/Tile.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/Tile.cpp.o: /home/runner/work/astral/astral/src/actors/Tile.cpp
 CMakeFiles/astral.dir/src/actors/Tile.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/astral.dir/src/actors/Tile.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Tile.cpp.o -MF CMakeFiles/astral.dir/src/actors/Tile.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Tile.cpp.o -c /home/runner/work/astral/astral/src/actors/Tile.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/astral.dir/src/actors/Tile.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Tile.cpp.o -MF CMakeFiles/astral.dir/src/actors/Tile.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Tile.cpp.o -c /home/runner/work/astral/astral/src/actors/Tile.cpp
 
 CMakeFiles/astral.dir/src/actors/Tile.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Tile.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Tile.cpp > CMakeFiles/astral.dir/src/actors/Tile.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Tile.cpp > CMakeFiles/astral.dir/src/actors/Tile.cpp.i
 
 CMakeFiles/astral.dir/src/actors/Tile.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Tile.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Tile.cpp -o CMakeFiles/astral.dir/src/actors/Tile.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Tile.cpp -o CMakeFiles/astral.dir/src/actors/Tile.cpp.s
 
 CMakeFiles/astral.dir/src/actors/Star.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/Star.cpp.o: /home/runner/work/astral/astral/src/actors/Star.cpp
 CMakeFiles/astral.dir/src/actors/Star.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/astral.dir/src/actors/Star.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Star.cpp.o -MF CMakeFiles/astral.dir/src/actors/Star.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Star.cpp.o -c /home/runner/work/astral/astral/src/actors/Star.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/astral.dir/src/actors/Star.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Star.cpp.o -MF CMakeFiles/astral.dir/src/actors/Star.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Star.cpp.o -c /home/runner/work/astral/astral/src/actors/Star.cpp
 
 CMakeFiles/astral.dir/src/actors/Star.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Star.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Star.cpp > CMakeFiles/astral.dir/src/actors/Star.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Star.cpp > CMakeFiles/astral.dir/src/actors/Star.cpp.i
 
 CMakeFiles/astral.dir/src/actors/Star.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Star.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Star.cpp -o CMakeFiles/astral.dir/src/actors/Star.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Star.cpp -o CMakeFiles/astral.dir/src/actors/Star.cpp.s
 
 CMakeFiles/astral.dir/src/actors/MapObject.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/MapObject.cpp.o: /home/runner/work/astral/astral/src/actors/MapObject.cpp
 CMakeFiles/astral.dir/src/actors/MapObject.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/astral.dir/src/actors/MapObject.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/MapObject.cpp.o -MF CMakeFiles/astral.dir/src/actors/MapObject.cpp.o.d -o CMakeFiles/astral.dir/src/actors/MapObject.cpp.o -c /home/runner/work/astral/astral/src/actors/MapObject.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/astral.dir/src/actors/MapObject.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/MapObject.cpp.o -MF CMakeFiles/astral.dir/src/actors/MapObject.cpp.o.d -o CMakeFiles/astral.dir/src/actors/MapObject.cpp.o -c /home/runner/work/astral/astral/src/actors/MapObject.cpp
 
 CMakeFiles/astral.dir/src/actors/MapObject.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/MapObject.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/MapObject.cpp > CMakeFiles/astral.dir/src/actors/MapObject.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/MapObject.cpp > CMakeFiles/astral.dir/src/actors/MapObject.cpp.i
 
 CMakeFiles/astral.dir/src/actors/MapObject.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/MapObject.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/MapObject.cpp -o CMakeFiles/astral.dir/src/actors/MapObject.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/MapObject.cpp -o CMakeFiles/astral.dir/src/actors/MapObject.cpp.s
 
 CMakeFiles/astral.dir/src/actors/Enemy.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/Enemy.cpp.o: /home/runner/work/astral/astral/src/actors/Enemy.cpp
 CMakeFiles/astral.dir/src/actors/Enemy.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/astral.dir/src/actors/Enemy.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Enemy.cpp.o -MF CMakeFiles/astral.dir/src/actors/Enemy.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Enemy.cpp.o -c /home/runner/work/astral/astral/src/actors/Enemy.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/astral.dir/src/actors/Enemy.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Enemy.cpp.o -MF CMakeFiles/astral.dir/src/actors/Enemy.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Enemy.cpp.o -c /home/runner/work/astral/astral/src/actors/Enemy.cpp
 
 CMakeFiles/astral.dir/src/actors/Enemy.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Enemy.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Enemy.cpp > CMakeFiles/astral.dir/src/actors/Enemy.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Enemy.cpp > CMakeFiles/astral.dir/src/actors/Enemy.cpp.i
 
 CMakeFiles/astral.dir/src/actors/Enemy.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Enemy.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Enemy.cpp -o CMakeFiles/astral.dir/src/actors/Enemy.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Enemy.cpp -o CMakeFiles/astral.dir/src/actors/Enemy.cpp.s
 
 CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.o: /home/runner/work/astral/astral/src/actors/traps/Spikes.cpp
 CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.o -MF CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.o.d -o CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.o -c /home/runner/work/astral/astral/src/actors/traps/Spikes.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.o -MF CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.o.d -o CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.o -c /home/runner/work/astral/astral/src/actors/traps/Spikes.cpp
 
 CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/traps/Spikes.cpp > CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/traps/Spikes.cpp > CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.i
 
 CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/traps/Spikes.cpp -o CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/traps/Spikes.cpp -o CMakeFiles/astral.dir/src/actors/traps/Spikes.cpp.s
 
 CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.o: /home/runner/work/astral/astral/src/actors/traps/Spear.cpp
 CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.o -MF CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.o.d -o CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.o -c /home/runner/work/astral/astral/src/actors/traps/Spear.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.o -MF CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.o.d -o CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.o -c /home/runner/work/astral/astral/src/actors/traps/Spear.cpp
 
 CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/traps/Spear.cpp > CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/traps/Spear.cpp > CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.i
 
 CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/traps/Spear.cpp -o CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/traps/Spear.cpp -o CMakeFiles/astral.dir/src/actors/traps/Spear.cpp.s
 
 CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.o: /home/runner/work/astral/astral/src/actors/traps/Shuriken.cpp
 CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.o -MF CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.o.d -o CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.o -c /home/runner/work/astral/astral/src/actors/traps/Shuriken.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.o -MF CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.o.d -o CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.o -c /home/runner/work/astral/astral/src/actors/traps/Shuriken.cpp
 
 CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/traps/Shuriken.cpp > CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/traps/Shuriken.cpp > CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.i
 
 CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/traps/Shuriken.cpp -o CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/traps/Shuriken.cpp -o CMakeFiles/astral.dir/src/actors/traps/Shuriken.cpp.s
 
 CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.o: /home/runner/work/astral/astral/src/actors/enemies/Zod.cpp
 CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.o -MF CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.o.d -o CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.o -c /home/runner/work/astral/astral/src/actors/enemies/Zod.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.o -MF CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.o.d -o CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.o -c /home/runner/work/astral/astral/src/actors/enemies/Zod.cpp
 
 CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/enemies/Zod.cpp > CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/enemies/Zod.cpp > CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.i
 
 CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/enemies/Zod.cpp -o CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/enemies/Zod.cpp -o CMakeFiles/astral.dir/src/actors/enemies/Zod.cpp.s
 
 CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.o: /home/runner/work/astral/astral/src/actors/enemies/ZodProjectile.cpp
 CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.o -MF CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.o.d -o CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.o -c /home/runner/work/astral/astral/src/actors/enemies/ZodProjectile.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.o -MF CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.o.d -o CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.o -c /home/runner/work/astral/astral/src/actors/enemies/ZodProjectile.cpp
 
 CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/enemies/ZodProjectile.cpp > CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/enemies/ZodProjectile.cpp > CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.i
 
 CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/enemies/ZodProjectile.cpp -o CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/enemies/ZodProjectile.cpp -o CMakeFiles/astral.dir/src/actors/enemies/ZodProjectile.cpp.s
 
 CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.o: /home/runner/work/astral/astral/src/actors/enemies/Sith.cpp
 CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.o -MF CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.o.d -o CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.o -c /home/runner/work/astral/astral/src/actors/enemies/Sith.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.o -MF CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.o.d -o CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.o -c /home/runner/work/astral/astral/src/actors/enemies/Sith.cpp
 
 CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/enemies/Sith.cpp > CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/enemies/Sith.cpp > CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.i
 
 CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/enemies/Sith.cpp -o CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/enemies/Sith.cpp -o CMakeFiles/astral.dir/src/actors/enemies/Sith.cpp.s
 
 CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.o: /home/runner/work/astral/astral/src/actors/enemies/SithProjectile.cpp
 CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.o -MF CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.o.d -o CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.o -c /home/runner/work/astral/astral/src/actors/enemies/SithProjectile.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.o -MF CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.o.d -o CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.o -c /home/runner/work/astral/astral/src/actors/enemies/SithProjectile.cpp
 
 CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/enemies/SithProjectile.cpp > CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/enemies/SithProjectile.cpp > CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.i
 
 CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/enemies/SithProjectile.cpp -o CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/enemies/SithProjectile.cpp -o CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.s
 
 CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.o: /home/runner/work/astral/astral/src/actors/enemies/Quasar.cpp
 CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.o -MF CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.o.d -o CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.o -c /home/runner/work/astral/astral/src/actors/enemies/Quasar.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.o -MF CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.o.d -o CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.o -c /home/runner/work/astral/astral/src/actors/enemies/Quasar.cpp
 
 CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/enemies/Quasar.cpp > CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/enemies/Quasar.cpp > CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.i
 
 CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/enemies/Quasar.cpp -o CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/enemies/Quasar.cpp -o CMakeFiles/astral.dir/src/actors/enemies/Quasar.cpp.s
 
 CMakeFiles/astral.dir/src/actors/Portal.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/Portal.cpp.o: /home/runner/work/astral/astral/src/actors/Portal.cpp
 CMakeFiles/astral.dir/src/actors/Portal.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/astral.dir/src/actors/Portal.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Portal.cpp.o -MF CMakeFiles/astral.dir/src/actors/Portal.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Portal.cpp.o -c /home/runner/work/astral/astral/src/actors/Portal.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/astral.dir/src/actors/Portal.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Portal.cpp.o -MF CMakeFiles/astral.dir/src/actors/Portal.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Portal.cpp.o -c /home/runner/work/astral/astral/src/actors/Portal.cpp
 
 CMakeFiles/astral.dir/src/actors/Portal.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Portal.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Portal.cpp > CMakeFiles/astral.dir/src/actors/Portal.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Portal.cpp > CMakeFiles/astral.dir/src/actors/Portal.cpp.i
 
 CMakeFiles/astral.dir/src/actors/Portal.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Portal.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Portal.cpp -o CMakeFiles/astral.dir/src/actors/Portal.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Portal.cpp -o CMakeFiles/astral.dir/src/actors/Portal.cpp.s
 
 CMakeFiles/astral.dir/src/core/AudioSystem.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/core/AudioSystem.cpp.o: /home/runner/work/astral/astral/src/core/AudioSystem.cpp
 CMakeFiles/astral.dir/src/core/AudioSystem.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/astral.dir/src/core/AudioSystem.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/AudioSystem.cpp.o -MF CMakeFiles/astral.dir/src/core/AudioSystem.cpp.o.d -o CMakeFiles/astral.dir/src/core/AudioSystem.cpp.o -c /home/runner/work/astral/astral/src/core/AudioSystem.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/astral.dir/src/core/AudioSystem.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/AudioSystem.cpp.o -MF CMakeFiles/astral.dir/src/core/AudioSystem.cpp.o.d -o CMakeFiles/astral.dir/src/core/AudioSystem.cpp.o -c /home/runner/work/astral/astral/src/core/AudioSystem.cpp
 
 CMakeFiles/astral.dir/src/core/AudioSystem.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/core/AudioSystem.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/AudioSystem.cpp > CMakeFiles/astral.dir/src/core/AudioSystem.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/AudioSystem.cpp > CMakeFiles/astral.dir/src/core/AudioSystem.cpp.i
 
 CMakeFiles/astral.dir/src/core/AudioSystem.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/core/AudioSystem.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/AudioSystem.cpp -o CMakeFiles/astral.dir/src/core/AudioSystem.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/AudioSystem.cpp -o CMakeFiles/astral.dir/src/core/AudioSystem.cpp.s
 
 CMakeFiles/astral.dir/src/ui/UIScreen.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/ui/UIScreen.cpp.o: /home/runner/work/astral/astral/src/ui/UIScreen.cpp
 CMakeFiles/astral.dir/src/ui/UIScreen.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/astral.dir/src/ui/UIScreen.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UIScreen.cpp.o -MF CMakeFiles/astral.dir/src/ui/UIScreen.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UIScreen.cpp.o -c /home/runner/work/astral/astral/src/ui/UIScreen.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/astral.dir/src/ui/UIScreen.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UIScreen.cpp.o -MF CMakeFiles/astral.dir/src/ui/UIScreen.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UIScreen.cpp.o -c /home/runner/work/astral/astral/src/ui/UIScreen.cpp
 
 CMakeFiles/astral.dir/src/ui/UIScreen.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/ui/UIScreen.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UIScreen.cpp > CMakeFiles/astral.dir/src/ui/UIScreen.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UIScreen.cpp > CMakeFiles/astral.dir/src/ui/UIScreen.cpp.i
 
 CMakeFiles/astral.dir/src/ui/UIScreen.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/ui/UIScreen.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UIScreen.cpp -o CMakeFiles/astral.dir/src/ui/UIScreen.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UIScreen.cpp -o CMakeFiles/astral.dir/src/ui/UIScreen.cpp.s
 
 CMakeFiles/astral.dir/src/ui/UIFont.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/ui/UIFont.cpp.o: /home/runner/work/astral/astral/src/ui/UIFont.cpp
 CMakeFiles/astral.dir/src/ui/UIFont.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/astral.dir/src/ui/UIFont.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UIFont.cpp.o -MF CMakeFiles/astral.dir/src/ui/UIFont.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UIFont.cpp.o -c /home/runner/work/astral/astral/src/ui/UIFont.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object CMakeFiles/astral.dir/src/ui/UIFont.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UIFont.cpp.o -MF CMakeFiles/astral.dir/src/ui/UIFont.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UIFont.cpp.o -c /home/runner/work/astral/astral/src/ui/UIFont.cpp
 
 CMakeFiles/astral.dir/src/ui/UIFont.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/ui/UIFont.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UIFont.cpp > CMakeFiles/astral.dir/src/ui/UIFont.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UIFont.cpp > CMakeFiles/astral.dir/src/ui/UIFont.cpp.i
 
 CMakeFiles/astral.dir/src/ui/UIFont.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/ui/UIFont.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UIFont.cpp -o CMakeFiles/astral.dir/src/ui/UIFont.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UIFont.cpp -o CMakeFiles/astral.dir/src/ui/UIFont.cpp.s
 
 CMakeFiles/astral.dir/src/ui/UIButton.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/ui/UIButton.cpp.o: /home/runner/work/astral/astral/src/ui/UIButton.cpp
 CMakeFiles/astral.dir/src/ui/UIButton.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/astral.dir/src/ui/UIButton.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UIButton.cpp.o -MF CMakeFiles/astral.dir/src/ui/UIButton.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UIButton.cpp.o -c /home/runner/work/astral/astral/src/ui/UIButton.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building CXX object CMakeFiles/astral.dir/src/ui/UIButton.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UIButton.cpp.o -MF CMakeFiles/astral.dir/src/ui/UIButton.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UIButton.cpp.o -c /home/runner/work/astral/astral/src/ui/UIButton.cpp
 
 CMakeFiles/astral.dir/src/ui/UIButton.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/ui/UIButton.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UIButton.cpp > CMakeFiles/astral.dir/src/ui/UIButton.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UIButton.cpp > CMakeFiles/astral.dir/src/ui/UIButton.cpp.i
 
 CMakeFiles/astral.dir/src/ui/UIButton.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/ui/UIButton.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UIButton.cpp -o CMakeFiles/astral.dir/src/ui/UIButton.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UIButton.cpp -o CMakeFiles/astral.dir/src/ui/UIButton.cpp.s
 
 CMakeFiles/astral.dir/src/ui/UIText.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/ui/UIText.cpp.o: /home/runner/work/astral/astral/src/ui/UIText.cpp
 CMakeFiles/astral.dir/src/ui/UIText.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/astral.dir/src/ui/UIText.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UIText.cpp.o -MF CMakeFiles/astral.dir/src/ui/UIText.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UIText.cpp.o -c /home/runner/work/astral/astral/src/ui/UIText.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building CXX object CMakeFiles/astral.dir/src/ui/UIText.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UIText.cpp.o -MF CMakeFiles/astral.dir/src/ui/UIText.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UIText.cpp.o -c /home/runner/work/astral/astral/src/ui/UIText.cpp
 
 CMakeFiles/astral.dir/src/ui/UIText.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/ui/UIText.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UIText.cpp > CMakeFiles/astral.dir/src/ui/UIText.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UIText.cpp > CMakeFiles/astral.dir/src/ui/UIText.cpp.i
 
 CMakeFiles/astral.dir/src/ui/UIText.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/ui/UIText.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UIText.cpp -o CMakeFiles/astral.dir/src/ui/UIText.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UIText.cpp -o CMakeFiles/astral.dir/src/ui/UIText.cpp.s
 
 CMakeFiles/astral.dir/src/ui/UIElement.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/ui/UIElement.cpp.o: /home/runner/work/astral/astral/src/ui/UIElement.cpp
 CMakeFiles/astral.dir/src/ui/UIElement.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object CMakeFiles/astral.dir/src/ui/UIElement.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UIElement.cpp.o -MF CMakeFiles/astral.dir/src/ui/UIElement.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UIElement.cpp.o -c /home/runner/work/astral/astral/src/ui/UIElement.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building CXX object CMakeFiles/astral.dir/src/ui/UIElement.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UIElement.cpp.o -MF CMakeFiles/astral.dir/src/ui/UIElement.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UIElement.cpp.o -c /home/runner/work/astral/astral/src/ui/UIElement.cpp
 
 CMakeFiles/astral.dir/src/ui/UIElement.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/ui/UIElement.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UIElement.cpp > CMakeFiles/astral.dir/src/ui/UIElement.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UIElement.cpp > CMakeFiles/astral.dir/src/ui/UIElement.cpp.i
 
 CMakeFiles/astral.dir/src/ui/UIElement.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/ui/UIElement.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UIElement.cpp -o CMakeFiles/astral.dir/src/ui/UIElement.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UIElement.cpp -o CMakeFiles/astral.dir/src/ui/UIElement.cpp.s
 
 CMakeFiles/astral.dir/src/ui/UICursor.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/ui/UICursor.cpp.o: /home/runner/work/astral/astral/src/ui/UICursor.cpp
 CMakeFiles/astral.dir/src/ui/UICursor.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building CXX object CMakeFiles/astral.dir/src/ui/UICursor.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UICursor.cpp.o -MF CMakeFiles/astral.dir/src/ui/UICursor.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UICursor.cpp.o -c /home/runner/work/astral/astral/src/ui/UICursor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building CXX object CMakeFiles/astral.dir/src/ui/UICursor.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UICursor.cpp.o -MF CMakeFiles/astral.dir/src/ui/UICursor.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UICursor.cpp.o -c /home/runner/work/astral/astral/src/ui/UICursor.cpp
 
 CMakeFiles/astral.dir/src/ui/UICursor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/ui/UICursor.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UICursor.cpp > CMakeFiles/astral.dir/src/ui/UICursor.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UICursor.cpp > CMakeFiles/astral.dir/src/ui/UICursor.cpp.i
 
 CMakeFiles/astral.dir/src/ui/UICursor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/ui/UICursor.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UICursor.cpp -o CMakeFiles/astral.dir/src/ui/UICursor.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UICursor.cpp -o CMakeFiles/astral.dir/src/ui/UICursor.cpp.s
 
 CMakeFiles/astral.dir/src/core/HUD.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/core/HUD.cpp.o: /home/runner/work/astral/astral/src/core/HUD.cpp
 CMakeFiles/astral.dir/src/core/HUD.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building CXX object CMakeFiles/astral.dir/src/core/HUD.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/HUD.cpp.o -MF CMakeFiles/astral.dir/src/core/HUD.cpp.o.d -o CMakeFiles/astral.dir/src/core/HUD.cpp.o -c /home/runner/work/astral/astral/src/core/HUD.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building CXX object CMakeFiles/astral.dir/src/core/HUD.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/HUD.cpp.o -MF CMakeFiles/astral.dir/src/core/HUD.cpp.o.d -o CMakeFiles/astral.dir/src/core/HUD.cpp.o -c /home/runner/work/astral/astral/src/core/HUD.cpp
 
 CMakeFiles/astral.dir/src/core/HUD.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/core/HUD.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/HUD.cpp > CMakeFiles/astral.dir/src/core/HUD.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/HUD.cpp > CMakeFiles/astral.dir/src/core/HUD.cpp.i
 
 CMakeFiles/astral.dir/src/core/HUD.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/core/HUD.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/HUD.cpp -o CMakeFiles/astral.dir/src/core/HUD.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/HUD.cpp -o CMakeFiles/astral.dir/src/core/HUD.cpp.s
 
 CMakeFiles/astral.dir/src/ui/UIImage.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/ui/UIImage.cpp.o: /home/runner/work/astral/astral/src/ui/UIImage.cpp
 CMakeFiles/astral.dir/src/ui/UIImage.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building CXX object CMakeFiles/astral.dir/src/ui/UIImage.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UIImage.cpp.o -MF CMakeFiles/astral.dir/src/ui/UIImage.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UIImage.cpp.o -c /home/runner/work/astral/astral/src/ui/UIImage.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building CXX object CMakeFiles/astral.dir/src/ui/UIImage.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UIImage.cpp.o -MF CMakeFiles/astral.dir/src/ui/UIImage.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UIImage.cpp.o -c /home/runner/work/astral/astral/src/ui/UIImage.cpp
 
 CMakeFiles/astral.dir/src/ui/UIImage.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/ui/UIImage.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UIImage.cpp > CMakeFiles/astral.dir/src/ui/UIImage.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UIImage.cpp > CMakeFiles/astral.dir/src/ui/UIImage.cpp.i
 
 CMakeFiles/astral.dir/src/ui/UIImage.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/ui/UIImage.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UIImage.cpp -o CMakeFiles/astral.dir/src/ui/UIImage.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UIImage.cpp -o CMakeFiles/astral.dir/src/ui/UIImage.cpp.s
+
+CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.o: CMakeFiles/astral.dir/flags.make
+CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.o: /home/runner/work/astral/astral/src/ui/UIAnimation.cpp
+CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.o -MF CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.o.d -o CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.o -c /home/runner/work/astral/astral/src/ui/UIAnimation.cpp
+
+CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.i"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/UIAnimation.cpp > CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.i
+
+CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.s"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/UIAnimation.cpp -o CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.s
 
 CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.o: /home/runner/work/astral/astral/src/core/SpatialHashing.cpp
 CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building CXX object CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.o -MF CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.o.d -o CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.o -c /home/runner/work/astral/astral/src/core/SpatialHashing.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.o -MF CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.o.d -o CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.o -c /home/runner/work/astral/astral/src/core/SpatialHashing.cpp
 
 CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/SpatialHashing.cpp > CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/SpatialHashing.cpp > CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.i
 
 CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/SpatialHashing.cpp -o CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/SpatialHashing.cpp -o CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.s
 
 CMakeFiles/astral.dir/src/actors/Projectile.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/Projectile.cpp.o: /home/runner/work/astral/astral/src/actors/Projectile.cpp
 CMakeFiles/astral.dir/src/actors/Projectile.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building CXX object CMakeFiles/astral.dir/src/actors/Projectile.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Projectile.cpp.o -MF CMakeFiles/astral.dir/src/actors/Projectile.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Projectile.cpp.o -c /home/runner/work/astral/astral/src/actors/Projectile.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building CXX object CMakeFiles/astral.dir/src/actors/Projectile.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Projectile.cpp.o -MF CMakeFiles/astral.dir/src/actors/Projectile.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Projectile.cpp.o -c /home/runner/work/astral/astral/src/actors/Projectile.cpp
 
 CMakeFiles/astral.dir/src/actors/Projectile.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Projectile.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Projectile.cpp > CMakeFiles/astral.dir/src/actors/Projectile.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Projectile.cpp > CMakeFiles/astral.dir/src/actors/Projectile.cpp.i
 
 CMakeFiles/astral.dir/src/actors/Projectile.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Projectile.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Projectile.cpp -o CMakeFiles/astral.dir/src/actors/Projectile.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Projectile.cpp -o CMakeFiles/astral.dir/src/actors/Projectile.cpp.s
 
 CMakeFiles/astral.dir/src/actors/Collider.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/Collider.cpp.o: /home/runner/work/astral/astral/src/actors/Collider.cpp
 CMakeFiles/astral.dir/src/actors/Collider.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building CXX object CMakeFiles/astral.dir/src/actors/Collider.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Collider.cpp.o -MF CMakeFiles/astral.dir/src/actors/Collider.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Collider.cpp.o -c /home/runner/work/astral/astral/src/actors/Collider.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building CXX object CMakeFiles/astral.dir/src/actors/Collider.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Collider.cpp.o -MF CMakeFiles/astral.dir/src/actors/Collider.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Collider.cpp.o -c /home/runner/work/astral/astral/src/actors/Collider.cpp
 
 CMakeFiles/astral.dir/src/actors/Collider.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Collider.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Collider.cpp > CMakeFiles/astral.dir/src/actors/Collider.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Collider.cpp > CMakeFiles/astral.dir/src/actors/Collider.cpp.i
 
 CMakeFiles/astral.dir/src/actors/Collider.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Collider.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Collider.cpp -o CMakeFiles/astral.dir/src/actors/Collider.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Collider.cpp -o CMakeFiles/astral.dir/src/actors/Collider.cpp.s
 
 CMakeFiles/astral.dir/src/actors/Item.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/actors/Item.cpp.o: /home/runner/work/astral/astral/src/actors/Item.cpp
 CMakeFiles/astral.dir/src/actors/Item.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/astral.dir/src/actors/Item.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Item.cpp.o -MF CMakeFiles/astral.dir/src/actors/Item.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Item.cpp.o -c /home/runner/work/astral/astral/src/actors/Item.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building CXX object CMakeFiles/astral.dir/src/actors/Item.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Item.cpp.o -MF CMakeFiles/astral.dir/src/actors/Item.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Item.cpp.o -c /home/runner/work/astral/astral/src/actors/Item.cpp
 
 CMakeFiles/astral.dir/src/actors/Item.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Item.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Item.cpp > CMakeFiles/astral.dir/src/actors/Item.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Item.cpp > CMakeFiles/astral.dir/src/actors/Item.cpp.i
 
 CMakeFiles/astral.dir/src/actors/Item.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Item.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Item.cpp -o CMakeFiles/astral.dir/src/actors/Item.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Item.cpp -o CMakeFiles/astral.dir/src/actors/Item.cpp.s
+
+CMakeFiles/astral.dir/src/actors/Dog.cpp.o: CMakeFiles/astral.dir/flags.make
+CMakeFiles/astral.dir/src/actors/Dog.cpp.o: /home/runner/work/astral/astral/src/actors/Dog.cpp
+CMakeFiles/astral.dir/src/actors/Dog.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building CXX object CMakeFiles/astral.dir/src/actors/Dog.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Dog.cpp.o -MF CMakeFiles/astral.dir/src/actors/Dog.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Dog.cpp.o -c /home/runner/work/astral/astral/src/actors/Dog.cpp
+
+CMakeFiles/astral.dir/src/actors/Dog.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Dog.cpp.i"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Dog.cpp > CMakeFiles/astral.dir/src/actors/Dog.cpp.i
+
+CMakeFiles/astral.dir/src/actors/Dog.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Dog.cpp.s"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Dog.cpp -o CMakeFiles/astral.dir/src/actors/Dog.cpp.s
+
+CMakeFiles/astral.dir/src/actors/TV.cpp.o: CMakeFiles/astral.dir/flags.make
+CMakeFiles/astral.dir/src/actors/TV.cpp.o: /home/runner/work/astral/astral/src/actors/TV.cpp
+CMakeFiles/astral.dir/src/actors/TV.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Building CXX object CMakeFiles/astral.dir/src/actors/TV.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/TV.cpp.o -MF CMakeFiles/astral.dir/src/actors/TV.cpp.o.d -o CMakeFiles/astral.dir/src/actors/TV.cpp.o -c /home/runner/work/astral/astral/src/actors/TV.cpp
+
+CMakeFiles/astral.dir/src/actors/TV.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/TV.cpp.i"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/TV.cpp > CMakeFiles/astral.dir/src/actors/TV.cpp.i
+
+CMakeFiles/astral.dir/src/actors/TV.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/TV.cpp.s"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/TV.cpp -o CMakeFiles/astral.dir/src/actors/TV.cpp.s
 
 CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.o: /home/runner/work/astral/astral/src/ui/DialogueSystem.cpp
 CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.o -MF CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.o.d -o CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.o -c /home/runner/work/astral/astral/src/ui/DialogueSystem.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Building CXX object CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.o -MF CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.o.d -o CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.o -c /home/runner/work/astral/astral/src/ui/DialogueSystem.cpp
 
 CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/DialogueSystem.cpp > CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/ui/DialogueSystem.cpp > CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.i
 
 CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/DialogueSystem.cpp -o CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/ui/DialogueSystem.cpp -o CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.s
 
 CMakeFiles/astral.dir/src/core/Tileset.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/core/Tileset.cpp.o: /home/runner/work/astral/astral/src/core/Tileset.cpp
 CMakeFiles/astral.dir/src/core/Tileset.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building CXX object CMakeFiles/astral.dir/src/core/Tileset.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/Tileset.cpp.o -MF CMakeFiles/astral.dir/src/core/Tileset.cpp.o.d -o CMakeFiles/astral.dir/src/core/Tileset.cpp.o -c /home/runner/work/astral/astral/src/core/Tileset.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Building CXX object CMakeFiles/astral.dir/src/core/Tileset.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/Tileset.cpp.o -MF CMakeFiles/astral.dir/src/core/Tileset.cpp.o.d -o CMakeFiles/astral.dir/src/core/Tileset.cpp.o -c /home/runner/work/astral/astral/src/core/Tileset.cpp
 
 CMakeFiles/astral.dir/src/core/Tileset.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/core/Tileset.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/Tileset.cpp > CMakeFiles/astral.dir/src/core/Tileset.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/Tileset.cpp > CMakeFiles/astral.dir/src/core/Tileset.cpp.i
 
 CMakeFiles/astral.dir/src/core/Tileset.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/core/Tileset.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/Tileset.cpp -o CMakeFiles/astral.dir/src/core/Tileset.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/Tileset.cpp -o CMakeFiles/astral.dir/src/core/Tileset.cpp.s
 
 CMakeFiles/astral.dir/src/core/Map.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/core/Map.cpp.o: /home/runner/work/astral/astral/src/core/Map.cpp
 CMakeFiles/astral.dir/src/core/Map.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building CXX object CMakeFiles/astral.dir/src/core/Map.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/Map.cpp.o -MF CMakeFiles/astral.dir/src/core/Map.cpp.o.d -o CMakeFiles/astral.dir/src/core/Map.cpp.o -c /home/runner/work/astral/astral/src/core/Map.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Building CXX object CMakeFiles/astral.dir/src/core/Map.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/Map.cpp.o -MF CMakeFiles/astral.dir/src/core/Map.cpp.o.d -o CMakeFiles/astral.dir/src/core/Map.cpp.o -c /home/runner/work/astral/astral/src/core/Map.cpp
 
 CMakeFiles/astral.dir/src/core/Map.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/core/Map.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/Map.cpp > CMakeFiles/astral.dir/src/core/Map.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/Map.cpp > CMakeFiles/astral.dir/src/core/Map.cpp.i
 
 CMakeFiles/astral.dir/src/core/Map.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/core/Map.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/Map.cpp -o CMakeFiles/astral.dir/src/core/Map.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/Map.cpp -o CMakeFiles/astral.dir/src/core/Map.cpp.s
 
 CMakeFiles/astral.dir/src/core/Cutscene.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/core/Cutscene.cpp.o: /home/runner/work/astral/astral/src/core/Cutscene.cpp
 CMakeFiles/astral.dir/src/core/Cutscene.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building CXX object CMakeFiles/astral.dir/src/core/Cutscene.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/Cutscene.cpp.o -MF CMakeFiles/astral.dir/src/core/Cutscene.cpp.o.d -o CMakeFiles/astral.dir/src/core/Cutscene.cpp.o -c /home/runner/work/astral/astral/src/core/Cutscene.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Building CXX object CMakeFiles/astral.dir/src/core/Cutscene.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/Cutscene.cpp.o -MF CMakeFiles/astral.dir/src/core/Cutscene.cpp.o.d -o CMakeFiles/astral.dir/src/core/Cutscene.cpp.o -c /home/runner/work/astral/astral/src/core/Cutscene.cpp
 
 CMakeFiles/astral.dir/src/core/Cutscene.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/core/Cutscene.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/Cutscene.cpp > CMakeFiles/astral.dir/src/core/Cutscene.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/Cutscene.cpp > CMakeFiles/astral.dir/src/core/Cutscene.cpp.i
 
 CMakeFiles/astral.dir/src/core/Cutscene.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/core/Cutscene.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/Cutscene.cpp -o CMakeFiles/astral.dir/src/core/Cutscene.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/Cutscene.cpp -o CMakeFiles/astral.dir/src/core/Cutscene.cpp.s
 
 CMakeFiles/astral.dir/src/core/Steps.cpp.o: CMakeFiles/astral.dir/flags.make
 CMakeFiles/astral.dir/src/core/Steps.cpp.o: /home/runner/work/astral/astral/src/core/Steps.cpp
 CMakeFiles/astral.dir/src/core/Steps.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building CXX object CMakeFiles/astral.dir/src/core/Steps.cpp.o"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/Steps.cpp.o -MF CMakeFiles/astral.dir/src/core/Steps.cpp.o.d -o CMakeFiles/astral.dir/src/core/Steps.cpp.o -c /home/runner/work/astral/astral/src/core/Steps.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building CXX object CMakeFiles/astral.dir/src/core/Steps.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/core/Steps.cpp.o -MF CMakeFiles/astral.dir/src/core/Steps.cpp.o.d -o CMakeFiles/astral.dir/src/core/Steps.cpp.o -c /home/runner/work/astral/astral/src/core/Steps.cpp
 
 CMakeFiles/astral.dir/src/core/Steps.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/core/Steps.cpp.i"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/Steps.cpp > CMakeFiles/astral.dir/src/core/Steps.cpp.i
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/core/Steps.cpp > CMakeFiles/astral.dir/src/core/Steps.cpp.i
 
 CMakeFiles/astral.dir/src/core/Steps.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/core/Steps.cpp.s"
-	/home/runner/work/_temp/9403c912-2d44-42c4-ac66-ff2dfec74b5f/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/Steps.cpp -o CMakeFiles/astral.dir/src/core/Steps.cpp.s
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/core/Steps.cpp -o CMakeFiles/astral.dir/src/core/Steps.cpp.s
+
+CMakeFiles/astral.dir/src/actors/Torch.cpp.o: CMakeFiles/astral.dir/flags.make
+CMakeFiles/astral.dir/src/actors/Torch.cpp.o: /home/runner/work/astral/astral/src/actors/Torch.cpp
+CMakeFiles/astral.dir/src/actors/Torch.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building CXX object CMakeFiles/astral.dir/src/actors/Torch.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Torch.cpp.o -MF CMakeFiles/astral.dir/src/actors/Torch.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Torch.cpp.o -c /home/runner/work/astral/astral/src/actors/Torch.cpp
+
+CMakeFiles/astral.dir/src/actors/Torch.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Torch.cpp.i"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Torch.cpp > CMakeFiles/astral.dir/src/actors/Torch.cpp.i
+
+CMakeFiles/astral.dir/src/actors/Torch.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Torch.cpp.s"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Torch.cpp -o CMakeFiles/astral.dir/src/actors/Torch.cpp.s
+
+CMakeFiles/astral.dir/src/actors/Crate.cpp.o: CMakeFiles/astral.dir/flags.make
+CMakeFiles/astral.dir/src/actors/Crate.cpp.o: /home/runner/work/astral/astral/src/actors/Crate.cpp
+CMakeFiles/astral.dir/src/actors/Crate.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building CXX object CMakeFiles/astral.dir/src/actors/Crate.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/Crate.cpp.o -MF CMakeFiles/astral.dir/src/actors/Crate.cpp.o.d -o CMakeFiles/astral.dir/src/actors/Crate.cpp.o -c /home/runner/work/astral/astral/src/actors/Crate.cpp
+
+CMakeFiles/astral.dir/src/actors/Crate.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/Crate.cpp.i"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/Crate.cpp > CMakeFiles/astral.dir/src/actors/Crate.cpp.i
+
+CMakeFiles/astral.dir/src/actors/Crate.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/Crate.cpp.s"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/Crate.cpp -o CMakeFiles/astral.dir/src/actors/Crate.cpp.s
+
+CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.o: CMakeFiles/astral.dir/flags.make
+CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.o: /home/runner/work/astral/astral/src/actors/MetalCrate.cpp
+CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building CXX object CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.o -MF CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.o.d -o CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.o -c /home/runner/work/astral/astral/src/actors/MetalCrate.cpp
+
+CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.i"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/MetalCrate.cpp > CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.i
+
+CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.s"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/MetalCrate.cpp -o CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.s
+
+CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.o: CMakeFiles/astral.dir/flags.make
+CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.o: /home/runner/work/astral/astral/src/actors/enemies/Zathura.cpp
+CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Building CXX object CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.o -MF CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.o.d -o CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.o -c /home/runner/work/astral/astral/src/actors/enemies/Zathura.cpp
+
+CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.i"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/enemies/Zathura.cpp > CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.i
+
+CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.s"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/enemies/Zathura.cpp -o CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.s
+
+CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.o: CMakeFiles/astral.dir/flags.make
+CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.o: /home/runner/work/astral/astral/src/actors/enemies/ZathuraRock.cpp
+CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.o: CMakeFiles/astral.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Building CXX object CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.o"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.o -MF CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.o.d -o CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.o -c /home/runner/work/astral/astral/src/actors/enemies/ZathuraRock.cpp
+
+CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.i"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/astral/astral/src/actors/enemies/ZathuraRock.cpp > CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.i
+
+CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.s"
+	/home/runner/work/_temp/05eb9092-0301-4324-ae42-67ebc967117b/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/astral/astral/src/actors/enemies/ZathuraRock.cpp -o CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.s
 
 # Object files for target astral
 astral_OBJECTS = \
@@ -815,7 +969,10 @@ astral_OBJECTS = \
 "CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.o" \
 "CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.o" \
 "CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.o" \
+"CMakeFiles/astral.dir/src/actors/Father.cpp.o" \
+"CMakeFiles/astral.dir/src/actors/Mother.cpp.o" \
 "CMakeFiles/astral.dir/src/actors/Zoe.cpp.o" \
+"CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.o" \
 "CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.o" \
 "CMakeFiles/astral.dir/src/actors/Nevasca.cpp.o" \
 "CMakeFiles/astral.dir/src/actors/Ventania.cpp.o" \
@@ -845,15 +1002,23 @@ astral_OBJECTS = \
 "CMakeFiles/astral.dir/src/ui/UICursor.cpp.o" \
 "CMakeFiles/astral.dir/src/core/HUD.cpp.o" \
 "CMakeFiles/astral.dir/src/ui/UIImage.cpp.o" \
+"CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.o" \
 "CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.o" \
 "CMakeFiles/astral.dir/src/actors/Projectile.cpp.o" \
 "CMakeFiles/astral.dir/src/actors/Collider.cpp.o" \
 "CMakeFiles/astral.dir/src/actors/Item.cpp.o" \
+"CMakeFiles/astral.dir/src/actors/Dog.cpp.o" \
+"CMakeFiles/astral.dir/src/actors/TV.cpp.o" \
 "CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.o" \
 "CMakeFiles/astral.dir/src/core/Tileset.cpp.o" \
 "CMakeFiles/astral.dir/src/core/Map.cpp.o" \
 "CMakeFiles/astral.dir/src/core/Cutscene.cpp.o" \
-"CMakeFiles/astral.dir/src/core/Steps.cpp.o"
+"CMakeFiles/astral.dir/src/core/Steps.cpp.o" \
+"CMakeFiles/astral.dir/src/actors/Torch.cpp.o" \
+"CMakeFiles/astral.dir/src/actors/Crate.cpp.o" \
+"CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.o" \
+"CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.o" \
+"CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.o"
 
 # External object files for target astral
 astral_EXTERNAL_OBJECTS =
@@ -871,7 +1036,10 @@ astral.html: CMakeFiles/astral.dir/src/components/draw/DrawTileComponent.cpp.o
 astral.html: CMakeFiles/astral.dir/src/components/RigidBodyComponent.cpp.o
 astral.html: CMakeFiles/astral.dir/src/components/collider/CircleColliderComponent.cpp.o
 astral.html: CMakeFiles/astral.dir/src/components/draw/DrawSpriteComponent.cpp.o
+astral.html: CMakeFiles/astral.dir/src/actors/Father.cpp.o
+astral.html: CMakeFiles/astral.dir/src/actors/Mother.cpp.o
 astral.html: CMakeFiles/astral.dir/src/actors/Zoe.cpp.o
+astral.html: CMakeFiles/astral.dir/src/actors/ZoeAbilities.cpp.o
 astral.html: CMakeFiles/astral.dir/src/actors/ZoeFireball.cpp.o
 astral.html: CMakeFiles/astral.dir/src/actors/Nevasca.cpp.o
 astral.html: CMakeFiles/astral.dir/src/actors/Ventania.cpp.o
@@ -901,18 +1069,26 @@ astral.html: CMakeFiles/astral.dir/src/ui/UIElement.cpp.o
 astral.html: CMakeFiles/astral.dir/src/ui/UICursor.cpp.o
 astral.html: CMakeFiles/astral.dir/src/core/HUD.cpp.o
 astral.html: CMakeFiles/astral.dir/src/ui/UIImage.cpp.o
+astral.html: CMakeFiles/astral.dir/src/ui/UIAnimation.cpp.o
 astral.html: CMakeFiles/astral.dir/src/core/SpatialHashing.cpp.o
 astral.html: CMakeFiles/astral.dir/src/actors/Projectile.cpp.o
 astral.html: CMakeFiles/astral.dir/src/actors/Collider.cpp.o
 astral.html: CMakeFiles/astral.dir/src/actors/Item.cpp.o
+astral.html: CMakeFiles/astral.dir/src/actors/Dog.cpp.o
+astral.html: CMakeFiles/astral.dir/src/actors/TV.cpp.o
 astral.html: CMakeFiles/astral.dir/src/ui/DialogueSystem.cpp.o
 astral.html: CMakeFiles/astral.dir/src/core/Tileset.cpp.o
 astral.html: CMakeFiles/astral.dir/src/core/Map.cpp.o
 astral.html: CMakeFiles/astral.dir/src/core/Cutscene.cpp.o
 astral.html: CMakeFiles/astral.dir/src/core/Steps.cpp.o
+astral.html: CMakeFiles/astral.dir/src/actors/Torch.cpp.o
+astral.html: CMakeFiles/astral.dir/src/actors/Crate.cpp.o
+astral.html: CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.o
+astral.html: CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.o
+astral.html: CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.o
 astral.html: CMakeFiles/astral.dir/build.make
 astral.html: CMakeFiles/astral.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Linking CXX executable astral.html"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/runner/work/astral/astral/embuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Linking CXX executable astral.html"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/astral.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
