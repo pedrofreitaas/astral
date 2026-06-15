@@ -213,7 +213,7 @@ void Quasar::OnVerticalCollision(const float minOverlap, AABBColliderComponent *
         Zoe *zoe = mGame->GetZoe();
 
         if (zoe->IsChargedPlayerAttack()) {
-            TakeKnockback(Vector2(0.f, -500.f));
+            TakeKnockback(Vector2(0.f, -520.f));
         } else {
             zoe->TakeKnockback(
                 Vector2(
@@ -237,7 +237,7 @@ void Quasar::OnHorizontalCollision(const float minOverlap, AABBColliderComponent
         Zoe *zoe = mGame->GetZoe();
         
         if (zoe->IsChargedPlayerAttack()) {
-            TakeKnockback(Vector2(0.f, -500.f));
+            TakeKnockback(Vector2(0.f, -520.f));
         } else {
             zoe->TakeKnockback(
                 Vector2(
