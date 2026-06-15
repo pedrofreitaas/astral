@@ -144,14 +144,18 @@ void Game::LoadBedroomPortal()
         { return GetZoe(); },
         [this]()
         { return GetZoe()->GetCenter() + Vector2(-10.f, 0.f); },
-        20.f));
+        20.f,
+        false,
+        .5f));
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this]()
         { return GetZoe(); },
         [this]()
         { return GetZoe()->GetCenter() + Vector2(10.f, 0.f); },
-        20.f));
+        20.f,
+        false,
+        .5f));
     std::vector<std::string> dialogue = {
         "Pai? Mae? Cade voces?",
         "O que e isso no meio do quarto?",
@@ -165,7 +169,8 @@ void Game::LoadBedroomPortal()
         [this, portal]()
         { return portal->GetCenter(); },
         120.0f,
-        true));
+        true,
+        3.f));
     steps.push_back(std::make_unique<UnspawnStep>(
         this,
         [this]()
