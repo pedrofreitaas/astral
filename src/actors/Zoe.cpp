@@ -70,6 +70,8 @@ Zoe::Zoe(
             mManaRegenTimerHandle->Restart();
         }
     );
+
+    mType = "Zoe";
 }
 
 Zoe::~Zoe()

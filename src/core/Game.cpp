@@ -11,6 +11,9 @@
 #include <fstream>
 #include <map>
 #include <vector>
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
@@ -50,7 +53,8 @@ Game::Game()
       mController(nullptr), mMustAlwaysUpdateActors(), mPreviousGameState(GamePlayState::Playing),
       mRealWindowHeight(0), mRealWindowWidth(0), mDeltatime(0.f), mShakeCounter(0.f), mShakeIntensity(3.f),
       mPortal(nullptr), mIsPhysicsFrozen(false), mHasSpawnedPortalLevel2(false),
-      mMetalCratePortionTimeCounter(0.f), mQuasarEncounterTimeCounter(0.f), mZathura(nullptr)
+      mMetalCratePortionTimeCounter(0.f), mQuasarEncounterTimeCounter(0.f), mZathura(nullptr),
+      mLastUnTooglePauseTick(0)
 {
     mWindowWidth = 640;
     mWindowHeight = 352;
@@ -71,11 +75,18 @@ bool Game::Initialize()
         return false;
     }
 
+#ifdef __EMSCRIPTEN__
+    // On web, SDL_GetCurrentDisplayMode returns the monitor resolution, not the
+    // canvas size. Creating a canvas at monitor resolution causes a CSS/viewport
+    // mismatch that makes the game invisible until the user changes browser zoom.
+    mRealWindowWidth = mWindowWidth;
+    mRealWindowHeight = mWindowHeight;
+#else
     SDL_DisplayMode mode;
     SDL_GetCurrentDisplayMode(0, &mode);
-
     mRealWindowWidth = mode.w;
     mRealWindowHeight = mode.h;
+#endif
 
     mWindow = SDL_CreateWindow(
         "astral",
@@ -86,12 +97,6 @@ bool Game::Initialize()
     if (!mWindow)
     {
         SDL_Log("Failed to create window: %s", SDL_GetError());
-        return false;
-    }
-
-    if (!SDL_RenderSetIntegerScale(mRenderer, SDL_TRUE))
-    {
-        SDL_Log("Failed to set integer scale: %s", SDL_GetError());
         return false;
     }
 
@@ -163,6 +168,18 @@ bool Game::Initialize()
     mTicksCount = SDL_GetTicks();
 
     mAudio->CacheAllSounds();
+
+#ifdef __EMSCRIPTEN__
+    // Uncheck "Lock/hide mouse pointer" — the game manages cursor visibility itself
+    // via SDL_ShowCursor, and the shell's pointer lock causes a WrongDocumentError
+    // when entering fullscreen. Also enable "Resize canvas" so fullscreen fills the screen.
+    EM_ASM({
+        var pointerLock = document.getElementById('pointerLock');
+        if (pointerLock) pointerLock.checked = false;
+        var resize = document.getElementById('resize');
+        if (resize) resize.checked = true;
+    });
+#endif
 
     return true;
 }
@@ -316,10 +333,13 @@ void Game::ProcessInput()
     SDL_GameController *controller = GetController();
 
     // Check if the Return key has been pressed to pause/unpause the game
-    if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_START) &&
-        GetGamePlayState() == GamePlayState::Playing)
+    if (
+        SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_START) &&
+        (GetGamePlayState() == GamePlayState::Playing || 
+        GetGamePlayState() == GamePlayState::Paused)
+    )
     {
-        TogglePause();
+        UnTogglePause();
     }
 
     if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_A) && !mUIStack.empty())
@@ -462,22 +482,33 @@ void Game::HandleKeyPressActors(const int key, const bool isPressed)
     }
 }
 
-void Game::TogglePause()
+void Game::UnTogglePause()
 {
-    if (mGameScene == GameScene::MainMenu)
+    if ( // menus
+        mGameScene == GameScene::MainMenu ||
+        mGameScene == GameScene::DeathScreen ||
+        mGameScene == GameScene::EndDemo
+    )
         return;
 
-    if (mGamePlayState == GamePlayState::Playing)
+    if (
+        !SDL_TICKS_PASSED(SDL_GetTicks(), mLastUnTooglePauseTick + 500)
+    ) 
     {
-        mGamePlayState = GamePlayState::Paused;
-        mAudio->PauseSound(mMusicHandle);
+        return;
     }
 
-    else if (mGamePlayState == GamePlayState::Paused)
+    mLastUnTooglePauseTick = SDL_GetTicks();
+
+    if (mGamePlayState == GamePlayState::Paused)
     {
         mGamePlayState = GamePlayState::Playing;
         mAudio->ResumeSound(mMusicHandle);
+        return;
     }
+
+    mGamePlayState = GamePlayState::Paused;
+    mAudio->PauseSound(mMusicHandle);
 }
 
 void Game::UpdateGame()

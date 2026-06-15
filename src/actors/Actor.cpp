@@ -28,6 +28,7 @@ Actor::Actor(Game* game, int lives, bool mustAlwaysUpdate, std::string type)
         , mType(type)
         , mFreezingCount(0.f)
         , mTimerComponent(nullptr)
+        , mIsSlidingOnSnow(false)
 {
     mGame->AddActor(this);
     
@@ -151,9 +152,9 @@ void Actor::OnVerticalCollision(const float minOverlap, AABBColliderComponent* o
         Tile *tile = static_cast<Tile *>(other->GetOwner());
 
         if (tile->IsFrozen()) {
-            isSlidingOnSnow = true;
+            mIsSlidingOnSnow = true;
         } else {
-            isSlidingOnSnow = false;
+            mIsSlidingOnSnow = false;
         }
 
         return;

@@ -70,7 +70,7 @@ void Game::LoadMainMenu()
         Vector2(33.0f, 33.0f),
         Color::White);
 
-    mAudio->PlaySound("mainMenuTheme.ogg", true);
+    mMusicHandle = mAudio->PlaySound("mainMenuTheme.ogg", true);
 }
 
 void Game::LoadBedroom()
@@ -111,7 +111,7 @@ void Game::LoadBedroom()
 
     mZoe->SetAbilitiesLocked(true);
 
-    mAudio->PlaySound("bedroomTheme.ogg", true);
+    mMusicHandle = mAudio->PlaySound("bedroomTheme.ogg", true);
 }
 
 void Game::LoadBedroomPortal()
@@ -144,14 +144,18 @@ void Game::LoadBedroomPortal()
         { return GetZoe(); },
         [this]()
         { return GetZoe()->GetCenter() + Vector2(-10.f, 0.f); },
-        20.f));
+        20.f,
+        false,
+        .5f));
     steps.push_back(std::make_unique<MoveStep>(
         this,
         [this]()
         { return GetZoe(); },
         [this]()
         { return GetZoe()->GetCenter() + Vector2(10.f, 0.f); },
-        20.f));
+        20.f,
+        false,
+        .5f));
     std::vector<std::string> dialogue = {
         "Pai? Mae? Cade voces?",
         "O que e isso no meio do quarto?",
@@ -165,7 +169,8 @@ void Game::LoadBedroomPortal()
         [this, portal]()
         { return portal->GetCenter(); },
         120.0f,
-        true));
+        true,
+        3.f));
     steps.push_back(std::make_unique<UnspawnStep>(
         this,
         [this]()
@@ -179,7 +184,7 @@ void Game::LoadBedroomPortal()
                 });
     
     mZoe->SetAbilitiesLocked(true);
-    mAudio->PlaySound("bedroomTheme.ogg", true);
+    mMusicHandle = mAudio->PlaySound("bedroomTheme.ogg", true);
 }
 
 void Game::LoadFirstLevel()
@@ -507,7 +512,7 @@ void Game::LoadFirstLevel()
                     SetGameScene(GameScene::Level2);
                 });
 
-    mAudio->PlaySound("level1Theme.ogg", true);
+    mMusicHandle = mAudio->PlaySound("level1Theme.ogg", true);
 
     steps.clear();
     dialogue = {
@@ -543,7 +548,7 @@ void Game::LoadSecondLevel()
         Vector2(mWindowWidth, mWindowHeight),
         false);
 
-    mAudio->PlaySound("level2Theme.ogg", true);
+    mMusicHandle = mAudio->PlaySound("level2Theme.ogg", true);
 
     std::vector<std::unique_ptr<Step>> steps;
     std::vector<std::string> dialogue;
@@ -1042,7 +1047,7 @@ void Game::LoadTestsLevel()
         Vector2(mWindowWidth, mWindowHeight),
         false);
 
-    mAudio->PlaySound("level1Theme.ogg", true);
+    mMusicHandle = mAudio->PlaySound("level1Theme.ogg", true);
 }
 
 void Game::LoadDeathScreen()
@@ -1085,7 +1090,7 @@ void Game::LoadDeathScreen()
         Vector2(33.0f, 33.0f),
         Color::White);
 
-    mAudio->PlaySound("deathTheme.ogg", true);
+    mMusicHandle = mAudio->PlaySound("deathTheme.ogg", true);
 }
 
 void Game::LoadEndDemoScene()
@@ -1158,7 +1163,7 @@ void Game::LoadEndDemoScene()
 
     StartCutscene("credits");
 
-    mAudio->PlaySound("endDemoTheme.ogg", true);
+    mMusicHandle = mAudio->PlaySound("endDemoTheme.ogg", true);
 }
 
 void Game::LoadBedroomFinal()
@@ -1247,5 +1252,5 @@ void Game::LoadBedroomFinal()
                     this->SetGameScene(GameScene::EndDemo);
                 });
 
-    mAudio->PlaySound("bedroomTheme.ogg", true);
+    mMusicHandle = mAudio->PlaySound("bedroomTheme.ogg", true);
 }

@@ -146,7 +146,7 @@ public:
 
     bool IsFrozen() const { return mBehaviorState == BehaviorState::Frozen; }
 
-    bool GetIsSlidingOnSnow() const { return isSlidingOnSnow; }
+    bool GetIsSlidingOnSnow() const { return mIsSlidingOnSnow; }
 
 protected:
     class Game* mGame;
@@ -180,7 +180,7 @@ protected:
     // Components
     std::vector<class Component*> mComponents;
 
-    bool mIsOnGround, isSlidingOnSnow;
+    bool mIsOnGround, mIsSlidingOnSnow;
     int mLifes;
 
     class TimerComponent* mTimerComponent;
