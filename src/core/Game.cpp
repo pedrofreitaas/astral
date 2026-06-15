@@ -11,6 +11,9 @@
 #include <fstream>
 #include <map>
 #include <vector>
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
@@ -72,11 +75,18 @@ bool Game::Initialize()
         return false;
     }
 
+#ifdef __EMSCRIPTEN__
+    // On web, SDL_GetCurrentDisplayMode returns the monitor resolution, not the
+    // canvas size. Creating a canvas at monitor resolution causes a CSS/viewport
+    // mismatch that makes the game invisible until the user changes browser zoom.
+    mRealWindowWidth = mWindowWidth;
+    mRealWindowHeight = mWindowHeight;
+#else
     SDL_DisplayMode mode;
     SDL_GetCurrentDisplayMode(0, &mode);
-
     mRealWindowWidth = mode.w;
     mRealWindowHeight = mode.h;
+#endif
 
     mWindow = SDL_CreateWindow(
         "astral",
@@ -87,12 +97,6 @@ bool Game::Initialize()
     if (!mWindow)
     {
         SDL_Log("Failed to create window: %s", SDL_GetError());
-        return false;
-    }
-
-    if (!SDL_RenderSetIntegerScale(mRenderer, SDL_TRUE))
-    {
-        SDL_Log("Failed to set integer scale: %s", SDL_GetError());
         return false;
     }
 
@@ -164,6 +168,18 @@ bool Game::Initialize()
     mTicksCount = SDL_GetTicks();
 
     mAudio->CacheAllSounds();
+
+#ifdef __EMSCRIPTEN__
+    // Uncheck "Lock/hide mouse pointer" — the game manages cursor visibility itself
+    // via SDL_ShowCursor, and the shell's pointer lock causes a WrongDocumentError
+    // when entering fullscreen. Also enable "Resize canvas" so fullscreen fills the screen.
+    EM_ASM({
+        var pointerLock = document.getElementById('pointerLock');
+        if (pointerLock) pointerLock.checked = false;
+        var resize = document.getElementById('resize');
+        if (resize) resize.checked = true;
+    });
+#endif
 
     return true;
 }
