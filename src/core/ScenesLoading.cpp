@@ -359,7 +359,8 @@ void Game::LoadFirstLevel()
                 [this]()
                 {
                     GetZoe()->TeleportToSecondHalfLevel1();
-                });
+                },
+                true);
 
     steps.clear();
 
@@ -511,7 +512,8 @@ void Game::LoadFirstLevel()
                 [this]()
                 {
                     SetGameScene(GameScene::Level2);
-                });
+                },
+                true);
 
     mMusicHandle = mAudio->PlaySound("level1Theme.ogg", true);
 
@@ -645,7 +647,8 @@ void Game::LoadSecondLevel()
                 [this]()
                 {
                     GetZoe()->SetPosition(Vector2(38.f, 620.f));
-                });
+                },
+                true);
 
     steps.clear();
 
@@ -654,14 +657,18 @@ void Game::LoadSecondLevel()
     steps.push_back(std::make_unique<BreakTileStep>(this, Vector2(19, 20) * 32));
 
     AddCutscene("breakLevelSithPhaseTiles",
-                std::move(steps));
+                std::move(steps),
+                nullptr,
+                true);
 
     steps.clear();
     steps.push_back(std::make_unique<BreakTileStep>(this, Vector2(37, 11) * 32));
     steps.push_back(std::make_unique<BreakTileStep>(this, Vector2(38, 11) * 32));
 
     AddCutscene("breakLevelSithPhaseTiles2",
-                std::move(steps));
+                std::move(steps),
+                nullptr,
+                true);
 
     steps.clear();
 
@@ -684,7 +691,8 @@ void Game::LoadSecondLevel()
                 {
                     GetZoe()->SetCenter(Vector2(1327.f, 256.f));
                     GetZoe()->SetRotation(0.f);
-                });
+                },
+                true);
 
     steps.clear();
 
@@ -733,7 +741,8 @@ void Game::LoadSecondLevel()
                 {
                     GetZoe()->SetCenter(Vector2(1330.f, 655.f));
                     GetZoe()->SetRotation(0.f);
-                });
+                },
+                true);
 
     steps.clear();
 
@@ -816,7 +825,9 @@ void Game::LoadSecondLevel()
     steps.push_back(std::make_unique<UnfreezePhysicsStep>(this));
 
     AddCutscene("motherEncounter",
-                std::move(steps));
+                std::move(steps),
+                nullptr,
+                true);
 
     steps.clear();
 
@@ -926,7 +937,8 @@ void Game::LoadSecondLevel()
                 [this]()
                 {
                     SetGameScene(GameScene::BedroomFinal);
-                });
+                },
+                true);
 
     steps.clear();
 
@@ -1028,7 +1040,8 @@ void Game::LoadSecondLevel()
                 {
                     GetZathura()->DeathCutscenePlayedCallback();
                     StartCutscene("postDefeatZathura");
-                });
+                },
+                true);
 
     StartCutscene("startSecondLevel");
 }
@@ -1078,7 +1091,7 @@ void Game::LoadDeathScreen()
         restartButtonPos,
         restartButtonSize,
         [this]()
-        { SetGameScene(GameScene::Level1); });
+        { SetGameScene(mPreviousScene); });
 
     mainMenu->AddImage(
         "../assets/Sprites/Menu/restartButton.png",
@@ -1142,6 +1155,8 @@ void Game::LoadEndDemoScene()
         "Ele e resultado de um trabalho de conclusao de curso (TCC), que durou aproximadamente 1 ano ao todo.",
         "Eu sou Pedro Oliveira, e desenvolvedor do Astral. Eu sou apaixonado por jogos desde crianca, e sempre sonhei em criar um jogo proprio.",
         "Nesse processo, fui orientado pelo Lucas Ferreira, professor da UFMG.",
+        "Obrigado a todos que me ajudaram a testar esse jogo, nos varios playtest que realizei.",
+        "Um agradecimento especial para o Arthur Lana, mais creditos no GDD, que ajudou com o QA profundo do jogo.",
         "Varios dos assets do jogo nao foram criados por mim, todos os creditos sao dados no GDD do Astral.",
         "Voce pode encontra-lo no Itch.io do jogo: 'https://pedrofreitaas.itch.io/astral'",
         "Alguns easter eggs:",

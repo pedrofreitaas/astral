@@ -326,6 +326,7 @@ private:
     // Track level state
     GameScene mGameScene;
     GameScene mNextScene;
+    GameScene mPreviousScene;
 
     // Background and camera
     Vector3 mBackgroundColor;

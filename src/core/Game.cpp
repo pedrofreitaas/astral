@@ -54,7 +54,7 @@ Game::Game()
       mRealWindowHeight(0), mRealWindowWidth(0), mDeltatime(0.f), mShakeCounter(0.f), mShakeIntensity(3.f),
       mPortal(nullptr), mIsPhysicsFrozen(false), mHasSpawnedPortalLevel2(false),
       mMetalCratePortionTimeCounter(0.f), mQuasarEncounterTimeCounter(0.f), mZathura(nullptr),
-      mLastUnTooglePauseTick(0)
+      mLastUnTooglePauseTick(0), mPreviousScene(GameScene::MainMenu)
 {
     mWindowWidth = 640;
     mWindowHeight = 352;
@@ -183,6 +183,7 @@ void Game::SetGameScene(Game::GameScene scene, float sceneLeftTime)
     if (mSceneManagerState != SceneManagerState::None)
         return;
 
+    mPreviousScene = mGameScene;
     mNextScene = scene;
     mSceneManagerState = SceneManagerState::Entering;
     mSceneManagerTimer = sceneLeftTime;
