@@ -345,6 +345,30 @@ src/actors/MapObject.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/MapObject.cpp.s
 .PHONY : src/actors/MapObject.cpp.s
 
+src/actors/MetalCrate.o: src/actors/MetalCrate.cpp.o
+.PHONY : src/actors/MetalCrate.o
+
+# target to build an object file
+src/actors/MetalCrate.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.o
+.PHONY : src/actors/MetalCrate.cpp.o
+
+src/actors/MetalCrate.i: src/actors/MetalCrate.cpp.i
+.PHONY : src/actors/MetalCrate.i
+
+# target to preprocess a source file
+src/actors/MetalCrate.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.i
+.PHONY : src/actors/MetalCrate.cpp.i
+
+src/actors/MetalCrate.s: src/actors/MetalCrate.cpp.s
+.PHONY : src/actors/MetalCrate.s
+
+# target to generate assembly for a file
+src/actors/MetalCrate.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/MetalCrate.cpp.s
+.PHONY : src/actors/MetalCrate.cpp.s
+
 src/actors/Mother.o: src/actors/Mother.cpp.o
 .PHONY : src/actors/Mother.o
 
@@ -728,6 +752,54 @@ src/actors/enemies/SithProjectile.s: src/actors/enemies/SithProjectile.cpp.s
 src/actors/enemies/SithProjectile.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/enemies/SithProjectile.cpp.s
 .PHONY : src/actors/enemies/SithProjectile.cpp.s
+
+src/actors/enemies/Zathura.o: src/actors/enemies/Zathura.cpp.o
+.PHONY : src/actors/enemies/Zathura.o
+
+# target to build an object file
+src/actors/enemies/Zathura.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.o
+.PHONY : src/actors/enemies/Zathura.cpp.o
+
+src/actors/enemies/Zathura.i: src/actors/enemies/Zathura.cpp.i
+.PHONY : src/actors/enemies/Zathura.i
+
+# target to preprocess a source file
+src/actors/enemies/Zathura.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.i
+.PHONY : src/actors/enemies/Zathura.cpp.i
+
+src/actors/enemies/Zathura.s: src/actors/enemies/Zathura.cpp.s
+.PHONY : src/actors/enemies/Zathura.s
+
+# target to generate assembly for a file
+src/actors/enemies/Zathura.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/enemies/Zathura.cpp.s
+.PHONY : src/actors/enemies/Zathura.cpp.s
+
+src/actors/enemies/ZathuraRock.o: src/actors/enemies/ZathuraRock.cpp.o
+.PHONY : src/actors/enemies/ZathuraRock.o
+
+# target to build an object file
+src/actors/enemies/ZathuraRock.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.o
+.PHONY : src/actors/enemies/ZathuraRock.cpp.o
+
+src/actors/enemies/ZathuraRock.i: src/actors/enemies/ZathuraRock.cpp.i
+.PHONY : src/actors/enemies/ZathuraRock.i
+
+# target to preprocess a source file
+src/actors/enemies/ZathuraRock.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.i
+.PHONY : src/actors/enemies/ZathuraRock.cpp.i
+
+src/actors/enemies/ZathuraRock.s: src/actors/enemies/ZathuraRock.cpp.s
+.PHONY : src/actors/enemies/ZathuraRock.s
+
+# target to generate assembly for a file
+src/actors/enemies/ZathuraRock.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/astral.dir/build.make CMakeFiles/astral.dir/src/actors/enemies/ZathuraRock.cpp.s
+.PHONY : src/actors/enemies/ZathuraRock.cpp.s
 
 src/actors/enemies/Zod.o: src/actors/enemies/Zod.cpp.o
 .PHONY : src/actors/enemies/Zod.o
@@ -1605,6 +1677,9 @@ help:
 	@echo "... src/actors/MapObject.o"
 	@echo "... src/actors/MapObject.i"
 	@echo "... src/actors/MapObject.s"
+	@echo "... src/actors/MetalCrate.o"
+	@echo "... src/actors/MetalCrate.i"
+	@echo "... src/actors/MetalCrate.s"
 	@echo "... src/actors/Mother.o"
 	@echo "... src/actors/Mother.i"
 	@echo "... src/actors/Mother.s"
@@ -1653,6 +1728,12 @@ help:
 	@echo "... src/actors/enemies/SithProjectile.o"
 	@echo "... src/actors/enemies/SithProjectile.i"
 	@echo "... src/actors/enemies/SithProjectile.s"
+	@echo "... src/actors/enemies/Zathura.o"
+	@echo "... src/actors/enemies/Zathura.i"
+	@echo "... src/actors/enemies/Zathura.s"
+	@echo "... src/actors/enemies/ZathuraRock.o"
+	@echo "... src/actors/enemies/ZathuraRock.i"
+	@echo "... src/actors/enemies/ZathuraRock.s"
 	@echo "... src/actors/enemies/Zod.o"
 	@echo "... src/actors/enemies/Zod.i"
 	@echo "... src/actors/enemies/Zod.s"
