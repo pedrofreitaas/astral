@@ -151,6 +151,7 @@ if(EMSCRIPTEN)
         "SHELL:-s USE_SDL_MIXER=2"
         "SHELL:-s ALLOW_MEMORY_GROWTH=1"
         "SHELL:--preload-file ${CMAKE_SOURCE_DIR}/assets@/assets"
+        "SHELL:--preload-file ${CMAKE_SOURCE_DIR}/gamecontrollerdb.txt@/gamecontrollerdb.txt"
     )
 
 elseif(WIN32)
