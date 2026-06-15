@@ -23,7 +23,7 @@ Item *Item::CreateNevascaItem(Game *game, const Vector2 &position)
             { return Vector2(game->GetZoe()->GetCenter().x + 5.f, game->GetZoe()->GetCenter().y); },
             10.f,
             false,
-            .5));
+            .5f));
 
         auto spawnAnim = std::make_unique<SpawnJoystickButtonStep>(game, Button::RT);
         SpawnJoystickButtonStep *spawnAnimPtr = spawnAnim.get();
@@ -99,7 +99,9 @@ Item *Item::CreateVentaniaItem(Game *game, const Vector2 &position)
             { return game->GetZoe(); },
             [game]()
             { return Vector2(game->GetZoe()->GetCenter().x + 3.f, game->GetZoe()->GetCenter().y); },
-            20.f));
+            20.f,
+            false,
+            .5f));
 
         steps.push_back(std::make_unique<SpawnJoystickButtonStep>(game, Button::A));
 
