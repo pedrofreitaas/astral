@@ -181,7 +181,8 @@ void Game::LoadBedroomPortal()
                 [this]()
                 {
                     this->SetGameScene(GameScene::Level1);
-                });
+                },
+                true);
     
     mZoe->SetAbilitiesLocked(true);
     mMusicHandle = mAudio->PlaySound("bedroomTheme.ogg", true);

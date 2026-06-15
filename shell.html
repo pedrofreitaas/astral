@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Astral</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #111;
+      color: #eee;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* ── header ── */
+    #header {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+
+    #header label { font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+
+    #fullscreen {
+      padding: 4px 14px;
+      background: #333;
+      color: #eee;
+      border: 1px solid #555;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    #fullscreen:hover { background: #444; }
+
+    /* ── canvas area ── */
+    #canvas-container {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      background: #000;
+    }
+
+    canvas#canvas {
+      display: block;
+      background: #000;
+    }
+
+    /* ── loading overlay ── */
+    #loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: #000;
+    }
+
+    .spinner {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      border: 6px solid #333;
+      border-top-color: #7c6fcd;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #status { font-size: 14px; color: #aaa; }
+
+    progress#progress {
+      width: 200px;
+      accent-color: #7c6fcd;
+    }
+
+    /* ── links footer ── */
+    #links {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      padding: 20px 16px;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      flex-wrap: wrap;
+    }
+
+    #links a {
+      color: #9d8ff0;
+      text-decoration: none;
+      font-size: 14px;
+      padding: 8px 20px;
+      border: 1px solid #4a4080;
+      border-radius: 6px;
+      transition: background .15s, color .15s;
+    }
+    #links a:hover { background: #2a2050; color: #c8bcff; }
+  </style>
+  {{{ STYLE }}}
+</head>
+<body>
+
+  <!-- header controls -->
+  <div id="header">
+    <label><input type="checkbox" id="resize"> Resize canvas</label>
+    <label><input type="checkbox" id="pointerLock"> Lock/hide mouse pointer</label>
+    <button id="fullscreen">Fullscreen</button>
+  </div>
+
+  <!-- canvas + loading overlay -->
+  <div id="canvas-container">
+    <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+    <div id="loading">
+      <div class="spinner" id="spinner"></div>
+      <div id="status">Carregando...</div>
+      <progress id="progress" value="0" max="100" hidden></progress>
+    </div>
+  </div>
+
+  <!-- form links -->
+  <div id="links">
+    <a href="https://docs.google.com/forms/d/1mKuvfojrFI_Fi23-AFfw42d1iDGGo4Dp0DJ7cYeJhbs/viewform" target="_blank" rel="noopener">
+      📋 Avaliar o jogo
+    </a>
+    <a href="https://docs.google.com/forms/d/1mKuvfojrFI_Fi23-AFfw42d1iDGGo4Dp0DJ7cYeJhbs/viewform" target="_blank" rel="noopener">
+      🔔 Receber avisos de futuros playtests
+    </a>
+  </div>
+
+  <script>
+    var statusElement  = document.getElementById('status');
+    var progressElement = document.getElementById('progress');
+    var spinnerElement = document.getElementById('spinner');
+    var loadingElement = document.getElementById('loading');
+
+    var Module = {
+      canvas: (function() {
+        var canvas = document.getElementById('canvas');
+        canvas.addEventListener('webglcontextlost', function(e) {
+          alert('WebGL context lost. Reload the page.');
+          e.preventDefault();
+        }, false);
+        return canvas;
+      })(),
+
+      setStatus: function(text) {
+        if (!Module.setStatus.last) Module.setStatus.last = { time: Date.now(), text: '' };
+        if (text === Module.setStatus.last.text) return;
+        var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+        var now = Date.now();
+        if (m && now - Module.setStatus.last.time < 30) return;
+        Module.setStatus.last.time = now;
+        Module.setStatus.last.text = text;
+        if (m) {
+          text = m[1];
+          progressElement.value = parseInt(m[2]) * 100;
+          progressElement.max   = parseInt(m[4]) * 100;
+          progressElement.hidden = false;
+          spinnerElement.hidden  = false;
+        } else {
+          progressElement.hidden = true;
+          if (!text) {
+            spinnerElement.hidden = true;
+            loadingElement.style.display = 'none';
+          }
+        }
+        statusElement.innerHTML = text;
+      },
+
+      totalDependencies: 0,
+      monitorRunDependencies: function(left) {
+        this.totalDependencies = Math.max(this.totalDependencies, left);
+        Module.setStatus(left
+          ? 'Preparando... (' + (this.totalDependencies - left) + '/' + this.totalDependencies + ')'
+          : 'Pronto.');
+      },
+
+      print:    function(t) { console.log(t);   },
+      printErr: function(t) { console.error(t); },
+    };
+
+    Module.setStatus('Carregando...');
+
+    window.onerror = function() {
+      Module.setStatus('Erro. Veja o console do navegador.');
+      spinnerElement.style.display = 'none';
+      Module.setStatus = function(t) { if (t) console.error('[pós-erro] ' + t); };
+    };
+
+    // Fullscreen: use native API directly — no pointer lock, no Emscripten internals
+    document.getElementById('fullscreen').addEventListener('click', function() {
+      var canvas = document.getElementById('canvas');
+      if (!document.fullscreenElement) {
+        canvas.requestFullscreen().catch(function(e) {
+          console.warn('Fullscreen failed:', e);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    document.addEventListener('fullscreenchange', function() {
+      var canvas = document.getElementById('canvas');
+      if (document.fullscreenElement === canvas) {
+        canvas.style.width  = '100vw';
+        canvas.style.height = '100vh';
+      } else {
+        canvas.style.width  = '';
+        canvas.style.height = '';
+      }
+    });
+  </script>
+  {{{ SCRIPT }}}
+</body>
+</html>
