@@ -172,7 +172,7 @@ public:
         const Vector2 &position = Vector2::Zero,
         const Vector2 &size = Vector2::Zero,
         bool isCameraWise = true);
-    void TogglePause();
+    void UnTogglePause();
 
     // Game-specific
     class Zoe *GetZoe() { return mZoe; }
@@ -317,6 +317,7 @@ private:
 
     // Track elapsed time since game start
     Uint32 mTicksCount;
+    Uint32 mLastUnTooglePauseTick;
 
     // Track actors state
     bool mIsRunning;

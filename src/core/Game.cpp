@@ -50,7 +50,8 @@ Game::Game()
       mController(nullptr), mMustAlwaysUpdateActors(), mPreviousGameState(GamePlayState::Playing),
       mRealWindowHeight(0), mRealWindowWidth(0), mDeltatime(0.f), mShakeCounter(0.f), mShakeIntensity(3.f),
       mPortal(nullptr), mIsPhysicsFrozen(false), mHasSpawnedPortalLevel2(false),
-      mMetalCratePortionTimeCounter(0.f), mQuasarEncounterTimeCounter(0.f), mZathura(nullptr)
+      mMetalCratePortionTimeCounter(0.f), mQuasarEncounterTimeCounter(0.f), mZathura(nullptr),
+      mLastUnTooglePauseTick(0)
 {
     mWindowWidth = 640;
     mWindowHeight = 352;
@@ -316,10 +317,13 @@ void Game::ProcessInput()
     SDL_GameController *controller = GetController();
 
     // Check if the Return key has been pressed to pause/unpause the game
-    if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_START) &&
-        GetGamePlayState() == GamePlayState::Playing)
+    if (
+        SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_START) &&
+        (GetGamePlayState() == GamePlayState::Playing || 
+        GetGamePlayState() == GamePlayState::Paused)
+    )
     {
-        TogglePause();
+        UnTogglePause();
     }
 
     if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_A) && !mUIStack.empty())
@@ -462,22 +466,33 @@ void Game::HandleKeyPressActors(const int key, const bool isPressed)
     }
 }
 
-void Game::TogglePause()
+void Game::UnTogglePause()
 {
-    if (mGameScene == GameScene::MainMenu)
+    if ( // menus
+        mGameScene == GameScene::MainMenu ||
+        mGameScene == GameScene::DeathScreen ||
+        mGameScene == GameScene::EndDemo
+    )
         return;
 
-    if (mGamePlayState == GamePlayState::Playing)
+    if (
+        !SDL_TICKS_PASSED(SDL_GetTicks(), mLastUnTooglePauseTick + 500)
+    ) 
     {
-        mGamePlayState = GamePlayState::Paused;
-        mAudio->PauseSound(mMusicHandle);
+        return;
     }
 
-    else if (mGamePlayState == GamePlayState::Paused)
+    mLastUnTooglePauseTick = SDL_GetTicks();
+
+    if (mGamePlayState == GamePlayState::Paused)
     {
         mGamePlayState = GamePlayState::Playing;
         mAudio->ResumeSound(mMusicHandle);
+        return;
     }
+
+    mGamePlayState = GamePlayState::Paused;
+    mAudio->PauseSound(mMusicHandle);
 }
 
 void Game::UpdateGame()
