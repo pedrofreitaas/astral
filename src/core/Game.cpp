@@ -11,6 +11,9 @@
 #include <fstream>
 #include <map>
 #include <vector>
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
@@ -31,7 +34,11 @@
 #include "../ui/DialogueSystem.h"
 #include "../actors/Star.h"
 #include "../actors/Enemy.h"
+#include "../components/ai/AIMovementComponent.h"
 #include "../actors/Portal.h"
+#include "../actors/enemies/Zod.h"
+#include "../actors/Item.h"
+#include "../actors/enemies/Zathura.h"
 
 Game::Game()
     : mWindow(nullptr), mRenderer(nullptr), mTicksCount(0), mIsRunning(true),
@@ -45,7 +52,9 @@ Game::Game()
       mCameraCenter(CameraCenter::Zoe), mMaintainCameraInMap(true), mCameraCenterPos(Vector2::Zero),
       mController(nullptr), mMustAlwaysUpdateActors(), mPreviousGameState(GamePlayState::Playing),
       mRealWindowHeight(0), mRealWindowWidth(0), mDeltatime(0.f), mShakeCounter(0.f), mShakeIntensity(3.f),
-      mPortal(nullptr)
+      mPortal(nullptr), mIsPhysicsFrozen(false), mHasSpawnedPortalLevel2(false),
+      mMetalCratePortionTimeCounter(0.f), mQuasarEncounterTimeCounter(0.f), mZathura(nullptr),
+      mLastUnTooglePauseTick(0), mPreviousScene(GameScene::MainMenu)
 {
     mWindowWidth = 640;
     mWindowHeight = 352;
@@ -66,11 +75,21 @@ bool Game::Initialize()
         return false;
     }
 
+#ifdef __EMSCRIPTEN__
+    // On web, SDL_GetCurrentDisplayMode returns the monitor resolution, which is
+    // larger than the browser viewport. Creating a canvas at monitor resolution
+    // causes a CSS/viewport mismatch that makes the game invisible until the user
+    // changes browser zoom. Use the actual viewport size instead.
+    mRealWindowWidth  = EM_ASM_INT({ return window.innerWidth;  });
+    mRealWindowHeight = EM_ASM_INT({ return window.innerHeight; });
+    if (mRealWindowWidth  <= 0) mRealWindowWidth  = 1280;
+    if (mRealWindowHeight <= 0) mRealWindowHeight = 720;
+#else
     SDL_DisplayMode mode;
     SDL_GetCurrentDisplayMode(0, &mode);
-
     mRealWindowWidth = mode.w;
     mRealWindowHeight = mode.h;
+#endif
 
     mWindow = SDL_CreateWindow(
         "astral",
@@ -81,12 +100,6 @@ bool Game::Initialize()
     if (!mWindow)
     {
         SDL_Log("Failed to create window: %s", SDL_GetError());
-        return false;
-    }
-
-    if (!SDL_RenderSetIntegerScale(mRenderer, SDL_TRUE))
-    {
-        SDL_Log("Failed to set integer scale: %s", SDL_GetError());
         return false;
     }
 
@@ -159,6 +172,7 @@ bool Game::Initialize()
 
     mAudio->CacheAllSounds();
 
+
     return true;
 }
 
@@ -169,6 +183,7 @@ void Game::SetGameScene(Game::GameScene scene, float sceneLeftTime)
     if (mSceneManagerState != SceneManagerState::None)
         return;
 
+    mPreviousScene = mGameScene;
     mNextScene = scene;
     mSceneManagerState = SceneManagerState::Entering;
     mSceneManagerTimer = sceneLeftTime;
@@ -191,6 +206,7 @@ void Game::ChangeScene()
 
     // Reset gameplay state
     mGamePlayState = GamePlayState::Playing;
+    mIsPhysicsFrozen = false;
 
     mAudio->StopAllSounds();
 
@@ -208,12 +224,16 @@ void Game::ChangeScene()
         LoadBedroomPortal();
     else if (mNextScene == GameScene::Level1)
         LoadFirstLevel();
+    else if (mNextScene == GameScene::Level2)
+        LoadSecondLevel();
     else if (mNextScene == GameScene::DeathScreen)
         LoadDeathScreen();
     else if (mNextScene == GameScene::EndDemo)
         LoadEndDemoScene();
     else if (mNextScene == GameScene::Tests)
         LoadTestsLevel();
+    else if (mNextScene == GameScene::BedroomFinal)
+        LoadBedroomFinal();
 
     // Set new scenes
     mGameScene = mNextScene;
@@ -245,13 +265,20 @@ void Game::UnloadScene()
 {
     // Delete actors
     delete mSpatialHashing;
+    mZoe = nullptr;
+    mStar = nullptr;
+    mPortal = nullptr;
+    mZathura = nullptr;
+    mEnemies.clear();
 
-    // Delete UI screens
+    // Delete UI screens - HUD is here
     for (auto ui : mUIStack)
     {
         delete ui;
     }
     mUIStack.clear();
+
+    mHUD = nullptr;
 
     // Delete background texture
     if (mBackgroundTexture)
@@ -299,10 +326,13 @@ void Game::ProcessInput()
     SDL_GameController *controller = GetController();
 
     // Check if the Return key has been pressed to pause/unpause the game
-    if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_START) &&
-        GetGamePlayState() == GamePlayState::Playing)
+    if (
+        SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_START) &&
+        (GetGamePlayState() == GamePlayState::Playing || 
+        GetGamePlayState() == GamePlayState::Paused)
+    )
     {
-        TogglePause();
+        UnTogglePause();
     }
 
     if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_A) && !mUIStack.empty())
@@ -314,8 +344,12 @@ void Game::ProcessInput()
         }
     }
 
-    SDL_Event event;
-    while (SDL_PollEvent(&event))
+    std::vector<SDL_Event> events;
+    while (SDL_PollEvent(&events.emplace_back()))
+    {
+    }
+
+    for (const auto &event : events)
     {
         switch (event.type)
         {
@@ -338,16 +372,56 @@ void Game::ProcessInput()
 
             HandleKeyPressActors(event.key.keysym.sym, event.key.repeat == 0);            
 
+            switch (event.key.keysym.sym) {
+                case SDLK_z:
+                    new Zod(this, Vector2(310.f, 120.f) + GetCameraPos());
+                    break;
+                
+                case SDLK_s:
+                    new Sith(this, Vector2(310.f, 120.f) + GetCameraPos());
+                    break;
+                
+                case SDLK_q:
+                    new Quasar(this, Vector2(310.f, 120.f) + GetCameraPos());
+                    break;
+
+                case SDLK_n: {
+                    Vector2 zoePos = GetZoe()->GetPosition();
+                    Item::CreateNevascaItem(this, zoePos + Vector2(0.f, -40.f));
+                    break;
+                }
+                
+                case SDLK_v: {
+                    Vector2 zoePos = GetZoe()->GetPosition();
+                    Item::CreateVentaniaItem(this, zoePos + Vector2(0.f, -40.f));
+                    break;
+                }
+
+                case SDLK_m: {
+                    Vector2 zoePos = GetZoe()->GetPosition();
+                    Item::CreateFireballItem(this, zoePos + Vector2(0.f, -40.f));
+                    break;
+                }
+
+                case SDLK_l:
+                    GetZoe()->SetCenter(Vector2(1330.f, 655.f));
+                    break;
+            }
+
             break;
-        
         case SDL_MOUSEBUTTONDOWN:
             break;
         }
     }
 
+    if (mGamePlayState == GamePlayState::PlayingCutscene && mCurrentCutscene)
+    {
+        mCurrentCutscene->OnProcessInput(events);
+    }
+
     if (mGamePlayState == GamePlayState::Playing)
     {
-        ProcessInputActors();
+        ProcessInputActors(events);
     }
 
     if (mGamePlayState == GamePlayState::Dialogue)
@@ -357,7 +431,7 @@ void Game::ProcessInput()
     }
 }
 
-void Game::ProcessInputActors()
+void Game::ProcessInputActors(const std::vector<SDL_Event>& events)
 {
     const Uint8 *state = SDL_GetKeyboardState(nullptr);
 
@@ -380,7 +454,7 @@ void Game::ProcessInputActors()
 
     for (auto actor : toProcessActors)
     {
-        actor->ProcessInput(state);
+        actor->ProcessInput(state, events);
     }
 }
 
@@ -401,22 +475,33 @@ void Game::HandleKeyPressActors(const int key, const bool isPressed)
     }
 }
 
-void Game::TogglePause()
+void Game::UnTogglePause()
 {
-    if (mGameScene == GameScene::MainMenu)
+    if ( // menus
+        mGameScene == GameScene::MainMenu ||
+        mGameScene == GameScene::DeathScreen ||
+        mGameScene == GameScene::EndDemo
+    )
         return;
 
-    if (mGamePlayState == GamePlayState::Playing)
+    if (
+        !SDL_TICKS_PASSED(SDL_GetTicks(), mLastUnTooglePauseTick + 500)
+    ) 
     {
-        mGamePlayState = GamePlayState::Paused;
-        mAudio->PauseSound(mMusicHandle);
+        return;
     }
 
-    else if (mGamePlayState == GamePlayState::Paused)
+    mLastUnTooglePauseTick = SDL_GetTicks();
+
+    if (mGamePlayState == GamePlayState::Paused)
     {
         mGamePlayState = GamePlayState::Playing;
         mAudio->ResumeSound(mMusicHandle);
+        return;
     }
+
+    mGamePlayState = GamePlayState::Paused;
+    mAudio->PauseSound(mMusicHandle);
 }
 
 void Game::UpdateGame()
@@ -487,7 +572,19 @@ void Game::UpdateGame()
     UpdateSceneManager(mDeltatime);
     UpdateCamera();
 
-    EndDemoCheck();
+    if (mGameScene == GameScene::Level1)
+    {
+        QuasarEncounterLevelCheck();
+        BreakTilesFirstLevelCheck();
+        LastPartFirstLevelCheck();
+    }
+    else if (mGameScene == GameScene::Level2)
+    {
+        SithEncounterBreakTilesCheck();
+        SithEncounterBreakTilesCheck2();
+        CheckPortalSpawn();
+        CheckMetalCrateLevel();
+    }
 }
 
 void Game::UpdateCamera()
@@ -511,7 +608,7 @@ void Game::UpdateCamera()
         case CameraCenter::LogicalWindowSizeCenter: {
             if (!mZoe)
             {
-                throw std::runtime_error("Zoe actor is null when trying to center camera to logical window size center.");
+                break;
             }
 
             center = GetBoxCenter(
@@ -523,7 +620,7 @@ void Game::UpdateCamera()
         case CameraCenter::Shaking: {
             if (!mZoe)
             {
-                throw std::runtime_error("Zoe actor is null when trying to center camera to logical window size center.");
+                break;
             }
 
             center = GetBoxCenter(
@@ -644,7 +741,7 @@ std::vector<AABBColliderComponent *> Game::GetNearbyColliders(const Vector2 &pos
 
 void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
 {
-    mSpatialHashing->Draw(mRenderer, mCameraPos, mWindowWidth, mWindowHeight);
+    // mSpatialHashing->Draw(mRenderer, mCameraPos, mWindowWidth, mWindowHeight);
 
     // draw collider boxes only if the player has collider
     for (auto actor : actorsOnCamera)
@@ -670,19 +767,9 @@ void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
         if (auto enemy = dynamic_cast<Enemy *>(actor))
         {
             SDL_SetRenderDrawColor(mRenderer, 114, 16, 199, 255);
-            std::vector<SDL_Rect> path = enemy->GetPath();
-
-            while (path.size() > 0)
-            {
-                SDL_Rect rect = path.back();
-                rect.x -= static_cast<int>(mCameraPos.x);
-                rect.y -= static_cast<int>(mCameraPos.y);
-                SDL_RenderDrawRect(mRenderer, &rect);
-                path.pop_back();
-            }
 
             // draw enemy's current applied force vector
-            Vector2 force = enemy->GetCurrentAppliedForce(.05f);
+            Vector2 force = enemy->GetCurrentVelocity(2.f);
             Vector2 enemyPos = enemy->GetCenter();
             SDL_SetRenderDrawColor(mRenderer, 29, 88, 146, 255);
             SDL_RenderDrawLine(
@@ -691,6 +778,60 @@ void Game::DrawDebugInfo(std::vector<Actor *> &actorsOnCamera)
                 static_cast<int>(enemyPos.y - mCameraPos.y),
                 static_cast<int>(enemyPos.x + force.x - mCameraPos.x),
                 static_cast<int>(enemyPos.y + force.y - mCameraPos.y));
+
+            SDL_Rect threatRect = enemy->GetThreatRect();
+            SDL_Rect rect = {
+                static_cast<int>(threatRect.x - mCameraPos.x),
+                static_cast<int>(threatRect.y - mCameraPos.y),
+                static_cast<int>(threatRect.w),
+                static_cast<int>(threatRect.h)};
+
+            SDL_SetRenderDrawColor(mRenderer, 114, 16, 199, 255);
+            SDL_RenderDrawRect(mRenderer, &rect);
+
+            std::vector<Vector2> obstaclesAroundCenters = enemy->GetObstaclesAroundCenters();
+            for (const auto& obstacleCenter : obstaclesAroundCenters)
+            {
+                SDL_Rect obstacleRect = {
+                    static_cast<int>(obstacleCenter.x - 5 - mCameraPos.x),
+                    static_cast<int>(obstacleCenter.y - 5 - mCameraPos.y),
+                    10,
+                    10
+                };
+                SDL_SetRenderDrawColor(mRenderer, 255, 165, 0, 255);
+                SDL_RenderDrawRect(mRenderer, &obstacleRect);
+            }
+        
+            float fovAngleDeg = enemy->GetFovAngle() * (180.0f / Math::Pi);
+            Vector2 forward = enemy->GetForward();
+            float maxDist = enemy->GetMaxSeeDistance();
+
+            Vector2 leftEdge = Vector2::RotateVec(forward, -fovAngleDeg) * maxDist;
+            Vector2 rightEdge = Vector2::RotateVec(forward, fovAngleDeg) * maxDist;
+
+            SDL_SetRenderDrawColor(mRenderer, 0, 220, 0, 255);
+            SDL_RenderDrawLine(mRenderer,
+                static_cast<int>(enemyPos.x - mCameraPos.x),
+                static_cast<int>(enemyPos.y - mCameraPos.y),
+                static_cast<int>(enemyPos.x + leftEdge.x - mCameraPos.x),
+                static_cast<int>(enemyPos.y + leftEdge.y - mCameraPos.y));
+            SDL_RenderDrawLine(mRenderer,
+                static_cast<int>(enemyPos.x - mCameraPos.x),
+                static_cast<int>(enemyPos.y - mCameraPos.y),
+                static_cast<int>(enemyPos.x + rightEdge.x - mCameraPos.x),
+                static_cast<int>(enemyPos.y + rightEdge.y - mCameraPos.y));
+
+            if (enemy->isAISeeking())
+            {
+                Vector2 seekIndicator = enemyPos + enemy->GetForward() * enemy->GetWidth() * 0.5f;
+                SDL_Rect seekRect = {
+                    static_cast<int>(seekIndicator.x - 4 - mCameraPos.x),
+                    static_cast<int>(seekIndicator.y - 4 - mCameraPos.y),
+                    8, 8
+                };
+                SDL_SetRenderDrawColor(mRenderer, 160, 32, 240, 255);
+                SDL_RenderFillRect(mRenderer, &seekRect);
+            }
         }
     }
 
@@ -923,11 +1064,17 @@ Vector2 Game::GetLogicalMousePos() const
     return Vector2(lx, ly) + mCameraPos;
 }
 
-void Game::AddCutscene(const std::string &name, std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback)
+void Game::AddCutscene(const std::string &name, std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback, bool overwrite)
 {
     auto it = mCutscenes.find(name);
     if (it != mCutscenes.end())
     {
+        if (!overwrite)
+        {
+            SDL_Log("Cutscene with name '%s' already exists. Skipping.", name.c_str());
+            return;
+        }
+
         SDL_Log("Cutscene with name '%s' already exists. Overwriting.", name.c_str());
         delete it->second;
         mCutscenes.erase(it);
@@ -943,6 +1090,12 @@ void Game::StartCutscene(const std::string &name)
     if (iter != mCutscenes.end())
     {
         mCurrentCutscene = iter->second;
+        
+        if (mCurrentCutscene->GetState() == Cutscene::State::Finished)
+        {
+            return;
+        }
+
         mCurrentCutscene->Play();
         return;
     }
@@ -1055,7 +1208,7 @@ std::vector<class Enemy *> Game::GetEnemies(const Vector2 &min, const Vector2 &m
     return nearbyEnemies;
 }
 
-void Game::EndDemoCheck()
+void Game::QuasarEncounterLevelCheck()
 {
     if (GameScene::Level1 != mGameScene)
     {
@@ -1067,13 +1220,54 @@ void Game::EndDemoCheck()
         return;
     }
 
-    if (isEnding)
+    Vector2 start = Vector2(0.f, 0.f);
+    Vector2 end = Vector2(630.f, 340.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
+
+    bool playerInArea = zoeCenter.x >= start.x && zoeCenter.x <= end.x 
+        && zoeCenter.y >= start.y && zoeCenter.y <= end.y;
+
+    if (!playerInArea)
+    {
+        return;
+    }
+    
+    // if the only quasar is still full life.
+    if (
+        !enemiesInArea.empty() && 
+        enemiesInArea[0]->GetLifes() == GetConfig()->Get<int>("QUASAR.HEALTH")
+    )
+    {
+        mQuasarEncounterTimeCounter += GetDtLastFrame();
+
+        if (mQuasarEncounterTimeCounter >= MAX_TIME_QUASAR_ENCOUNTER_TIP)
+            StartCutscene("quasarEncounterTip");
+
+        return;
+    }
+
+    if (enemiesInArea.empty())
+    {
+        StartCutscene("halfFirstLevel");
+    }
+}
+
+void Game::BreakTilesFirstLevelCheck()
+{
+    if (GameScene::Level1 != mGameScene)
     {
         return;
     }
 
-    Vector2 start = Vector2(0.f, 0.f);
-    Vector2 end = Vector2(630.f, 340.f);
+    if (mGamePlayState != GamePlayState::Playing)
+    {
+        return;
+    }
+
+    Vector2 start = Vector2(642.f, 712.f);
+    Vector2 end = Vector2(1262.f, 1036.f);
 
     Vector2 zoeCenter = mZoe->GetCenter();
     std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
@@ -1086,10 +1280,187 @@ void Game::EndDemoCheck()
     if (zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
         zoeCenter.y >= start.y && zoeCenter.y <= end.y)
     {
-        StartCutscene("endDemo");
-        isEnding = true;
+        StartCutscene("breakTiles");
     }
 }
+
+void Game::LastPartFirstLevelCheck()
+{
+    if (GameScene::Level1 != mGameScene)
+    {
+        return;
+    }
+
+    if (mGamePlayState != GamePlayState::Playing)
+    {
+        return;
+    }
+
+    Vector2 start = Vector2(1280.f, 712.f);
+    Vector2 end = Vector2(1900.f, 1036.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
+
+    if (!enemiesInArea.empty())
+    {
+        return;
+    }
+
+    if (zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y)
+    {
+        StartCutscene("endFirstLevel");
+    }
+}
+
+void Game::SithEncounterBreakTilesCheck()
+{
+    if (GameScene::Level2 != mGameScene)
+    {
+        return;
+    }
+
+    if (mGamePlayState != GamePlayState::Playing)
+    {
+        return;
+    }
+
+    Vector2 start = Vector2(13.f, 369.f);
+    Vector2 end = Vector2(623.f, 690.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
+
+    if (!enemiesInArea.empty())
+    {
+        return;
+    }
+
+    if (zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y)
+    {
+        StartCutscene("breakLevelSithPhaseTiles");
+    }
+}
+
+void Game::SithEncounterBreakTilesCheck2()
+{
+    if (GameScene::Level2 != mGameScene)
+    {
+        return;
+    }
+
+    if (mGamePlayState != GamePlayState::Playing)
+    {
+        return;
+    }
+
+    Vector2 start = Vector2(655.f, 373.f);
+    Vector2 end = Vector2(1270.f, 688.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
+
+    if (!enemiesInArea.empty())
+    {
+        return;
+    }
+
+    if (zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y)
+    {
+        StartCutscene("breakLevelSithPhaseTiles2");
+    }
+}
+
+void Game::CheckPortalSpawn()
+{
+    if (mGameScene != GameScene::Level2)
+        return;
+
+    if (mGamePlayState != GamePlayState::Playing)
+        return;
+
+    if (mHasSpawnedPortalLevel2)
+        return;
+
+    Vector2 start = Vector2(656.f, 15.f);
+    Vector2 end = Vector2(1265.f, 365.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    std::vector<Enemy *> enemiesInArea = GetEnemies(start, end);
+
+    if (!enemiesInArea.empty())
+        return;
+
+    if (
+        !(zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y)
+    )
+        return;
+
+    Vector2 pos1 = Vector2(896, 64);
+    Vector2 pos2 = Vector2(672, 160);
+    Vector2 objSize = Vector2(128, 64);
+
+    Vector2 realPos = (zoeCenter.x >= pos1.x && zoeCenter.x <= pos1.x + objSize.x &&
+        zoeCenter.y >= pos1.y && zoeCenter.y <= pos1.y + objSize.y) ? pos2 : pos1;
+
+    json parameters = json::object();
+    parameters["cutscene_name"] = "spawnPortalLevel2";
+
+    new Portal(
+        this,
+        realPos + (objSize * 0.5f)
+    );
+
+    new MapObject(
+        this,
+        SPAWN_PORTAL_LEVEL_2_OBJ_ID,
+        "in",
+        "play_cutscene",
+        realPos,
+        objSize,
+        parameters);
+
+    mHasSpawnedPortalLevel2 = true;
+}
+
+void Game::CheckMetalCrateLevel()
+{
+    if (mGameScene != GameScene::Level2)
+        return;
+
+    if (mGamePlayState != GamePlayState::Playing)
+        return;
+
+    if (mMetalCratePortionTimeCounter >= MAX_TIME_METAL_CRATE_TIP)
+        return;
+
+    // not the full level, just the tip portion.
+    Vector2 start = Vector2(1474.f, 0.f);
+    Vector2 end = Vector2(1686.f, 350.f);
+
+    Vector2 zoeCenter = mZoe->GetCenter();
+    RigidBodyComponent* zoeRigidBody = mZoe->GetComponent<RigidBodyComponent>();
+
+    // might be gettting mechanic without tip
+    if (!zoeRigidBody->GetOnGround())
+        return;
+
+    if (
+        zoeCenter.x >= start.x && zoeCenter.x <= end.x &&
+        zoeCenter.y >= start.y && zoeCenter.y <= end.y
+    )
+    {
+        mMetalCratePortionTimeCounter += GetDtLastFrame();
+
+        if (mMetalCratePortionTimeCounter >= MAX_TIME_METAL_CRATE_TIP)
+            StartCutscene("metalCrateTip");
+    }
+}
+
 
 Vector2 Game::getNormalizedControlerPad()
 {
@@ -1117,4 +1488,26 @@ Vector2 Game::getNormalizedControlerPad()
     normalizedPad.Normalize();
 
     return normalizedPad;
+}
+
+// -----
+
+Checkpoint* Game::GetCurrentCheckpoint() const
+{
+    if (mZoe == nullptr)
+    {
+        return nullptr;
+    }
+
+    return mZoe->GetCurrentCheckpoint();
+}
+
+void Game::SetCheckpoint(const Vector2& position)
+{
+    if (mZoe == nullptr)
+    {
+        return;
+    }
+
+    mZoe->SetCheckpoint(position);
 }

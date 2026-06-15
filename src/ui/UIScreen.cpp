@@ -50,12 +50,21 @@ UIScreen::~UIScreen()
         delete img;
     }
     mBackground.clear();
+
+    for (auto anim : mAnimations) {
+        delete anim;
+    }
+    mAnimations.clear();
 }
 
 void UIScreen::Update(float deltaTime)
 {
 	for (auto t : mCursors) {
         t->Update(deltaTime);
+    }
+
+    for (auto anim : mAnimations) {
+        anim->Update(deltaTime);
     }
 }
 
@@ -79,6 +88,10 @@ void UIScreen::Draw(SDL_Renderer *renderer)
 
     for (auto t : mCursors) {
         t->Draw(renderer, mPos);
+    }
+
+    for (auto anim : mAnimations) {
+        anim->Draw(renderer, mPos, mGame->GetModColor());
     }
 }
 
@@ -212,4 +225,25 @@ UICursor* UIScreen::GetCursor() const
     if (mCursors.empty())
         return nullptr;
     return mCursors[0];
+}
+
+UIAnimation* UIScreen::AddAnimation(
+    const std::string &animPath, 
+    const std::string &animData,
+    const Vector2 &pos,
+    const Vector2 &size,
+    float animFPS,
+    int animationStartIdx, int animationEndIdx, bool isLoop
+) {
+    auto anim = new UIAnimation(mGame, animPath, animData, pos, size, animFPS, animationStartIdx, animationEndIdx, isLoop);
+    mAnimations.emplace_back(anim);
+    return anim;
+}
+
+void UIScreen::RemoveAnimation(UIAnimation* anim) {
+    auto it = std::find(mAnimations.begin(), mAnimations.end(), anim);
+    if (it != mAnimations.end()) {
+        delete *it;
+        mAnimations.erase(it);
+    }
 }

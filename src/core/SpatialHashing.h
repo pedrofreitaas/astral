@@ -15,6 +15,7 @@
 #include <utility>
 #include "../libs/Math.h"
 #include "../actors/Actor.h"
+#include "../actors/Tile.h"
 
 struct Cell {
     int row, col;
@@ -67,6 +68,8 @@ public:
     bool isTileCell(int row, int col);
     bool isPlaformCell(int row, int col);
     bool isCornerCel(int row, int col);
+
+    Tile* GetTileAtPos(const Vector2& position) const;
 
 private:
     int mCellSize;

@@ -1,0 +1,135 @@
+{ "frames": [
+   {
+    "filename": "father 0.png",
+    "frame": { "x": 0, "y": 0, "w": 25, "h": 31 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 31 },
+    "sourceSize": { "w": 25, "h": 31 },
+    "duration": 100
+   },
+   {
+    "filename": "father 1.png",
+    "frame": { "x": 25, "y": 0, "w": 25, "h": 31 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 31 },
+    "sourceSize": { "w": 25, "h": 31 },
+    "duration": 100
+   },
+   {
+    "filename": "father 2.png",
+    "frame": { "x": 50, "y": 0, "w": 25, "h": 31 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 31 },
+    "sourceSize": { "w": 25, "h": 31 },
+    "duration": 100
+   },
+   {
+    "filename": "father 3.png",
+    "frame": { "x": 75, "y": 0, "w": 25, "h": 31 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 31 },
+    "sourceSize": { "w": 25, "h": 31 },
+    "duration": 100
+   },
+   {
+    "filename": "father 4.png",
+    "frame": { "x": 100, "y": 0, "w": 25, "h": 31 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 31 },
+    "sourceSize": { "w": 25, "h": 31 },
+    "duration": 100
+   },
+   {
+    "filename": "father 5.png",
+    "frame": { "x": 125, "y": 0, "w": 25, "h": 31 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 31 },
+    "sourceSize": { "w": 25, "h": 31 },
+    "duration": 100
+   },
+   {
+    "filename": "father 6.png",
+    "frame": { "x": 150, "y": 0, "w": 25, "h": 31 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 31 },
+    "sourceSize": { "w": 25, "h": 31 },
+    "duration": 100
+   },
+   {
+    "filename": "father 7.png",
+    "frame": { "x": 175, "y": 0, "w": 25, "h": 31 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 31 },
+    "sourceSize": { "w": 25, "h": 31 },
+    "duration": 100
+   },
+   {
+    "filename": "father 8.png",
+    "frame": { "x": 200, "y": 0, "w": 25, "h": 31 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 31 },
+    "sourceSize": { "w": 25, "h": 31 },
+    "duration": 100
+   },
+   {
+    "filename": "father 9.png",
+    "frame": { "x": 225, "y": 0, "w": 25, "h": 31 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 31 },
+    "sourceSize": { "w": 25, "h": 31 },
+    "duration": 100
+   },
+   {
+    "filename": "father 10.png",
+    "frame": { "x": 250, "y": 0, "w": 25, "h": 31 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 31 },
+    "sourceSize": { "w": 25, "h": 31 },
+    "duration": 100
+   },
+   {
+    "filename": "father 11.png",
+    "frame": { "x": 275, "y": 0, "w": 25, "h": 31 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 31 },
+    "sourceSize": { "w": 25, "h": 31 },
+    "duration": 100
+   },
+   {
+    "filename": "father 12.png",
+    "frame": { "x": 300, "y": 0, "w": 25, "h": 31 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 31 },
+    "sourceSize": { "w": 25, "h": 31 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.x-dev",
+  "image": "texture.png",
+  "format": "RGBA8888",
+  "size": { "w": 325, "h": 31 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

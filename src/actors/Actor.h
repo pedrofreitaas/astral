@@ -41,7 +41,13 @@ enum class BehaviorState // For AI behaviors/animations
     Clinging = 16,
     Freezing = 17,
     Frozen = 18,
-    Dashing = 19
+    Dashing = 19,
+    Dead = 20,
+    Barking = 21,
+    Licking = 22,
+    ChargingAttack = 23,
+    Vanishing = 24,
+    Appearing = 25
 };
 
 class Actor
@@ -59,7 +65,7 @@ public:
     // Reinsert function called from Game (not overridable)
     void Update(float deltaTime);
     // ProcessInput function called from Game (not overridable)
-    void ProcessInput(const Uint8* keyState);
+    void ProcessInput(const Uint8* keyState, const std::vector<SDL_Event>& events);
     // HandleKeyPress function called from Game (not overridable)
     void HandleKeyPress(const int key, const bool isPressed);
 
@@ -127,6 +133,8 @@ public:
     
     Vector2 GetCenter() const;
     Vector2 GetHalfSize() const;
+    float  GetWidth() const;
+    float GetHeight() const;
 
     BehaviorState GetBehaviorState() const { return mBehaviorState; }
 
@@ -138,19 +146,19 @@ public:
 
     bool IsFrozen() const { return mBehaviorState == BehaviorState::Frozen; }
 
-    bool GetIsSlidingOnSnow() const { return isSlidingOnSnow; }
+    bool GetIsSlidingOnSnow() const { return mIsSlidingOnSnow; }
 
 protected:
     class Game* mGame;
 
-    void SetBehaviorState(BehaviorState state) { 
+    virtual void SetBehaviorState(BehaviorState state) {
         mPreviousBehaviorState = mBehaviorState;
-        mBehaviorState = state; 
+        mBehaviorState = state;
     }
 
     // Any actor-specific update code (overridable)
     virtual void OnUpdate(float deltaTime);
-    virtual void OnProcessInput(const Uint8* keyState);
+    virtual void OnProcessInput(const Uint8* keyState, const std::vector<SDL_Event>& events);
     virtual void OnHandleKeyPress(const int key, const bool isPressed);
 
     void TakeSpikeHit(const Vector2 &SpikeBaseCenter);
@@ -172,7 +180,7 @@ protected:
     // Components
     std::vector<class Component*> mComponents;
 
-    bool mIsOnGround, isSlidingOnSnow;
+    bool mIsOnGround, mIsSlidingOnSnow;
     int mLifes;
 
     class TimerComponent* mTimerComponent;
@@ -183,11 +191,14 @@ protected:
     virtual void StopFreeze();
 
     void SetOnDamageCallback(std::function<void()> callback);
+    bool GetIsInvincible() const { return mInvincible; }
     void SetInvincibilityOff();
     void SetInvincibilityOn();
 
 private:
     friend class Component;
+    friend class SetBehaviorStateStep;
+    friend class MoveStep;
 
     // Adds component to Actor (this is automatically called
     // in the component constructor)

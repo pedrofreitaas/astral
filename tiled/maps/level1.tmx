@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="60" height="33" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="110">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="33" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="164">
  <editorsettings>
   <export target="../../assets/Levels/Maps/level1.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/Terrain and Back Wall (32x32).tsx"/>
  <tileset firstgid="248" source="../tilesets/Platforms (32x32).tsx"/>
- <layer id="2" name="behind_player" width="60" height="33">
+ <tileset firstgid="272" source="../tilesets/Torch.tsx"/>
+ <tileset firstgid="273" source="../tilesets/Crate.tsx"/>
+ <layer id="7" name="ground" width="60" height="33">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -38,48 +40,85 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,155,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="1" name="blocks" width="60" height="33">
+ <layer id="2" name="detailsDown" width="60" height="33">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="1" name="player" width="60" height="33">
   <data encoding="csv">
 21,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,23,
 40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
 40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,25,0,261,263,0,0,0,0,0,0,0,0,0,261,262,263,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,25,0,264,0,0,264,0,0,261,263,0,0,261,263,0,0,261,263,0,42,
+40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,261,262,25,25,0,261,263,0,0,0,0,0,0,0,0,0,261,262,263,0,0,0,272,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
+40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,25,0,0,261,262,263,0,0,0,0,0,261,262,263,0,0,0,0,0,42,
 40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,261,262,263,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,261,263,0,0,0,42,
 40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,264,0,0,0,0,0,0,0,42,
+40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,261,262,263,0,42,
 40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-63,0,97,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,61,59,98,98,98,98,98,99,0,0,0,0,0,0,0,97,98,98,98,98,61,59,98,98,98,98,99,0,0,0,97,98,98,98,98,98,98,98,98,98,61,
-21,0,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,23,0,0,0,0,0,0,0,97,98,98,98,98,98,98,98,98,98,98,99,0,0,264,97,98,98,98,98,98,98,98,98,98,23,
-40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,261,262,262,25,25,0,0,0,0,0,0,25,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,0,0,0,261,262,262,262,262,262,262,25,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,44,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,261,262,263,0,0,0,0,0,0,44,44,0,0,0,0,0,0,44,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,261,262,263,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,25,0,0,44,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,44,0,0,44,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,262,262,262,44,44,264,0,0,44,0,0,44,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,0,0,0,44,44,0,0,0,44,22,22,44,0,0,0,0,0,0,0,0,0,0,0,42,
-59,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,61,59,98,98,98,98,98,98,98,98,98,98,98,98,98,98,63,98,98,98,61,59,98,98,98,63,60,60,63,98,98,98,98,98,98,98,98,98,98,98,61,
-21,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,23,21,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,23,21,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,23,
 40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,264,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,21,22,23,0,0,261,262,262,262,263,0,44,44,0,0,0,0,0,0,0,0,0,264,0,0,0,101,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,261,263,0,40,0,42,0,0,0,0,0,0,0,0,44,44,0,0,0,0,97,98,99,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,59,60,61,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,261,262,263,0,0,0,0,25,0,0,0,0,0,0,0,0,0,44,44,0,101,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,44,0,0,0,0,0,0,0,0,0,63,63,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,0,63,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-40,0,0,0,0,0,0,0,0,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
-59,60,60,60,60,60,60,60,60,63,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,63,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,61
+63,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,61,59,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,61,59,98,98,98,98,98,98,98,99,0,0,97,98,98,98,98,98,98,98,61,
+21,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,99,0,0,0,97,98,98,98,98,98,98,23,
+40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,101,0,0,0,0,0,0,0,0,0,42,
+40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,272,0,0,0,0,0,0,0,0,0,101,0,0,0,0,0,0,0,0,42,
+40,0,0,0,0,0,0,0,261,262,263,0,261,262,263,0,0,0,0,0,272,0,0,0,0,0,0,0,0,0,0,0,0,0,0,261,262,262,262,25,25,0,0,0,0,0,0,0,0,0,0,97,98,98,98,98,23,0,0,42,
+40,0,0,261,262,263,0,0,0,0,0,0,0,0,0,0,261,262,262,25,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,0,0,42,
+40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,261,262,263,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,0,0,42,
+40,0,0,0,0,0,0,261,262,263,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,262,262,262,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,0,0,42,
+40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,0,0,42,
+40,0,0,0,0,0,0,0,0,0,261,262,263,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
+40,0,0,0,272,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,0,0,0,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
+59,98,98,98,99,0,0,0,97,98,98,98,98,98,98,98,98,98,98,61,59,98,98,98,98,98,98,98,98,98,98,98,98,98,98,61,0,0,0,61,59,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,61,
+21,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,60,98,98,98,22,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,23,98,98,98,98,98,98,22,98,98,98,98,98,98,98,98,98,98,98,98,23,
+40,0,0,0,0,0,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,158,0,0,0,0,0,0,44,0,0,0,0,0,0,0,0,0,0,0,0,44,
+40,0,0,0,0,0,44,0,0,0,0,0,0,0,0,0,0,0,0,0,272,0,0,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,158,272,0,0,0,0,0,44,0,0,0,0,0,0,0,0,0,0,0,0,44,
+40,0,0,0,25,0,44,0,0,0,0,0,0,0,97,98,99,0,0,21,23,0,0,44,0,0,0,25,0,0,0,0,0,0,0,0,0,0,0,21,23,0,0,0,0,0,44,0,0,0,0,0,0,0,97,98,98,98,99,44,
+40,0,0,0,44,0,44,0,0,0,0,0,0,0,0,0,0,0,0,42,40,0,0,44,0,0,0,44,0,0,97,98,98,98,98,98,98,99,0,44,44,0,0,0,0,0,44,0,0,0,0,0,0,0,0,0,0,0,0,44,
+40,0,0,0,44,0,44,0,0,97,98,99,0,0,0,0,0,0,0,42,40,0,0,63,0,0,0,44,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,44,0,0,0,0,0,101,0,0,0,0,0,0,44,
+40,0,0,0,44,0,63,0,0,0,0,0,0,0,0,0,0,0,0,42,40,0,0,0,0,0,0,44,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,44,0,0,0,0,0,0,0,0,0,0,0,0,44,
+40,0,0,0,44,0,0,0,0,0,0,0,0,0,0,25,0,0,0,42,40,0,0,0,0,0,0,63,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,44,0,0,0,101,0,0,0,0,0,0,0,0,44,
+40,0,0,0,44,0,25,0,0,0,0,0,0,0,0,44,0,0,0,42,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,63,0,0,0,0,0,0,0,0,0,0,0,0,44,
+40,0,272,0,44,0,44,0,0,0,0,0,0,0,0,44,0,0,0,42,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,0,0,0,0,0,273,0,0,0,0,0,0,0,0,0,0,0,0,44,
+59,60,60,60,63,60,63,60,60,60,60,61,0,0,0,63,60,60,60,61,59,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,61,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,61
 </data>
  </layer>
- <layer id="3" name="above_player" width="60" height="33">
+ <layer id="3" name="detailsTop" width="60" height="33">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -92,7 +131,6 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,215,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,158,158,158,158,158,158,158,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -112,7 +150,45 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,212,212,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="8" name="sky" width="60" height="33" visible="0">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
@@ -124,247 +200,16 @@
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
-  <object id="14" x="991.554" y="658.467" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="16" x="1023.9" y="658.29" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="17" x="1055.94" y="657.866" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="18" x="1087.52" y="657.442" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="21" x="898" y="1009.83" width="28.5" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="4"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="42" x="86" y="1001.83" width="32" height="21.6667">
+  <object id="52" x="1694" y="606.667" width="30" height="30.3334">
    <properties>
     <property name="entity_code" type="int" value="2"/>
     <property name="event" value="atStart"/>
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
-  <object id="43" x="438.667" y="1001.83" width="32" height="21.6667">
-   <properties>
-    <property name="entity_code" type="int" value="2"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="44" x="292.667" y="771.833" width="21.3333" height="21.6667">
-   <properties>
-    <property name="entity_code" type="int" value="1"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="45" x="195.333" y="772.167" width="23.3333" height="21">
-   <properties>
-    <property name="entity_code" type="int" value="3"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="46" x="390.667" y="900.167" width="20" height="21">
-   <properties>
-    <property name="entity_code" type="int" value="3"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="48" x="1696.83" y="546.167" width="29" height="29.3333">
-   <properties>
-    <property name="entity_code" type="int" value="3"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="52" x="1605.33" y="644.667" width="21.3333" height="21.6667">
-   <properties>
-    <property name="entity_code" type="int" value="2"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="53" x="1310.73" y="306.909" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="4"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="54" x="1375.32" y="306.909" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="4"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="55" x="1407.59" y="306.636" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="4"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="56" x="1695.82" y="306.545" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="4"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="59" x="1804.25" y="309" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="4"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="67" x="671.907" y="306.326" width="32" height="13">
+  <object id="67" x="672" y="306" width="32" height="13">
    <properties>
     <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="68" x="703.739" y="306.386" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="69" x="1088.1" y="306.053" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="70" x="1120" y="305.962" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="71" x="1151.25" y="306.25" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="72" x="1183.45" y="306.591" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="73" x="1216.43" y="306.083" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="74" x="735.818" y="306.136" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="75" x="768.182" y="306.682" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="76" x="800.182" y="306.682" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="77" x="832.182" y="306.682" width="32" height="13">
-   <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="79" x="739.083" y="165.833" width="24.5" height="21.6667">
-   <properties>
-    <property name="entity_code" type="int" value="1"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="80" x="988.08" y="264.5" width="24.5" height="21.6667">
-   <properties>
-    <property name="entity_code" type="int" value="1"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="86" x="454" y="101.5" width="20" height="21">
-   <properties>
-    <property name="entity_code" type="int" value="3"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="87" x="166" y="134.5" width="20" height="21">
-   <properties>
-    <property name="entity_code" type="int" value="3"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="88" x="422" y="227.5" width="20" height="21">
-   <properties>
-    <property name="entity_code" type="int" value="3"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="89" x="291.75" y="199.167" width="24.5" height="21.6667">
-   <properties>
-    <property name="entity_code" type="int" value="1"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="90" x="127" y="288.167" width="32" height="21.6667">
-   <properties>
-    <property name="entity_code" type="int" value="2"/>
     <property name="event" value="atStart"/>
     <property name="function_name" value="spawn_entity"/>
    </properties>
@@ -376,65 +221,320 @@
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
-  <object id="102" x="1317.65" y="976.21" width="52.0273" height="44.913">
+  <object id="110" x="164" y="696" width="88" height="6.66663">
    <properties>
-    <property name="cutscene_name" value="quasar_encounter"/>
     <property name="event" value="enter"/>
-    <property name="function_name" value="play_cutscene"/>
+    <property name="function_name" value="teleport_to_checkpoint"/>
    </properties>
   </object>
-  <object id="103" x="1772" y="954.5" width="66" height="63">
+  <object id="111" x="1311.75" y="302.5" width="32" height="16">
+   <properties>
+    <property name="entity_code" type="int" value="4"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="112" x="1345.08" y="303.083" width="32" height="16">
+   <properties>
+    <property name="entity_code" type="int" value="4"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="113" x="1377.25" y="302.917" width="32" height="16">
+   <properties>
+    <property name="entity_code" type="int" value="4"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="114" x="1410" y="303.083" width="32" height="16">
+   <properties>
+    <property name="entity_code" type="int" value="4"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="115" x="1443.08" y="303.333" width="32" height="16">
+   <properties>
+    <property name="entity_code" type="int" value="4"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="116" x="1476.08" y="303.083" width="32" height="16">
+   <properties>
+    <property name="entity_code" type="int" value="4"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="117" x="1509" y="303.333" width="32" height="16">
+   <properties>
+    <property name="entity_code" type="int" value="4"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="118" x="237" y="253.833" width="66" height="63">
    <properties>
     <property name="entity_code" type="int" value="7"/>
     <property name="event" value="atStart"/>
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
-  <object id="104" x="930.295" y="1009.86" width="28.5" height="13">
+  <object id="119" x="545.986" y="42.2102" width="28.694" height="44.913">
    <properties>
-    <property name="entity_code" type="int" value="4"/>
+    <property name="cutscene_name" value="quasar_encounter"/>
+    <property name="event" value="enter"/>
+    <property name="function_name" value="play_cutscene"/>
+   </properties>
+  </object>
+  <object id="120" x="65.667" y="128.166" width="28.6666" height="29.6667">
+   <properties>
+    <property name="entity_code" type="int" value="3"/>
     <property name="event" value="atStart"/>
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
-  <object id="105" x="961.295" y="1009.86" width="29.5" height="13">
+  <object id="121" x="672" y="305" width="576" height="10">
    <properties>
-    <property name="entity_code" type="int" value="4"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
+    <property name="event" value="in"/>
+    <property name="function_name" value="teleport_to_checkpoint"/>
    </properties>
   </object>
-  <object id="108" x="959.5" y="658.75" width="32" height="13">
+  <object id="122" x="736" y="306" width="32" height="13">
    <properties>
     <property name="entity_code" type="int" value="5"/>
     <property name="event" value="atStart"/>
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
-  <object id="109" x="926.75" y="658.75" width="32" height="13">
+  <object id="123" x="704" y="306" width="32" height="13">
    <properties>
     <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="124" x="768" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="125" x="800" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="126" x="832" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="127" x="864" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="128" x="896" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="129" x="928" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="130" x="960" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="131" x="992" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="132" x="1024" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="133" x="1056" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="134" x="1088" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="135" x="1120" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="136" x="1152" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="137" x="1184" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="138" x="1216" y="306" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="140" x="387.333" y="1047.33" width="88" height="6.66663">
+   <properties>
+    <property name="event" value="enter"/>
+    <property name="function_name" value="teleport_to_checkpoint"/>
+   </properties>
+  </object>
+  <object id="141" x="385" y="801.833" width="28.6666" height="29.6667">
+   <properties>
+    <property name="entity_code" type="int" value="3"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="144" x="162.333" y="129.167" width="28.6666" height="29.6667">
+   <properties>
+    <property name="entity_code" type="int" value="3"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="145" x="257" y="130.5" width="28.6666" height="29.6667">
+   <properties>
+    <property name="entity_code" type="int" value="3"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="146" x="544.333" y="127.833" width="28.6666" height="29.6667">
+   <properties>
+    <property name="entity_code" type="int" value="3"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="148" x="355" y="127.833" width="28.6666" height="29.6667">
+   <properties>
+    <property name="entity_code" type="int" value="3"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="149" x="736" y="896" width="32" height="32">
+   <properties>
+    <property name="entity_code" type="int" value="3"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="150" x="977.125" y="864.792" width="32" height="32">
+   <properties>
+    <property name="entity_code" type="int" value="3"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="151" x="1153.67" y="866.5" width="32" height="32">
+   <properties>
+    <property name="entity_code" type="int" value="3"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="153" x="1128.17" y="799.417" width="30" height="30.3334">
+   <properties>
+    <property name="entity_code" type="int" value="2"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="154" x="671.333" y="1010.17" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="155" x="703.667" y="1010.83" width="32" height="13">
+   <properties>
+    <property name="entity_code" type="int" value="5"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="157" x="1043.5" y="959" width="66" height="63">
+   <properties>
+    <property name="entity_code" type="int" value="7"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="158" x="1729.17" y="990.333" width="30" height="30.3334">
+   <properties>
+    <property name="entity_code" type="int" value="2"/>
+    <property name="event" value="atStart"/>
+    <property name="function_name" value="spawn_entity"/>
+   </properties>
+  </object>
+  <object id="159" x="1856.5" y="768.333" width="30" height="30.3334">
+   <properties>
+    <property name="entity_code" type="int" value="2"/>
     <property name="event" value="atStart"/>
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="6" name="en_collider_objects">
-  <object id="29" x="863.959" y="327.75" width="29.0833" height="24.1667"/>
-  <object id="30" x="894.625" y="329.583" width="31.4167" height="21.5"/>
-  <object id="31" x="928.292" y="330.583" width="30.75" height="21.5"/>
-  <object id="32" x="959.291" y="330.083" width="32.0833" height="21.5"/>
-  <object id="33" x="991.291" y="328.917" width="31.0833" height="21.5"/>
-  <object id="34" x="1022.97" y="329.25" width="31.5833" height="21.5"/>
-  <object id="35" x="1055.97" y="328.917" width="30.4167" height="21.5"/>
-  <object id="36" x="1254.13" y="384.083" width="21.75" height="31.1667"/>
-  <object id="37" x="1255.13" y="417.25" width="21.75" height="29.8333"/>
-  <object id="49" x="1247.8" y="992.583" width="30.75" height="30.5"/>
+  <object id="37" x="1705.8" y="768.667" width="21.75" height="31.0833"/>
   <object id="81" x="1253.13" y="32.5833" width="21.75" height="31.5"/>
   <object id="82" x="1254.63" y="64.4167" width="21.75" height="31.1667"/>
   <object id="83" x="1254.63" y="96.4167" width="21.75" height="29.5"/>
   <object id="84" x="613.125" y="32.75" width="21.75" height="29.5"/>
   <object id="85" x="614.125" y="65" width="21.75" height="29.5"/>
-  <object id="99" x="29.625" y="288.583" width="31.25" height="30.5"/>
+  <object id="162" x="1215.79" y="800.458" width="21.75" height="31.0833"/>
+  <object id="163" x="937.458" y="800.458" width="21.75" height="31.0833"/>
  </objectgroup>
 </map>

@@ -6,6 +6,8 @@
 #include "../RigidBodyComponent.h"
 #include "../collider/AABBColliderComponent.h"
 #include "../../libs/Math.h"
+#include "../../libs/Random.h"
+#include "../TimerComponent.h"
 
 enum class TypeOfMovement
 {
@@ -15,81 +17,57 @@ enum class TypeOfMovement
 
 enum class MovementState
 {
-    Wandering,
-    Jumping,
-    FollowingPath,
-    FollowingPathJumping
+    Wandering, // moving "randomically"
+    Seeking, // moving seeking player
+    Patrolling // moving around spawn
 };
-
-// actor if this component should apply any sort of force, or movement logic directly.
-// it must use this as a middleware.
 
 class AIMovementComponent : public Component
 {
 public:
     AIMovementComponent(
         class Actor* owner, float fowardSpeed, 
-        int jumpForceInBlocks, TypeOfMovement typeOfMovement=TypeOfMovement::Walker,
-        float pathTolerance=10.f, float craziness=.05f);
+        TypeOfMovement typeOfMovement=TypeOfMovement::Walker, 
+        float craziness=.005f);
+    
     ~AIMovementComponent() override = default;
 
-    void SetFowardSpeed(float speed) { mFowardSpeed = speed; }
-    float GetFowardSpeed() const { return mFowardSpeed; }
-    void SeekPlayer();
-
+    float GetSpeed() const { return mSpeed; }
     MovementState GetMovementState() const { return mMovementState; }
-    void SetMovementState(MovementState state) { 
-        mPreviousMovementState = mMovementState; 
-        mMovementState = state;
-    }
+    TypeOfMovement GetMovementType() const { return mTypeOfMovement; }
+    
+    void SetMovementState(MovementState state);
+    
+    bool CanBePressingPlayerAgainstWall() const;
 
+    void SeekPlayer();
+    void LoosePlayer();
     void LogState();
-
-    std::vector<SDL_Rect> GetPath() const { return mPath; }
 
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other);
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other);
-    void ApplyForce(const Vector2 &force);
 
     bool CrazyDecision();
     bool CrazyDecision(float modifier);
     
     // applies a force with the same direction of movement considering intensity.
     void BoostToPlayer(float intensity);
+    std::vector<Vector2> GetObstaclesAroundCenters() const { return mObstaclesAroundCenters; }
+
+    bool IsDangerousToMoveAround() const { return mObstaclesAroundCenters.size() > 0; }
 
 private:
     void Sense(float deltaTime);
     void Plan(float deltaTime);
     void Act(float deltaTime);
-
-    void Jump(bool isFollowingPath = false);
-
     void Update(float deltaTime) override;
-
-    RigidBodyComponent* GetOwnerRigidBody() {
-        return mOwner->GetComponent<RigidBodyComponent>();
-    }
-
-    AABBColliderComponent* GetOwnerCollider() {
-        return mOwner->GetComponent<AABBColliderComponent>();
-    }
-
-    int GetTargetIndex();
+    void PopulateObstaclesAround();
 
     TypeOfMovement mTypeOfMovement;
-    MovementState mMovementState;
-    MovementState mPreviousMovementState;
-    int mJumpForceInBlocks;
-    float mInteligence, mCraziness;
-    float mFowardSpeed;
-
-    std::vector<SDL_Rect> mPath;
-    float mPathTimer;
-    float mPathTolerance;
-
-    void FollowPathFlier();
-    void FollowPathWalker();
-
+    MovementState mMovementState, mPreviousMovementState;
+    float mInteligence, mCraziness, mSpeed;
+    bool mSpeedFlipped;
     class Enemy* mOwnerEnemy;
-    Vector2 mLastSeenPlayerCenter;
+    Timer *mCrazyDecisionTimer, *mBlockChangeForceTimer;
+    std::vector<Vector2> mObstaclesAroundCenters;
 };

@@ -19,6 +19,14 @@
 #include "Tileset.h"
 #include "./Cutscene.h"
 #include "Config.h"
+#include "Checkpoint.h"
+
+const float MAX_TIME_QUASAR_ENCOUNTER_TIP = 20.f;
+const int SPAWN_PORTAL_LEVEL_2_OBJ_ID = 9999;
+const float MAX_TIME_METAL_CRATE_TIP = 25.f;
+
+class Step;
+class Cutscene;
 
 template <typename F>
 auto TimeCheckerWrapper(F&& func) {
@@ -52,9 +60,11 @@ public:
         Bedroom,
         BedroomPortal,
         Level1,
+        Level2,
         Tests,
         DeathScreen,
-        EndDemo
+        EndDemo,
+        BedroomFinal
     };
 
     enum class CameraCenter
@@ -94,13 +104,16 @@ public:
     void GenerateOutput();
     void Quit() { mIsRunning = false; }
 
+    void SetCheckpoint(const Vector2 &position);
+    Checkpoint* GetCurrentCheckpoint() const;
+
     float GetDtLastFrame() { return mDeltatime; }
 
     // Actor functions
     void UpdateActors(float deltaTime);
     void AddActor(class Actor *actor);
     void RemoveActor(class Actor *actor);
-    void ProcessInputActors();
+    void ProcessInputActors(const std::vector<SDL_Event>& events);
     void HandleKeyPressActors(const int key, const bool isPressed);
 
     // Level functions
@@ -108,9 +121,11 @@ public:
     void LoadBedroom();
     void LoadBedroomPortal();
     void LoadFirstLevel();
+    void LoadSecondLevel();
     void LoadTestsLevel();
     void LoadDeathScreen();
     void LoadEndDemoScene();
+    void LoadBedroomFinal();
 
     std::vector<Actor *> GetNearbyActors(const Vector2 &position, const int range = 1);
     std::vector<class AABBColliderComponent *> GetNearbyColliders(const Vector2 &position, const int range = 2);
@@ -124,6 +139,7 @@ public:
 
     // Audio functions
     class AudioSystem *GetAudio() { return mAudio; }
+    class HUD *GetHUD() { return mHUD; }
 
     // UI functions
     void PushUI(class UIScreen *screen) { mUIStack.emplace_back(screen); }
@@ -156,11 +172,14 @@ public:
         const Vector2 &position = Vector2::Zero,
         const Vector2 &size = Vector2::Zero,
         bool isCameraWise = true);
-    void TogglePause();
+    void UnTogglePause();
 
     // Game-specific
     class Zoe *GetZoe() { return mZoe; }
     void SetZoe(class Zoe *zoe);
+
+    class Zathura *GetZathura() { return mZathura; }
+    void SetZathura(class Zathura *zathura) { mZathura = zathura; }
 
     GamePlayState GetGamePlayState() const { 
         return mGamePlayState; 
@@ -182,7 +201,7 @@ public:
     int GetGameTotalActors();
     Vector2 GetLogicalMousePos() const;
 
-    void AddCutscene(const std::string &name, std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback = nullptr);
+    void AddCutscene(const std::string &name, std::vector<std::unique_ptr<Step>> steps, std::function<void()> onCompleteCallback = nullptr, bool overwrite=false);
     void StartCutscene(const std::string &name);
     void PauseCutscene();
     void ResetCutscenes();
@@ -191,6 +210,12 @@ public:
 
     void SetStar(class Star *star) { mStar = star; };
     class Star *GetStar() { return mStar; };
+
+    void SetFather(class Father *father) { mFather = father; };
+    class Father *GetFather() { return mFather; };
+    
+    void SetMother(class Mother *mother) { mMother = mother; };
+    class Mother *GetMother() { return mMother; };
 
     int GetMapWidth();
     int GetMapHeight();
@@ -219,17 +244,26 @@ public:
     };
 
     void SetPortal(Actor *portal) {
-        if (mPortal != nullptr) {
-            SDL_Log("Portal already set");
-            return;
-        }
-
         mPortal = portal;
     }
 
     Actor* GetPortal() {
         return mPortal;
     }
+
+    const Vector3& GetModColor() const {
+        return mModColor;
+    }
+
+    bool GetPhysicsFrozen() const {
+        return mIsPhysicsFrozen;
+    }
+
+    void SetPhysicsFrozen(bool frozen) {
+        mIsPhysicsFrozen = frozen;
+    }
+
+    const SpatialHashing* GetConstSpatialHashing() const { return mSpatialHashing; }
 
 private:
     Actor* mPortal;
@@ -283,6 +317,7 @@ private:
 
     // Track elapsed time since game start
     Uint32 mTicksCount;
+    Uint32 mLastUnTooglePauseTick;
 
     // Track actors state
     bool mIsRunning;
@@ -291,6 +326,7 @@ private:
     // Track level state
     GameScene mGameScene;
     GameScene mNextScene;
+    GameScene mPreviousScene;
 
     // Background and camera
     Vector3 mBackgroundColor;
@@ -298,8 +334,11 @@ private:
     Vector2 mCameraPos;
 
     // Game-specific
+    class Zathura *mZathura;
     class Zoe *mZoe;
     class Star *mStar;
+    class Father *mFather;
+    class Mother *mMother;
     std::vector<class Enemy *> mEnemies;
     class HUD *mHUD;
     SoundHandle mMusicHandle;
@@ -328,7 +367,20 @@ private:
     Vector2 GetBoxCenter(const Vector2& pos, float boxW, float boxH);
 
     bool isEnding;
-    void EndDemoCheck();
-
+    
+    // -- first level --
+    void QuasarEncounterLevelCheck();
+    void BreakTilesFirstLevelCheck();
+    void LastPartFirstLevelCheck();
+    // -- second level
+    void SithEncounterBreakTilesCheck();
+    void SithEncounterBreakTilesCheck2();
+    void CheckPortalSpawn();
+    void CheckMetalCrateLevel();
+    
+    float mQuasarEncounterTimeCounter, mMetalCratePortionTimeCounter;
+    bool mHasSpawnedPortalLevel2;
     float mShakeCounter, mShakeIntensity;
+
+    bool mIsPhysicsFrozen;
 };

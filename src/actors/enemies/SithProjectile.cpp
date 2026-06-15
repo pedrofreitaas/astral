@@ -9,7 +9,7 @@
 
 SithProjectile::SithProjectile(
     class Game *game, Vector2 position,
-    Vector2 target, Actor *sith
+    Vector2 direction, Actor *sith
 ) : Projectile(game, position, sith)
 {
     const std::string spriteSheetPath = "../assets/Sprites/Enemies/Sith/Projectile/texture.png";
@@ -23,8 +23,20 @@ SithProjectile::SithProjectile(
         14, 12,
         ColliderLayer::EnemyProjectile);
 
-    mColliderComponent->SetIgnoreLayers({ColliderLayer::Enemy,
-                                         ColliderLayer::EnemyProjectile});
+    mColliderComponent->SetIgnoreLayers({
+        ColliderLayer::Enemy,
+        ColliderLayer::EnemyProjectile,
+        ColliderLayer::Quasar,
+        ColliderLayer::PlayerAttack,
+        ColliderLayer::SithAttack1,
+        ColliderLayer::SithAttack2,
+        ColliderLayer::Torch,
+        ColliderLayer::Items,
+        ColliderLayer::Shuriken,
+        ColliderLayer::SpearTip,
+        ColliderLayer::SpearBlock,
+        ColliderLayer::Spikes
+    });
 
     mDrawAnimatedComponent = new DrawAnimatedComponent(
         this,
@@ -41,7 +53,7 @@ SithProjectile::SithProjectile(
 
     SetPosition(position - GetHalfSize());
 
-    Fire(target - position, mGame->GetConfig()->Get<float>("SITH.PROJECTILE_SPEED"));
+    Fire(direction, mGame->GetConfig()->Get<float>("SITH.PROJECTILE_SPEED"));
 }
 
 void SithProjectile::AnimationEndCallback(std::string animationName)

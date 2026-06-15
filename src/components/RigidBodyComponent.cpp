@@ -34,7 +34,11 @@ void RigidBodyComponent::ApplyFriction() {
         friction *= 0.35f; // Reduce friction when sliding on snow
     }
 
-    ApplyForce(Vector2(mVelocity.x, 0.f) * -friction);
+    if (mOwner->GetGame()->GetApplyGravityScene() && mApplyGravity) {
+        ApplyForce(Vector2(mVelocity.x, 0.f) * -friction);
+    } else {
+        ApplyForce(mVelocity * -friction);
+    }
 }
 
 // Force changes acceleration
@@ -51,6 +55,11 @@ void RigidBodyComponent::ApplyImpulse(const Vector2 &impulse) {
 
 void RigidBodyComponent::Update(float deltaTime)
 {
+    if (mOwner->GetGame()->GetPhysicsFrozen()) {
+        mAcceleration = Vector2::Zero;
+        return;
+    }
+
     bool sceneAppliesGravity = mOwner->GetGame()->GetApplyGravityScene();
     bool applyGravity = mApplyGravity && sceneAppliesGravity;
     

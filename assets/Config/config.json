@@ -1,50 +1,76 @@
 {
-    "SPIKE_KNOCKBACK_FORCE": 160.0,
-    "SPEAR_KNOCKBACK_FORCE": 140.0,
-    "SHURIKEN_KNOCKBACK_FORCE": 200.0,
-    "FREEZING_RATE": 1.0,
-
+    "METAL_CRATE_PUSH_FORCE": 1000,
     "ENEMY": {
-        "PLAYER_KNOCKBACK_FORCE": 400
+        "PLAYER_KNOCKBACK_FORCE": 400,
+        "FOV_ANGLE": 1.3963
     },
-
-    "SITH": {
+    "FREEZING_RATE": 1.0,
+    "ZATHURA": {
+        "HEALTH": 15,
+        "ROCKS_ATTACK_COOLDOWN": 30.0,
+        "ATTACK1_COOLDOWN": 10.0,
+        "ATTACK2_COOLDOWN": 5.0,
+        "ATTACK3_COOLDOWN": 10.0,
+        "ATTACK1_KNOCKBACK_FORCE": 300,
+        "ATTACK_2_AND_3_KNOCKBACK_FORCE": 400,
+        "ROCK_SPEED": 550.0,
+        "ROCK_DELAY": 1.5
+    },
+    "QUASAR": {
         "HEALTH": 3,
-        "SPEED": 900,
-        "PROJECTILE_COOLDOWN": 12,
-        "PROJECTILE_SPEED": 60,
-        "ATTACK1_COOLDOWN": 3,
-        "ATTACK1_EXTRA_SPEED": 450,
-        "ATTACK2_COOLDOWN": 12,
-        "ATTACK2_EXTRA_SPEED": 700
+        "SMASH_COOLDOWN": 3,
+        "SPIKE_KNOCKBACK_FORCE": 260
     },
-
+    "SHURIKEN_KNOCKBACK_FORCE": 200.0,
+    "SITH": {
+        "ATTACK1_COOLDOWN": 3,
+        "ATTACK1_EXTRA_SPEED": 150,
+        "ATTACK2_COOLDOWN": 12,
+        "ATTACK2_EXTRA_SPEED": 600,
+        "HEALTH": 3,
+        "PROJECTILE_COOLDOWN": 12,
+        "PROJECTILE_SPEED": 350,
+        "SPEED": 80
+    },
+    "SPEAR_COOLDOWN": 2,
+    "SPEAR_KNOCKBACK_FORCE": 140.0,
+    "SPIKE_COOLDOWN": 1.75,
+    "SPIKE_KNOCKBACK_FORCE": 400.0,
     "ZOD": {
         "HEALTH": 5,
-        "SPEED": 1400,
-        "PROJECTILE_COOLDOWN":5,
-        "PROJECTILE_SPEED": 150
+        "PROJECTILE_COOLDOWN": 3.5,
+        "PROJECTILE_SPEED": 150,
+        "SPEED": 1500
     },
-
-    "QUASAR": {
-        "SPIKE_KNOCKBACK_FORCE": 350,
-        "SMASH_COOLDOWN": 3
-    },
-
     "ZOE": {
+        "ATTACK_CHARGE_TIME": 1.0,
+        "DODGE_COOLDOWN": 1.0,
+        "IS_DODGE_ALLOWED": true,
+        "IS_FIREBALL_ALLOWED": false,
+        "IS_NEVASCA_ALLOWED": false,
+        "IS_VENTANIA_ALLOWED": false,
         "KNOCKBACK_FORCE": 250,
+        "LIFE_POINTS": 6,
+        "MANA_REGEN_RATE_PER_SECOND": 15.0,
+        "MAX_DEATHS": 3,
+        "MAX_MANA": 100.0,
         "POWERS": {
+            "FIREBALL": {
+                "COOLDOWN": 4,
+                "KNOCKBACK_FORCE": 350,
+                "MANA_COST": 55.0,
+                "MAX_RICOCHETS": 0,
+                "SPEED": 180
+            },
             "NEVASCA": {
+                "MANA_COST": 3.0,
                 "RATE_PER_SECOND": 15,
                 "SPEED": 70
-            },
-            "FIREBALL": {
-                "SPEED": 180,
-                "KNOCKBACK_FORCE": 300
             },
             "VENTANIA": {
                 "SPEED": 900
             }
-        }
+        },
+        "SHOWN_DODGE_CUTSCENE": false
     }
 }

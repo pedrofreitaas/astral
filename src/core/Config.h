@@ -10,7 +10,7 @@ public:
 
     // Initialize configuration from a JSON file, basePath: 'assets/Config/'
     bool Initialize(const std::string& configPath);
-    void Update();
+    void Update(const std::string& key, const nlohmann::json& value, bool saveToFile = false);
     
     template<typename T>
     T Get(const std::string& key) const;

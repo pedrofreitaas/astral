@@ -11,18 +11,18 @@
 enum class DrawLayerPosition
 {
     Ground = 0,
-    Player = 100,
-    Enemy = 99,
-    DetailsTop = 150,
     DetailsDown = 50,
+    BelowPlayer = 99,
+    Player = 100,
+    DetailsTop = 150,
     Sky = 200
 };
 
 constexpr DrawLayerPosition Layers[] = {
   DrawLayerPosition::Ground,
-  DrawLayerPosition::Player,
-  DrawLayerPosition::DetailsTop,
   DrawLayerPosition::DetailsDown,
+  DrawLayerPosition::BelowPlayer,
+  DrawLayerPosition::DetailsTop,
   DrawLayerPosition::Sky
 };
 
@@ -39,8 +39,12 @@ public:
     void SetIsVisible(const bool isVisible) { mIsVisible = isVisible; }
 
     int GetDrawOrder() const { return mDrawOrder; }
+    void SetDrawOrder(int drawOrder) { mDrawOrder = drawOrder; }
+
+    void SetOffset(const Vector2& offset) { mOffset = offset; }
 
 protected:
     bool mIsVisible;
     int mDrawOrder;
+    Vector2 mOffset;
 };

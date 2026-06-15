@@ -15,6 +15,7 @@ private:
     void OnUpdate(float deltaTime) override;
     void StopFreeze() override;
     void Freeze() override;
+    void Kill() override;
     
     class Snow *mSnow;
     SnowDirection mLastSnowCollision;
@@ -30,4 +31,6 @@ public:
         int boundBoxOffsetX=0, int boundBoxOffsetY=0,
         const DrawLayerPosition &layer=DrawLayerPosition::Ground
     );
+
+    void Break() { Kill(); };
 };

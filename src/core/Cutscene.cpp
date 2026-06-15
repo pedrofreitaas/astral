@@ -81,3 +81,11 @@ void Cutscene::Finish() {
         mOnCompleteCallback();
     }
 }
+
+void Cutscene::OnProcessInput(const std::vector<SDL_Event>& events) {
+    if (mIsComplete || mState != State::Playing || mSteps.empty()) {
+        return;
+    }
+
+    mSteps[mCurrentStepIdx]->OnProcessInput(events);
+}

@@ -6,8 +6,12 @@
 #include "Actor.h"
 #include "Collider.h"
 
-Enemy::Enemy(Game *game, const Vector2 &position)
-    : Actor(game)
+Enemy::Enemy(Game *game, const Vector2 &position, float maxSeeDistance, float minSeeDistance)
+    : Actor(game), mMaxSeeDistance(maxSeeDistance), 
+    mMinSeeDistance(minSeeDistance), mHasSeenPlayerThisFrame(false),
+    mLastSeenPlayerCenter(Vector2::Zero), mSpawnPosition(position),
+    mHowLongLastSeenPlayer(99999.f), mPlayerOnSightThisFrame(false),
+    mLastSeenPlayerDistanceSquared(0.f), mDistanceToPlayerSquared(0.f)
 {
     mGame->AddEnemy(this);
 }
@@ -19,6 +23,19 @@ Enemy::~Enemy()
 
 void Enemy::OnUpdate(float deltaTime)
 {
+    mHasSeenPlayerThisFrame = PlayerOnFov();
+    mPlayerOnSightThisFrame = PlayerOnSight();
+    mDistanceToPlayerSquared = (GetGame()->GetZoe()->GetCenter() - GetCenter()).LengthSq();
+    
+    if (mHasSeenPlayerThisFrame) {
+        mLastSeenPlayerCenter = GetGame()->GetZoe()->GetCenter();
+        mLastSeenPlayerDistanceSquared = mDistanceToPlayerSquared;
+        mHowLongLastSeenPlayer = 0.f;
+    }
+    else {
+        mHowLongLastSeenPlayer += deltaTime;
+    }
+    
     ManageState();
     ManageAnimations();
     mColliderComponent->MaintainInMap();
@@ -26,8 +43,9 @@ void Enemy::OnUpdate(float deltaTime)
     Actor::OnUpdate(deltaTime);
 }
 
-bool Enemy::PlayerOnSight(float distance, float angle)
+bool Enemy::PlayerOnSight(float angle)
 {
+    float distance = mMaxSeeDistance;
     auto zoe = GetGame()->GetZoe();
 
     if (zoe == nullptr)
@@ -43,27 +61,24 @@ bool Enemy::PlayerOnSight(float distance, float angle)
 
     Vector2 lineOfSightEnd = lineOfSightStart + viewDir*distance;
 
-    auto zoeCollider = zoe->GetComponent<AABBColliderComponent>();
-
-    if (zoeCollider == nullptr)
-        return false;
-
-    bool isIntersecting = zoeCollider->IsSegmentIntersecting(lineOfSightStart, lineOfSightEnd);
-
-    return isIntersecting;
+    return mColliderComponent->IsSegmentIntersectingPlayerLayer(lineOfSightStart, lineOfSightEnd);
 }
 
-bool Enemy::PlayerOnFov(float minDistance, float maxDistance)
+bool Enemy::PlayerOnFov()
 {
+    float minDistance = mMinSeeDistance;
+    float maxDistance = mMaxSeeDistance;
+
     auto zoe = GetGame()->GetZoe();
 
     if (zoe == nullptr)
         return false;
 
-    Vector2 toZoe = zoe->GetPosition() - GetPosition();
-    
-    if (toZoe.LengthSq() > maxDistance * maxDistance) return false;
-    if (toZoe.LengthSq() < minDistance * minDistance) return true;
+    Vector2 toZoe = zoe->GetCenter() - GetCenter();
+    float distanceToZoeSq = GetDistanceToPlayerSquared();
+
+    if (distanceToZoeSq > maxDistance * maxDistance) return false;
+    if (distanceToZoeSq < minDistance * minDistance) return true;
 
     toZoe.Normalize();
 
@@ -72,20 +87,14 @@ bool Enemy::PlayerOnFov(float minDistance, float maxDistance)
     float dot = Vector2::Dot(forward, toZoe);
     float angle = Math::Acos(dot);
 
-    const float fovAngle = Math::Pi / 4.f; // 45 degrees field of view
+    const float fovAngle = mGame->GetConfig()->Get<float>("ENEMY.FOV_ANGLE");
 
-    return angle < fovAngle;
+    if (angle >= fovAngle) return false;
+
+    return mColliderComponent->IsSegmentIntersectingPlayerLayer(GetCenter(), zoe->GetCenter());
 }
 
-std::vector<SDL_Rect> Enemy::GetPath() const
-{
-    if (mAIMovementComponent == nullptr)
-        return {};
-
-    return mAIMovementComponent->GetPath();
-}
-
-Vector2 Enemy::GetCurrentAppliedForce(float modifier)
+Vector2 Enemy::GetCurrentAppliedForce(float modifier) const
 {
     const RigidBodyComponent* rb = GetComponent<RigidBodyComponent>();
 
@@ -112,6 +121,19 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent 
     if (other->GetLayer() == ColliderLayer::PlayerAttack)
     {
         TakeDamage();
+
+        TakeKnockback(
+            Vector2(
+                Math::Sign(-minOverlap) * mGame->GetConfig()->Get<float>("ENEMY.PLAYER_KNOCKBACK_FORCE"), 
+                0.f
+            )
+        );
+        return;
+    }
+
+    if (other->GetLayer() == ColliderLayer::Player)
+    {
+        // just to avoid player stuck on enemy when colliding horizontally.
         TakeKnockback(
             Vector2(Math::Sign(-minOverlap) * mGame->GetConfig()->Get<float>("ENEMY.PLAYER_KNOCKBACK_FORCE"), 0.f)
         );
@@ -130,17 +152,36 @@ void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent *o
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Player && minOverlap < 0.f)
+    // stomp behavior
+    if (
+        other->GetLayer() == ColliderLayer::Player && 
+        minOverlap > 0.f &&
+        mAIMovementComponent != nullptr &&
+        mAIMovementComponent->GetMovementType() == TypeOfMovement::Walker
+    )
     {
-        TakeDamage();
-        // dont apply knockback on stomp.
+        Vector2 dist = GetCenter() - other->GetCenter();
+        dist.Normalize();
+
+        // just to avoid enemy stuck above damaging player on stomp.
+        TakeKnockback(dist * mGame->GetConfig()->Get<float>("ENEMY.PLAYER_KNOCKBACK_FORCE"));
+
         return;
     }
 
     if (other->GetLayer() == ColliderLayer::PlayerAttack)
     {               
         TakeDamage();
-        // dont apply knockback on vertical attack.
+
+        // min overlap here is vertical, not left or right
+        int left = GetCenter().x < other->GetCenter().x ? -1 : 1;
+
+        TakeKnockback(
+            Vector2(
+                left * mGame->GetConfig()->Get<float>("ENEMY.PLAYER_KNOCKBACK_FORCE"), 
+                0.f
+            )
+        );
         return;
     }
 }
@@ -159,4 +200,40 @@ void Enemy::StopFreeze()
 
     SetBehaviorState(BehaviorState::Moving);
     mAIMovementComponent->SetEnabled(true);
+}
+
+SDL_Rect Enemy::GetThreatRect() const
+{
+    return SDL_Rect{
+        static_cast<int>(GetCenter().x - GetWidth()*1.4),
+        static_cast<int>(GetCenter().y - GetHeight()*1.4),
+        static_cast<int>(GetWidth()*2.8),
+        static_cast<int>(GetHeight()*2.8)
+    };
+}
+
+std::vector<Vector2> Enemy::GetObstaclesAroundCenters() const
+{
+    return mAIMovementComponent->GetObstaclesAroundCenters();
+}
+
+Vector2 Enemy::GetCurrentVelocity(float modifier) const
+{
+    const RigidBodyComponent* rb = GetComponent<RigidBodyComponent>();
+
+    if (!rb)
+        return Vector2::Zero;
+
+    return rb->GetVelocity() * modifier;
+}
+
+float Enemy::GetFovAngle() const
+{
+    return mGame->GetConfig()->Get<float>("ENEMY.FOV_ANGLE");
+}
+
+bool Enemy::isAISeeking() const
+{
+    return mAIMovementComponent &&
+           mAIMovementComponent->GetMovementState() == MovementState::Seeking;
 }

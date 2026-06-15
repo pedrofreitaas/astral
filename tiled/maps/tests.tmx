@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="8">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="42">
  <editorsettings>
   <export target="../../assets/Levels/Maps/tests.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="../tilesets/Terrain and Back Wall (32x32).tsx"/>
  <tileset firstgid="248" source="../tilesets/Nebula-Terrain.tsx"/>
- <layer id="1" name="behind_player" width="20" height="11">
+ <tileset firstgid="333" source="../tilesets/Torch.tsx"/>
+ <tileset firstgid="334" source="../../assets/Levels/Tilesets/MetalCrate.json"/>
+ <layer id="6" name="ground" width="20" height="11">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -20,22 +22,52 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="blocks" width="20" height="11">
+ <layer id="1" name="detailsDown" width="20" height="11">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,333,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="2" name="player" width="20" height="11">
   <data encoding="csv">
 275,283,283,283,283,283,283,283,283,283,283,283,283,283,283,283,283,283,283,275,
 267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
 267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
 267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
-267,0,0,0,0,320,0,0,0,0,0,0,0,0,0,0,320,0,0,265,
-267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
-267,0,0,0,316,317,318,0,0,0,0,0,0,316,317,318,0,0,0,265,
 267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
 267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
 267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
-325,249,249,249,249,249,249,249,249,249,249,249,249,249,249,249,249,249,249,326
+267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
+267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
+267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,
+325,249,249,257,249,249,257,249,249,249,249,249,249,249,249,249,249,249,249,326
 </data>
  </layer>
- <layer id="3" name="above_player" width="20" height="11">
+ <layer id="3" name="detailsTop" width="20" height="11">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="7" name="sky" width="20" height="11">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -51,23 +83,16 @@
 </data>
  </layer>
  <objectgroup id="4" name="objects">
-  <object id="2" x="294.667" y="247.333" width="64" height="64">
+  <object id="2" x="32.5" y="282.666" width="36" height="36">
    <properties>
     <property name="entity_code" type="int" value="0"/>
     <property name="event" value="atStart"/>
     <property name="function_name" value="spawn_entity"/>
    </properties>
   </object>
-  <object id="3" x="448.667" y="304.833" width="32" height="13">
+  <object id="40" x="401" y="119" width="200" height="200">
    <properties>
-    <property name="entity_code" type="int" value="5"/>
-    <property name="event" value="atStart"/>
-    <property name="function_name" value="spawn_entity"/>
-   </properties>
-  </object>
-  <object id="7" x="64.4109" y="81.1848" width="67.8356" height="59.5342">
-   <properties>
-    <property name="entity_code" type="int" value="3"/>
+    <property name="entity_code" type="int" value="9"/>
     <property name="event" value="atStart"/>
     <property name="function_name" value="spawn_entity"/>
    </properties>

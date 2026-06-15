@@ -25,7 +25,7 @@ Shuriken::Shuriken(Game *game, const Vector2 &position)
 
     mDrawComponent->SetAnimation("spinning");
 
-    SetPosition(position);
+    SetPosition(position - GetHalfSize());
     SetBehaviorState(BehaviorState::Moving);
 }
 

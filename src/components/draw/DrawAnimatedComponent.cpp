@@ -68,8 +68,8 @@ void DrawAnimatedComponent::Draw(SDL_Renderer *renderer, const Vector3 &modColor
     SDL_Rect *srcRect = mSpriteSheetData[spriteIdx];
 
     SDL_Rect dstRect = {
-        static_cast<int>(mOwner->GetPosition().x - mOwner->GetGame()->GetCameraPos().x),
-        static_cast<int>(mOwner->GetPosition().y - mOwner->GetGame()->GetCameraPos().y),
+        static_cast<int>(mOwner->GetPosition().x - mOwner->GetGame()->GetCameraPos().x + mOffset.x),
+        static_cast<int>(mOwner->GetPosition().y - mOwner->GetGame()->GetCameraPos().y + mOffset.y),
         srcRect->w * mScaleFactor,
         srcRect->h * mScaleFactor};
     

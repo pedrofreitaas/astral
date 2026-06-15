@@ -7,7 +7,7 @@ DialogueSystem::DialogueSystem(Game::GamePlayState currentGameState)
     : mGame(nullptr), mFont(nullptr), mSmallFont(nullptr), mCurrentLine(0), mTextTexture(nullptr),
       mIsActive(false), mContinuePressed(false), mPromptTexture(nullptr), mPreviousGameState(currentGameState),
       mSpeakerName(""), mSpeakerTexture(nullptr), mSpeakerOffset(-5.0f, -10.0f), mTextOffset(0.0f, 0.0f),
-      mLineTimer(0.0f), mLineDuration(5.0f), mStepDialogueSound(SoundHandle::Invalid)
+      mLineTimer(0.0f), mLineDuration(15.0f), mStepDialogueSound(SoundHandle::Invalid)
 {
 }
 

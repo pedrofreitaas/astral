@@ -22,6 +22,10 @@ public:
         Spikes=5,
         Portal=6,
         Quasar=7,
+        InversedSpear=8,
+        Zathura=9,
+        Father=10,
+        Mother=11
     };
 
     MapObject(Game *game, int inId, const std::string &ev, const std::string &func_name, 
@@ -36,11 +40,13 @@ public:
     std::string mEvent, mFunctionName;
     AABBColliderComponent *mColliderComponent;
     RigidBodyComponent *mRigidBodyComponent; // only to check collision
-    bool mIsPlayerInside, mWasPlayerInside;
+    bool mIsPlayerInside, mWasPlayerInside, mIsPlayerContainedInMe;
     float mCloseToCenterDistanceSQ;
 
     void Log();
     void PlayCutscene();
     void SpawnEntity();
+    void TeleportToCheckpoint();
+    void TeleportToCheckpointIfDamaged();
     void CallMyFunction();
 };

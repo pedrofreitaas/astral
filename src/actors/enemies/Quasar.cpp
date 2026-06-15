@@ -8,7 +8,8 @@
 #include "../Actor.h"
 
 Quasar::Quasar(Game *game, const Vector2 &center)
-    : Enemy(game, center), mAppliedImpulseInAttack(false), mAttackTimerHandle(nullptr)
+    : Enemy(game, center, 300.f), mAppliedImpulseInAttack(false), mAttackTimerHandle(nullptr),
+    mBlockedPlayerSoundHandle(SoundHandle::Invalid)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f);
     mColliderComponent = new AABBColliderComponent(
@@ -17,35 +18,40 @@ Quasar::Quasar(Game *game, const Vector2 &center)
         23, 29,
         ColliderLayer::Quasar);
 
+    mColliderComponent->SetIgnoreLayers({
+        ColliderLayer::Nevasca
+    }, IgnoreOption::IgnoreResolution);
+
     mDrawComponent = new DrawAnimatedComponent(
         this,
         "../assets/Sprites/Enemies/Quasar/texture.png",
         "../assets/Sprites/Enemies/Quasar/texture.json",
         std::bind(&Quasar::AnimationEndCallback, this, std::placeholders::_1), // could use a lambda here too
-        static_cast<int>(DrawLayerPosition::Enemy) + 1);
+        static_cast<int>(DrawLayerPosition::BelowPlayer));
 
     mTimerComponent = new TimerComponent(this);
 
     mAIMovementComponent = new AIMovementComponent(
         this, 
-        350.f, 
-        0,
-        TypeOfMovement::Walker, 
-        3.f, 
-        .01f);
+        400.f,
+        TypeOfMovement::Walker,
+        0.01f);
 
     mDrawComponent->AddAnimation("asleep", {0});
     mDrawComponent->AddAnimation("idle", 1, 8);
-    mDrawComponent->AddAnimation("walk", 9, 18);
-    mDrawComponent->AddAnimation("hit", 19, 22);
-    mDrawComponent->AddAnimation("die", 23, 34);
-    mDrawComponent->AddAnimation("attack", 35, 45);
+    mDrawComponent->AddAnimation("walk", 9, 19);
+    mDrawComponent->AddAnimation("hit", 20, 23);
+    mDrawComponent->AddAnimation("die", 24, 35);
+    mDrawComponent->AddAnimation("attack", 36, 45);
+    mDrawComponent->AddAnimation("frozen", 46, 50, false);
 
     mDrawComponent->SetAnimation("asleep");
 
     SetBehaviorState(BehaviorState::Asleep);
 
     SetPosition(center - GetHalfSize());
+
+    SetLifes(game->GetConfig()->Get<int>("QUASAR.HEALTH"));
 }
 
 void Quasar::ManageState()
@@ -55,13 +61,10 @@ void Quasar::ManageState()
     if (!zoe)
         return;
 
-    Vector2 toZoe = zoe->GetCenter() - GetCenter();
-    float distanceToZoeSQ = toZoe.LengthSq();
-
     switch (mBehaviorState)
     {
         case BehaviorState::Asleep:
-            if (distanceToZoeSQ <= 45000.f)
+            if (GetDistanceToPlayerSquared() <= 45000.f)
             {
                 SetBehaviorState(BehaviorState::Moving);
             }
@@ -76,12 +79,17 @@ void Quasar::ManageState()
                 SetRotation(0.f);
             else if (mRigidBodyComponent->GetVelocity().x < 0.f)
                 SetRotation(Math::Pi);
+            
+            if (!mRigidBodyComponent->GetOnGround())
+                break;
 
             if (
-                PlayerOnSight(60.f) && 
-                (mAttackTimerHandle == nullptr || 
+                IsPlayerOnSightThisFrame() &&
+                (mAttackTimerHandle == nullptr ||
                  mTimerComponent->checkTimerRemaining(mAttackTimerHandle) <= 0.f)
-            ) {
+            )
+            {
+                mIsCloseAttack = GetLastSeenPlayerDistanceSquared() <= 1600.f;
                 mAppliedImpulseInAttack = false;
                 SetBehaviorState(BehaviorState::Attacking);
                 
@@ -92,6 +100,9 @@ void Quasar::ManageState()
 
                 break;
             }
+
+            if (PlayerOnFov()) mAIMovementComponent->SeekPlayer();
+            else mAIMovementComponent->LoosePlayer();
 
             break;
 
@@ -109,11 +120,17 @@ void Quasar::ManageState()
                 break;
             
             float forward = GetForward().x;
-            mRigidBodyComponent->ApplyImpulse(Vector2(forward * 220.f, 0.f));
+            
+            if (mIsCloseAttack) mRigidBodyComponent->ApplyImpulse(Vector2(forward * 220.f, 0.f));
+            else mRigidBodyComponent->ApplyImpulse(Vector2(forward * 400.f, -180.f));
+
             mAppliedImpulseInAttack = true;
             
             break;
         }
+
+        case BehaviorState::Frozen:
+            break;
 
         default:
             SetBehaviorState(BehaviorState::Asleep);
@@ -175,6 +192,11 @@ void Quasar::ManageAnimations()
             mDrawComponent->SetAnimFPS(7.f);
             break;
 
+        case BehaviorState::Frozen:
+            mDrawComponent->SetAnimation("frozen");
+            mDrawComponent->SetAnimFPS(6.f);
+            break;
+
         default:
             mDrawComponent->SetAnimation("asleep");
             break;
@@ -183,12 +205,63 @@ void Quasar::ManageAnimations()
 
 void Quasar::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    // Enemy::OnVerticalCollision(minOverlap, other);
-    // Actor::OnVerticalCollision(minOverlap, other);
+    mAIMovementComponent->OnVerticalCollision(minOverlap, other);
+    Actor::OnVerticalCollision(minOverlap, other);
+    
+    if (other->GetLayer() == ColliderLayer::PlayerAttack)
+    {
+        Zoe *zoe = mGame->GetZoe();
+
+        if (zoe->IsChargedPlayerAttack()) {
+            TakeKnockback(Vector2(0.f, -520.f));
+        } else {
+            zoe->TakeKnockback(
+                Vector2(
+                    zoe->GetCenter().x > GetCenter().x ? 100.f : -100.f, 
+                    -200.f
+                )
+            );
+            
+            PlayBlockedPlayerSound();
+        }
+    }
 }
 
 void Quasar::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    // Enemy::OnHorizontalCollision(minOverlap, other);
-    // Actor::OnHorizontalCollision(minOverlap, other);
+    mAIMovementComponent->OnHorizontalCollision(minOverlap, other);
+    Actor::OnHorizontalCollision(minOverlap, other);
+    
+    if (other->GetLayer() == ColliderLayer::PlayerAttack)
+    {
+        Zoe *zoe = mGame->GetZoe();
+        
+        if (zoe->IsChargedPlayerAttack()) {
+            TakeKnockback(Vector2(0.f, -520.f));
+        } else {
+            zoe->TakeKnockback(
+                Vector2(
+                    zoe->GetCenter().x > GetCenter().x ? 100.f : -100.f, 
+                    -200.f
+                )
+            );
+            
+            PlayBlockedPlayerSound();
+        }
+    }
+}
+
+void Quasar::PlayBlockedPlayerSound() {
+    if (mGame->GetAudio()->GetSoundState(mBlockedPlayerSoundHandle) == SoundState::Playing)
+    {
+        mGame->GetAudio()->StopSound(mBlockedPlayerSoundHandle);
+    }
+
+    if (!mBlockedPlayerSoundHandle.IsValid()) 
+    {
+        mBlockedPlayerSoundHandle = mGame->GetAudio()->PlaySound("playerHitBlock.wav");
+        return;
+    }
+
+    mGame->GetAudio()->PlaySound("playerHitBlock.wav");
 }

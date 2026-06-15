@@ -11,9 +11,7 @@
 class Spear : public Actor
 {
 public:
-    const float TRIGGER_COOLDOWN = .5f;
-
-    explicit Spear(Game* game, const Vector2& position);
+    explicit Spear(Game* game, const Vector2& position, bool inversed=false);
 
     void ManageState();
     void AnimationEndCallback(std::string animationName);
@@ -29,4 +27,6 @@ private:
     RigidBodyComponent *mRigidBodyComponent; //just to check the collision
 
     Collider *mTipCollider;
+
+    bool mIsInversed;
 };

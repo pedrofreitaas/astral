@@ -8,6 +8,7 @@
 
 #include "../ui/UIScreen.h"
 #include "../actors/Zoe.h"
+#include "../actors/enemies/Zathura.h"
 
 class HUD : public UIScreen
 {
@@ -23,6 +24,8 @@ public:
     void HandleKeyPress(int key) override;
 	void HandleMouseClick(int button, int x, int y) override;
     void SetLife(int life);
+    void SetMana(float mana);
+    void SetZathuraLifeBar();
 
     void SetFireballLoadingBarProgress(bool enabled, float progress);
     void UpdateFireballLoadingBar(bool enabled, float progress, Vector2 pos);
@@ -31,9 +34,9 @@ public:
 
 private:
     UIText* mFPSText;
+    UIAnimation *mPlayerFrameAnimation;
 
-    std::vector<UIImage*> mLifeImages, mLoadingBarImages;
-    std::vector<UIImage*> mCooldownImages;
+    std::vector<UIImage*> mLifeImages, mLoadingBarImages, mCooldownImages, mManaBarImages, mZathuraLifeBarImages;
 
     Vector2 mFireballLoadingBarOffset;
 };

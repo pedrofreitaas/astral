@@ -1,0 +1,27 @@
+{ "frames": [
+   {
+    "filename": "fridge.png",
+    "frame": { "x": 0, "y": 0, "w": 28, "h": 42 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 28, "h": 42 },
+    "sourceSize": { "w": 28, "h": 42 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.x-dev",
+  "image": "texture.png",
+  "format": "RGBA8888",
+  "size": { "w": 28, "h": 42 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

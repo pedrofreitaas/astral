@@ -9,14 +9,18 @@
 #include "../actors/traps/Spear.h"
 #include "../actors/traps/Spikes.h"
 #include "../actors/Portal.h"
+#include "../actors/enemies/Zathura.h"
+#include "../actors/Father.h"
+#include "../actors/Mother.h"
 
 MapObject::MapObject(Game *game, int inId, const std::string &ev, const std::string &func_name,
                      const Vector2 &pos, const Vector2 &size, const json &parameters)
     : Actor(game, 1, true), mID(inId), mEvent(ev), mFunctionName(func_name),
       mIsPlayerInside(false), mWasPlayerInside(false),
-      mParameters(parameters), mCloseToCenterDistanceSQ(0.f)
+      mParameters(parameters), mCloseToCenterDistanceSQ(0.f),
+      mIsPlayerContainedInMe(false)
 {
-    if (ev != "in" && ev != "out" && ev != "enter" && ev != "exit" && ev != "closeToCenter" // always player related
+    if (ev != "in" && ev != "out" && ev != "enter" && ev != "exit" && ev != "closeToCenter" && ev != "contains" // always player related
         && ev != "atStart"                                                                  // not related to player
     )
     {
@@ -88,46 +92,68 @@ void MapObject::CallMyFunction()
         return;
     }
 
+    if (mFunctionName == "teleport_to_checkpoint")
+    {
+        TeleportToCheckpoint();
+        return;
+    }
+
+    if (mFunctionName == "teleport_to_checkpoint_if_damaged")
+    {
+        TeleportToCheckpointIfDamaged();
+        return;
+    }
+
     throw std::runtime_error("MapObject unknown function name: " + mFunctionName);
 }
 
 void MapObject::OnUpdate(float deltaTime)
 {
     // do logic before because components update before actor update
-    float distanceToPlayerSQ = (mGame->GetZoe()->GetCenter() - GetCenter()).LengthSq();
+    float distanceToPlayerSQ = 9999999;
+    
+    auto *zoe = mGame->GetZoe();
+
+    if (zoe)
+    {
+        distanceToPlayerSQ = (zoe->GetCenter() - GetCenter()).LengthSq();
+    }
+
+    // if - return isnt welcome here, because there is a final operation.
 
     if (mEvent == "in" && mIsPlayerInside)
     {
         CallMyFunction();
-        return;
     }
     
-    if (mEvent == "out" && !mIsPlayerInside)
+    else if (mEvent == "out" && !mIsPlayerInside)
     {
         CallMyFunction();
-        return;
     }
         
-    if (mEvent == "enter" && mIsPlayerInside && !mWasPlayerInside)
+    else if (mEvent == "enter" && mIsPlayerInside && !mWasPlayerInside)
     {
         CallMyFunction();
-        return;
     }
         
-    if (mEvent == "exit" && !mIsPlayerInside && mWasPlayerInside)
+    else if (mEvent == "exit" && !mIsPlayerInside && mWasPlayerInside)
     {
         CallMyFunction();
-        return;
     }
     
-    if (mEvent == "closeToCenter" && distanceToPlayerSQ <= mCloseToCenterDistanceSQ)
+    else if (mEvent == "closeToCenter" && distanceToPlayerSQ <= mCloseToCenterDistanceSQ)
     {
         CallMyFunction();
-        return;
+    }
+
+    else if (mEvent == "contains" && mIsPlayerContainedInMe)
+    {
+        CallMyFunction();
     }
 
     mWasPlayerInside = mIsPlayerInside;
     mIsPlayerInside = false;
+    mIsPlayerContainedInMe = false;
 }
 
 void MapObject::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
@@ -135,6 +161,7 @@ void MapObject::OnVerticalCollision(const float minOverlap, AABBColliderComponen
     if (other->GetLayer() == ColliderLayer::Player)
     {
         mIsPlayerInside = true;
+        mIsPlayerContainedInMe = other->IsContainedIn(*mColliderComponent);
     }
 }
 
@@ -143,6 +170,7 @@ void MapObject::OnHorizontalCollision(const float minOverlap, AABBColliderCompon
     if (other->GetLayer() == ColliderLayer::Player)
     {
         mIsPlayerInside = true;
+        mIsPlayerContainedInMe = other->IsContainedIn(*mColliderComponent);
     }
 }
 
@@ -174,7 +202,7 @@ void MapObject::SpawnEntity()
         new Sith(mGame, GetCenter());
         break;
     case EntityCode::Zod:
-        new Zod(mGame, 1200.f, GetCenter());
+        new Zod(mGame, GetCenter());
         break;
     case EntityCode::Shuriken:
         new Shuriken(mGame, GetCenter());
@@ -191,10 +219,36 @@ void MapObject::SpawnEntity()
     case EntityCode::Quasar:
         new Quasar(mGame, GetCenter());
         break;
+    case EntityCode::InversedSpear:
+        new Spear(mGame, GetCenter(), true);
+        break;
+    case EntityCode::Zathura:
+        new Zathura(mGame, GetCenter());
+        break;
+    case EntityCode::Father:
+        new Father(mGame, GetCenter());
+        break;
+    case EntityCode::Mother:
+        new Mother(mGame, GetCenter());
+        break;
     default:
         throw std::runtime_error("MapObject unknown SpawnCode");
         break;
     }
 
     SetState(ActorState::Destroy);
+}
+
+void MapObject::TeleportToCheckpoint()
+{
+    GetGame()->GetZoe()->TeleportToCheckpoint();
+    // SetState(ActorState::Destroy);
+}
+
+void MapObject::TeleportToCheckpointIfDamaged()
+{
+    if (GetGame()->GetZoe()->GetBehaviorState() == BehaviorState::TakingDamage)
+    {
+        TeleportToCheckpoint();
+    }
 }

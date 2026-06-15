@@ -1,7 +1,5 @@
-#include <SDL.h>
-#include <fstream>
 #include "./Map.h"
-#include "./Game.h"
+#include "../actors/TV.h"
 
 std::map<std::string, Tileset> Map::LoadAllAvailableTilesets(const std::string &baseTilesetsPath)
 {
@@ -76,7 +74,86 @@ void Map::LoadTilesLayer(std::vector<std::pair<std::string, int>> &nameToFirstGI
 
 		Tileset currentTileset = search->second;
 
+		if (currentTileset.GetName() == "MetalCrate")
+		{
+			new MetalCrate(
+				mGame,
+				Vector2(
+					(tileIdx % mWidthInTiles) * 32 + 16, 
+					std::floor(tileIdx * 1.0f / mWidthInTiles) * 32 + 16
+				)
+			);
+			continue;
+		}
+
+		if (currentTileset.GetName() == "Torch")
+		{
+			new Torch(
+				mGame,
+				Vector2(
+					(tileIdx % mWidthInTiles) * 32 + 16, 
+					std::floor(tileIdx * 1.0f / mWidthInTiles) * 32 + 16
+				)
+			);
+			continue;
+		}
+
+		if (currentTileset.GetName() == "Crate")
+		{
+			new Crate(
+				mGame,
+				Vector2(
+					(tileIdx % mWidthInTiles) * 32 + 16, 
+					std::floor(tileIdx * 1.0f / mWidthInTiles) * 32 + 16
+				)
+			);
+			continue;
+		}
+
 		int localID = gid - firstGID;
+
+		if (currentTileset.GetName() == "bedroom" && localID == 139)
+		{
+			Item::CreateBookItem(mGame, Vector2(
+				(tileIdx % mWidthInTiles) * 32, 
+				std::floor(tileIdx * 1.0f / mWidthInTiles) * 32
+			));
+
+			continue;
+		}
+
+		if (currentTileset.GetName() == "bedroom" && localID == 100)
+		{
+			Item::CreateFridgeItem(mGame, Vector2(
+				(tileIdx % mWidthInTiles) * 32, 
+				std::floor(tileIdx * 1.0f / mWidthInTiles) * 32
+			));
+
+			continue;
+		}
+
+		if (currentTileset.GetName() == "bedroom" && localID == 142)
+		{
+			new TV(
+				mGame, 
+				Vector2(
+					(tileIdx % mWidthInTiles) * 32, 
+					std::floor(tileIdx * 1.0f / mWidthInTiles) * 32
+				)
+			);
+
+			continue;
+		}
+
+		if (currentTileset.GetName() == "bedroom" && localID == 138)
+		{
+			Item::CreatePictureItem(mGame, Vector2(
+				(tileIdx % mWidthInTiles) * 32, 
+				std::floor(tileIdx * 1.0f / mWidthInTiles) * 32
+			));
+
+			continue;
+		}
 
 		SDL_Texture *texture = currentTileset.GetTexture();
 		Vector2 tileDims = currentTileset.GetTileDims();
@@ -87,11 +164,6 @@ void Map::LoadTilesLayer(std::vector<std::pair<std::string, int>> &nameToFirstGI
 		Vector2 bbOffset = currentTileset.GetBBOffset(localID);
 		Vector2 bbSize = currentTileset.GetBBSize(localID);
 
-		DrawLayerPosition layer =
-			(layerIdx == 0)	  ? static_cast<DrawLayerPosition>(static_cast<int>(DrawLayerPosition::Player) - 10)
-			: (layerIdx == 1) ? DrawLayerPosition::Player
-							  : static_cast<DrawLayerPosition>(static_cast<int>(DrawLayerPosition::Player) + 10);
-
 		mTiles.push_back(
 			std::move(
 				new Tile(
@@ -100,9 +172,9 @@ void Map::LoadTilesLayer(std::vector<std::pair<std::string, int>> &nameToFirstGI
 					worldPosition,
 					tilesetPosition,
 					tileDims.x, tileDims.y,
-					bbSize.x, bbSize.y,		// boundBox size
-					bbOffset.x, bbOffset.y, // boundBox
-					layer)));
+					bbSize.x, bbSize.y,
+					bbOffset.x, bbOffset.y,
+					Layers[layerIdx])));
 	}
 }
 
@@ -164,6 +236,31 @@ void Map::LoadEnemyColliderObjects(const json &layerData, int layerIdx)
 			DismissOn::None,
 			ColliderLayer::EnemyBlocker,
 			{ColliderLayer::Player, ColliderLayer::PlayerAttack, ColliderLayer::Fireball, ColliderLayer::Projectile},
+			0.f,
+			nullptr,
+			true
+		);
+	}
+}
+
+void Map::LoadPlayerColliderObjects(const json &layerData, int layerIdx)
+{
+	for (const auto &obj : layerData["objects"])
+	{
+		int x = obj["x"].get<int>();
+		int y = obj["y"].get<int>();
+		int width = obj["width"].get<int>();
+		int height = obj["height"].get<int>();
+
+		new Collider(
+			mGame,
+			nullptr,
+			Vector2(x, y),
+			Vector2(width, height),
+			nullptr,
+			DismissOn::None,
+			ColliderLayer::Blocks,
+			{},
 			0.f,
 			nullptr,
 			true
@@ -254,6 +351,12 @@ Map::Map(Game *game, std::string jsonPath)
 		if (layerData["name"] == "en_collider_objects")
 		{
 			LoadEnemyColliderObjects(layerData, layerIdx);
+			continue;
+		}
+
+		if (layerData["name"] == "player_collider_objects")
+		{
+			LoadPlayerColliderObjects(layerData, layerIdx);
 			continue;
 		}
 

@@ -15,7 +15,16 @@ Nevasca::Nevasca(
         4, 4, 8, 8,
         ColliderLayer::Nevasca);
 
-    mColliderComponent->IgnoreLayer(ColliderLayer::Enemy, IgnoreOption::IgnoreResolution);
+    mColliderComponent->IgnoreLayers({
+        ColliderLayer::Enemy,
+        ColliderLayer::Quasar,
+        ColliderLayer::SpearBlock,
+        ColliderLayer::SpearBlock,
+        ColliderLayer::Spikes,
+        ColliderLayer::SpikesBlock,
+        ColliderLayer::Shuriken,
+        ColliderLayer::MetalCrate
+    }, IgnoreOption::IgnoreResolution);
 
     mDrawAnimatedComponent = new DrawAnimatedComponent(
         this, 

@@ -19,46 +19,88 @@
 #include "../libs/Math.h"
 #include "enemies/Sith.h"
 #include "enemies/Quasar.h"
+#include "../core/Checkpoint.h"
+#include "./Item.h"
 
 const SDL_Rect DEFAULT_BB = SDL_Rect({22, 18, 20, 27});
 const SDL_Rect DODGE_BB = SDL_Rect({25, 25, 13, 15});
 
 class Zoe : public Actor
 {
+    friend class FireNevascaStep;
+    friend class Game;
+    friend class Item;
+    friend class LaunchFireballStep;
+    friend class JumpStep;
+
     std::vector<ColliderLayer> IGNORED_LAYERS_DODGE = {
         ColliderLayer::Enemy,
         ColliderLayer::EnemyProjectile,
-        ColliderLayer::PlayerAttack
+        ColliderLayer::PlayerAttack,
+        ColliderLayer::Quasar,
+        ColliderLayer::SithAttack1,
+        ColliderLayer::SithAttack2,
+        ColliderLayer::Nevasca,
+        ColliderLayer::Items
     };
 
     std::vector<ColliderLayer> IGNORED_LAYERS_DEFAULT = {
         ColliderLayer::PlayerAttack,
         ColliderLayer::Nevasca
     };
-    
-    float FIREBALL_COOLDOWN = 4.f;
-    
-    float VETANIA_SPEED = 20000.f;
-    float VETANIA_COOLDOWN = 0.75f;
 
-    float DODGE_COOLDOWN = 1.0f;
+    std::map<Button, bool> mButtonBlocked = {
+        {Button::X, false},
+        {Button::A, false},
+        {Button::LT, false},
+        {Button::Y, false},
+        {Button::B, false},
+        {Button::RT, false},
+        {Button::LB, false},
+        {Button::RB, false}
+    };
 
-    float DEFAULT_KNOCKBACK_FORCE = 1.f;
-        
-    SDL_GameControllerButton DODGE_BUTTON = SDL_CONTROLLER_BUTTON_B;
-    SDL_GameControllerButton FIREBALL_BUTTON = SDL_CONTROLLER_BUTTON_Y;
-    SDL_GameControllerButton VENTANIA_BUTTON = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
-    SDL_GameControllerButton JUMP_BUTTON = SDL_CONTROLLER_BUTTON_A;
-    SDL_GameControllerButton HIT_BUTTON = SDL_CONTROLLER_BUTTON_X;
-    SDL_GameControllerAxis NEVASCA_AXIS = SDL_CONTROLLER_AXIS_TRIGGERRIGHT;
+    int mDeaths;
+
+    static constexpr SDL_GameControllerButton DODGE_BUTTON = SDL_CONTROLLER_BUTTON_B;
+    static constexpr SDL_GameControllerButton FIREBALL_BUTTON = SDL_CONTROLLER_BUTTON_Y;
+    static constexpr SDL_GameControllerButton VENTANIA_BUTTON = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
+    static constexpr SDL_GameControllerButton JUMP_BUTTON = SDL_CONTROLLER_BUTTON_A;
+    static constexpr SDL_GameControllerButton HIT_BUTTON = SDL_CONTROLLER_BUTTON_X;
+    static constexpr SDL_GameControllerAxis NEVASCA_AXIS = SDL_CONTROLLER_AXIS_TRIGGERRIGHT;
+    static constexpr SDL_GameControllerButton NEVASCA_BUTTON = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
+
+    Checkpoint *mCurrentCheckpoint;
 
 public:
     explicit Zoe(Game* game, float forwardSpeed, const Vector2 &center);
     ~Zoe();
 
-    void OnProcessInput(const Uint8* keyState) override;
+    void SetCheckpoint(const Vector2 &position);
+    Checkpoint* GetCurrentCheckpoint() const;
+
+    void BlockButton(Button button) { mButtonBlocked[button] = true; }
+    void UnblockButton(Button button) { mButtonBlocked[button] = false; }
+    bool IsButtonBlocked(Button button) { return mButtonBlocked[button]; }
+    bool IsSDLButtonBlocked(SDL_GameControllerButton sdlButton) { return mButtonBlocked[GetButtonFromSDL(sdlButton)]; }
+
+    void OnProcessInput(const Uint8* keyState, const std::vector<SDL_Event>& events) override;
     void OnUpdate(float deltaTime) override;
     void OnHandleKeyPress(const int key, const bool isPressed) override;
+
+    void OnJumpPressed();
+    void OnJumpReleased();
+    void OnAttackPressed();
+    void OnAttackReleased();
+    void OnDodgePressed();
+    void OnDodgeReleased();
+    void OnVentaniaPressed();
+    void OnVentaniaReleased();
+    void OnFireballPressed();
+    void OnFireballReleased();
+    void OnNevascaPressed();
+    void OnNevascaReleased();
+    void CheckAbilitiesKeys(const std::vector<SDL_Event>& events, SDL_GameController* controller);
 
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
@@ -99,30 +141,56 @@ public:
     void TakeSithAttack1(const float minOverlap, AABBColliderComponent *other);
     void TakeSithAttack2(const float minOverlap, AABBColliderComponent *other);
 
-private:
-    float mForwardSpeed;
+    float GetMana() const { return mMana; }
 
-    class TimerComponent *mTimerComponent;
+    void SetIsFireballAllowed(bool allowed) { mIsFireballAllowed = allowed; }
+    void SetIsDodgeAllowed(bool allowed) { mIsDodgeAllowed = allowed; }
+    void SetIsVentaniaAllowed(bool allowed) { mIsVentaniaAllowed = allowed; }
+    void SetIsNevascaAllowed(bool allowed) { mIsNevascaAllowed = allowed; }
+
+    void TeleportToCheckpoint();
+
+    bool IsChargedPlayerAttack() const;
+
+    void TeleportToSecondHalfLevel1();
+
+protected:
+    void SetMana(float mana);
+
+private:
+    float mForwardSpeed, mMana;
+    bool mConsumedManaThisFrame;
+
+    bool HasMana(float amount) const { return mMana >= amount; }
+    void ConsumeMana(float amount);
+    void RegenerateMana();
+
+    Timer* mManaRegenTimerHandle;
+
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
+    class TimerComponent *mTimerComponent;
 
     void ManageAnimations();
 
     Vector2 mInputMovementDir;
-    bool mIsTryingToHit, mIsTryingToDodge, mIsTryingToJump, mIsTryingToNevasca;
+    bool mIsTryingToHit, mIsTryingToDodge, mIsTryingToJump, mIsTryingToNevasca, mReleasedHit, mPlayedChargeAttackSound;
+    float mAttackChargeCounter;
     bool mIsFiringNevasca;
     float mNevascaTimer;
     Timer* mDodgeCooldownTimer;
     Timer* mDashGravityDisableTimer;
 
+    bool mIsFireballAllowed, mIsDodgeAllowed, mIsVentaniaAllowed, mIsNevascaAllowed;
+
     void FireFireball();
     bool mTryingToFireFireball;
     Timer* mFireballCooldownTimer;
 
-    void TriggerVentania();
-    void SetVentaniaOnCooldown(bool onCooldown) { mIsVentaniaOnCooldown = onCooldown; }
-    bool mIsVentaniaOnCooldown, mTryingToTriggerVentania;
+    bool CheckVentania();
+    void SetLandedAfterVentania(bool landed) { mLandedAfterVentania = landed; }
+    bool mLandedAfterVentania, mTryingToTriggerVentania;
 
     Collider *mAttackCollider, *mAerialAttackCollider;
 
@@ -135,7 +203,8 @@ private:
     void Move(float modifier=1.f);
     bool CheckJump();
     bool CheckDodge(); 
-    bool CheckHit();
+    bool CheckHit(); 
+    bool Hit();
     void DodgeEnd();
     bool CheckNevasca();
 

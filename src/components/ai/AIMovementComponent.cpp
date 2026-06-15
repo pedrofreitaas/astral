@@ -10,14 +10,12 @@ const float MIN_CRAZINESS = 0.f;
 
 AIMovementComponent::AIMovementComponent(
     class Actor *owner, float fowardSpeed,
-    int jumpForceInBlocks, TypeOfMovement typeOfMovement,
-    float pathTolerance, float craziness)
+    TypeOfMovement typeOfMovement, float craziness)
     : Component(owner), mMovementState(MovementState::Wandering),
-      mPreviousMovementState(MovementState::Wandering),
-      mJumpForceInBlocks(jumpForceInBlocks), mInteligence(0.0f),
-      mCraziness(craziness), mFowardSpeed(fowardSpeed),
-      mPathTolerance(pathTolerance), mTypeOfMovement(typeOfMovement),
-      mPathTimer(0.f), mLastSeenPlayerCenter(Vector2::Zero)
+      mPreviousMovementState(MovementState::Wandering), mInteligence(0.0f),
+      mCraziness(craziness), mSpeed(fowardSpeed), mTypeOfMovement(typeOfMovement),
+      mOwnerEnemy(nullptr), mCrazyDecisionTimer(nullptr),
+      mBlockChangeForceTimer(nullptr), mSpeedFlipped(false), mObstaclesAroundCenters()
 {
     if (mOwner->GetComponent<RigidBodyComponent>() == nullptr)
     {
@@ -29,230 +27,163 @@ AIMovementComponent::AIMovementComponent(
     if (mCraziness < MIN_CRAZINESS)
         mCraziness = MIN_CRAZINESS;
 
-    mOwnerEnemy = dynamic_cast<class Enemy*>(owner);
+    mOwnerEnemy = dynamic_cast<class Enemy *>(owner);
+
+    TimerComponent* mOwnerTimerComponent = mOwner->GetComponent<TimerComponent>();
+    if (mOwnerTimerComponent) {
+        mCrazyDecisionTimer = mOwnerTimerComponent->AddNotRemovableTimer(3.f, nullptr);
+    } else {
+        throw std::runtime_error("AIMovementComponent::AIMovementComponent: Owner missing TimerComponent");
+    }
+}
+
+void AIMovementComponent::PopulateObstaclesAround()
+{
+    auto rigidBody = mOwner->GetComponent<RigidBodyComponent>();
+
+    if (!rigidBody) return;
+
+    std::vector<ColliderLayer> obstacleColliders = {
+        ColliderLayer::Spikes, ColliderLayer::SpikesBlock,
+        ColliderLayer::SpearBlock, ColliderLayer::SpearTip,
+        ColliderLayer::Shuriken
+    };
+
+    std::vector<AABBColliderComponent *> closeColliders = mOwner->GetGame()->GetNearbyColliders(
+        mOwner->GetCenter(),
+        3);
+
+    mObstaclesAroundCenters.clear();
+
+    SDL_Rect threatRect = mOwnerEnemy->GetThreatRect();
+
+    for (const auto &collider : closeColliders)
+    {
+        if (
+            std::find(
+                obstacleColliders.begin(),
+                obstacleColliders.end(),
+                collider->GetLayer()) == obstacleColliders.end())
+        {
+            continue;
+        }
+
+        if (collider->IsCollidingRect(threatRect))
+        {
+            mObstaclesAroundCenters.push_back(collider->GetCenter());
+        }
+    }
 }
 
 void AIMovementComponent::Sense(float deltaTime)
 {
-    if (mOwnerEnemy->PlayerOnFov()) {
-        mLastSeenPlayerCenter = mOwner->GetGame()->GetZoe()->GetCenter();
-    }
+    PopulateObstaclesAround();
 }
 
 void AIMovementComponent::Plan(float deltaTime)
 {
-    if (mPath.empty())
-        return;
-    
-    SDL_Rect whereIThoughPlayerWas = mPath.back();
-    Vector2 whereIThoughPlayerWasVec = Vector2(
-        whereIThoughPlayerWas.x + whereIThoughPlayerWas.w*.5f, 
-        whereIThoughPlayerWas.y + whereIThoughPlayerWas.h*.5f
-    );
+    mInteligence += deltaTime * .1f;
+    if (mInteligence > 1.f) mInteligence = 0.f;
 
-    Vector2 dist = mLastSeenPlayerCenter - whereIThoughPlayerWasVec;
-    float distSq = dist.LengthSq();
-
-    if (distSq >= 10000.f)
+    switch (mMovementState)
     {
-        mPath.clear();
-        mMovementState = MovementState::Wandering;
-        SeekPlayer();
+    case MovementState::Seeking:
+    {   
+        break;
     }
-}
 
-int AIMovementComponent::GetTargetIndex()
-{
-    AABBColliderComponent *collider = GetOwnerCollider();
-
-    if (mPath.empty() || !collider)
-        return -1;
-
-    int currentIdx = -1;
-    for (size_t i = 0; i < mPath.size(); ++i)
+    case MovementState::Wandering:
     {
-        if (collider->IsCollidingRect(mPath[i]))
-        {
-            currentIdx = i;
+        if (CrazyDecision()) {
+            SetMovementState(MovementState::Patrolling);
             break;
         }
-    }
-    
-    // npc not on path, let's find the closest rect in path, and set as target.
-    if (currentIdx == -1)
-    {
-        Vector2 ownerCenter = mOwner->GetCenter();
-        float closestDistance = std::numeric_limits<float>::max();
-        
-        for (size_t i = 0; i < mPath.size(); ++i)
-        {
-            SDL_Rect targetRect = mPath[i];
-            Vector2 targetPos = Vector2(
-                static_cast<float>(targetRect.x + targetRect.w / 2),
-                static_cast<float>(targetRect.y + targetRect.h / 2));
 
-            float distance = (targetPos - ownerCenter).LengthSq();
-            
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                currentIdx = static_cast<int>(i);
-            }
+        break;
+    }
+
+    case MovementState::Patrolling:
+    {
+        if (CrazyDecision()) {
+            SetMovementState(MovementState::Wandering);
+            break;
         }
 
-        return currentIdx;
-    }
-    
-    // npc on path, follow to next rect in path.
-    if (currentIdx + 1 < static_cast<int>(mPath.size())) 
-    {
-        return currentIdx + 1;
+        break;
     }
 
-    return mPath.size() - 1;
-}
-
-void AIMovementComponent::FollowPathFlier()
-{
-    AABBColliderComponent *collider = GetOwnerCollider();
-    RigidBodyComponent *rb = GetOwnerRigidBody();
-
-    int targetIndex = GetTargetIndex();
-    
-    if (targetIndex == -1) {
-        SetMovementState(MovementState::Wandering);
-        mPath.clear();
-        return;
-    }
-
-    if (targetIndex >= static_cast<int>(mPath.size())-1)
-    {
-        SetMovementState(MovementState::Wandering);
-        mPath.clear();
-        return;
-    }
-
-    SDL_Rect target = mPath[targetIndex];
-
-    Vector2 targetPos = Vector2(
-        static_cast<float>(target.x + target.w / 2),
-        static_cast<float>(target.y + target.h / 2));
-    Vector2 ownerCenter = mOwner->GetCenter();
-    Vector2 toTarget = targetPos - ownerCenter;
-
-    toTarget.Normalize();
-
-    float fowardSpeedAbs = std::abs(mFowardSpeed);
-    Vector2 force = toTarget * fowardSpeedAbs;
-    rb->ApplyForce(force);
-}
-
-void AIMovementComponent::FollowPathWalker()
-{
-    AABBColliderComponent *collider = GetOwnerCollider();
-    RigidBodyComponent *rb = GetOwnerRigidBody();
-
-    if (!rb->GetOnGround())
-        return;
-
-    int targetIndex = GetTargetIndex();
-
-    if (targetIndex == -1) {
-        mPath.clear();
-        SetMovementState(MovementState::Wandering);
-        return;
-    }
-
-    // npc reached end the last rect, end of path.
-    if (targetIndex >= static_cast<int>(mPath.size()) - 1)
-    {
-        SetMovementState(MovementState::Wandering);
-        mPath.clear();
-        return;
-    }
-
-    Vector2 ownerCenter = mOwner->GetCenter();
-    
-    // resultant force of the next 3 steps, if available.
-    Vector2 resultantForce = Vector2::Zero;
-    int stepsToConsider = 3;
-    for (int i = 0; i < stepsToConsider; ++i)
-    {
-        int idx = targetIndex + i;
-        if (idx >= static_cast<int>(mPath.size()))
-            break;
-        
-        SDL_Rect targetRect = mPath[idx];
-        Vector2 targetPos = Vector2(
-            static_cast<float>(targetRect.x + targetRect.w / 2),
-            static_cast<float>(targetRect.y + targetRect.h / 2));
-        
-        
-        Vector2 toTarget = targetPos - ownerCenter;
-        
-        toTarget.Normalize();
-        resultantForce += toTarget;
-        resultantForce *= (1.f / static_cast<float>(stepsToConsider));
-    }
-
-    if (rb->GetOnGround()) {
-        float fowardSpeedAbs = std::abs(mFowardSpeed);
-        Vector2 desiredHORVelocity = Vector2(resultantForce.x * fowardSpeedAbs, 0.f);
-        rb->ApplyForce(desiredHORVelocity);
-    }
-
-    if (resultantForce.y < -0.3f)
-    {
-        Jump(true);
+    default:
+        break;
     }
 }
 
 void AIMovementComponent::Act(float deltaTime)
 {
-    RigidBodyComponent *rb = GetOwnerRigidBody();
-    AABBColliderComponent *collider = GetOwnerCollider();
+    RigidBodyComponent *rb = mOwner->GetComponent<RigidBodyComponent>();
+    AABBColliderComponent *collider = mOwner->GetComponent<AABBColliderComponent>();
 
     if (!collider || !rb)
     {
         throw std::runtime_error("AIMovementComponent::Act: Owner missing RigidBodyComponent or AABBColliderComponent");
     }
 
+    // not on ground cant move.
+    if (!rb->GetOnGround() && rb->GetApplyGravity()) return;
+
+    Vector2 dir;
+
     switch (GetMovementState())
     {
     case MovementState::Wandering:
-        if (!rb->GetOnGround() && rb->GetApplyGravity())
-            break;
-
-        if (mInteligence >= .5f)
-            rb->ApplyForce(Vector2(mFowardSpeed, 0.f));
-        else
-            rb->ApplyForce(Vector2(-mFowardSpeed, 0.f));
-
-        if (rb->GetApplyGravity() && CrazyDecision(.5f))
-            Jump();
-
-        break;
-
-    case MovementState::Jumping:
-        if (rb->GetOnGround())
-        {
-            SetMovementState(mPreviousMovementState);
-        }
-        break;
-
-    case MovementState::FollowingPathJumping:
-        if (rb->GetOnGround())
-        {
-            SetMovementState(MovementState::FollowingPath);
-        }
-        break;
-
-    case MovementState::FollowingPath:
     {
-        if(mTypeOfMovement == TypeOfMovement::Walker) 
-            FollowPathWalker();
-        else 
-            FollowPathFlier();
+        dir = Vector2(mInteligence >= .5f ? 1 : -1, 0.f);
+        
+        if (mSpeedFlipped) {
+            dir *= -1.f;
+        }
+
+        break;
+    }
+
+    case MovementState::Seeking:
+    {
+        if (CanBePressingPlayerAgainstWall()) {
+            dir = Vector2(0.f, 0.f);
+            break;
+        }
+
+        Vector2 toPlayer = mOwnerEnemy->GetLastSeenPlayerCenter() - mOwner->GetCenter();
+
+        if (mOwnerEnemy->GetLastSeenPlayerDistanceSquared() < 400.f) break;
+
+        toPlayer.Normalize();
+
+        dir = toPlayer;
+
+        // has a clear goal, doesnt need to flip
+        // if (mSpeedFlipped) {
+        //     force *= -1.f;
+        // }
+        
+        break;
+    }
+
+    case MovementState::Patrolling:
+    {
+        Vector2 toSpawn = mOwnerEnemy->GetSpawnPosition() - mOwner->GetPosition();
+        
+        if (toSpawn.LengthSq() < 100.f) {
+            dir = Vector2::Zero;
+            break;
+        }
+
+        toSpawn.Normalize();
+        
+        dir = toSpawn;
+
+        if (mSpeedFlipped) {
+            dir *= -1.f;
+        }
 
         break;
     }
@@ -261,32 +192,71 @@ void AIMovementComponent::Act(float deltaTime)
         SetMovementState(MovementState::Wandering);
         break;
     }
-}
 
-void AIMovementComponent::Jump(bool isFollowingPath)
-{
-    RigidBodyComponent *rb = GetOwnerRigidBody();
-    if (!rb)
-        return;
-
-    if (rb->GetOnGround() && mTypeOfMovement == TypeOfMovement::Walker)
+    if (IsDangerousToMoveAround())
     {
-        float xSpeed = rb->GetVelocity().x;
-        float ySpeed = rb->GetJumpImpulseY(mJumpForceInBlocks);
-        rb->ApplyImpulse(Vector2(0.f, ySpeed));
-        SetMovementState(
-            isFollowingPath ? MovementState::FollowingPathJumping : MovementState::Jumping);
+        Vector2 avoidDir = Vector2(0.f, 0.f);
+        float norm = 0.f;
+        float modifier = 0.f;
+        float limit = mSpeed * .5f;
+
+        for (const auto& obstacleCenter : mObstaclesAroundCenters) {
+            Vector2 awayFromObstacle = mOwner->GetCenter() - obstacleCenter;
+            norm = awayFromObstacle.Length() + 0.001f;
+            awayFromObstacle *= 1.f/norm;
+            
+            modifier = (limit-norm);
+            if (modifier < 0) modifier = 0.f;
+            
+            avoidDir += awayFromObstacle * modifier;
+        }
+
+        dir += avoidDir;
+        dir.Normalize();
+    }
+
+    if (mTypeOfMovement == TypeOfMovement::Walker) {
+        dir.y = 0.f;
+        rb->ApplyForce(dir * mSpeed);
+    }
+    else {
+        rb->SetVelocity(dir * mSpeed);
     }
 }
 
 bool AIMovementComponent::CrazyDecision()
 {
+    TimerComponent* mOwnerTimerComponent = mOwner->GetComponent<TimerComponent>();
+
+    if (!mOwnerTimerComponent) {
+        return false;
+    }
+
+    if (mOwnerTimerComponent->checkTimerRemaining(mCrazyDecisionTimer) > 0.f) {
+        return false;
+    }
+
     float randomValue = Math::RandRange(MIN_CRAZINESS, MAX_CRAZINESS);
-    return (randomValue <= mCraziness);
+    bool crazy = (randomValue <= mCraziness);
+
+    if (crazy) mCrazyDecisionTimer->Restart();
+
+    return crazy;
 }
 
 bool AIMovementComponent::CrazyDecision(float modifier)
 {
+    TimerComponent* mOwnerTimerComponent = mOwner->GetComponent<TimerComponent>();
+
+    if (!mOwnerTimerComponent) {
+        return false;
+    }
+
+    if (mOwnerTimerComponent->checkTimerRemaining(mCrazyDecisionTimer) > 0.f) {
+        return false;
+    }
+
+    mCrazyDecisionTimer->Restart();
     float randomValue = Math::RandRange(MIN_CRAZINESS, MAX_CRAZINESS);
     return (randomValue <= (mCraziness * modifier));
 }
@@ -296,26 +266,6 @@ void AIMovementComponent::Update(float deltaTime)
     if (mOwner->GetBehaviorState() != BehaviorState::Moving)
         return;
 
-    mInteligence += deltaTime * 0.01;
-    if (mInteligence > 1.f)
-    {
-        mInteligence = 0.f;
-    }
-
-    if (CrazyDecision())
-        mInteligence = Math::RandRange(0.f, 1.f);
-
-    if (GetMovementState() == MovementState::FollowingPath ||
-        GetMovementState() == MovementState::FollowingPathJumping)
-    {
-        mPathTimer -= deltaTime;
-        if (mPathTimer <= 0.f)
-        {
-            SetMovementState(MovementState::Wandering);
-            mPath.clear();
-        }
-    }
-
     Sense(deltaTime);
     Plan(deltaTime);
     Act(deltaTime);
@@ -323,23 +273,18 @@ void AIMovementComponent::Update(float deltaTime)
 
 void AIMovementComponent::SeekPlayer()
 {
-    if (GetMovementState() == MovementState::FollowingPath)
+    if (GetMovementState() == MovementState::Seeking)
         return;
 
-    SpatialHashing *sh = mOwner->GetGame()->GetSpatialHashing();
-    
-    mPath = sh->GetPath(
-        mOwner, 
-        mLastSeenPlayerCenter, 
-        mTypeOfMovement == TypeOfMovement::Flier);
+    SetMovementState(MovementState::Seeking);
+}
 
-    if (mPath.empty())
-    {
+void AIMovementComponent::LoosePlayer()
+{
+    if (GetMovementState() != MovementState::Seeking)
         return;
-    }
 
-    SetMovementState(MovementState::FollowingPath);
-    mPathTimer = mPathTolerance;
+    SetMovementState(MovementState::Patrolling);
 }
 
 void AIMovementComponent::LogState()
@@ -349,14 +294,11 @@ void AIMovementComponent::LogState()
     case MovementState::Wandering:
         SDL_Log("AIMovementComponent::LogState: Wandering");
         break;
-    case MovementState::Jumping:
-        SDL_Log("AIMovementComponent::LogState: Jumping");
+    case MovementState::Seeking:
+        SDL_Log("AIMovementComponent::LogState: Seeking");
         break;
-    case MovementState::FollowingPathJumping:
-        SDL_Log("AIMovementComponent::LogState: FollowingPathJumping");
-        break;
-    case MovementState::FollowingPath:
-        SDL_Log("AIMovementComponent::LogState: FollowingPath");
+    case MovementState::Patrolling:
+        SDL_Log("AIMovementComponent::LogState: Patrolling");
         break;
     default:
         SDL_Log("AIMovementComponent::LogState: Unknown State");
@@ -364,37 +306,85 @@ void AIMovementComponent::LogState()
     }
 }
 
-void AIMovementComponent::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
+void AIMovementComponent::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    if (other->GetLayer() == ColliderLayer::Blocks || other->GetLayer() == ColliderLayer::EnemyBlocker
-        && GetMovementState() != MovementState::FollowingPath)
+    if (
+        other->GetLayer() == ColliderLayer::Blocks ||
+        other->GetLayer() == ColliderLayer::EnemyBlocker
+    )
     {
-        SetFowardSpeed(-GetFowardSpeed());
+        if (mMovementState != MovementState::Seeking) {
+            mSpeedFlipped = true;
+            mOwner->GetComponent<TimerComponent>()->AddTimer(1.f, [this]() { mSpeedFlipped = false; });    
+        }
+
+        else if (mTypeOfMovement == TypeOfMovement::Flier) {
+            Vector2 toPlayer = mOwnerEnemy->GetLastSeenPlayerCenter() - mOwner->GetCenter();
+
+            if (Math::Abs(toPlayer.y) > 20.f) {
+                auto rb = mOwner->GetComponent<RigidBodyComponent>();
+                rb->SetVelocity(Vector2(0.f, Math::Sign(toPlayer.y) * mSpeed));
+            }
+        }
     }
 }
 
-void AIMovementComponent::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
+void AIMovementComponent::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-}
-
-void AIMovementComponent::ApplyForce(const Vector2 &force)
-{
-    RigidBodyComponent *rb = GetOwnerRigidBody();
-    if (rb)
+    if (
+        other->GetLayer() == ColliderLayer::Blocks ||
+        other->GetLayer() == ColliderLayer::EnemyBlocker
+    )
     {
-        rb->ApplyForce(force);
+        if (mTypeOfMovement == TypeOfMovement::Flier && mMovementState == MovementState::Seeking) {
+            Vector2 toPlayer = mOwnerEnemy->GetLastSeenPlayerCenter() - mOwner->GetCenter();
+
+            if (Math::Abs(toPlayer.x) > 20.f) {
+                auto rb = mOwner->GetComponent<RigidBodyComponent>();
+                rb->SetVelocity(Vector2(Math::Sign(toPlayer.x) * mSpeed, 0.f));
+            }
+        }
     }
 }
 
 void AIMovementComponent::BoostToPlayer(float intensity)
 {
-    RigidBodyComponent *rb = GetOwnerRigidBody();
+    RigidBodyComponent *rb = mOwner->GetComponent<RigidBodyComponent>();
     if (!rb)
         return;
 
-    Vector2 boostDirection = mLastSeenPlayerCenter - mOwner->GetCenter();
+    Vector2 boostDirection = mOwnerEnemy->GetLastSeenPlayerCenter() - mOwner->GetCenter();
     boostDirection.Normalize();
 
     Vector2 boostForce = boostDirection * intensity;
     rb->ApplyImpulse(boostForce);
+}
+
+void AIMovementComponent::SetMovementState(MovementState state)
+{
+    mPreviousMovementState = mMovementState;
+    mMovementState = state;
+
+    LogState();
+}
+
+bool AIMovementComponent::CanBePressingPlayerAgainstWall() const
+{
+    if (mMovementState != MovementState::Seeking) return false;
+
+    Vector2 toPlayer = mOwnerEnemy->GetLastSeenPlayerCenter() - mOwner->GetCenter();
+    float distanceToPlayerSQ = mOwnerEnemy->GetDistanceToPlayerSquared(); // cant be get distance to last seen!
+
+    if (distanceToPlayerSQ > 900.f) return false;
+
+    AABBColliderComponent* playerColliderComponent = mOwnerEnemy->
+        GetGame()->
+        GetZoe()->
+        GetComponent<AABBColliderComponent>();
+    
+    if (!playerColliderComponent) return false;
+
+    int playerCloseToWall = playerColliderComponent->IsCloseToTileWallHorizontally(1.f);
+
+    return playerCloseToWall != 0;
 }

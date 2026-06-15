@@ -11,8 +11,6 @@
 class Shuriken : public Actor
 {
 public:
-    const float TRIGGER_COOLDOWN = 2.f;
-
     explicit Shuriken(Game* game, const Vector2& position);
 
     void ManageState();

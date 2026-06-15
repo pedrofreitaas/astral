@@ -19,18 +19,42 @@ Tileset::Tileset(Game *game, std::string jsonPath)
 
     for (auto &element : data["tiles"].items())
     {
-        if (!element.value().contains("objectgroup"))
+        int id = element.value()["id"];
+        int BBOffsetX = 0;
+        int BBOffsetY = 0;
+        int BBWidth = 0;
+        int BBHeight = 0;
+        bool hasCollision = true;
+
+        if (
+            element.value().contains("objectgroup") &&
+            element.value()["objectgroup"].contains("objects") && 
+            element.value()["objectgroup"]["objects"].size() > 0)
         {
-            throw std::runtime_error("Tileset JSON missing objectgroup for tile id.");
+            const json &obj = element.value()["objectgroup"]["objects"][0];
+            BBOffsetX = obj["x"];
+            BBOffsetY = obj["y"];
+            BBWidth = obj["width"];
+            BBHeight = obj["height"];
         }
 
-        int id = element.value()["id"];
-        int BBOffsetX = element.value()["objectgroup"]["objects"][0]["x"];
-        int BBOffsetY = element.value()["objectgroup"]["objects"][0]["y"];
-        int BBWidth = element.value()["objectgroup"]["objects"][0]["width"];
-        int BBHeight = element.value()["objectgroup"]["objects"][0]["height"];
+        if (element.value().contains("properties")) {
+            for (const auto &prop : element.value()["properties"])
+            {
+                std::string propName = prop["name"].get<std::string>();
+                const json &propValue = prop["value"];
 
-        TileExtraInfo extInfo(id, BBOffsetX, BBOffsetY, BBWidth, BBHeight);
+                if (propName == "hasCollision")
+                {
+                    if (!propValue.get<bool>())
+                    {
+                        hasCollision = false;
+                    }
+                }
+            }
+        }
+            
+        TileExtraInfo extInfo(id, BBOffsetX, BBOffsetY, BBWidth, BBHeight, hasCollision);
 
         mTileExtraInfo.emplace(extInfo.id, extInfo);
     }
@@ -99,9 +123,11 @@ Vector2 Tileset::GetBBSize(int localID)
 
     if (extInfo != mTileExtraInfo.end())
     {
-        return Vector2(
-            extInfo->second.BBWidth,
-            extInfo->second.BBHeight);
+        if (!extInfo->second.hasCollision)
+            return Vector2(0.0f, 0.0f);
+
+        if (extInfo->second.BBWidth != 0 || extInfo->second.BBHeight != 0)
+            return Vector2(extInfo->second.BBWidth, extInfo->second.BBHeight);
     }
 
     return Vector2(mTileWidth, mTileHeight);

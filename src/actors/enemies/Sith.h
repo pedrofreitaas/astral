@@ -34,20 +34,10 @@ public:
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
 
-    Vector2 GetProjectileOffset() { 
-        if (GetRotation() == 0.f) {
-            return Vector2(32.f,30.f);
-        }
-        else {
-            return Vector2(22.f,30.f);
-        }
-    }
-
 private:
     bool mIsProjectileOnCooldown, mIsAttack1OnCooldown, mIsAttack2OnCooldown;
     Attacks mCurrentAttack;
     TimerComponent *mTimerComponent;
 
-    Collider *mAttack1Collider, *mAttack2Collider;
     bool mHasAppliedAttackBoost;
 };

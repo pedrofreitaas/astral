@@ -28,6 +28,7 @@ Actor::Actor(Game* game, int lives, bool mustAlwaysUpdate, std::string type)
         , mType(type)
         , mFreezingCount(0.f)
         , mTimerComponent(nullptr)
+        , mIsSlidingOnSnow(false)
 {
     mGame->AddActor(this);
     
@@ -57,8 +58,7 @@ void Actor::SetPosition(const Vector2& pos)
 
 void Actor::SetCenter(const Vector2& pos)
 {
-    mPosition = pos - GetCenter()*.5f;
-    mGame->Reinsert(this);
+    SetPosition(pos - GetHalfSize());
 }
 
 void Actor::Update(float deltaTime)
@@ -152,9 +152,9 @@ void Actor::OnVerticalCollision(const float minOverlap, AABBColliderComponent* o
         Tile *tile = static_cast<Tile *>(other->GetOwner());
 
         if (tile->IsFrozen()) {
-            isSlidingOnSnow = true;
+            mIsSlidingOnSnow = true;
         } else {
-            isSlidingOnSnow = false;
+            mIsSlidingOnSnow = false;
         }
 
         return;
@@ -166,7 +166,7 @@ void Actor::Kill()
 
 }
 
-void Actor::ProcessInput(const Uint8* keyState)
+void Actor::ProcessInput(const Uint8* keyState, const std::vector<SDL_Event>& events)
 {
     if (mState == ActorState::Active)
     {
@@ -175,7 +175,7 @@ void Actor::ProcessInput(const Uint8* keyState)
             comp->ProcessInput(keyState);
         }
 
-        OnProcessInput(keyState);
+        OnProcessInput(keyState, events);
     }
 }
 
@@ -194,7 +194,7 @@ void Actor::HandleKeyPress(const int key, const bool isPressed)
 
 }
 
-void Actor::OnProcessInput(const Uint8* keyState)
+void Actor::OnProcessInput(const Uint8* keyState, const std::vector<SDL_Event>& events)
 {
 
 }
@@ -267,8 +267,10 @@ void Actor::TakeKnockback(const Vector2 &knockback)
         return;
 
     auto rigidBody = GetComponent<RigidBodyComponent>();
+    
     if (rigidBody)
     {
+        rigidBody->ResetVelocity();
         rigidBody->ApplyImpulse(knockback);
     }
 }
@@ -291,6 +293,9 @@ void Actor::TakeDamage()
     if (mInvincible)
         return;
 
+    if (mBehaviorState == BehaviorState::TakingDamage)
+        return;
+
     mLifes--;
 
     if (mLifes <= 0)
@@ -310,6 +315,26 @@ void Actor::TakeDamage()
 Vector2 Actor::GetHalfSize() const
 {
     return GetCenter() - GetPosition();
+}
+
+float Actor::GetWidth() const
+{
+    auto collider = GetComponent<AABBColliderComponent>();
+
+    if (collider)
+        return collider->GetWidth();
+
+    return GetHalfSize().x * 2.f;
+}
+
+float Actor::GetHeight() const
+{
+    auto collider = GetComponent<AABBColliderComponent>();
+    
+    if (collider)
+        return collider->GetHeight();
+
+    return GetHalfSize().y * 2.f;
 }
 
 void Actor::TakeSpikeHit(const Vector2 &SpikeBaseCenter)

@@ -19,7 +19,6 @@ enum class ColliderLayer
     EnemyProjectile,
     Blocks,
     Objects,
-    Item,
     Portal,
     Projectile,
     Fireball,
@@ -33,7 +32,17 @@ enum class ColliderLayer
     SithAttack2,
     Quasar,
     Nevasca,
-    QuasarAttack
+    Torch,
+    Crate,
+    Items,
+    Father,
+    Mother,
+    Star,
+    MetalCrate,
+    Zathura,
+    ZathuraAttack1,
+    ZathuraAttack2,
+    ZathuraAttack3
 };
 
 enum class IgnoreOption
@@ -52,6 +61,7 @@ public:
     ~AABBColliderComponent() override;
 
     bool Intersect(const AABBColliderComponent& b) const;
+    bool IsContainedIn(const AABBColliderComponent& b) const;
 
     float DetectHorizontalCollision(RigidBodyComponent *rigidBody);
     float DetectVerticalCollision(RigidBodyComponent *rigidBody);
@@ -77,6 +87,8 @@ public:
     void MaintainInCamera();
     void MaintainInMap();
     bool IsSegmentIntersecting(const Vector2& start, const Vector2& end);
+
+    bool IsSegmentIntersectingPlayerLayer(const Vector2& start, const Vector2& end) const;
 
     bool IsCollidingRect(const SDL_Rect& rect) const;
 

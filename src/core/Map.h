@@ -1,16 +1,24 @@
 #pragma once
 
+#include <SDL.h>
 #include <string>
 #include <map>
 #include <string>
+#include <fstream>
+#include "./Game.h"
 #include "../libs/Json.h"
 #include "./Tileset.h"
 #include "../actors/MapObject.h"
 #include "../actors/Tile.h"
 #include "../libs/Math.h"
 #include "../actors/Collider.h"
+#include "../actors/Torch.h"
+#include "../actors/Crate.h"
+#include "../actors/MetalCrate.h"
+#include "../actors/Item.h"
 
 class Game;
+class TV;
 
 using json = nlohmann::json;
 
@@ -37,5 +45,6 @@ private:
     std::vector<std::pair<std::string, int>> LoadTilsetsUsedInMap(const json &data, const std::string &baseTilesetsPath, std::map<std::string, Tileset> &allAvailableTilesets);
     void LoadObjectsLayer(const json& layerData, int layerIdx);
     void LoadEnemyColliderObjects(const json &layerData, int layerIdx);
+    void LoadPlayerColliderObjects(const json &layerData, int layerIdx);
     void LoadTilesLayer(std::vector<std::pair<std::string, int>> &nameToFirstGID, const json &layerData, int layerIdx);
 };

@@ -18,6 +18,7 @@
 #include "UIButton.h"
 #include "UIImage.h"
 #include "UICursor.h"
+#include "UIAnimation.h"
 
 class UIScreen
 {
@@ -55,6 +56,16 @@ public:
     UIImage* AddImage(const std::string& imagePath, const Vector2& pos, const Vector2& dims, const Vector3& color = Color::White);
 	UIImage* AddCursor(const std::string& imagePath, const Vector2& pos, const Vector2& dims, const Vector3& color = Color::White);
 	UIImage* AddBackground(const std::string& imagePath, const Vector2& pos, const Vector2& dims, const Vector3& color = Color::White);
+	
+	UIAnimation *AddAnimation(
+		const std::string &animPath, 
+		const std::string &animData,
+		const Vector2 &pos = Vector2::Zero,
+		const Vector2 &size = Vector2(100.f, 100.f),
+		float animFPS = 10.0f,
+		int animationStartIdx=0, int animationEndIdx=0, bool isLoop=true
+	);
+	void RemoveAnimation(UIAnimation* anim);
 
 	UICursor* GetCursor() const;
 	
@@ -75,6 +86,7 @@ protected:
 	std::vector<UIButton *> mButtons;
     std::vector<UIText *> mTexts;
     std::vector<UIImage *> mImages;
+	std::vector<UIAnimation *> mAnimations;
     std::vector<UICursor *> mCursors;
     std::vector<UIImage *> mBackground;
 };
