@@ -4,15 +4,7 @@ project(astral)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# --- 1. Library Paths (native Windows only) ---
-if(NOT EMSCRIPTEN)
-    set(SDL2_ROOT        "C:/libs/SDL2/x86_64-w64-mingw32")
-    set(SDL2_IMAGE_ROOT  "C:/libs/SDL2_image/x86_64-w64-mingw32")
-    set(SDL2_TTF_ROOT    "C:/libs/SDL2_ttf/x86_64-w64-mingw32")
-    set(SDL2_MIXER_ROOT  "C:/libs/SDL2_mixer/x86_64-w64-mingw32")
-endif()
-
-# --- 2. Source Files ---
+# --- Source Files ---
 add_executable(astral
     src/Main.cpp
     src/libs/Math.h
@@ -141,7 +133,7 @@ add_executable(astral
 )
 
 if(EMSCRIPTEN)
-    # --- 3-5. Emscripten Web Build ---
+    # --- Emscripten / Web Build ---
     set_target_properties(astral PROPERTIES SUFFIX ".html")
 
     target_compile_options(astral PRIVATE
@@ -160,23 +152,25 @@ if(EMSCRIPTEN)
         "SHELL:-s ALLOW_MEMORY_GROWTH=1"
         "SHELL:--preload-file ${CMAKE_SOURCE_DIR}/assets@/assets"
     )
-else()
-    # --- 3. Include Directories ---
+
+elseif(WIN32)
+    # --- Windows Build ---
+    set(SDL2_ROOT        "C:/libs/SDL2/x86_64-w64-mingw32")
+    set(SDL2_IMAGE_ROOT  "C:/libs/SDL2_image/x86_64-w64-mingw32")
+    set(SDL2_TTF_ROOT    "C:/libs/SDL2_ttf/x86_64-w64-mingw32")
+    set(SDL2_MIXER_ROOT  "C:/libs/SDL2_mixer/x86_64-w64-mingw32")
+
     target_include_directories(astral PRIVATE
         ${SDL2_ROOT}/include
         ${SDL2_ROOT}/include/SDL2
-
         ${SDL2_IMAGE_ROOT}/include
         ${SDL2_IMAGE_ROOT}/include/SDL2
-
         ${SDL2_TTF_ROOT}/include
         ${SDL2_TTF_ROOT}/include/SDL2
-
         ${SDL2_MIXER_ROOT}/include
         ${SDL2_MIXER_ROOT}/include/SDL2
     )
 
-    # --- 4. Link Directories ---
     target_link_directories(astral PRIVATE
         ${SDL2_ROOT}/lib
         ${SDL2_IMAGE_ROOT}/lib
@@ -184,7 +178,6 @@ else()
         ${SDL2_MIXER_ROOT}/lib
     )
 
-    # --- 5. Link Libraries & Static Config ---
     target_link_libraries(astral PRIVATE
         mingw32
         SDL2main
@@ -198,13 +191,10 @@ else()
         target_link_options(astral PRIVATE
             -static-libgcc
             -static-libstdc++
-            # -mwindows # Hides the console window
         )
     endif()
 
-    # --- 6. Auto-Copy DLLs ---
     add_custom_command(TARGET astral POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E echo "Copying DLLs to build directory..."
         COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SDL2_ROOT}/bin/SDL2.dll" $<TARGET_FILE_DIR:astral>
         COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SDL2_IMAGE_ROOT}/bin/SDL2_image.dll" $<TARGET_FILE_DIR:astral>
         COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SDL2_TTF_ROOT}/bin/SDL2_ttf.dll" $<TARGET_FILE_DIR:astral>
@@ -212,8 +202,41 @@ else()
     )
 
     add_custom_command(TARGET astral POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_SOURCE_DIR}/assets"
-        "$<TARGET_FILE_DIR:astral>/assets"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/assets" "$<TARGET_FILE_DIR:astral>/assets"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/gamecontrollerdb.txt" $<TARGET_FILE_DIR:astral>
     )
+
+else()
+    # --- Linux / macOS Build ---
+    include(FetchContent)
+    FetchContent_Declare(SDL2
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+        GIT_TAG release-2.32.2
+    )
+    set(SDL_PIPEWIRE OFF CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(SDL2)
+
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
+    pkg_check_modules(SDL2_TTF REQUIRED SDL2_ttf)
+    pkg_check_modules(SDL2_MIXER REQUIRED SDL2_mixer)
+
+    target_include_directories(astral PRIVATE
+        ${SDL2_IMAGE_INCLUDE_DIRS}
+        ${SDL2_TTF_INCLUDE_DIRS}
+        ${SDL2_MIXER_INCLUDE_DIRS}
+    )
+    target_link_libraries(astral PRIVATE
+        SDL2::SDL2
+        ${SDL2_IMAGE_LIBRARIES}
+        ${SDL2_TTF_LIBRARIES}
+        ${SDL2_MIXER_LIBRARIES}
+    )
+    target_compile_options(astral PRIVATE ${SDL2_CFLAGS_OTHER})
+
+    add_custom_command(TARGET astral POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/assets" "$<TARGET_FILE_DIR:astral>/assets"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/gamecontrollerdb.txt" $<TARGET_FILE_DIR:astral>
+    )
+
 endif()
