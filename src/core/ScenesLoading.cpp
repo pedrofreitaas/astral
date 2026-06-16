@@ -626,7 +626,8 @@ void Game::LoadSecondLevel()
                     GetZoe()->SetIsFireballAllowed(true);
                     GetZoe()->SetIsVentaniaAllowed(true);
                     Item::CreateNevascaItem(this, Vector2(80.f, 256.f));
-                });
+                },
+                true);
 
     steps.clear();
 

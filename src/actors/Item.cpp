@@ -29,7 +29,10 @@ Item *Item::CreateNevascaItem(Game *game, const Vector2 &position)
         SpawnJoystickButtonStep *spawnAnimPtr = spawnAnim.get();
         steps.push_back(std::move(spawnAnim));
 
-        game->AddCutscene("nevasca_aim", std::move(steps), [game]() {
+        game->AddCutscene(
+          "nevasca_aim", 
+          std::move(steps), 
+          [game]() { // creates/triggers a cutscene
             game->GetZoe()->SetIsNevascaAllowed(true);
 
             std::vector<std::unique_ptr<Step>> steps;
@@ -40,7 +43,8 @@ Item *Item::CreateNevascaItem(Game *game, const Vector2 &position)
 
             game->AddCutscene("nevasca_acquisition", std::move(steps), nullptr);
             game->StartCutscene("nevasca_acquisition");
-        });
+          },
+          true);
 
         game->StartCutscene("nevasca_aim");
       },
@@ -66,7 +70,7 @@ Item *Item::CreateFireballItem(Game *game, const Vector2 &position)
         
         steps.push_back(std::make_unique<LaunchFireballStep>(game, 1.f));
 
-        game->AddCutscene("fireball_acquisition", std::move(steps), nullptr);
+        game->AddCutscene("fireball_acquisition", std::move(steps), nullptr, true);
 
         game->GetZoe()->SetIsFireballAllowed(true);
 
@@ -115,7 +119,7 @@ Item *Item::CreateVentaniaItem(Game *game, const Vector2 &position)
 
         steps.push_back(std::make_unique<VentaniaStep>(game));
 
-        game->AddCutscene("ventania_acquisition", std::move(steps), nullptr);
+        game->AddCutscene("ventania_acquisition", std::move(steps), nullptr, true);
 
         game->GetZoe()->SetIsVentaniaAllowed(true);
 
@@ -148,7 +152,7 @@ Item *Item::CreateBookItem(Game *game, const Vector2 &position)
         
         steps.push_back(std::make_unique<DialogueStep>(game, "Zoe", dialogue));
 
-        game->AddCutscene("book_acquisition", std::move(steps), nullptr);
+        game->AddCutscene("book_acquisition", std::move(steps), nullptr, true);
 
         game->StartCutscene("book_acquisition");
       },
@@ -173,7 +177,7 @@ Item *Item::CreateFridgeItem(Game *game, const Vector2 &position)
         
         steps.push_back(std::make_unique<DialogueStep>(game, "Zoe", dialogue));
 
-        game->AddCutscene("fridge", std::move(steps), nullptr);
+        game->AddCutscene("fridge", std::move(steps), nullptr, true);
 
         game->StartCutscene("fridge");
       },
