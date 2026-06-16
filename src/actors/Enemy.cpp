@@ -78,7 +78,6 @@ bool Enemy::PlayerOnFov()
     float distanceToZoeSq = GetDistanceToPlayerSquared();
 
     if (distanceToZoeSq > maxDistance * maxDistance) return false;
-    if (distanceToZoeSq < minDistance * minDistance) return true;
 
     toZoe.Normalize();
 
@@ -89,9 +88,12 @@ bool Enemy::PlayerOnFov()
 
     const float fovAngle = mGame->GetConfig()->Get<float>("ENEMY.FOV_ANGLE");
 
-    if (angle >= fovAngle) return false;
-
-    return mColliderComponent->IsSegmentIntersectingPlayerLayer(GetCenter(), zoe->GetCenter());
+    bool isInFov = angle < fovAngle;
+    bool withinMinimalDistance = distanceToZoeSq < minDistance * minDistance;
+    bool canSeePlayerNoColliderInTheMiddle = mColliderComponent->
+        IsSegmentIntersectingPlayerLayer(GetCenter(), zoe->GetCenter());
+    
+    return (isInFov || withinMinimalDistance) && canSeePlayerNoColliderInTheMiddle;
 }
 
 Vector2 Enemy::GetCurrentAppliedForce(float modifier) const
