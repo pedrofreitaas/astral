@@ -540,6 +540,8 @@ void Game::LoadSecondLevel()
 {
     mHUD = new HUD(this, Game::FONT_PATH_INTER);
 
+    mHasSpawnedPortalLevel2 = false;
+
     SetApplyGravityScene(true);
     SetCameraCenterToLogicalWindowSizeCenter();
 
