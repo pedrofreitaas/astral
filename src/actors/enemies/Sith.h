@@ -34,6 +34,9 @@ public:
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
 
+    void Freeze() override;
+    void StopFreeze() override;
+
 private:
     bool mIsProjectileOnCooldown, mIsAttack1OnCooldown, mIsAttack2OnCooldown;
     Attacks mCurrentAttack;

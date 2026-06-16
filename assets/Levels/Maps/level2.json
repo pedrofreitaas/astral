@@ -231,6 +231,7 @@
                  "height":36,
                  "id":2,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -258,6 +259,7 @@
                  "height":8.66663,
                  "id":31,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"event",
@@ -280,6 +282,7 @@
                  "height":59.913,
                  "id":33,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"cutscene_name",
@@ -307,6 +310,7 @@
                  "height":64,
                  "id":36,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -334,6 +338,7 @@
                  "height":32,
                  "id":37,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -361,6 +366,7 @@
                  "height":8.66663,
                  "id":39,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"event",
@@ -383,6 +389,7 @@
                  "height":13,
                  "id":40,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -410,6 +417,7 @@
                  "height":13,
                  "id":41,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -437,6 +445,7 @@
                  "height":13,
                  "id":42,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -464,6 +473,7 @@
                  "height":13,
                  "id":43,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -491,6 +501,7 @@
                  "height":13,
                  "id":44,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -518,6 +529,7 @@
                  "height":13,
                  "id":46,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -545,6 +557,7 @@
                  "height":29.6667,
                  "id":51,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -572,6 +585,7 @@
                  "height":32,
                  "id":53,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -599,6 +613,7 @@
                  "height":30.3334,
                  "id":54,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -626,6 +641,7 @@
                  "height":13,
                  "id":55,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -653,6 +669,7 @@
                  "height":16,
                  "id":56,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -680,6 +697,7 @@
                  "height":16,
                  "id":57,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -707,6 +725,7 @@
                  "height":16,
                  "id":58,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -734,6 +753,7 @@
                  "height":16,
                  "id":59,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -761,6 +781,7 @@
                  "height":16,
                  "id":60,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -788,6 +809,7 @@
                  "height":16,
                  "id":61,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -815,6 +837,7 @@
                  "height":16,
                  "id":62,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -842,6 +865,7 @@
                  "height":16,
                  "id":63,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -869,6 +893,7 @@
                  "height":16,
                  "id":64,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -896,6 +921,7 @@
                  "height":16,
                  "id":65,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -923,6 +949,7 @@
                  "height":16,
                  "id":66,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -950,6 +977,7 @@
                  "height":16,
                  "id":67,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -977,6 +1005,7 @@
                  "height":84.8333,
                  "id":69,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"event",
@@ -999,6 +1028,7 @@
                  "height":32,
                  "id":72,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1026,6 +1056,7 @@
                  "height":29.6667,
                  "id":73,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1053,6 +1084,7 @@
                  "height":29.6667,
                  "id":74,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1080,6 +1112,7 @@
                  "height":79.913,
                  "id":76,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"cutscene_name",
@@ -1107,6 +1140,7 @@
                  "height":88.913,
                  "id":78,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"cutscene_name",
@@ -1134,6 +1168,7 @@
                  "height":310,
                  "id":79,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"entity_code",
@@ -1161,6 +1196,7 @@
                  "height":79.913,
                  "id":80,
                  "name":"",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"cutscene_name",
@@ -1181,8 +1217,8 @@
                  "type":"",
                  "visible":true,
                  "width":42.444,
-                 "x":1305.44466666667,
-                 "y":597.0435
+                 "x":1305.44,
+                 "y":597.043
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1199,6 +1235,7 @@
                  "height":63.75,
                  "id":70,
                  "name":"",
+                 "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1207,15 +1244,16 @@
                  "y":608.458
                 }, 
                 {
-                 "height":63.75,
+                 "height":73.75,
                  "id":71,
                  "name":"",
+                 "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":62.4167,
-                 "x":673.125,
-                 "y":160.125
+                 "width":75.0833666666667,
+                 "x":669.125,
+                 "y":157.791666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1227,7 +1265,7 @@
  "nextobjectid":83,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.11.2",
+ "tiledversion":"1.12.2",
  "tileheight":32,
  "tilesets":[
         {

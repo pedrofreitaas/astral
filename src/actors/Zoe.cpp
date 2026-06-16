@@ -687,9 +687,11 @@ void Zoe::OnVerticalCollision(const float minOverlap, AABBColliderComponent *oth
         return;
     }
 
-    if (other->GetLayer() == ColliderLayer::Quasar)
+    // only take damage if we're falling on the quasar
+    if (other->GetLayer() == ColliderLayer::Quasar && minOverlap > 0)
     {
-        // let horizontal take care.
+        TakeDamage();
+        TakeKnockback(Vector2(-1.f, -1.f) * mGame->GetConfig()->Get<float>("QUASAR.SPIKE_KNOCKBACK_FORCE"));
         return;
     }
 

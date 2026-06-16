@@ -8,7 +8,7 @@
 #include "../Actor.h"
 
 Sith::Sith(Game *game, const Vector2 &position)
-    : Enemy(game, position, 600.f, 40.f),
+    : Enemy(game, position, 800.f, 200.f),
       mIsProjectileOnCooldown(false), mIsAttack1OnCooldown(false), mIsAttack2OnCooldown(false),
       mCurrentAttack(Attacks::None), mHasAppliedAttackBoost(false)
 {
@@ -295,4 +295,22 @@ void Sith::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *
     Enemy::OnHorizontalCollision(minOverlap, other);
 
     Actor::OnHorizontalCollision(minOverlap, other);
+}
+
+void Sith::Freeze()
+{
+    if (IsFrozen()) return;
+
+    Enemy::Freeze();
+
+    mRigidBodyComponent->ResetVelocity();
+    mRigidBodyComponent->SetApplyGravity(true);
+}
+void Sith::StopFreeze()
+{
+    if (!IsFrozen()) return;
+
+    Enemy::StopFreeze();
+
+    mRigidBodyComponent->SetApplyGravity(false);
 }
