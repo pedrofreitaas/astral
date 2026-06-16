@@ -221,6 +221,12 @@ void Quasar::OnVerticalCollision(const float minOverlap, AABBColliderComponent *
     mAIMovementComponent->OnVerticalCollision(minOverlap, other);
     Actor::OnVerticalCollision(minOverlap, other);
     
+    if (other->GetLayer() == ColliderLayer::Player && minOverlap > 0)
+    {
+        TakeKnockback(Vector2(-1.f, -1.f) * mGame->GetConfig()->Get<float>("QUASAR.SPIKE_KNOCKBACK_FORCE"));
+        return;
+    }
+
     if (other->GetLayer() == ColliderLayer::PlayerAttack)
     {
         Zoe *zoe = mGame->GetZoe();
