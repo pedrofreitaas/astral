@@ -296,3 +296,21 @@ void Sith::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *
 
     Actor::OnHorizontalCollision(minOverlap, other);
 }
+
+void Sith::Freeze()
+{
+    if (IsFrozen()) return;
+
+    Enemy::Freeze();
+
+    mRigidBodyComponent->ResetVelocity();
+    mRigidBodyComponent->SetApplyGravity(true);
+}
+void Sith::StopFreeze()
+{
+    if (!IsFrozen()) return;
+
+    Enemy::StopFreeze();
+
+    mRigidBodyComponent->SetApplyGravity(false);
+}
