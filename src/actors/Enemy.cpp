@@ -108,7 +108,8 @@ Vector2 Enemy::GetCurrentAppliedForce(float modifier) const
 
 void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    mAIMovementComponent->OnHorizontalCollision(minOverlap, other);
+    if (mAIMovementComponent->IsEnabled())
+        mAIMovementComponent->OnHorizontalCollision(minOverlap, other);
 
     if (other->GetLayer() == ColliderLayer::Fireball)
     {
@@ -145,7 +146,8 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent 
 
 void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent *other)
 {
-    mAIMovementComponent->OnVerticalCollision(minOverlap, other);
+    if (mAIMovementComponent->IsEnabled())
+        mAIMovementComponent->OnVerticalCollision(minOverlap, other);
 
     if (other->GetLayer() == ColliderLayer::Fireball)
     {
