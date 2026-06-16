@@ -172,10 +172,23 @@ void Quasar::ManageAnimations()
             mDrawComponent->SetAnimFPS(5.f);
             break;
 
-        case BehaviorState::Moving:
-            mDrawComponent->SetAnimation("walk");
-            mDrawComponent->SetAnimFPS(8.f);
+        case BehaviorState::Moving: {
+            RigidBodyComponent* rb = GetComponent<RigidBodyComponent>();
+
+            Vector2 velocity = rb->GetVelocity();
+
+            if (velocity.LengthSq() <= 0.01f)
+            {
+                mDrawComponent->SetAnimation("idle");
+                mDrawComponent->SetAnimFPS(5.f);
+            }
+            else
+            {
+                mDrawComponent->SetAnimation("walk");
+                mDrawComponent->SetAnimFPS(8.f);
+            }
             break;
+        }
 
         case BehaviorState::TakingDamage:
             mDrawComponent->SetAnimation("hit");

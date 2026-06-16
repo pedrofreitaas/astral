@@ -174,10 +174,23 @@ void Zod::ManageAnimations()
     case BehaviorState::Idle:
         mDrawComponent->SetAnimation("idle");
         break;
-    case BehaviorState::Moving:
-        mDrawComponent->SetAnimation("moving");
-        mDrawComponent->SetAnimFPS(6.f);
+    case BehaviorState::Moving: {
+        RigidBodyComponent* rb = GetComponent<RigidBodyComponent>();
+
+        Vector2 velocity = rb->GetVelocity();
+
+        if (velocity.LengthSq() <= 0.01f)
+        {
+            mDrawComponent->SetAnimation("idle");
+            mDrawComponent->SetAnimFPS(5.f);
+        }
+        else
+        {
+            mDrawComponent->SetAnimation("moving");
+            mDrawComponent->SetAnimFPS(8.f);
+        }
         break;
+    }
     case BehaviorState::Charging:
         mDrawComponent->SetAnimation("charging");
         mDrawComponent->SetAnimFPS(8.f);
