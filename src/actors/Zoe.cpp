@@ -425,14 +425,36 @@ void Zoe::OnUpdate(float deltaTime)
 
     ManageState();
 
-    if (mRigidBodyComponent->GetVelocity().x > 0.0f)
+    if (
+        mGame->GetGamePlayState() == Game::GamePlayState::PlayingCutscene &&
+        mRigidBodyComponent->GetVelocity().x > 0.0f
+    )
     {
         SetRotation(mBehaviorState != BehaviorState::Clinging ? 0.0f : Math::Pi);
     }
 
-    else if (mRigidBodyComponent->GetVelocity().x < 0.0f)
+    else if (
+        mGame->GetGamePlayState() == Game::GamePlayState::PlayingCutscene &&
+        mRigidBodyComponent->GetVelocity().x < 0.0f
+    )
     {
         SetRotation(mBehaviorState != BehaviorState::Clinging ? Math::Pi : 0.0f);
+    }
+
+    if (
+        mGame->GetGamePlayState() != Game::GamePlayState::PlayingCutscene &&
+        mInputMovementDir.x != 0.0f
+    )
+    {
+        SetRotation(mInputMovementDir.x > 0.0f ? 0.0f : Math::Pi);
+    }
+
+    else if (
+        mGame->GetGamePlayState() != Game::GamePlayState::PlayingCutscene &&
+        mInputMovementDir.x != 0.0f
+    )
+    {
+        SetRotation(mInputMovementDir.x > 0.0f ? Math::Pi : 0.0f);
     }
 
     mColliderComponent->MaintainInMap();
