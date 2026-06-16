@@ -33,7 +33,8 @@ ZodProjectile::ZodProjectile(
         ColliderLayer::Shuriken,
         ColliderLayer::SpearTip,
         ColliderLayer::SpearBlock,
-        ColliderLayer::Spikes
+        ColliderLayer::Spikes,
+        ColliderLayer::EnemyBlocker
     });
 
     mDrawAnimatedComponent = new DrawAnimatedComponent(

@@ -8,7 +8,7 @@
 #include "../Actor.h"
 
 Quasar::Quasar(Game *game, const Vector2 &center)
-    : Enemy(game, center, 300.f), mAppliedImpulseInAttack(false), mAttackTimerHandle(nullptr),
+    : Enemy(game, center, 300.f, 120.f), mAppliedImpulseInAttack(false), mAttackTimerHandle(nullptr),
     mBlockedPlayerSoundHandle(SoundHandle::Invalid)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f);
@@ -172,10 +172,23 @@ void Quasar::ManageAnimations()
             mDrawComponent->SetAnimFPS(5.f);
             break;
 
-        case BehaviorState::Moving:
-            mDrawComponent->SetAnimation("walk");
-            mDrawComponent->SetAnimFPS(8.f);
+        case BehaviorState::Moving: {
+            RigidBodyComponent* rb = GetComponent<RigidBodyComponent>();
+
+            Vector2 velocity = rb->GetVelocity();
+
+            if (velocity.LengthSq() <= 0.01f)
+            {
+                mDrawComponent->SetAnimation("idle");
+                mDrawComponent->SetAnimFPS(5.f);
+            }
+            else
+            {
+                mDrawComponent->SetAnimation("walk");
+                mDrawComponent->SetAnimFPS(8.f);
+            }
             break;
+        }
 
         case BehaviorState::TakingDamage:
             mDrawComponent->SetAnimation("hit");
@@ -208,6 +221,12 @@ void Quasar::OnVerticalCollision(const float minOverlap, AABBColliderComponent *
     mAIMovementComponent->OnVerticalCollision(minOverlap, other);
     Actor::OnVerticalCollision(minOverlap, other);
     
+    if (other->GetLayer() == ColliderLayer::Player && minOverlap > 0)
+    {
+        TakeKnockback(Vector2(-1.f, -1.f) * mGame->GetConfig()->Get<float>("QUASAR.SPIKE_KNOCKBACK_FORCE"));
+        return;
+    }
+
     if (other->GetLayer() == ColliderLayer::PlayerAttack)
     {
         Zoe *zoe = mGame->GetZoe();
