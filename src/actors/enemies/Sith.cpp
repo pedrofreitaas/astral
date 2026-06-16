@@ -8,7 +8,7 @@
 #include "../Actor.h"
 
 Sith::Sith(Game *game, const Vector2 &position)
-    : Enemy(game, position, 600.f, 40.f),
+    : Enemy(game, position, 800.f, 200.f),
       mIsProjectileOnCooldown(false), mIsAttack1OnCooldown(false), mIsAttack2OnCooldown(false),
       mCurrentAttack(Attacks::None), mHasAppliedAttackBoost(false)
 {

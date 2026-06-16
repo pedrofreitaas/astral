@@ -8,7 +8,7 @@
 #include "../Actor.h"
 
 Quasar::Quasar(Game *game, const Vector2 &center)
-    : Enemy(game, center, 300.f), mAppliedImpulseInAttack(false), mAttackTimerHandle(nullptr),
+    : Enemy(game, center, 300.f, 120.f), mAppliedImpulseInAttack(false), mAttackTimerHandle(nullptr),
     mBlockedPlayerSoundHandle(SoundHandle::Invalid)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f);

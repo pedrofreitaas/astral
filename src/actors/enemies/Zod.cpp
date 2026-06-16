@@ -7,7 +7,7 @@
 #include "ZodProjectile.h"
 
 Zod::Zod(Game* game, const Vector2& position)
-    : Enemy(game, position, 400.f), mProjectileOnCooldown(false)
+    : Enemy(game, position, 400.f, 80.f), mProjectileOnCooldown(false)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.f, 10.0f);
     
