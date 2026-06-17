@@ -25,7 +25,7 @@ CMAKE_BUILD_TYPE:STRING=Release
 CMAKE_COLOR_MAKEFILE:BOOL=ON
 
 //No help, variable specified on the command line.
-CMAKE_CROSSCOMPILING_EMULATOR:UNINITIALIZED=/home/runner/work/_temp/3d2730b9-0f0c-44b1-932d-f205ea9ccd99/emsdk-main/node/22.16.0_64bit/bin/node
+CMAKE_CROSSCOMPILING_EMULATOR:UNINITIALIZED=/home/runner/work/_temp/aee84a43-645d-4d48-bd17-c8359594b2de/emsdk-main/node/22.16.0_64bit/bin/node
 
 //Flags used by the CXX compiler during all build types.
 CMAKE_CXX_FLAGS:STRING=
@@ -85,7 +85,7 @@ CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=
 CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=/home/runner/work/astral/astral/embuild/CMakeFiles/pkgRedirects
 
 //Install path prefix, prepended onto install directories.
-CMAKE_INSTALL_PREFIX:PATH=/home/runner/work/_temp/3d2730b9-0f0c-44b1-932d-f205ea9ccd99/emsdk-main/upstream/emscripten/cache/sysroot
+CMAKE_INSTALL_PREFIX:PATH=/home/runner/work/_temp/aee84a43-645d-4d48-bd17-c8359594b2de/emsdk-main/upstream/emscripten/cache/sysroot
 
 //Path to a program.
 CMAKE_LINKER:FILEPATH=/usr/bin/ld
@@ -185,7 +185,7 @@ CMAKE_STRIP:FILEPATH=/usr/bin/strip
 CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 
 //The CMake toolchain file
-CMAKE_TOOLCHAIN_FILE:FILEPATH=/home/runner/work/_temp/3d2730b9-0f0c-44b1-932d-f205ea9ccd99/emsdk-main/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake
+CMAKE_TOOLCHAIN_FILE:FILEPATH=/home/runner/work/_temp/aee84a43-645d-4d48-bd17-c8359594b2de/emsdk-main/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake
 
 //If this value is on, makefiles will be generated without the
 // .SILENT directive, and all commands will be echoed to the console
