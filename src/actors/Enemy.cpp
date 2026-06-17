@@ -125,6 +125,14 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent 
     {
         TakeDamage();
 
+        Zoe *zoe = mGame->GetZoe();
+
+        if (zoe->IsChargedPlayerAttack())
+        {
+            TakeKnockback(Vector2(0.f, -520.f));
+            return;
+        }
+
         TakeKnockback(
             Vector2(
                 Math::Sign(-minOverlap) * mGame->GetConfig()->Get<float>("ENEMY.PLAYER_KNOCKBACK_FORCE"), 
@@ -176,6 +184,14 @@ void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent *o
     if (other->GetLayer() == ColliderLayer::PlayerAttack)
     {               
         TakeDamage();
+
+        Zoe *zoe = mGame->GetZoe();
+
+        if (zoe->IsChargedPlayerAttack())
+        {
+            TakeKnockback(Vector2(0.f, -520.f));
+            return;
+        }
 
         // min overlap here is vertical, not left or right
         int left = GetCenter().x < other->GetCenter().x ? -1 : 1;
