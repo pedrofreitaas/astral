@@ -158,6 +158,9 @@ protected:
     void SetMana(float mana);
 
 private:
+    bool CanStartToCling();
+    bool CheckCling();
+
     float mForwardSpeed, mMana;
     bool mConsumedManaThisFrame;
 
