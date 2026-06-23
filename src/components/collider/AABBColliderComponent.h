@@ -99,6 +99,7 @@ public:
     std::map<ColliderLayer, IgnoreOption> GetIgnoredLayers() const { return mIgnoredLayersOptions; }
 
     int IsCloseToTileWallHorizontally(float distance);
+    int IsCloseToTileWallVertically(float distance);
 
 private:
     float GetMinVerticalOverlap(AABBColliderComponent* b) const;
