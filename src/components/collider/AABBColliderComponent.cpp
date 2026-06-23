@@ -408,6 +408,46 @@ int AABBColliderComponent::IsCloseToTileWallHorizontally(float distance)
     return 0;
 }
 
+int AABBColliderComponent::IsCloseToTileWallVertically(float distance)
+{
+    if (!mIsEnabled)
+        return false;
+
+    Vector2 center = GetCenter();
+    Vector2 size = Vector2((float)mWidth, (float)mHeight);
+
+    // Use spatial hashing to get nearby colliders
+    auto colliders = mOwner->GetGame()->GetNearbyColliders(center, 2);
+
+    std::sort(colliders.begin(), colliders.end(), [this](AABBColliderComponent *a, AABBColliderComponent *b)
+              { return Math::Abs((a->GetCenter() - GetCenter()).LengthSq() < (b->GetCenter() - GetCenter()).LengthSq()); });
+
+    for (auto &collider : colliders)
+    {
+        if (collider == this || !collider->IsEnabled())
+            continue;
+
+        if (collider->GetLayer() != ColliderLayer::Blocks)
+            continue;
+
+        if (collider->IsSegmentIntersecting(
+                Vector2(center.x, center.y - size.y - distance),
+                Vector2(center.x, center.y)))
+        {
+            return -1;
+        }
+
+        if (collider->IsSegmentIntersecting(
+                Vector2(center.x, center.y),
+                Vector2(center.x, center.y + size.y + distance)))
+        {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 bool AABBColliderComponent::IsContainedIn(const AABBColliderComponent &b) const
 {
     Vector2 min = GetMin();

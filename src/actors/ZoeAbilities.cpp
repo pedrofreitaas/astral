@@ -242,6 +242,17 @@ bool Zoe::CheckVentania()
     return true;
 }
 
+bool Zoe::CheckCling()
+{
+    return mColliderComponent->IsCloseToTileWallHorizontally(.5f) != 0 &&
+           mColliderComponent->IsCloseToTileWallVertically(5.f) < 1;
+}
+
+bool Zoe::CanStartToCling()
+{
+    return CheckCling() && IsPressingAgainstWall();
+}
+
 bool Zoe::CheckJump()
 {
     if (!mGame->GetApplyGravityScene())
