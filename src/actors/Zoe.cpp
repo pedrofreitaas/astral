@@ -146,7 +146,7 @@ void Zoe::ManageState()
             break;
         }
 
-        if (IsPressingAgainstWall() != 0)
+        if (CanStartToCling())
         {
             mRigidBodyComponent->ResetVelocityY();
             SetBehaviorState(BehaviorState::Clinging);
@@ -184,7 +184,7 @@ void Zoe::ManageState()
             break;
         }
 
-        if (IsPressingAgainstWall() != 0)
+        if (CanStartToCling())
         {
             mRigidBodyComponent->ResetVelocityY();
             SetBehaviorState(BehaviorState::Clinging);
@@ -344,11 +344,34 @@ void Zoe::ManageState()
 
     case BehaviorState::Clinging:
     {
-        if (!IsPressingAgainstWall())
+        // if (!IsPressingAgainstWall())
+        // {
+        //     SetBehaviorState(BehaviorState::Falling);
+        //     break;
+        // }
+
+        if (!CheckCling())
         {
             SetBehaviorState(BehaviorState::Falling);
             break;
         }
+
+        // int isColliderCloseToWallVertically = mColliderComponent->IsCloseToTileWallVertically(32.f);
+
+        // // basically on ground.
+        // if (isColliderCloseToWallVertically == 1)
+        // {
+        //     SetBehaviorState(BehaviorState::Idle);
+        //     break;
+        // }
+
+        // int isColliderCloseToWall = mColliderComponent->IsCloseToTileWallHorizontally(1.f);
+
+        // if (isColliderCloseToWall == 0)
+        // {
+        //     SetBehaviorState(BehaviorState::Falling);
+        //     break;
+        // }
 
         if (mRigidBodyComponent->GetOnGround())
         {
@@ -374,9 +397,9 @@ void Zoe::ManageState()
             mRigidBodyComponent->ApplyForce(Vector2(0.f, -GRAVITY * .97f));
         }
 
-        int left = mColliderComponent->IsCloseToTileWallHorizontally(1.f) == -1;
+        Move(.3f);
 
-        SetRotation(left ? 0.f : Math::Pi);
+        // SetRotation(isColliderCloseToWall == 1 ? 0.f : Math::Pi);
 
         SetLandedAfterVentania(true);
 
