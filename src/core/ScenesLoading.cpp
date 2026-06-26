@@ -112,6 +112,10 @@ void Game::LoadBedroom()
     mZoe->SetAbilitiesLocked(true);
 
     mMusicHandle = mAudio->PlaySound("bedroomTheme.ogg", true);
+
+    if (mPreviousScene == GameScene::BedroomPortal) {
+        mZoe->SetCenter(Vector2(420.f, 87.f));
+    }
 }
 
 void Game::LoadBedroomPortal()
