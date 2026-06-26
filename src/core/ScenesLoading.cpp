@@ -388,21 +388,23 @@ void Game::LoadFirstLevel()
         Vector2(1353.f, 969.f)));
 
     dialogue = {
-        "Acho que ja e hora de eu te contar.",
+        "Acho que ja e hora de voce saber.",
         "Voce tem ideia de onde esta?"
     };
 
     steps.push_back(std::make_unique<DialogueStep>(this, "Estrela", dialogue));
 
     dialogue = {
-        "Sim, eu estou no Espaco Astral.",
-        "Minha mae lia historias sobre esse lugar para mim antes de dormir, parece que eu estou dentro do livro agora."
+        "Sim!",
+        "Eu estou no Espaco Astral.",
+        "Minha mae lia historias sobre esse lugar para mim antes de dormir."
     };
 
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
     dialogue = {
-        "Isso mesmo Zoe, e o seu pai sempre entrava no quarto, bem no final da historia, para dar um susto em voces."
+        "Isso mesmo Zoe!",
+        "Seu pai sempre entrava no quarto, bem no final da historia, para dar um susto em voces."
     };
 
     steps.push_back(std::make_unique<DialogueStep>(this, "Estrela", dialogue));
@@ -482,7 +484,7 @@ void Game::LoadFirstLevel()
     dialogue = {
         "Eu nao tenho muito tempo para explicar...",
         "Mas as historias que sua mamae lia para voce antes de dormir eram reais.",
-        "A gente veio aqui buscar o presente de aniversario da sua Vo.",
+        "Nos viemos aqui buscar o presente de aniversario da sua Vo.",
         "Mas nao tomamos o cuidado necessario, e Zathura capturou sua mae."
     };
 
@@ -496,10 +498,10 @@ void Game::LoadFirstLevel()
 
     dialogue = {
         "Sim Zoe, ele e real. E ele e muito perigoso.",
-        "Nos nao temos tempo a perder, voce precisa ficar forte para enfrenta-lo e salvar sua mae.",
+        "Nos nao temos tempo a perder, voce precisa salvar sua mae.",
         "Para isso, vamos visitar o planeta que ele mora, Nebula.",
         "La voce vai enfrentar problemas maiores e ficar mais forte!",
-        "So assim vamos conseguir enfrentar Zathura e salvar sua mae."
+        "So assim vamos conseguir enfrentar Zathura, e salvar sua mae."
     };
 
     steps.push_back(std::make_unique<DialogueStep>(this, "Pai", dialogue));
@@ -523,8 +525,8 @@ void Game::LoadFirstLevel()
 
     steps.clear();
     dialogue = {
-        "Eu acho que posso segurar o meu martelo e bater com muita forca no chao.",
-        "Ai eu vou jogar esse Quasar nas Shurikens!"
+        "Eu acho que posso segurar o meu martelo, e bater com muita forca no chao.",
+        "O impacto vai lançar esse Quasar nas Shurikens!"
     };
 
     steps.push_back(std::make_unique<FreezePhysicsStep>(this));
@@ -720,7 +722,8 @@ void Game::LoadSecondLevel()
 
     steps.clear();
     dialogue = {
-        "Talvez eu devesse tentar congelar essa caixa no ar, e usa-la para pegar impulso."
+        "E se eu conseguisse congelar essa caixa no ar?",
+        "Então, posso usa-la para saltar mais alto!"
     };
     steps.push_back(std::make_unique<DialogueStep>(this, "Zoe", dialogue));
 
@@ -1254,7 +1257,7 @@ void Game::LoadBedroomFinal()
         { return GetZoe(); }));
 
     dialogue = {
-        "Sera que e mesmo a melhor decisao esconder isso dela?"
+        "Tem certeza que devemos esconder isso dela?"
     };
 
     steps.push_back(std::make_unique<DialogueStep>(this, "Mae", dialogue));
