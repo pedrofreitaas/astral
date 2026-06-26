@@ -23,7 +23,11 @@ Zathura::Zathura(Game *game, const Vector2 &center)
         ColliderLayer::Zathura);
 
     mColliderComponent->SetIgnoreLayers({
-        ColliderLayer::Nevasca
+        ColliderLayer::Nevasca,
+        ColliderLayer::Quasar,
+        ColliderLayer::Enemy,
+        ColliderLayer::EnemyProjectile,
+        ColliderLayer::Torch
     }, IgnoreOption::IgnoreResolution);
     
     mDrawComponent = new DrawAnimatedComponent(
