@@ -19,7 +19,11 @@ Quasar::Quasar(Game *game, const Vector2 &center)
         ColliderLayer::Quasar);
 
     mColliderComponent->SetIgnoreLayers({
-        ColliderLayer::Nevasca
+        ColliderLayer::Nevasca,
+        ColliderLayer::Quasar,
+        ColliderLayer::Enemy,
+        ColliderLayer::EnemyProjectile,
+        ColliderLayer::Torch
     }, IgnoreOption::IgnoreResolution);
 
     mDrawComponent = new DrawAnimatedComponent(

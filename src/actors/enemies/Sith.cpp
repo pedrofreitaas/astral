@@ -20,7 +20,13 @@ Sith::Sith(Game *game, const Vector2 &position)
         21, 21,
         ColliderLayer::Enemy);
 
-    mColliderComponent->IgnoreLayer(ColliderLayer::Nevasca, IgnoreOption::IgnoreResolution);
+    mColliderComponent->IgnoreLayers({
+        ColliderLayer::Nevasca,
+        ColliderLayer::Quasar,
+        ColliderLayer::Enemy,
+        ColliderLayer::EnemyProjectile,
+        ColliderLayer::Torch
+    }, IgnoreOption::IgnoreResolution);
 
     mDrawComponent = new DrawAnimatedComponent(
         this,

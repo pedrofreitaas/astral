@@ -17,7 +17,13 @@ Zod::Zod(Game* game, const Vector2& position)
         10, 20,
         ColliderLayer::Enemy);
     
-    mColliderComponent->IgnoreLayer(ColliderLayer::Nevasca, IgnoreOption::IgnoreResolution);
+    mColliderComponent->IgnoreLayers({
+        ColliderLayer::Nevasca,
+        ColliderLayer::Quasar,
+        ColliderLayer::Enemy,
+        ColliderLayer::EnemyProjectile,
+        ColliderLayer::Torch
+    }, IgnoreOption::IgnoreResolution);
 
     mDrawComponent = new DrawAnimatedComponent(
         this,
